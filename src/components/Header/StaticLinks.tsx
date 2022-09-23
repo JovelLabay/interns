@@ -1,3 +1,4 @@
+// REACT
 import React from 'react';
 
 // NEXT
@@ -40,12 +41,22 @@ const MenuLinks = ({
 };
 
 const ButtonLinks = ({ isYellowBg }: { isYellowBg?: boolean }) => {
+  const cookieHandler = (name: string) => {
+    if (name === 'Company') {
+      localStorage.setItem('cookieInterns', 'company');
+    }
+    if (name === 'Student') {
+      localStorage.setItem('cookieInterns', 'student');
+    }
+  };
+
   return (
     <>
       {data.headerButtons.headButtons.map((button, index) => {
         return (
           <Link key={index} href={button.url}>
             <a
+              onClick={() => cookieHandler(button.name)}
               className={
                 index === 0
                   ? isYellowBg

@@ -1,0 +1,10 @@
+/* DYNAMIC CONTAINER */
+.dynamic-main-container {
+    max-width: 95vw;
+    margin: 0 auto;
+}
+
+/* IMAGE UPLOAD ICONS */
+.imageUpload {
+    display: none;
+}

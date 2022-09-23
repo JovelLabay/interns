@@ -3,29 +3,23 @@ import React, { ReactElement, ReactNode } from 'react';
 
 // STYLES
 import '../styles/globals.css';
+import '../styles/home.css';
+
+// TOASTIFY
+import 'react-toastify/dist/ReactToastify.css';
 
 // NEXT
 import type { AppProps } from 'next/app';
+import type { NextPage } from 'next';
 
 // LAYOUTS
 import WelcomeLayout from '../src/layouts/WelcomeLayout';
-
-import type { NextPage } from 'next';
-
-import { NextUIProvider } from '@nextui-org/react';
 import UserLayout from '@/src/layouts/UserLayout';
-import { nextUiTheme } from 'nextUiTheme';
 
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
+//FIREBASE METHODS AND INITIALIZATION
+import { app } from '@/src/firebase/firebaseConfig';
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // DISPLAY LAYOUT ON SELECTED PAGES ONLY
   if (Component.getLayout) {
     return Component.getLayout(
       <UserLayout>
@@ -42,3 +36,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 }
 
 export default MyApp;
+
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};

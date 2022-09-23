@@ -1,5 +1,4 @@
 import AboutDescription from '@/src/components/blocks/AboutDescription';
-import Button from '@/src/components/common/Button';
 import InputBox from '@/src/components/common/InputBox';
 import Head from 'next/head';
 import React from 'react';
@@ -41,10 +40,9 @@ function about() {
               value={value}
               tectBoxHandler={textBoxHandler}
             />
-            <Button
-              className="rounded-r bg-black text-white p-3 "
-              buttonContext={<TbSend size={24} />}
-            />
+            <button className="rounded-r bg-black text-white p-3 ">
+              <TbSend size={24} />
+            </button>
           </div>
         </div>
       </main>
