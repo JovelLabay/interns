@@ -1,17 +1,34 @@
-import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
+// REACT
+import React, { ReactElement } from 'react';
+
+// NEXT
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ReactElement } from 'react';
+
+// STATIC DATA
+import { data } from 'Data';
+
+// COMPONENTS OR LAYOUTS
+import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
+
+// ICONS
 import { BsPerson } from 'react-icons/bs';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { FiChevronRight } from 'react-icons/fi';
 function Getstarted() {
-  const getStartedOptions = ['Company', 'Student'];
-
   const [selectedOption, setSelectedOption] = React.useState('');
 
   const setOptionHandler = (option: string) => {
     setSelectedOption(option);
+  };
+
+  const cookieHandler = () => {
+    if (selectedOption === 'Company') {
+      localStorage.setItem('cookieInterns', 'company');
+    }
+    if (selectedOption === 'Student') {
+      localStorage.setItem('cookieInterns', 'student');
+    }
   };
 
   return (
@@ -33,32 +50,39 @@ function Getstarted() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-10 ">
-          {getStartedOptions.map((option, index) => {
+          {data.headerButtons.headButtons.map((option, index) => {
             return (
               <div
                 key={index}
-                onClick={() => setOptionHandler(option)}
+                onClick={() => setOptionHandler(option.name)}
                 className={
-                  selectedOption === option
+                  selectedOption === option.name
                     ? 'border-2 border-primaryYellow rounded-xl h-[300px] w-[230px] flex flex-col justify-center items-center gap-20 hover:border-primaryYellow hover:cursor-pointer'
                     : 'border-2 border-customBorder rounded-xl h-[300px] w-[230px] flex flex-col justify-center items-center gap-20 hover:border-primaryYellow hover:cursor-pointer'
                 }
               >
                 <div className="h-[80px] w-[80px] rounded-full bg-yellowBg flex items-center justify-center">
-                  {option === 'Company' ? (
+                  {option.name === 'Company' ? (
                     <HiOutlineOfficeBuilding className="text-[40px] text-primaryYellow" />
                   ) : (
                     <BsPerson className="text-[40px] text-primaryYellow" />
                   )}
                 </div>
-                <p className="text-[24px] font-semibold">{option}</p>
+                <p className="text-[24px] font-semibold">{option.name}</p>
               </div>
             );
           })}
         </div>
 
-        <Link href="">
+        <Link
+          href={
+            selectedOption === 'Company'
+              ? '/views/user/company/dashboard'
+              : '/views/user/student/dashboard'
+          }
+        >
           <button
+            onClick={cookieHandler}
             style={
               selectedOption === '' ? { pointerEvents: 'none' } : undefined
             }

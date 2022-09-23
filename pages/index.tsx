@@ -1,10 +1,10 @@
+// REACT
+import React from 'react';
+
 // NEXT
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-
-// REACT
-import React from 'react';
 
 // STATIC DATA
 import { data } from '../Data';

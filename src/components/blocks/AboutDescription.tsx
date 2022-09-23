@@ -1,12 +1,13 @@
-import { data } from 'Data';
+// REACT
 import React from 'react';
-import { BiShoppingBag } from 'react-icons/bi';
-import { FiPlayCircle } from 'react-icons/fi';
-import { MdOutlinePerson } from 'react-icons/md';
-import { VscGraph } from 'react-icons/vsc';
 
+// STATIC DATA
+import { data } from 'Data';
+
+// NEXT
 import Image from 'next/image';
 
+// IMAGES
 import easy from 'public/images/about/easy.png';
 import trust from 'public/images/about/trust.png';
 import account from 'public/images/about/account.png';

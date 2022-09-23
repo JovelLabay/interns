@@ -41,6 +41,10 @@ a {
   @apply px-3 md:px-2 lg:px-0
 }
 
+.sub-container-second-dashboard {
+  @apply max-w-screen-2xl mx-auto
+}
+
 /* SERVICES PAGE */
 services-parent,
 .services-description:nth-child(2) {
@@ -50,4 +54,24 @@ services-parent,
 /* COMMON */
 .general-textBox:focus {
   outline: none;
+}
+
+/* INPUT LABELS */
+.inputlabel {
+  @apply font-medium text-lg text-secondaryWhite mb-2
+}
+
+/* INPUT BOXES */
+.inputBox {
+  @apply bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow
+}
+
+/* BUTTON ICONS */
+.buttonIcon {
+  @apply bg-primaryYellow rounded-md h-[40px] w-[40px] flex flex-row items-center justify-center
+}
+
+/* BUTTONS FOR HEADERS */
+.school-header-buttons{
+  @apply flex gap-3 justify-center items-center bg-primaryYellowHover rounded py-2 text-secondaryWhite
 }

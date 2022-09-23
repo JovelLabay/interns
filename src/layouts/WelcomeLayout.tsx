@@ -1,11 +1,22 @@
-import { data } from 'Data';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
+// REACT
 import React, { ReactNode, useEffect, useMemo } from 'react';
+
+// NEXT
+import { useRouter } from 'next/router';
+
+// EXTERNAL PACKAGES
+import { motion } from 'framer-motion';
+
+// COMPONENTS
 import SplashLoading from '../components/common/SplashLoading';
 import StaticFooter from '../components/Footer/StaticFooter';
 import StaticHeader from '../components/Header/StaticHeader';
+
+// STATIC STATE CONTEXT
 import { StaticContext } from '../contexts/context';
+
+// STATIC DATA
+import { data } from 'Data';
 
 function LayoutStatic({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -32,10 +43,7 @@ function LayoutStatic({ children }: { children: ReactNode }) {
   useEffect(() => {
     const cookie = localStorage.getItem('cookieInterns');
     if (cookie === null) {
-      // IMAGINARY LOADING
-      setTimeout(() => {
-        setIsLoading(true);
-      }, 3000);
+      setIsLoading(true);
 
       setTimeout(() => {
         setIsShowCookie(true);
@@ -43,16 +51,10 @@ function LayoutStatic({ children }: { children: ReactNode }) {
     }
 
     if (cookie === 'student') {
-      // IMAGINARY LOADING
-      setTimeout(() => {
-        router.push('/views/user/student/auth');
-      }, 3000);
+      router.push('/views/user/student/auth');
     }
     if (cookie === 'company') {
-      // IMAGINARY LOADING
-      setTimeout(() => {
-        router.push('/views/user/company/auth');
-      }, 3000);
+      router.push('/views/user/company/dashboard');
     }
   }, []);
 

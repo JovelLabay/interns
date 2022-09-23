@@ -1,7 +1,36 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { DynamicContext } from '../contexts/context';
 
 function UserLayout({ children }: { children: ReactNode }) {
-  return <div>{children}</div>;
+  // DARK MODE STATE
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [user, setUser] = useState({
+    userName: '',
+    userEmail: '',
+    userPhotoUrl: '',
+  });
+
+  useEffect(() => {
+    const darkMode = localStorage.getItem('darkModeCompany');
+    if (darkMode === 'true') {
+      setIsDarkMode(true);
+    } else {
+      setIsDarkMode(false);
+    }
+  }, []);
+
+  return (
+    <DynamicContext.Provider
+      value={{
+        isDarkMode,
+        setIsDarkMode,
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </DynamicContext.Provider>
+  );
 }
 
 export default UserLayout;

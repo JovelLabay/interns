@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
 import React from 'react';
+
+import { motion } from 'framer-motion';
 
 function SplashLoading() {
   const loading3 = [1, 2, 3];
+
   return (
     <div className="h-screen flex flex-col items-center justify-around bg-white">
       <div>
