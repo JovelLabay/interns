@@ -1,11 +1,16 @@
+// REACT
 import React from 'react';
+
+// NEXT
+import Image from 'next/image';
+
+// STATIC DATA
 import { data } from 'Data';
 
 // IMAGES
 import imageOne from 'public/images/service/one.png';
 import imageTwo from 'public/images/service/two.png';
 import imageThree from 'public/images/service/three.png';
-import Image from 'next/image';
 
 function DescWithImage() {
   return (

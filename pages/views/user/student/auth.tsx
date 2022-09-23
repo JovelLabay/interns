@@ -1,6 +1,11 @@
-import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
-import Head from 'next/head';
+// REACT
 import React, { ReactElement } from 'react';
+
+// NEXT
+import Head from 'next/head';
+
+// COMPONENTS OR LAYOUTS
+import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
 
 function Auth() {
   return (

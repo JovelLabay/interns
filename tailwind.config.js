@@ -39,17 +39,24 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
+
+      // PRIMARY YELLOWS
       primaryYellow: '#FFE500',
       primaryYellowHover: '#FFF171',
       yellowBg: '#FFFCE3',
-      secondaryWhite: '#585858',
-      teriaryWhite: '#D3D3D3',
+
+      // BACKGROUND COLORS | WHITES
       mainBgWhite: '#F6F6F6',
+      contastWhite: '#F5F5F5',
+      customBorder: '#EBEBEB',
+      teriaryWhite: '#D3D3D3',
+      placeholderColor: '#C0C0C0',
+
+      // BACKGROUND COLORS | DARKS
+      secondaryWhite: '#585858',
       mainBgBlack: '#171622',
       secondaryBgBlack: '#212130',
-      contastWhite: '#F5F5F5',
-      placeholderColor: '#C0C0C0',
-      customBorder: '#EBEBEB',
+      backDropDark: 'rgba(0, 0, 0, 0.2)',
     }),
     columns: {
       auto: 'auto',

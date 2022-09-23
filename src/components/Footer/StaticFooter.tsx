@@ -1,12 +1,13 @@
-import Link from 'next/link';
+// REACT
 import React from 'react';
+
+// NEXT
+import Link from 'next/link';
+
+// STATIC DATA
 import { data } from '../../../Data';
 
 function StaticFooter() {
-  const getYear = () => {
-    return new Date().getFullYear();
-  };
-
   return (
     <div>
       <section className="wrapper bg-black text-white ">
@@ -57,3 +58,8 @@ function StaticFooter() {
 }
 
 export default StaticFooter;
+
+// FULLYEAR
+export const getYear = () => {
+  return new Date().getFullYear();
+};
