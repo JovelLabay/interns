@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 // REACT
-import React, { ReactElement, useEffect, useState, Fragment } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 // COMPONENTS
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
@@ -18,9 +18,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { FiChevronDown } from 'react-icons/fi';
 
-// HEADLESS UI
-import { Dialog, Transition } from '@headlessui/react';
-
 // STATIC DATA
 import { data } from 'Data';
 
@@ -33,17 +30,12 @@ import { CompanyRegistration } from '@/src/validator/LogSignValidator';
 import { saveCompanyRegistration } from '@/src/functions/firebaseDatabase';
 import { storgae, emailPassAuth } from '@/src/firebase/firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import {
-  Auth,
-  onAuthStateChanged,
-  sendEmailVerification,
-  updateCurrentUser,
-  updateProfile,
-} from 'firebase/auth';
+import { onAuthStateChanged, updateProfile, User } from 'firebase/auth';
 
 // TOASTIFY
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { notify } from '@/src/components/common/toast';
+import SplashLoading from '@/src/components/common/SplashLoading';
 
 function Setup() {
   const router = useRouter();
@@ -56,10 +48,12 @@ function Setup() {
     typeOfCompany: data.typeOfCompany[0].name,
     locationOfCompany: data.locationOfCompany[0].name,
     companyLogoUrl: '',
+    companyEmail: '',
   });
   const [companyPohotos, setcompanyPohotos] = useState<string[]>([]);
   const [progression, setProgression] = useState(0);
-  const [verified, setIsVerified] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isNumber, setIsNumber] = useState(false);
 
   const uploadProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileObject: any = e.target.files?.[0];
@@ -103,7 +97,7 @@ function Setup() {
     );
   };
 
-  const { register, handleSubmit, formState, watch } =
+  const { register, handleSubmit, formState } =
     useForm<CompanyRegistrationInterface>({
       resolver: yupResolver(CompanyRegistration),
     });
@@ -115,7 +109,9 @@ function Setup() {
         companyDates.years === 'YYYY' ||
         companyDates.typeOfCompany === 'Select' ||
         companyDates.locationOfCompany === 'Select',
-      companyDates.companyLogoUrl === '' || companyPohotos.length < 4)
+      companyDates.companyLogoUrl === '' ||
+        companyPohotos.length < 4 ||
+        companyDates.companyEmail === '')
     ) {
       notify('Please fill all the fields');
     } else {
@@ -131,10 +127,11 @@ function Setup() {
         data.companyDescription,
         emailPassAuth?.currentUser?.uid as string,
         companyDates.companyLogoUrl,
-        companyPohotos
+        companyPohotos,
+        companyDates.companyEmail
       )
         .then(() => {
-          updateProfile(emailPassAuth.currentUser as any, {
+          updateProfile(emailPassAuth.currentUser as User, {
             displayName: data.companyName,
             photoURL: companyDates.companyLogoUrl,
           })
@@ -145,56 +142,78 @@ function Setup() {
     }
   };
 
-  // WATCH ONLY THE LETTERS IN COMPANY DESCRIPTION
-  const companyDescription = () => {
-    return Object.keys(watch()).length === 0
-      ? 0
-      : watch().companyDescription.length;
-  };
-
   useEffect(() => {
-    onAuthStateChanged(emailPassAuth, (user) => {
+    const authMe = onAuthStateChanged(emailPassAuth, (user) => {
       if (user === null) {
         router.push('/views/user/company/auth');
       } else {
-        setIsVerified(!user.emailVerified);
+        if (
+          user?.displayName === null ||
+          user?.photoURL === null ||
+          user?.email === null
+        ) {
+          setIsLoading(false);
+          setCompanyDates((prev) => {
+            return { ...prev, companyEmail: user?.email as string };
+          });
+        } else {
+          router.push('/views/user/company/dashboard');
+        }
+      }
+
+      // DISABLE THE SETUP IF NO PHONE NUMBER
+      if (user?.phoneNumber !== null) {
+        setIsNumber(true);
+        // alert(
+        //   "THIS TYPE OF ACCOUNT IS NOT ALLOWED TO CREATE A COMPANY'S ACCOUNT. PLEASE USE EMAIL AND PASSWORD"
+        // );
       }
     });
+
+    return () => {
+      authMe();
+    };
   }, []);
+
+  if (isLoading) {
+    return <SplashLoading />;
+  }
+
+  if (isNumber) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.pointerEvents = 'none';
+    document.body.style.userSelect = 'none';
+  }
 
   return (
     <div>
       <Head>
-        <title>Interns | Company Auth</title>
+        <title>Interns | Company Auvbnth</title>
         <meta name="description" content="dfgdfgdfgdfg" />
         <meta name="theme-color" content="#FFE500" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      {isNumber && (
+        <div className="z-50 h-screen w-screen absolute top-0 left-0 flex flex-row justify-center items-center">
+          <h1>
+            {
+              "THIS TYPE OF ACCOUNT IS NOT ALLOWED TO CREATE A COMPANY'S ACCOUNT. PLEASE USE EMAIL AND PASSWORD"
+            }
+          </h1>
+        </div>
+      )}
+
+      <main
+        style={{
+          filter: isNumber ? 'blur(5px)' : 'none',
+        }}
+      >
         <div className="min-h-[80vh] lg:block hidden">
           <header className="bg-primaryYellow h-[70px] flex items-center">
             <div className="dynamic-main-container flex w-screen justify-around">
               <h1 className="font-bold text-lg mt-2">Company Account Setup</h1>
               <div className="flex flex-row justify-center items-center gap-10">
-                {/* {verified && (
-                  <button
-                    onClick={C}
-                    className={classNames(
-                      'border-primaryYellowHover bg-primaryYellowHover py-2 px-5 rounded border-2 font-medium text-mainBgWhite transition duration-300 hover:text-secondaryBgBlack hover:bg-mainBgWhite'
-                    )}
-                  >
-                    Get Verified
-                  </button>
-                )}
-                {!verified && (
-                  <button
-                    onClick={handleSubmit(companyRegistrationSubmit)}
-                    className="border-mainBgWhite py-2 px-10 rounded border-2 font-medium text-mainBgWhite hover:text-secondaryBgBlack hover:bg-mainBgWhite transition duration-300"
-                  >
-                    Save
-                  </button>
-                )} */}
                 <button
                   onClick={handleSubmit(companyRegistrationSubmit)}
                   className="border-mainBgWhite py-2 px-10 rounded border-2 font-medium text-mainBgWhite hover:text-secondaryBgBlack hover:bg-mainBgWhite transition duration-300"
@@ -205,13 +224,7 @@ function Setup() {
             </div>
           </header>
 
-          <main
-            className="dynamic-main-container xl:px-[250px] 2xl:px-[300px] py-5"
-            // style={{
-            //   pointerEvents: verified ? 'none' : 'auto',
-            //   opacity: verified ? '0.5' : '1',
-            // }}
-          >
+          <main className="dynamic-main-container xl:px-[250px] 2xl:px-[300px] py-5">
             <div className="flex flex-col items-center justify-center my-4">
               {companyDates.companyLogoUrl === '' ? (
                 <label className="text-secondaryWhite border-2 rounded-full p-10 border-primaryYellow border-dashed bg-mainBgWhite hover:cursor-pointer">
@@ -286,20 +299,20 @@ function Setup() {
                 <label htmlFor="" className={classNames('inputlabel')}>
                   Description of the Company{' '}
                   <span
-                    className={classNames(
-                      'text-mainBgWhite px-2 rounded-full font-light',
-                      {
-                        'bg-red-500': companyDescription() <= 100,
-                      },
-                      {
-                        'bg-green-500': companyDescription() >= 100,
-                      },
-                      {
-                        hidden: companyDescription() == 0,
-                      }
-                    )}
+                  // className={classNames(
+                  //   'text-mainBgWhite px-2 rounded-full font-light',
+                  //   {
+                  //     'bg-red-500': descriptionLength <= 100,
+                  //   },
+                  //   {
+                  //     'bg-green-500': descriptionLength >= 100,
+                  //   },
+                  //   {
+                  //     hidden: descriptionLength == 0,
+                  //   }
+                  // )}
                   >
-                    {companyDescription()}
+                    0
                   </span>
                 </label>
                 <textarea
@@ -368,7 +381,7 @@ function Setup() {
                 >
                   {({ open }: { open: boolean }) => (
                     <div className="relative">
-                      <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-full flex justify-between ">
+                      <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-full flex justify-between">
                         {companyDates.locationOfCompany}
                         <FiChevronDown
                           size={30}
@@ -411,7 +424,7 @@ function Setup() {
                   >
                     {({ open }: { open: boolean }) => (
                       <div className="relative">
-                        <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-[100px] flex justify-between ">
+                        <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-[100px] flex justify-between">
                           {companyDates.days}
                           <FiChevronDown
                             size={30}
@@ -557,11 +570,6 @@ function Setup() {
         </div>
         {/* TOAST */}
         <ToastContainer />
-
-        {/* LOADING BACKGROUND FOR UPLOAD PHOTOS */}
-        {/* <div className="fixed top-0 left-0 w-full h-full bg-backDropDark z-50">
-          <h1>ssdf</h1>
-        </div> */}
       </main>
     </div>
   );

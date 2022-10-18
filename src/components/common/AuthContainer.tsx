@@ -1,6 +1,7 @@
-import { signAuthWithGoogle } from '@/src/functions/firebasetEmailPassAuth';
-import { useRouter } from 'next/router';
+// REACT
 import React from 'react';
+
+// ICONS
 import { FcGoogle } from 'react-icons/fc';
 
 function AuthContainer({
@@ -10,21 +11,6 @@ function AuthContainer({
   companyAuth: JSX.Element;
   isLogin: boolean;
 }) {
-  const router = useRouter();
-
-  // AUTH SIGNIN AND LOGIN HANDLER
-  const authSignLog = () => {
-    signAuthWithGoogle()
-      .then((data) => {
-        if (data.user.emailVerified) {
-          router.push('/views/user/company/dashboard');
-        } else {
-          router.push('/views/user/company/setup');
-        }
-      })
-      .catch((error) => console.log(error));
-  };
-
   return (
     <div className="bg-white p-5 rounded-md">
       <h2 className="text-center text-[28px]">

@@ -1,11 +1,9 @@
 import * as yup from 'yup';
 
-const LogSignValidator = yup
-  .object({
-    email: yup.string().email().required(),
-    password: yup.string().min(6).max(12).required(),
-  })
-  .required();
+const LogSignValidator = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().min(6).max(12).required(),
+});
 
 const CompanyRegistration = yup.object({
   companyName: yup.string().required(),
@@ -16,14 +14,31 @@ const CompanyRegistration = yup.object({
 
 // VALIDATORS FOR THE NEW NUMBERS TO BE ADDED AS THE USERS FOR THE SCOOL AUTHENTICATION
 const SchoolNumberUsers = yup.object({
-  number: yup.string().required().min(12).max(12),
+  number: yup.string().required().min(13).max(13),
 });
 
 // VALIDATORS FOR THE NEW STUDENTS TO BE ADDED AS THE USERS FOR THE SCOOL AUTHENTICATION
 const AddStudent = yup.object({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  middleName: yup.string().required(),
+  firstName: yup.string().required().min(3).max(10),
+  lastName: yup.string().required().min(3).max(10),
+  middleName: yup.string().required().min(3).max(10),
 });
 
-export { LogSignValidator, CompanyRegistration, SchoolNumberUsers, AddStudent };
+// VALIDATORS FOR THE NEW COLLEGE OR DEPARTMENT
+const AddCollegeValidator = yup.object({
+  nameOfCollege: yup.string().required('Give the name of the college'),
+  shortNameOfCollege: yup
+    .string()
+    .required('Give the short name of the college'),
+  nameOfDean: yup.string().required('Give the name of the dean'),
+  professionOfDean: yup.string(),
+  collegeType: yup.string(),
+});
+
+export {
+  LogSignValidator,
+  CompanyRegistration,
+  SchoolNumberUsers,
+  AddStudent,
+  AddCollegeValidator,
+};

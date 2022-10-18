@@ -1,9 +1,6 @@
-import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 
 function StudentDashboard() {
-  const router = useRouter();
-
   return (
     <div>
       <h1>dashboard</h1>

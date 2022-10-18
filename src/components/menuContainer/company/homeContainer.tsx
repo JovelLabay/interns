@@ -1,6 +1,11 @@
-import { DynamicContext } from '@/src/contexts/context';
-import classNames from 'classnames';
+// REACT
 import React, { useContext } from 'react';
+
+// STATE MANAGEMENT
+import { DynamicContext } from '@/src/contexts/context';
+
+// OTHERS
+import classNames from 'classnames';
 
 function HomeContainer() {
   const context = useContext(DynamicContext);
@@ -17,7 +22,7 @@ function HomeContainer() {
         </p>
         <div className="h-[69vh] overflow-auto">
           <div
-            className={classNames('my-3 bg-white h-[150px] rounded', {
+            className={classNames('mb-3 bg-white h-[150px] rounded', {
               'bg-secondaryBgBlack': context?.isDarkMode,
             })}
           ></div>

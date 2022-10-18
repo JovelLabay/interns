@@ -1,23 +1,40 @@
+// REACT
 import React, { useState, useEffect } from 'react';
+
+// NEXT
 import Image from 'next/image';
 import Link from 'next/link';
+
+// INTERNS LOGO
 import internsLogo from '../../../public/logo/interns_logo.png';
+
+// TOAST
 import { ToastContainer } from 'react-toastify';
 
+// UI
 import { Popover } from '@headlessui/react';
 
-import { BiMoon, BiSun, BiLogOut } from 'react-icons/bi';
+// ICONS
+import { BiLogOut } from 'react-icons/bi';
 import { FiUsers } from 'react-icons/fi';
-import { IoSettingsOutline, IoPersonAddOutline } from 'react-icons/io5';
-import { AiOutlinePlusCircle, AiOutlineUnorderedList } from 'react-icons/ai';
-import { GrUserSettings } from 'react-icons/gr';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { BiCurrentLocation } from 'react-icons/bi';
+import { AiOutlineAppstore, AiOutlineUserAdd } from 'react-icons/ai';
+import { BsBuilding } from 'react-icons/bs';
+
+// COMPONENTS
 import AddUsers from '../modals/addUsers';
 
+// FIREBASE CONFIG
 import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
-import { getDatabase, ref, child, get, onValue } from 'firebase/database';
-import { notify } from '../common/toast';
+
+// FIREBASE
+import { ref, onValue } from 'firebase/database';
+
+// NEXT
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import AddCollege from '../modals/AddCollege';
 
 function SchoolHeader({
   userName,
@@ -29,29 +46,20 @@ function SchoolHeader({
   userPhotoUrl: string | undefined;
 }) {
   const router = useRouter();
+
   const [userList, setUserList] = useState({
     numbers: {},
     currentNumber: '',
+    currentLocations: {},
   });
 
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,
+    manageCollege: false,
+    manageJobCategory: false,
+    manageCompanyType: false,
+    locationOfCompany: false,
   });
-  const addModalToggle = () => {
-    setAddRemoveModal((prev) => {
-      return { ...prev, manageUser: !prev.manageUser };
-    });
-  };
-
-  const schoolAdminLogoutHandler = () => {
-    signOut(emailPassAuth)
-      .then(() => {
-        router.push('/views/user/school/auth');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   useEffect(() => {
     const db = database;
@@ -68,10 +76,25 @@ function SchoolHeader({
     onValue(userCurrentNumber, (snapshot) => {
       const data = snapshot.val();
       setUserList((prev) => {
-        return { ...prev, currentNumber: data };
+        return { ...prev, currentNumber: data.number };
+      });
+    });
+
+    const currentLocations = ref(db, 'school/locations');
+    onValue(currentLocations, (snapshot) => {
+      const data = snapshot.val();
+      setUserList((prev) => {
+        return { ...prev, currentLocations: data };
       });
     });
   }, []);
+
+  const {
+    manageJobCategory,
+    manageCompanyType,
+    manageCollege,
+    locationOfCompany,
+  } = addRemoveModal;
 
   return (
     <>
@@ -108,17 +131,33 @@ function SchoolHeader({
 
               <Popover.Panel className="absolute z-10 w-[300px] right-0">
                 <div className="flex flex-col gap-4 shadow-md bg-white rounded mt-2 p-3">
-                  <button className="school-header-buttons">
-                    <GrUserSettings size={20} /> {'Manage Admin Info'}
+                  <button
+                    name="manageCategory"
+                    className="school-header-buttons"
+                    onClick={(e: any) => toggleManageModals(e.target.name)}
+                  >
+                    <AiOutlineAppstore size={20} /> {'Job Categories'}
                   </button>
-                  <button className="school-header-buttons">
-                    <AiOutlinePlusCircle size={20} /> {'Add College/Department'}
+                  <button
+                    name="manageCompany"
+                    className="school-header-buttons"
+                    onClick={(e: any) => toggleManageModals(e.target.name)}
+                  >
+                    <BsBuilding size={20} /> {'Company Type'}
                   </button>
-                  <button className="school-header-buttons">
-                    <AiOutlinePlusCircle size={20} /> {'Add Categories'}
+                  <button
+                    name="manageCollege"
+                    className="school-header-buttons"
+                    onClick={(e: any) => toggleManageModals(e.target.name)}
+                  >
+                    <AiOutlineUserAdd size={20} /> {'Add College'}
                   </button>
-                  <button className="school-header-buttons">
-                    <AiOutlineUnorderedList size={20} /> {'View Users'}
+                  <button
+                    name="manageLocation"
+                    className="school-header-buttons"
+                    onClick={(e: any) => toggleManageModals(e.target.name)}
+                  >
+                    <BiCurrentLocation size={20} /> {'Location of Company'}
                   </button>
                 </div>
               </Popover.Panel>
@@ -143,12 +182,69 @@ function SchoolHeader({
           userList={userList.numbers}
           userCurrentNumber={userList.currentNumber}
         />
+
+        <AddCollege
+          addRemoveModal={{
+            manageJobCategory,
+            manageCompanyType,
+            manageCollege,
+            locationOfCompany,
+          }}
+          toggleManageModals={toggleManageModals}
+          currentLocations={userList.currentLocations}
+        />
       </div>
 
       {/* TOAST CONTAINER */}
       <ToastContainer />
     </>
   );
+
+  function schoolAdminLogoutHandler() {
+    signOut(emailPassAuth)
+      .then(() => {
+        router.push('/views/user/school/auth');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function addModalToggle() {
+    setAddRemoveModal((prev) => {
+      return { ...prev, manageUser: !prev.manageUser };
+    });
+  }
+
+  function toggleManageModals(name?: string) {
+    if (name === 'manageCategory') {
+      setAddRemoveModal((prev) => {
+        return { ...prev, manageJobCategory: !prev.manageJobCategory };
+      });
+    } else if (name === 'manageCompany') {
+      setAddRemoveModal((prev) => {
+        return { ...prev, manageCompanyType: !prev.manageCompanyType };
+      });
+    } else if (name === 'manageCollege') {
+      setAddRemoveModal((prev) => {
+        return { ...prev, manageCollege: !prev.manageCollege };
+      });
+    } else if (name === 'manageLocation') {
+      setAddRemoveModal((prev) => {
+        return { ...prev, locationOfCompany: !prev.locationOfCompany };
+      });
+    } else if (name === '') {
+      setAddRemoveModal((prev) => {
+        return {
+          ...prev,
+          manageCollege: false,
+          manageJobCategory: false,
+          manageCompanyType: false,
+          locationOfCompany: false,
+        };
+      });
+    }
+  }
 }
 
 export default SchoolHeader;

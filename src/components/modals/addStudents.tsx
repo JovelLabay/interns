@@ -1,11 +1,24 @@
-import { addStudents } from '@/src/functions/firebaseFirestore';
-import { AddStudent } from '@/src/validator/LogSignValidator';
-import { Dialog, Transition } from '@headlessui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
+// REACT
 import React, { Fragment, useState } from 'react';
+
+// FIREABSE
+import { addStudents } from '@/src/functions/firebaseFirestore';
+
+// SHCHEMA VALIDATOR
+import { AddStudent } from '@/src/validator/LogSignValidator';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// UI
+import { Dialog, Transition } from '@headlessui/react';
+
+// USEFORM
 import { useForm } from 'react-hook-form';
+
+// OTHERS
 import uniqid from 'uniqid';
-import ClipLoader from 'react-spinners/ClipLoader';
+import { BeatLoader } from 'react-spinners';
+
+// TOAST
 import { notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
 
@@ -37,11 +50,11 @@ function AddStudents({
       data.firstName,
       data.middleName,
       data.lastName,
-      uniqid('-', `${data.firstName}@interns.com`),
+      uniqid(undefined, `${data.firstName}-@interns.com`),
       addStudentsTitle
     )
-      .then((res) => {
-        notify(res);
+      .then(() => {
+        notify('success, Student Added Successfully');
         setLoading((prev) => ({
           ...prev,
           addStudentLoading: false,
@@ -101,7 +114,7 @@ function AddStudents({
                       onClick={handleSubmit(handleSubmitGenerateStudentHandler)}
                     >
                       {loading.addStudentLoading ? (
-                        <ClipLoader color="#000" size={20} />
+                        <BeatLoader color="#fff" size={5} />
                       ) : (
                         'Generate'
                       )}

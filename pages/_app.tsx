@@ -16,9 +16,6 @@ import type { NextPage } from 'next';
 import WelcomeLayout from '../src/layouts/WelcomeLayout';
 import UserLayout from '@/src/layouts/UserLayout';
 
-//FIREBASE METHODS AND INITIALIZATION
-import { app } from '@/src/firebase/firebaseConfig';
-
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   if (Component.getLayout) {
     return Component.getLayout(

@@ -5,6 +5,7 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // STATIC DATA
 import { data } from '../Data';
@@ -17,7 +18,6 @@ import { VscGraph } from 'react-icons/vsc';
 import { FiPlayCircle } from 'react-icons/fi';
 import { BiShoppingBag } from 'react-icons/bi';
 import { MdOutlinePerson } from 'react-icons/md';
-import Link from 'next/link';
 
 const Home: NextPage = () => {
   return (

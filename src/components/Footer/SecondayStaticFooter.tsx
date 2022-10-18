@@ -1,5 +1,10 @@
+// STATIC
 import { data } from 'Data';
+
+// REACT
 import React from 'react';
+
+// GET YEAR
 import { getYear } from './StaticFooter';
 
 function SecondayFooter() {

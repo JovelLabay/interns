@@ -1,8 +1,17 @@
+// REACT
+import React from 'react';
+
+// NEXT
+import Head from 'next/head';
+
+// COMPONENTS
 import AboutDescription from '@/src/components/blocks/AboutDescription';
 import InputBox from '@/src/components/common/InputBox';
-import Head from 'next/head';
-import React from 'react';
+
+// STATIC DATA
 import { data } from '../../../Data';
+
+// REACT ICONS
 import { TbSend } from 'react-icons/tb';
 
 function about() {

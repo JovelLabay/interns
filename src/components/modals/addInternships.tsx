@@ -1,15 +1,26 @@
-import { Dialog, Transition } from '@headlessui/react';
+// REACT
 import React, { Fragment, useContext, useState } from 'react';
 
+// UI
+import { Dialog, Transition } from '@headlessui/react';
+
+// INTERNS LOGO
 import internsLogo from '../../../public/logo/interns_logo.png';
 
+// NEXT
 import Image from 'next/image';
 
+// STATE MANAGEMENT
 import { DynamicContext } from '@/src/contexts/context';
+
+// OTHERS
+import classNames from 'classnames';
+
+// COMPONENTS OR LAYOUT
+import AddEditInternshipForm from '../common/AddEditInternshipForm';
 
 // STATIC DATA
 import { data } from 'Data';
-import classNames from 'classnames';
 
 function AddInternships({
   addRemoveModal,
@@ -19,6 +30,30 @@ function AddInternships({
   addModalToggle: () => void;
 }) {
   const context = useContext(DynamicContext);
+
+  const [jobList, setJobList] = useState({
+    jobRes: '',
+    jobQua: '',
+  });
+
+  const [isOpen, setIsOpen] = useState({
+    jobResponsibility: false,
+    jobQualification: false,
+  });
+
+  const [addInternshipForm, setAddInternshipForm] = useState({
+    jobTitle: '',
+    jobDescription: '',
+    jobEnvironment: false,
+    allowance: false,
+    allowanceAmount: '',
+    jobCategory: data.company.jobCategory[0].name,
+    jobResponsibilities: [],
+    jobQualifications: [],
+    isResponsiveHr: false,
+    isHiredImmediately: false,
+    isUrgent: false,
+  });
 
   return (
     <>
@@ -36,7 +71,7 @@ function AddInternships({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -49,14 +84,19 @@ function AddInternships({
               >
                 <Dialog.Panel
                   className={classNames(
-                    'w-[700px] bg-white h-[600px] p-3 rounded-md overflow-auto',
-                    { 'bg-secondaryBgBlack': context?.isDarkMode }
+                    'w-[900px] bg-white h-[700px] p-3 rounded-md',
+                    { 'bg-mainBgBlack': context?.isDarkMode }
                   )}
                 >
                   <div className="flex flex-row justify-between items-center">
                     <button
                       onClick={addModalToggle}
-                      className="border-2 rounded border-primaryYellow py-1 w-[100px]"
+                      className={classNames(
+                        'border-2 rounded border-primaryYellow py-1 w-[100px]',
+                        {
+                          'text-white': context?.isDarkMode,
+                        }
+                      )}
                     >
                       Cancel
                     </button>
@@ -67,17 +107,22 @@ function AddInternships({
                       style={{ borderRadius: '100%' }}
                     />
                     <button
-                      onClick={addModalToggle}
+                      onClick={saveInternship}
                       className=" rounded bg-primaryYellow py-1 w-[100px]"
                     >
                       Post
                     </button>
                   </div>
-                  <div className="mt-4">
-                    <p>
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
+                  <div className="mt-4 h-[620px] overflow-y-auto">
+                    {/* ADD INTERNSHIP FORM */}
+                    <AddEditInternshipForm
+                      addInternshipForm={addInternshipForm}
+                      setAddInternshipForm={setAddInternshipForm}
+                      isOpen={isOpen}
+                      setIsOpen={setIsOpen}
+                      jobList={jobList}
+                      setJobList={setJobList}
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -87,6 +132,11 @@ function AddInternships({
       </Transition>
     </>
   );
+
+  // SAVE INTERNSHIP PROGRAM
+  function saveInternship() {
+    null;
+  }
 }
 
 export default AddInternships;
