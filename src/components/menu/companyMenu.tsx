@@ -1,10 +1,20 @@
-import { DynamicContext } from '@/src/contexts/context';
-import classNames from 'classnames';
+// REACT
 import React, { useContext } from 'react';
-import { BiMoon, BiSun, BiLogOut } from 'react-icons/bi';
+
+// STATE MANAGERMENT
+import { DynamicContext } from '@/src/contexts/context';
+
+// OTHERS
+import classNames from 'classnames';
+
+// ICONS
 import { AiOutlineHome, AiOutlineContacts } from 'react-icons/ai';
 import { BsPeople, BsBuilding, BsPerson } from 'react-icons/bs';
+
+// IMAGE
 import internsLogo from '../../../public/logo/interns_logo.png';
+
+// LOGO
 import Image from 'next/image';
 
 // STATIC DATA
@@ -35,7 +45,7 @@ function CompanyMenu({
       <div>
         <div className="flex flex-col items-center my-5">
           <Image
-            src={internsLogo}
+            src={context?.user?.userPhotoUrl || internsLogo}
             width={90}
             height={90}
             style={{ borderRadius: '100%' }}
@@ -48,7 +58,7 @@ function CompanyMenu({
               }
             )}
           >
-            Eluvent Inc
+            {context?.user?.userName}
           </p>
         </div>
         <div>

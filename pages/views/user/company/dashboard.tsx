@@ -1,12 +1,22 @@
+// REACT
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
+
+// NEXT
 import { useRouter } from 'next/router';
+
+// LOADER COMPONENT
 import SplashLoading from '@/src/components/common/SplashLoading';
+
+// FIREBASE FUNCTIONS
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { emailPassAuth } from '@/src/firebase/firebaseConfig';
+
+// COMPONENTS OR LAYOUTS
 import CompanyHeader from '@/src/components/Header/CompanyHeader';
-import { DynamicContext } from '@/src/contexts/context';
 import CompanyDashboardContainer from '@/src/components/dashboards/companyDashboardContainer';
 
+// STATE MANAGEMENT
+import { DynamicContext } from '@/src/contexts/context';
 function CompanyDashboard() {
   const router = useRouter();
 
@@ -21,17 +31,30 @@ function CompanyDashboard() {
   };
 
   useEffect(() => {
-    onAuthStateChanged(emailPassAuth, (user) => {
+    const authMe = onAuthStateChanged(emailPassAuth, (user) => {
       if (user === null) {
         router.push('/views/user/company/auth');
       } else {
-        if (user?.displayName !== null && user?.photoURL !== null) {
-          setIsLoading(false);
-        } else {
+        if (
+          user?.displayName === null ||
+          user?.photoURL === null ||
+          user?.email === null
+        ) {
           router.push('/views/user/company/setup');
+        } else {
+          setIsLoading(false);
+          context?.setUser({
+            userName: user.displayName,
+            userEmail: user.email,
+            userPhotoUrl: user.photoURL,
+          });
         }
       }
     });
+
+    return () => {
+      authMe();
+    };
   }, []);
 
   if (isLoading) {

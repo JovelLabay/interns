@@ -1,9 +1,31 @@
-import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
+// REACT
 import React, { ReactElement, useEffect, useState } from 'react';
-import { emailPassAuth } from '@/src/firebase/firebaseConfig';
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { number } from 'yup';
+
+// FOOTER OR HEADER
+import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
+
+// FIREBASE CONFIG
+import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
+
+// FIREBASE FUNCTIONS
+import {
+  onAuthStateChanged,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from 'firebase/auth';
+
+// NEXT
 import { useRouter } from 'next/router';
+
+// LOADING
+import SplashLoading from '@/src/components/common/SplashLoading';
+
+// FIREBASE
+import { onValue, ref } from 'firebase/database';
+
+// TOAST
+import { notify } from '@/src/components/common/toast';
+import { ToastContainer } from 'react-toastify';
 
 function Auth() {
   const router = useRouter();
@@ -16,6 +38,22 @@ function Auth() {
     digit5: '',
     digit6: '',
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCodeSent, setIsCodeSent] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(emailPassAuth, (user) => {
+      if (user !== null) {
+        if (user?.phoneNumber !== null) {
+          router.push('/views/user/school/dashboard');
+        } else {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   const [digit1Ref, digit2Ref, digit3Ref, digit4Ref, digit5Ref, digit6Ref] = [
     React.createRef<HTMLInputElement>(),
@@ -38,30 +76,45 @@ function Auth() {
   };
 
   const requestOtp = () => {
+    const db = database;
     generateOtp();
-    signInWithPhoneNumber(
-      emailPassAuth,
-      '+639397715303',
-      window.recaptchaVerifier
-    )
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        console.log('OTP sent');
-      })
-      .catch(() => {
-        console.log('fgdf');
-      });
+
+    const userCurrentNumber = ref(db, 'companyUsers/currentNumber');
+    onValue(userCurrentNumber, (snapshot) => {
+      const data = snapshot.val();
+      signInWithPhoneNumber(
+        emailPassAuth,
+        data.number,
+        window.recaptchaVerifier
+      )
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          setIsCodeSent(true);
+          notify('OTP sent successfully');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
   };
 
   const verifyOtp = () => {
     const combinedCode = `${code.digit1}${code.digit2}${code.digit3}${code.digit4}${code.digit5}${code.digit6}`;
-    window.confirmationResult
-      .confirm(combinedCode)
-      .then(() => router.push('/views/user/school/dashboard'))
-      .catch((error: any) => {
-        console.log(error);
-      });
+    if (!combinedCode) {
+      console.log('Please enter OTP');
+    } else {
+      window.confirmationResult
+        .confirm(combinedCode)
+        .then(() => router.push('/views/user/school/dashboard'))
+        .catch(() => {
+          console.log("Couldn't verify OTP");
+        });
+    }
   };
+
+  if (isLoading) {
+    return <SplashLoading />;
+  }
 
   return (
     <div className="min-h-[80vh] bg-primaryYellow">
@@ -144,12 +197,15 @@ function Auth() {
                 "Code will be sent to the active set phone number of the school's admin"
               }
             </p>
-            <button
-              className="bg-white rounded-md py-2 w-full border-2 flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-customBorder border-customBorder duration-150"
-              onClick={requestOtp}
-            >
-              Request
-            </button>
+            {isCodeSent ? null : (
+              <button
+                className="bg-white rounded-md py-2 w-full border-2 flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-customBorder border-customBorder duration-150"
+                onClick={requestOtp}
+              >
+                Request
+              </button>
+            )}
+
             <br />
             <button
               className="bg-primaryYellow rounded-md py-2 w-full flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-primaryYellowHover duration-150"
@@ -163,6 +219,8 @@ function Auth() {
 
       {/* RECAPTCHA DIV */}
       <div id="recaptcha-container" />
+      {/* TOAST */}
+      <ToastContainer />
     </div>
   );
 }

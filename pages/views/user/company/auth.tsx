@@ -1,32 +1,42 @@
 // REACT
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 // NEXT
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // COMPONENTS OR LAYOUTS
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
-
-// STATE CONTEXT
 import AuthContainer from '@/src/components/common/AuthContainer';
+
+// USEFORM
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+// SCHEMA VALIDATOR
 import { LogSignValidator } from '@/src/validator/LogSignValidator';
 
+// REACT ICONS
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
+// FIREBASE FUNCTIONS
 import { createAuth, signAuth } from '@/src/functions/firebasetEmailPassAuth';
-import { useRouter } from 'next/router';
 import { emailPassAuth } from '@/src/firebase/firebaseConfig';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { onAuthStateChanged, sendPasswordResetEmail } from 'firebase/auth';
+
+// TOASTIFY
 import { notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
+
+// LOADER COMPONENT
+import SplashLoading from '@/src/components/common/SplashLoading';
 
 function Auth() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { register, handleSubmit, formState } = useForm<AuthEmailPassword>({
     resolver: yupResolver(LogSignValidator),
@@ -69,6 +79,24 @@ function Auth() {
         });
     }
   };
+
+  useEffect(() => {
+    const authMe = onAuthStateChanged(emailPassAuth, (user) => {
+      if (user === null) {
+        setIsLoading(false);
+      } else {
+        router.push('/views/user/company/dashboard');
+      }
+    });
+
+    return () => {
+      authMe();
+    };
+  }, []);
+
+  if (isLoading) {
+    return <SplashLoading />;
+  }
 
   const companyAuthLogin = (
     <div className="flex flex-col mt-6 gap-2 w-[300px]">

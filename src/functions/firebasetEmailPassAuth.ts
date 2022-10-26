@@ -2,8 +2,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
 } from 'firebase/auth';
+
+// FIREBASE CONFIG
 import { emailPassAuth, Googleprovider } from '../firebase/firebaseConfig';
 
 const createAuth = async (email: string, password: string) => {

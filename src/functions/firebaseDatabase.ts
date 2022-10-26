@@ -1,5 +1,6 @@
 import { database } from '../firebase/firebaseConfig';
-import { set, ref, push, child, update, remove } from 'firebase/database';
+import { set, ref, push, remove, update } from 'firebase/database';
+import { data } from 'Data';
 
 const saveCompanyRegistration = async (
   days: string,
@@ -13,7 +14,8 @@ const saveCompanyRegistration = async (
   companyDescription: string,
   uniqueId: string,
   companyLogoUrl: string,
-  companyPohotos: string[]
+  companyPohotos: string[],
+  companyEmail: string
 ) => {
   try {
     const db = database;
@@ -31,6 +33,8 @@ const saveCompanyRegistration = async (
       },
       companyLogo: companyLogoUrl,
       companyPhotos: [...companyPohotos],
+      companyApproval: data.admin.companyApplicationStatus[3].name,
+      companyEmail,
     });
     return 'Your company has been registered successfully';
   } catch (error) {
@@ -97,9 +101,96 @@ const deleteCurrentNumber = async (number: string) => {
   }
 };
 
+// DISMISS | PENDING | APPROVE COMPANY APPLICATION
+const dismissCompanyApplication = async (uniqueId: string) => {
+  try {
+    const db = database;
+    const companyDeleteReference = ref(db, `companies/${uniqueId}`);
+    await update(companyDeleteReference, {
+      companyApproval: data.admin.companyApplicationStatus[2].name,
+    });
+    return 'Company application has been dismissed successfully';
+  } catch (error) {
+    console.error(error);
+  }
+};
+const pendingCompanyApplication = async (uniqueId: string) => {
+  try {
+    const db = database;
+    const companyDeleteReference = ref(db, `companies/${uniqueId}`);
+    await update(companyDeleteReference, {
+      companyApproval: data.admin.companyApplicationStatus[1].name,
+    });
+    return 'Company application has been marked pending successfully';
+  } catch (error) {
+    console.error(error);
+  }
+};
+const approveCompanyApplication = async (uniqueId: string) => {
+  try {
+    const db = database;
+    const companyDeleteReference = ref(db, `companies/${uniqueId}`);
+    await update(companyDeleteReference, {
+      companyApproval: data.admin.companyApplicationStatus[0].name,
+    });
+    return 'Company application has been approved successfully';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ADD NEW COLLEGE
+const addNewCollege = async (
+  collegeName: string,
+  shortCollegeName: string,
+  collegeDean: string,
+  professionOfDean: string,
+  collegeType: string
+) => {
+  try {
+    const db = database;
+
+    const collegeRef = ref(db, 'school/colleges');
+    const newCollegeRef = push(collegeRef);
+    await set(newCollegeRef, {
+      collegeName,
+      shortCollegeName,
+      collegeDean,
+      professionOfDean,
+      collegeType,
+    });
+
+    return 'New College has been added successfully.';
+  } catch (error) {
+    return 'There was an error adding the college. Please try again later.';
+  }
+};
+
+// ADD NEW USER TO BE USE FOR OTP
+const addNewCompanyLocation = async (location: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, 'school/locations');
+    const newPostRef = push(postListRef);
+    await set(newPostRef, {
+      location,
+    });
+
+    return 'New Location has been added successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export {
   saveCompanyRegistration,
   addNewUser,
   updateCurrentNumber,
   deleteCurrentNumber,
+  dismissCompanyApplication,
+  pendingCompanyApplication,
+  approveCompanyApplication,
+  addNewCollege,
+  addNewCompanyLocation,
 };

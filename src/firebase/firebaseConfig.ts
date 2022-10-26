@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// import { getAnalytics } from 'firebase/analytics';
 
 // DB METHODS
 import { getFirestore } from 'firebase/firestore';
@@ -33,5 +33,8 @@ const store = getFirestore(app);
 // GOOGLE AUTH
 const Googleprovider = new GoogleAuthProvider();
 
+// API URL
+const domain = process.env.NEXT_PUBLIC_EMAIL_ENDPOINT;
+
 // EXPORTS
-export { app, emailPassAuth, database, storgae, Googleprovider, store };
+export { app, emailPassAuth, database, storgae, Googleprovider, store, domain };

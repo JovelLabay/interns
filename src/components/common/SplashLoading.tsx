@@ -1,5 +1,7 @@
+// REACT
 import React from 'react';
 
+// ANIMATION
 import { motion } from 'framer-motion';
 
 function SplashLoading() {
