@@ -5,6 +5,7 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // STATIC DATA
 import { data } from '../Data';
@@ -17,7 +18,6 @@ import { VscGraph } from 'react-icons/vsc';
 import { FiPlayCircle } from 'react-icons/fi';
 import { BiShoppingBag } from 'react-icons/bi';
 import { MdOutlinePerson } from 'react-icons/md';
-import Link from 'next/link';
 
 const Home: NextPage = () => {
   return (
@@ -57,8 +57,12 @@ const Home: NextPage = () => {
               Interns will help you find the most suited internship jobs for you
               in any of your field and expertse.
             </p>
-            <Link href="/views/user/getstarted">
-              <button className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6">
+            {/* <Link href="/views/user/getstarted"> */}
+            <Link href="">
+              <button
+                className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6 hover:cursor-not-allowed"
+                title="Not Available yet"
+              >
                 Get Stated
               </button>
             </Link>

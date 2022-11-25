@@ -2,9 +2,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
 } from 'firebase/auth';
-import { emailPassAuth, Googleprovider } from '../firebase/firebaseConfig';
+
+// FIREBASE CONFIG
+import {
+  emailPassAuth,
+  Googleprovider,
+  Facebookprovider,
+} from '../firebase/firebaseConfig';
 
 const createAuth = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(emailPassAuth, email, password);
@@ -14,8 +21,41 @@ const signAuth = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(emailPassAuth, email, password);
 };
 
-const signAuthWithGoogle = async () => {
-  return await signInWithPopup(emailPassAuth, Googleprovider);
-};
+// 3RD PARTY AUTH
+class PartyAuth {
+  static auth = emailPassAuth;
 
-export { createAuth, signAuth, signAuthWithGoogle };
+  static facebookAuthentication = async function () {
+    try {
+      const successReturnedData = await signInWithPopup(
+        PartyAuth.auth,
+        Facebookprovider
+      );
+
+      const credential =
+        FacebookAuthProvider.credentialFromResult(successReturnedData);
+
+      return credential;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  static googleAuthentication = async function () {
+    try {
+      const successReturnedData = await signInWithPopup(
+        emailPassAuth,
+        Googleprovider
+      );
+
+      const credential =
+        GoogleAuthProvider.credentialFromResult(successReturnedData);
+
+      return credential;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+export { createAuth, signAuth, PartyAuth };

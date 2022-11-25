@@ -1,11 +1,22 @@
+// REACT
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
+
+// LOADER COMPONENT
 import SplashLoading from '@/src/components/common/SplashLoading';
+
+// COMPONENTS
 import SchoolDashboardContainer from '@/src/components/dashboards/schoolDashboardContainer';
 import SchoolHeader from '@/src/components/Header/SchoolHeader';
+
+// STATE MANAGEMENT
 import { DynamicContext } from '@/src/contexts/context';
+
+// FIREBASE
 import { emailPassAuth } from '@/src/firebase/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+
+// NEXT
 import { useRouter } from 'next/router';
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
 
 function SchoolDashboard() {
   const router = useRouter();
@@ -15,18 +26,24 @@ function SchoolDashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    document.title = 'Interns | School Dashboard';
+
     onAuthStateChanged(emailPassAuth, (user) => {
       if (user === null) {
         router.push('/views/user/school/auth');
       } else {
-        setIsLoading(false);
-        context?.setUser((prev) => {
-          return {
-            ...prev,
-            userName: user.displayName || 'No Data Found',
-            userEmail: user.email || user.phoneNumber || 'No Data Found',
-          };
-        });
+        if (user?.phoneNumber === null) {
+          router.push('/views/user/school/auth');
+        } else {
+          setIsLoading(false);
+          context?.setUser((prev) => {
+            return {
+              ...prev,
+              userName: user.displayName || 'No Data Found',
+              userEmail: user.email || user.phoneNumber || 'No Data Found',
+            };
+          });
+        }
       }
     });
   }, []);
