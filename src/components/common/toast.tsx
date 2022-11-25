@@ -25,6 +25,7 @@ const successfulNotify = (message: string) =>
 
 const errorNotify = (message: string) =>
   toast(message, {
+    type: 'error',
     position: 'bottom-center',
     autoClose: 3000,
     hideProgressBar: true,

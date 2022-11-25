@@ -24,7 +24,6 @@ import { useForm } from 'react-hook-form';
 import { FiChevronDown } from 'react-icons/fi';
 
 // TOAST
-import { ToastContainer } from 'react-toastify';
 import { notify } from '../common/toast';
 
 function AddCollegeForm() {
@@ -52,7 +51,7 @@ function AddCollegeForm() {
           handleSubmit(submitNewCollege)();
         }}
       >
-        <label htmlFor="nameOfDean">College Dean & Profession</label>
+        <label htmlFor="nameOfDean">Dean Title & Complete Name</label>
         <div className="flex justify-center items-center gap-3">
           <Listbox
             value={addCollegeData.deanProfession}
@@ -90,7 +89,7 @@ function AddCollegeForm() {
           </Listbox>
           <input
             type="text"
-            placeholder="Ex. Jovel Labay..."
+            placeholder="College Dean"
             className={
               formState.errors.professionOfDean
                 ? 'bg-red-50 outline-none px-2 py-3 rounded-md border-2 border-red-500'
@@ -99,7 +98,7 @@ function AddCollegeForm() {
             {...register('nameOfDean')}
           />
         </div>
-        <label htmlFor="nameOfCollege">College Name & Type</label>
+        <label htmlFor="nameOfCollege">College Type & Complete Name</label>
         <div className="flex justify-center items-center gap-3">
           <Listbox
             value={addCollegeData.collegeType}
@@ -137,7 +136,7 @@ function AddCollegeForm() {
           </Listbox>
           <input
             type="text"
-            placeholder="Ex. Computer Studies...."
+            placeholder="College Name"
             className={
               formState.errors.nameOfCollege
                 ? 'bg-red-50 outline-none px-2 py-3 rounded-md border-2 border-red-500'
@@ -147,10 +146,10 @@ function AddCollegeForm() {
           />
         </div>
 
-        <label htmlFor="shortNameOfCollege">Abbreviate college Name</label>
+        <label htmlFor="shortNameOfCollege">Abbreviated college Name</label>
         <input
           type="text"
-          placeholder="Ex. ComStud..."
+          placeholder="ComStud"
           className={
             formState.errors.shortNameOfCollege
               ? 'bg-red-50 outline-none px-2 py-3 rounded-md border-2 border-red-500 w-full'
@@ -159,15 +158,26 @@ function AddCollegeForm() {
           {...register('shortNameOfCollege')}
         />
 
+        <label htmlFor="shortNameOfCollege">College Passcode</label>
+        <input
+          type="text"
+          placeholder="******"
+          className={
+            formState.errors.collegePasscode
+              ? 'bg-red-50 outline-none px-2 py-3 rounded-md border-2 border-red-500 w-full'
+              : 'inputBox w-full'
+          }
+          {...register('collegePasscode')}
+        />
+
+        <p>{JSON.stringify(formState.errors.collegePasscode?.message)}</p>
+
         <input
           type="submit"
           value="Add New College"
-          className="buttonIcon2 w-full"
+          className="bg-primaryYellow rounded-md h-[40px] px-3 text-balck w-full hover:cursor-pointer"
         />
       </form>
-
-      {/* TOAST */}
-      <ToastContainer />
     </div>
   );
 
@@ -177,7 +187,8 @@ function AddCollegeForm() {
       data.shortNameOfCollege,
       data.nameOfDean,
       data.professionOfDean,
-      data.collegeType
+      data.collegeType,
+      parseInt(data.collegePasscode)
     )
       .then((res: string) => notify(res))
       .catch((err: any) => console.log(err));

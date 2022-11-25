@@ -51,6 +51,7 @@ function SchoolHeader({
     numbers: {},
     currentNumber: '',
     currentLocations: {},
+    companyTypes: {},
   });
 
   const [addRemoveModal, setAddRemoveModal] = useState({
@@ -64,7 +65,7 @@ function SchoolHeader({
   useEffect(() => {
     const db = database;
 
-    const usersNumberList = ref(db, 'companyUsers/numbers');
+    const usersNumberList = ref(db, 'school/numbers');
     onValue(usersNumberList, (snapshot) => {
       const data = snapshot.val();
       setUserList((prev) => {
@@ -72,7 +73,7 @@ function SchoolHeader({
       });
     });
 
-    const userCurrentNumber = ref(db, 'companyUsers/currentNumber');
+    const userCurrentNumber = ref(db, 'school/currentNumber');
     onValue(userCurrentNumber, (snapshot) => {
       const data = snapshot.val();
       setUserList((prev) => {
@@ -85,6 +86,14 @@ function SchoolHeader({
       const data = snapshot.val();
       setUserList((prev) => {
         return { ...prev, currentLocations: data };
+      });
+    });
+
+    const companyTypes = ref(db, 'school/companyTypes');
+    onValue(companyTypes, (snapshot) => {
+      const data = snapshot.val();
+      setUserList((prev) => {
+        return { ...prev, companyTypes: data };
       });
     });
   }, []);
@@ -192,6 +201,7 @@ function SchoolHeader({
           }}
           toggleManageModals={toggleManageModals}
           currentLocations={userList.currentLocations}
+          companyTypes={userList.companyTypes}
         />
       </div>
 

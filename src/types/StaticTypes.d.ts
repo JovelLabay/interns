@@ -9,12 +9,34 @@ interface Dynamic {
     userName: string;
     userEmail: string;
     userPhotoUrl: string;
+    userId: string;
   };
   setUser: React.Dispatch<
     React.SetStateAction<{
       userName: string;
       userEmail: string;
       userPhotoUrl: string;
+      userId: string;
+    }>
+  >;
+}
+
+// JOB CATEGORY IS ACTIVE
+interface JobCategoryIsActiveInterface {
+  activeCompanyJobCategory: string;
+  setActiveCompanyJobCategory: React.Dispatch<React.SetStateAction<string>>;
+}
+interface UserCompanyObject extends JobCategoryIsActiveInterface {
+  companyUserObject: {
+    companyQuestionnaire: never[];
+    companyCategories: never[];
+    companyInternships: never[];
+  };
+  setCompanyUserObject: React.Dispatch<
+    React.SetStateAction<{
+      companyQuestionnaire: never[];
+      companyCategories: never[];
+      companyInternships: never[];
     }>
   >;
 }
@@ -65,57 +87,6 @@ interface AddStudentWithCollegeInterfaceWithHanler
     }>
   >;
 }
-interface StudentListInterface {
-  agriculture: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  arts_and_Sciences: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  computer_Studes: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  engineering: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  nursing: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  business_and_Management: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-  education: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    defaultEmail: string;
-    id: string;
-  }[];
-}
 
 // COMPANY OBJECT LIST
 interface CompanyListInterface {
@@ -151,6 +122,7 @@ interface AddCollegeInterface {
   nameOfDean: string;
   professionOfDean: string;
   collegeType: string;
+  collegePasscode: string;
 }
 
 // SEND EMAIL MESSAGE
@@ -173,22 +145,66 @@ interface CollegeListInterface {
 
 // FORM LIST QUESTIONNAIRE
 interface FormListQuestionnaireInterface {
-  questionnaire: {
-    labelName: string;
+  labelName: string;
+  labelId: string;
+  labelType: string;
+  mutltipleChoice: string[];
+}
+
+interface FormEditedQuestionnaireInterface {
+  editQuestionnaire: {
     labelId: string;
+    labelName: string;
     labelType: string;
-    multipleChoice:
-      | {
-          option1: string;
-          option2: string;
-          option3: string;
-        }
-      | undefined;
-    trueOrFalse:
-      | {
-          option1: string;
-          option2: string;
-        }
-      | undefined;
-  }[];
+    mutltipleChoice: string[];
+  };
+  setEditQuestionnaire: React.Dispatch<
+    React.SetStateAction<{
+      labelId: string;
+      labelName: string;
+      labelType: string;
+      mutltipleChoice: string[];
+    }>
+  >;
+}
+
+interface AddFreshQuestionnaire {
+  setAddFreshQuestionnaire: React.Dispatch<
+    React.SetStateAction<{
+      labelId: string;
+      labelName: string;
+      labelType: string;
+      mutltipleChoice: string[];
+    }>
+  >;
+  addFreshQuestionnaire: {
+    labelId: string;
+    labelName: string;
+    labelType: string;
+    mutltipleChoice: string[];
+  };
+}
+
+// INTERNSHIP OBJECT
+interface InternshipObjectInterface {
+  allowance: boolean;
+  allowanceAmount: string;
+  applicationHired: number;
+  applicationRate: number;
+  applicationStatus: string;
+  companyShortDetails: {
+    userEmail: string;
+    userId: string;
+    userName: string;
+    userPhotUrl: string;
+  };
+  isHiredImmediately: boolean;
+  isResponsiveHr: boolean;
+  isUrgent: boolean;
+  jobCategory: string;
+  jobDescription: string;
+  jobEnvironment: boolean;
+  jobQualifications: string[];
+  jobResponsibilities: string[];
+  jobTitle: string;
 }

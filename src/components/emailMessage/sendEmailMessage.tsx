@@ -10,7 +10,7 @@ interface Lolo {
   labelState: string;
 }
 
-function SendEmailMessage({ register, formState, labelState }: Lolo) {
+function SendEmailMessage({ register, labelState }: Lolo) {
   return (
     <div className="gap-3 flex flex-col">
       <p>This Message will be sent to the company</p>

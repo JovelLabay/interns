@@ -1,5 +1,13 @@
 import { database } from '../firebase/firebaseConfig';
-import { set, ref, push, remove, update } from 'firebase/database';
+import {
+  set,
+  ref,
+  push,
+  remove,
+  update,
+  Database,
+  get,
+} from 'firebase/database';
 import { data } from 'Data';
 
 const saveCompanyRegistration = async (
@@ -15,11 +23,12 @@ const saveCompanyRegistration = async (
   uniqueId: string,
   companyLogoUrl: string,
   companyPohotos: string[],
-  companyEmail: string
+  companyEmail: string,
+  companyDocuments: string[]
 ) => {
   try {
     const db = database;
-    set(ref(db, `companies/${uniqueId}`), {
+    await set(ref(db, `companies/${uniqueId}`), {
       companyName,
       companyMission,
       companyVison,
@@ -35,8 +44,12 @@ const saveCompanyRegistration = async (
       companyPhotos: [...companyPohotos],
       companyApproval: data.admin.companyApplicationStatus[3].name,
       companyEmail,
+      companyDocuments: [...companyDocuments],
     });
-    return 'Your company has been registered successfully';
+    return {
+      message: 'Company registration has been saved successfully.',
+      responseData: uniqueId,
+    };
   } catch (error) {
     return {
       error: error,
@@ -54,7 +67,7 @@ const addNewUser = async (
   try {
     const db = database;
 
-    const postListRef = ref(db, 'companyUsers/numbers');
+    const postListRef = ref(db, 'school/numbers');
     const newPostRef = push(postListRef);
     await set(newPostRef, {
       number: number,
@@ -62,8 +75,8 @@ const addNewUser = async (
       dateAdded: date,
     });
 
-    set(ref(db, `companyUsers/currentNumber`), {
-      number: 'bnmbn',
+    set(ref(db, `school/currentNumber`), {
+      number: number,
     });
 
     return 'User number has been added successfully';
@@ -77,7 +90,7 @@ const updateCurrentNumber = async (number: string) => {
   try {
     const db = database;
 
-    await set(ref(db, `companyUsers/currentNumber`), {
+    await set(ref(db, `school/currentNumber`), {
       number,
     });
 
@@ -92,7 +105,7 @@ const deleteCurrentNumber = async (number: string) => {
     const db = database;
 
     // remove one item from the companyUsers/numbers
-    const postListRef = ref(db, `companyUsers/numbers/${number}`);
+    const postListRef = ref(db, `school/numbers/${number}`);
     await remove(postListRef);
 
     return 'User number has been added successfully';
@@ -145,7 +158,8 @@ const addNewCollege = async (
   shortCollegeName: string,
   collegeDean: string,
   professionOfDean: string,
-  collegeType: string
+  collegeType: string,
+  collegePasscode: number
 ) => {
   try {
     const db = database;
@@ -158,6 +172,7 @@ const addNewCollege = async (
       collegeDean,
       professionOfDean,
       collegeType,
+      collegePasscode: Number(collegePasscode),
     });
 
     return 'New College has been added successfully.';
@@ -166,7 +181,7 @@ const addNewCollege = async (
   }
 };
 
-// ADD NEW USER TO BE USE FOR OTP
+// ADD NEW LOCATION
 const addNewCompanyLocation = async (location: string) => {
   try {
     const db = database;
@@ -183,14 +198,187 @@ const addNewCompanyLocation = async (location: string) => {
   }
 };
 
+// EDIT LOCATION
+const editCompanyLocation = async (location: string, id: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, `school/locations/${id}`);
+    await update(postListRef, {
+      location,
+    });
+
+    return 'Location has been updated successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// DELETE LOCATION
+const deleteCompanyLocation = async (id: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, `school/locations/${id}`);
+    await remove(postListRef);
+
+    return 'Location has been deleted successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ADD NEW COMPANY TYPE
+const addNewCompanyType = async (type: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, 'school/companyTypes');
+    const newPostRef = push(postListRef);
+    await set(newPostRef, {
+      type,
+    });
+
+    return 'New Company Type has been added successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// DELETE COMPANY TYPE
+const deleteCompanyType = async (id: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, `school/companyTypes/${id}`);
+    await remove(postListRef);
+
+    return 'Company Type has been deleted successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// EDIT COMPANY TYPE
+const editCompanyType = async (type: string, id: string) => {
+  try {
+    const db = database;
+
+    const postListRef = ref(db, `school/companyTypes/${id}`);
+    await update(postListRef, {
+      type,
+    });
+
+    return 'Company Type has been updated successfully.';
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// GET AND ADD COMPANY CATEGORY
+class CompanyCategory {
+  newCategoryName?: string;
+  private db: Database;
+  public getCategoryLists: () => Promise<Database>;
+  public setNewCategoryName: () => Promise<string | undefined>;
+  public deleteCategory: (id: string) => Promise<string | undefined>;
+  public editCategory: (
+    id: string,
+    categoryName: string
+  ) => Promise<string | undefined>;
+
+  constructor(newCategoryName?: string) {
+    this.db = database;
+
+    if (newCategoryName !== null) {
+      this.newCategoryName = newCategoryName;
+    }
+
+    // GETTER
+    this.getCategoryLists = async function () {
+      try {
+        const categoryRef = ref(this.db, 'school/categories');
+        const snapshot = await get(categoryRef);
+        if (snapshot.exists()) {
+          return snapshot.val();
+        } else {
+          return 'No data available';
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // SETTER
+    this.setNewCategoryName = async function () {
+      try {
+        const postCatRef = ref(this.db, 'school/categories');
+        const newCatRef = push(postCatRef);
+        await set(newCatRef, {
+          categoryName: this.newCategoryName,
+        });
+
+        return 'New Category has been added successfully.';
+      } catch (error) {
+        return 'There was an error adding the category. Please try again later.';
+      }
+    };
+
+    // DELETE CATEGORY
+    this.deleteCategory = async function (id: string) {
+      try {
+        const postCatRef = ref(this.db, `school/categories/${id}`);
+        await remove(postCatRef);
+
+        return 'Category has been deleted successfully.';
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // EDIT CATEGORY
+    this.editCategory = async function (id: string, categoryName: string) {
+      try {
+        const postCatRef = ref(this.db, `school/categories/${id}`);
+        await update(postCatRef, {
+          categoryName,
+        });
+
+        return 'Category has been updated successfully.';
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  }
+}
+
 export {
+  // COMPANY REGISTRATION
   saveCompanyRegistration,
+
+  // NEW USER FOR THE AUTHENTICATION
   addNewUser,
+
+  // NUMBERS OF USERS
   updateCurrentNumber,
   deleteCurrentNumber,
+
+  // COMPANY APPLICATION
   dismissCompanyApplication,
   pendingCompanyApplication,
   approveCompanyApplication,
-  addNewCollege,
+
+  // COMPANY LOCATION
   addNewCompanyLocation,
+  editCompanyLocation,
+  deleteCompanyLocation,
+
+  // COMPANY TYPE
+  addNewCompanyType,
+  deleteCompanyType,
+  editCompanyType,
+
+  // OTHERS
+  addNewCollege,
+  CompanyCategory,
 };

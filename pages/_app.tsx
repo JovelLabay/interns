@@ -16,6 +16,9 @@ import type { NextPage } from 'next';
 import WelcomeLayout from '../src/layouts/WelcomeLayout';
 import UserLayout from '@/src/layouts/UserLayout';
 
+// NEXTJS BAR LOADER
+import NextNProgress from 'nextjs-progressbar';
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   if (Component.getLayout) {
     return Component.getLayout(
@@ -27,6 +30,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <WelcomeLayout>
+      <NextNProgress
+        color="#000"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={5}
+        showOnShallow={true}
+      />
       <Component {...pageProps} />
     </WelcomeLayout>
   );

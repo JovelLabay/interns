@@ -33,7 +33,7 @@ function CompaniesContainer() {
     useState<CompanyListInterface | null>();
 
   const values: [string, CompanyListInterface][] =
-    Object.entries(companyList) || [];
+    companyList !== null ? Object.entries(companyList) : [];
 
   useEffect(() => {
     const db = database;

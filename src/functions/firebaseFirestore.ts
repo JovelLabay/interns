@@ -3,7 +3,10 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
+  query,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 
 // FIREBASE CONFIG
@@ -15,7 +18,8 @@ const addStudents = async (
   middleName: string,
   lastName: string,
   defaultEmail: string,
-  addStudentsTitle: string
+  addStudentsTitle: string,
+  studentStatus: boolean
 ) => {
   const theCollegeName = addStudentsTitle.toLowerCase().replace(/\s/g, '_');
 
@@ -26,6 +30,7 @@ const addStudents = async (
       lastName,
       defaultEmail,
       college: addStudentsTitle,
+      studentStatus,
     });
     return studentDoc.id;
   } catch (error) {
@@ -73,4 +78,89 @@ const deleteStudents = async (collegeName: string, studentId: string) => {
   }
 };
 
-export { addStudents, updateStudents, deleteStudents };
+// ADD INTERNSHIP PROGRAMS
+const addInternshipProgram = async (
+  jobTitle: string,
+  jobDescription: string,
+  jobEnvironment: boolean,
+  allowance: boolean,
+  allowanceAmount: string,
+  jobCategory: string,
+  jobResponsibilities: string[],
+  jobQualifications: string[],
+  isResponsiveHr: boolean,
+  isHiredImmediately: boolean,
+  isUrgent: boolean,
+  userEmail?: string,
+  userPhotoUrl?: string,
+  userName?: string,
+  userId?: string
+) => {
+  // replacee the white spaces of the jobCategory
+  const jobCategoryName = jobCategory.replace(/\s/g, '_').toLocaleLowerCase();
+  try {
+    await addDoc(collection(store, jobCategoryName), {
+      applicationStatus: 'CLOSED',
+      applicationRate: 0,
+      applicationHired: 0,
+      jobTitle,
+      jobDescription,
+      jobEnvironment,
+      allowance,
+      allowanceAmount,
+      jobCategory,
+      jobResponsibilities,
+      jobQualifications,
+      isResponsiveHr,
+      isHiredImmediately,
+      isUrgent,
+      companyShortDetails: {
+        userEmail,
+        userPhotoUrl,
+        userName,
+        userId,
+      },
+    });
+
+    return 'Your internship program has been added!';
+  } catch (error) {
+    return {
+      error,
+      message: 'Error adding document',
+    };
+  }
+};
+
+// VERIFY STUDENT EMAIL AND COLLEGE
+const verifyStudentEmailAndCollege = async (
+  collegeName: string,
+  studentEmail: string
+) => {
+  try {
+    const theCollegeName = collegeName.toLowerCase().replace(/\s/g, '_');
+
+    const q = query(
+      collection(store, theCollegeName),
+      where('defaultEmail', '==', studentEmail)
+    );
+
+    let studentDetails;
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(
+      (doc) => (studentDetails = { id: doc.id, data: doc.data() })
+    );
+
+    return studentDetails;
+  } catch (error) {
+    return 'error';
+  }
+};
+
+export {
+  addStudents,
+  updateStudents,
+  deleteStudents,
+  addInternshipProgram,
+  verifyStudentEmailAndCollege,
+};

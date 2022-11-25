@@ -9,6 +9,7 @@ import {
   AiOutlineEdit,
   AiOutlineDelete,
   AiOutlineCloseCircle,
+  AiOutlineCheckCircle,
 } from 'react-icons/ai';
 
 // OTHERS
@@ -60,12 +61,22 @@ function StudentListingContainer(
             editHandler(id);
           }}
         >
-          <span>
+          <p>
             {isEdit !== id &&
               `Fullname: ${firstName} ${middleName} ${lastName}`}
-          </span>
-          <span>{isEdit !== id && `Email: ${defaultEmail}`}</span>
-          <span>{isEdit !== id && `Student ID: ${id}`}</span>
+          </p>
+          <p>{isEdit !== id && `Email: ${defaultEmail}`}</p>
+          <p>{isEdit !== id && `Student ID: ${id}`}</p>
+          <p>
+            {isEdit !== id && (
+              <>
+                Status:{' '}
+                <span className="px-3 rounded-full bg-red-300 text-white">
+                  ACTIVE
+                </span>
+              </>
+            )}
+          </p>
         </Disclosure.Button>
         <Transition show={isEdit === id}>
           <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
@@ -137,6 +148,9 @@ function StudentListingContainer(
                 }}
               >
                 <AiOutlineDelete size={20} color="#fff" />
+              </button>
+              <button className="bg-green-500 w-[50%] flex justify-center py-2 rounded">
+                <AiOutlineCheckCircle size={20} color="#fff" />
               </button>
               <button
                 className="bg-blue-400 w-[50%] flex justify-center py-2 rounded"

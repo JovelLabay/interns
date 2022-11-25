@@ -7,9 +7,6 @@ import { Listbox, Switch } from '@headlessui/react';
 // STATE
 import { DynamicContext } from '@/src/contexts/context';
 
-// STATIC DATA
-import { data } from 'Data';
-
 // OTHERS
 import classNames from 'classnames';
 
@@ -24,6 +21,7 @@ function AddEditInternshipForm({
   setIsOpen,
   jobList,
   setJobList,
+  category,
 }: InternshipProgramInterface) {
   const context = useContext(DynamicContext);
 
@@ -42,6 +40,15 @@ function AddEditInternshipForm({
             Title of the Job
           </label>
           <input
+            value={addInternshipForm.jobTitle}
+            onChange={(e) => {
+              setAddInternshipForm((prev) => {
+                return {
+                  ...prev,
+                  jobTitle: e.target.value,
+                };
+              });
+            }}
             className={classNames(
               'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
               {
@@ -62,6 +69,15 @@ function AddEditInternshipForm({
             Description of the Job
           </label>
           <textarea
+            value={addInternshipForm.jobDescription}
+            onChange={(e) => {
+              setAddInternshipForm((prev) => {
+                return {
+                  ...prev,
+                  jobDescription: e.target.value,
+                };
+              });
+            }}
             className={classNames(
               'w-full py-2 px-3 min-h-[80px]  rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
               {
@@ -83,9 +99,9 @@ function AddEditInternshipForm({
           </label>
           <Listbox
             value={addInternshipForm.jobCategory}
-            onChange={(value) =>
+            onChange={(value: any) =>
               setAddInternshipForm((prev) => {
-                return { ...prev, jobCategory: value };
+                return { ...prev, jobCategory: value[1].categoryName };
               })
             }
           >
@@ -115,14 +131,13 @@ function AddEditInternshipForm({
                     }
                   )}
                 >
-                  {data.company.jobCategory.map((person) => (
+                  {category?.map((category, index) => (
                     <Listbox.Option
                       className="py-1"
-                      key={person.id}
-                      value={person.name}
-                      hidden={person.id === 101}
+                      key={index}
+                      value={category}
                     >
-                      {person.name}
+                      {category[1].categoryName}
                     </Listbox.Option>
                   ))}
                 </Listbox.Options>
@@ -340,13 +355,14 @@ function AddEditInternshipForm({
           </label>
           <p
             className={classNames(
-              'text-secondaryWhite font-extralight italic text-sm',
+              'text-secondaryWhite font-extralight italic text-sm text-left',
               {
                 'text-white': context?.isDarkMode,
               }
             )}
           >
-            Does the company will give allowances?
+            Does the company will give allowances? (if yes, please specify) per
+            day.
           </p>
           <Switch
             checked={addInternshipForm.allowance}
@@ -373,6 +389,15 @@ function AddEditInternshipForm({
             // ADD ALLOWANCE FORM
             addInternshipForm.allowance && (
               <input
+                value={addInternshipForm.allowanceAmount}
+                onChange={(e) => {
+                  setAddInternshipForm((prev) => {
+                    return {
+                      ...prev,
+                      allowanceAmount: e.target.value,
+                    };
+                  });
+                }}
                 className={classNames(
                   'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
                   {
@@ -650,6 +675,7 @@ interface InternshipProgramInterface {
       jobQua: string;
     }>
   >;
+  category: [string, any][] | undefined;
 }
 
 export default AddEditInternshipForm;

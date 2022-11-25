@@ -75,6 +75,10 @@ services-parent,
   @apply bg-red-500 rounded-md h-[40px] w-[40px] flex flex-row items-center justify-center
 }
 
+.buttonIcon-edit{
+  @apply bg-orange-500 rounded-md h-[40px] w-[40px] flex flex-row items-center justify-center
+}
+
 /* BUTTONS FOR HEADERS */
 .school-header-buttons{
   @apply flex gap-3 justify-center items-center bg-primaryYellowHover rounded py-2 text-secondaryWhite

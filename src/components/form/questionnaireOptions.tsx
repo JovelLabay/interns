@@ -1,5 +1,5 @@
 // REACT
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 // STATE MANAGEMENT
 import { DynamicContext } from '@/src/contexts/context';
@@ -8,98 +8,126 @@ import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
 
 // USEFORM
-import { UseFormRegister } from 'react-hook-form';
+import { notify } from '../common/toast';
 
-function MultipleChoice({
-  register,
-  index,
+function QuestionnaireOptions({
+  editedQuestionnaires,
+  id,
+  isEditQuestionnaire,
+  question,
 }: {
-  register: UseFormRegister<FormListQuestionnaireInterface>;
-  index: number;
+  editedQuestionnaires: FormEditedQuestionnaireInterface;
+  id: number;
+  isEditQuestionnaire: number;
+  question: FormListQuestionnaireInterface;
 }) {
   const context = useContext(DynamicContext);
 
-  return (
-    <div className="flex flex-col items-start gap-1">
-      <label htmlFor="true">Option A</label>
+  const [addMoreOptions, setAddMoreOptions] = useState('');
 
-      <input
-        className={classNames(
-          'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-          {
-            'bg-secondaryBgBlack text-white': context?.isDarkMode,
-          }
+  const { editQuestionnaire, setEditQuestionnaire } = editedQuestionnaires;
+
+  return (
+    <div className="w-full">
+      {isEditQuestionnaire === id ? (
+        <div className="flex items-center gap-5 mb-3">
+          {editQuestionnaire.labelType === 'True or False' &&
+          editQuestionnaire.mutltipleChoice.length === 2 ? null : (
+            <button
+              className="rounded bg-yellow-400 py-2 mb-2 px-3 mt-2 text-white w-[300px]"
+              onClick={() => {
+                editQuestionnaire.mutltipleChoice.length >= 4
+                  ? notify("You can't add more than 4 options")
+                  : setEditQuestionnaire((prev) => {
+                      return {
+                        ...prev,
+                        mutltipleChoice: [
+                          ...prev.mutltipleChoice,
+                          addMoreOptions,
+                        ],
+                      };
+                    });
+
+                setAddMoreOptions('');
+              }}
+            >
+              Add More Choices
+            </button>
+          )}
+
+          <input
+            className={classNames(
+              'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+              {
+                'bg-secondaryBgBlack text-white': context?.isDarkMode,
+              }
+            )}
+            type="text"
+            placeholder="Enter Choice"
+            value={addMoreOptions}
+            onChange={(e) => setAddMoreOptions(e.target.value)}
+          />
+        </div>
+      ) : null}
+
+      <div className="flex flex-col justify-start items-start gap-2">
+        {isEditQuestionnaire !== id ? (
+          <ul className="list-decimal">
+            {question.mutltipleChoice.map((choice, index) => (
+              <li
+                key={index}
+                className={classNames(
+                  'text-secondaryWhite font-medium max-w-[700px] text-left',
+                  {
+                    'text-white': context?.isDarkMode,
+                  }
+                )}
+              >
+                {index + 1}
+                {'. '}
+                {choice}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <>
+            {editQuestionnaire.mutltipleChoice.map((choice, index) => (
+              <div
+                key={index}
+                className="flex justify-start items-center gap-5"
+              >
+                <button
+                  className="bg-red-400 py-2 px-3 rounded text-white"
+                  onClick={() => {
+                    setEditQuestionnaire((prev) => {
+                      return {
+                        ...prev,
+                        mutltipleChoice: prev.mutltipleChoice.filter(
+                          (_, i) => i !== index
+                        ),
+                      };
+                    });
+                  }}
+                >
+                  Remove
+                </button>
+                <label
+                  className={classNames(
+                    'text-secondaryWhite font-medium max-w-[700px] text-left',
+                    {
+                      'text-white': context?.isDarkMode,
+                    }
+                  )}
+                >
+                  {`${index + 1}. ${choice}`}
+                </label>
+              </div>
+            ))}
+          </>
         )}
-        type="text"
-        placeholder="ID"
-        {...register(`questionnaire.${index}.multipleChoice.option1`)}
-      />
-      <label htmlFor="true">Option B</label>
-      <input
-        className={classNames(
-          'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-          {
-            'bg-secondaryBgBlack text-white': context?.isDarkMode,
-          }
-        )}
-        type="text"
-        placeholder="ID"
-        {...register(`questionnaire.${index}.multipleChoice.option2`)}
-      />
-      <label htmlFor="true">Option C</label>
-      <input
-        className={classNames(
-          'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-          {
-            'bg-secondaryBgBlack text-white': context?.isDarkMode,
-          }
-        )}
-        type="text"
-        placeholder="ID"
-        {...register(`questionnaire.${index}.multipleChoice.option3`)}
-      />
+      </div>
     </div>
   );
 }
 
-function TrueOrFalse({
-  register,
-  index,
-}: {
-  register: UseFormRegister<FormListQuestionnaireInterface>;
-  index: number;
-}) {
-  const context = useContext(DynamicContext);
-
-  return (
-    <div className="flex flex-col items-start gap-1">
-      <label htmlFor="true">Option | True</label>
-      <input
-        className={classNames(
-          'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-          {
-            'bg-secondaryBgBlack text-white': context?.isDarkMode,
-          }
-        )}
-        type="text"
-        placeholder="ID"
-        {...register(`questionnaire.${index}.trueOrFalse.option1`)}
-      />
-      <label htmlFor="true">Option | False</label>
-
-      <input
-        className={classNames(
-          'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-          {
-            'bg-secondaryBgBlack text-white': context?.isDarkMode,
-          }
-        )}
-        type="text"
-        placeholder="ID"
-        {...register(`questionnaire.${index}.trueOrFalse.option2`)}
-      />
-    </div>
-  );
-}
-
-export { MultipleChoice, TrueOrFalse };
+export default QuestionnaireOptions;

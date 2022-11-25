@@ -26,6 +26,7 @@ import { onValue, ref } from 'firebase/database';
 // TOAST
 import { notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
+import { BeatLoader } from 'react-spinners';
 
 function Auth() {
   const router = useRouter();
@@ -40,6 +41,7 @@ function Auth() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const [isSendLoading, setIsSendLoading] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(emailPassAuth, (user) => {
@@ -76,10 +78,12 @@ function Auth() {
   };
 
   const requestOtp = () => {
+    setIsSendLoading(true);
+
     const db = database;
     generateOtp();
 
-    const userCurrentNumber = ref(db, 'companyUsers/currentNumber');
+    const userCurrentNumber = ref(db, 'school/currentNumber');
     onValue(userCurrentNumber, (snapshot) => {
       const data = snapshot.val();
       signInWithPhoneNumber(
@@ -91,6 +95,7 @@ function Auth() {
           window.confirmationResult = confirmationResult;
           setIsCodeSent(true);
           notify('OTP sent successfully');
+          setIsSendLoading(false);
         })
         .catch((err) => {
           console.error(err);
@@ -124,7 +129,7 @@ function Auth() {
             <span className="font-bold">School |</span>
             {' Log in'}
           </h2>
-          <p className="my-4 text-secondaryWhite font-medium">
+          <p className="my-5 text-secondaryWhite font-medium text-center">
             System Code for your University
           </p>
           <div>
@@ -202,7 +207,11 @@ function Auth() {
                 className="bg-white rounded-md py-2 w-full border-2 flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-customBorder border-customBorder duration-150"
                 onClick={requestOtp}
               >
-                Request
+                {!isSendLoading ? (
+                  'Request'
+                ) : (
+                  <BeatLoader color="#000" size={5} />
+                )}
               </button>
             )}
 

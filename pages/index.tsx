@@ -57,8 +57,12 @@ const Home: NextPage = () => {
               Interns will help you find the most suited internship jobs for you
               in any of your field and expertse.
             </p>
-            <Link href="/views/user/getstarted">
-              <button className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6">
+            {/* <Link href="/views/user/getstarted"> */}
+            <Link href="">
+              <button
+                className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6 hover:cursor-not-allowed"
+                title="Not Available yet"
+              >
                 Get Stated
               </button>
             </Link>

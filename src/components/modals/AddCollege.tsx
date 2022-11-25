@@ -14,6 +14,7 @@ function AddCollege({
   addRemoveModal,
   toggleManageModals,
   currentLocations,
+  companyTypes,
 }: {
   addRemoveModal: {
     manageJobCategory: boolean;
@@ -23,6 +24,7 @@ function AddCollege({
   };
   toggleManageModals: (name?: string) => void;
   currentLocations: object;
+  companyTypes: object;
 }) {
   return (
     <Transition
@@ -76,7 +78,7 @@ function AddCollege({
                   {addRemoveModal.manageCollege ? (
                     <AddCollegeForm />
                   ) : addRemoveModal.manageCompanyType ? (
-                    <AddCompanyTypeForm />
+                    <AddCompanyTypeForm companyTypes={companyTypes} />
                   ) : addRemoveModal.manageJobCategory ? (
                     <AddJobCategoryForm />
                   ) : addRemoveModal.locationOfCompany ? (

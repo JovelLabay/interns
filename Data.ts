@@ -170,9 +170,8 @@ export const data = {
   companyDashboardMenu: [
     { id: 1, name: 'Home' },
     { id: 2, name: 'Interns' },
-    { id: 3, name: 'Applicants' },
-    { id: 4, name: 'Internship Programs' },
-    { id: 5, name: 'Students' },
+    { id: 3, name: 'Internship Programs' },
+    { id: 4, name: 'Applicants' },
   ],
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },

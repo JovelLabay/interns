@@ -1,11 +1,14 @@
 // REACT
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useId, useState } from 'react';
 
 // STATE MANAGEMENT
-import { DynamicContext } from '@/src/contexts/context';
+import {
+  CompanyUserDetailsContext,
+  DynamicContext,
+} from '@/src/contexts/context';
 
 // UI
-import { Dialog, Listbox, Transition } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 
 // OTHERS
 import classNames from 'classnames';
@@ -13,16 +16,21 @@ import classNames from 'classnames';
 // STATIC DATA
 import { data } from 'Data';
 
-// USEFORM
-import { useFieldArray, useForm } from 'react-hook-form';
-
 // ICONS
-import { BiSad } from 'react-icons/bi';
 import { BsTrash } from 'react-icons/bs';
-import { FiChevronDown } from 'react-icons/fi';
 
 // COMPONENTS
-import { MultipleChoice, TrueOrFalse } from './questionnaireOptions';
+import QuestionnaireOptions from './questionnaireOptions';
+
+import {
+  AiOutlineCheckCircle,
+  AiOutlineCloseCircle,
+  AiOutlineEdit,
+  AiOutlineInfoCircle,
+} from 'react-icons/ai';
+import CrudQuestionnnaire from '@/src/functions/firebaseDatabase2nd';
+import AddOnlyQuestionnaireForm from './addOnlyQuestionnaireForm';
+import { notify } from '../common/toast';
 
 function AddQuestionnaire({
   addRemoveModal,
@@ -32,24 +40,31 @@ function AddQuestionnaire({
   addModalToggle2: () => void;
 }) {
   const context = useContext(DynamicContext);
+  const context2 = useContext(CompanyUserDetailsContext);
+  const uniqueID = useId();
 
   const [typeOfCustomField, setTypeOfCustomField] = useState(
     data.company.questionnaireType[0].name
   );
 
-  // FORM ARRAY
-  const { register, handleSubmit, control, setValue, watch } =
-    useForm<FormListQuestionnaireInterface>({
-      defaultValues: {
-        questionnaire: [],
-      },
-      mode: 'onBlur',
-    });
-
-  const { fields, append, remove } = useFieldArray({
-    name: 'questionnaire',
-    control,
+  const [addFreshQuestionnaire, setAddFreshQuestionnaire] = useState({
+    labelId: '',
+    labelName: '',
+    labelType: '',
+    mutltipleChoice: [] as string[],
   });
+  const [isEditQuestionnaire, setIsEditQuestionnaire] = useState(0);
+  const [isAddedNewQuestionnaire, setIsAddedNewQuestionnaire] = useState(false);
+  const [editQuestionnaire, setEditQuestionnaire] = useState({
+    labelId: '',
+    labelName: '',
+    labelType: '',
+    mutltipleChoice: [] as string[],
+  });
+
+  const questionList = Object.entries(
+    context2?.companyUserObject.companyQuestionnaire || []
+  );
 
   return (
     <>
@@ -84,222 +99,246 @@ function AddQuestionnaire({
                     { 'bg-mainBgBlack': context?.isDarkMode }
                   )}
                 >
-                  <div className="flex flex-row justify-between items-center mb-5">
+                  <div className="flex flex-row justify-between items-start mb-5">
                     <button
                       onClick={addModalToggle2}
                       className={classNames(
                         'border-2 rounded border-primaryYellow py-1 w-[100px]',
                         {
-                          'text-white': context?.isDarkMode,
+                          'text-teriaryWhite': context?.isDarkMode,
                         }
                       )}
                     >
                       Cancel
                     </button>
-                    <button
-                      onClick={() => {
-                        handleSubmit((data) => {
-                          console.log(data);
-                        })();
-                      }}
-                      className=" rounded bg-primaryYellow py-1 w-[100px]"
-                    >
-                      Save
-                    </button>
                   </div>
-                  <div className="flex flex-col">
-                    <button
-                      onClick={() => {
-                        append({
-                          labelName: '',
-                          labelId: '',
-                          labelType: '',
-                          multipleChoice: {
-                            option1: '',
-                            option2: '',
-                            option3: '',
-                          },
-                          trueOrFalse: {
-                            option1: '',
-                            option2: '',
-                          },
-                        });
-                      }}
-                      className=" rounded bg-primaryYellow py-1 w-[100px] mb-2"
-                    >
-                      Add More
-                    </button>
-                    <div className="overflow-auto h-[580px]">
-                      {fields.length <= 0 ? (
-                        <div
-                          className={classNames(
-                            'text-secondaryWhite font-medium flex flex-col justify-center items-center',
-                            {
-                              'text-white': context?.isDarkMode,
-                            }
-                          )}
+                  <nav className="flex flex-col gap-5">
+                    <div className="flex flex-row gap-5 justify-between items-center">
+                      <div className="flex gap-3">
+                        <button className=" rounded bg-gray-500 py-2 mb-2 px-3 text-white">
+                          <AiOutlineInfoCircle />
+                        </button>
+                        <button
+                          className=" rounded bg-green-500 py-2 mb-2 px-3 text-white"
+                          onClick={() => {
+                            isAddedNewHandler();
+                            setAddFreshQuestionnaire({
+                              labelId: '',
+                              labelName: '',
+                              labelType: '',
+                              mutltipleChoice: [] as string[],
+                            });
+                          }}
                         >
-                          <BiSad size={60} />
-                          <p className="mt-10">No Questionnaire</p>
-                        </div>
-                      ) : (
-                        fields.map((question, index) => {
-                          return (
-                            <div key={index} className="mb-8 mx-2">
-                              <div className="flex justify-start items-start gap-8 py-4">
-                                {/* NAME OF THE FIELD */}
-                                <div className="flex flex-col items-start gap-3">
-                                  <label
-                                    className={classNames(
-                                      'text-secondaryWhite font-medium',
-                                      {
-                                        'text-white': context?.isDarkMode,
-                                      }
-                                    )}
-                                  >
-                                    Question
-                                  </label>
-                                  <textarea
-                                    className={classNames(
-                                      'w-[300px] py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none] min-h-[80px] outline-none',
-                                      {
-                                        'bg-secondaryBgBlack text-white':
-                                          context?.isDarkMode,
-                                      }
-                                    )}
-                                    placeholder="Label Name"
-                                    {...register(
-                                      `questionnaire.${index}.labelName`
-                                    )}
-                                  />
-                                </div>
-                                {/* ID OF THE FILED */}
-                                <div className="flex flex-col items-start gap-3">
-                                  <label
-                                    className={classNames(
-                                      'text-secondaryWhite font-medium',
-                                      {
-                                        'text-white': context?.isDarkMode,
-                                      }
-                                    )}
-                                  >
-                                    Question ID
-                                  </label>
-                                  <input
-                                    className={classNames(
-                                      'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
-                                      {
-                                        'bg-secondaryBgBlack text-white':
-                                          context?.isDarkMode,
-                                      }
-                                    )}
-                                    type="text"
-                                    placeholder="ID"
-                                    {...register(
-                                      `questionnaire.${index}.labelId`
-                                    )}
-                                  />
-                                </div>
-                                {/* TYPE OF FIELD */}
-                                <div className="flex flex-col items-start gap-3">
-                                  <label
-                                    className={classNames(
-                                      'text-secondaryWhite font-medium',
-                                      {
-                                        'text-white': context?.isDarkMode,
-                                      }
-                                    )}
-                                  >
-                                    Question Type
-                                  </label>
-                                  <Listbox
-                                    value={typeOfCustomField}
-                                    onChange={(value: string) => {
-                                      setTypeOfCustomField(value);
-                                      setValue(
-                                        `questionnaire.${index}.labelType`,
-                                        value
-                                      );
-                                    }}
-                                  >
-                                    {({ open }: { open: boolean }) => (
-                                      <div className="relative">
-                                        <Listbox.Button
-                                          className={classNames(
-                                            'bg-mainBgWhite outline-none px-2 py-1 rounded border-2 border-primaryYellow w-[180px] flex justify-between',
-                                            {
-                                              'bg-secondaryBgBlack text-white':
-                                                context?.isDarkMode,
-                                            }
-                                          )}
-                                        >
-                                          {watch().questionnaire[index]
-                                            .labelType === ''
-                                            ? 'Select'
-                                            : watch().questionnaire[index]
-                                                .labelType}
-                                          <FiChevronDown
-                                            size={30}
-                                            className={classNames(
-                                              'duration-300 text-secondaryWhite',
-                                              {
-                                                'rotate-180': open,
-                                              }
-                                            )}
-                                          />
-                                        </Listbox.Button>
-                                        <Listbox.Options
-                                          className={classNames(
-                                            'absolute bg-white rounded-md p-2 w-full shadow-md hover:cursor-pointer max-h-[150px] z-30 overflow-auto',
-                                            {
-                                              'bg-secondaryBgBlack text-white':
-                                                context?.isDarkMode,
-                                            }
-                                          )}
-                                        >
-                                          {data.company.questionnaireType.map(
-                                            (person) => (
-                                              <Listbox.Option
-                                                className="py-1"
-                                                key={person.id}
-                                                value={person.name}
-                                                hidden={person.id === 101}
-                                              >
-                                                {person.name}
-                                              </Listbox.Option>
-                                            )
-                                          )}
-                                        </Listbox.Options>
-                                      </div>
-                                    )}
-                                  </Listbox>
-                                </div>
-                                <button
-                                  className="buttonIcon-delete mt-9"
-                                  onClick={() => {
-                                    remove(index);
-                                  }}
+                          {!isAddedNewQuestionnaire
+                            ? 'Add Questionnaire'
+                            : 'Close Questionnaire/Clear'}
+                        </button>
+                      </div>
+                      {isAddedNewQuestionnaire && (
+                        <button
+                          className=" rounded bg-primaryYellow py-2 mb-2 px-3 text-white"
+                          onClick={() => crudHandler('ADD')}
+                        >
+                          Save
+                        </button>
+                      )}
+                    </div>
+                    <div>
+                      {isAddedNewQuestionnaire && (
+                        <AddOnlyQuestionnaireForm
+                          typeOfCustomField={typeOfCustomField}
+                          setTypeOfCustomField={setTypeOfCustomField}
+                          freshQuestionnaires={{
+                            setAddFreshQuestionnaire,
+                            addFreshQuestionnaire,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </nav>
+                  <div className="flex flex-col justify-center items-center">
+                    <div
+                      className={
+                        !isAddedNewQuestionnaire
+                          ? 'overflow-auto h-[550px]'
+                          : 'overflow-auto h-[270px]'
+                      }
+                    >
+                      {questionList.map((ques, index) => {
+                        const question: FormListQuestionnaireInterface =
+                          ques[1];
+                        const id = index + 1;
+                        return (
+                          <div key={uniqueID + id} className="mb-3 pb-2">
+                            <div className="flex justify-center items-start gap-3 mb-2">
+                              <div className="flex flex-col items-start gap-2">
+                                <label
+                                  className={classNames(
+                                    'text-secondaryWhite font-medium',
+                                    {
+                                      'text-teriaryWhite': context?.isDarkMode,
+                                    }
+                                  )}
                                 >
-                                  <BsTrash size={20} color="#fff" />
-                                </button>
-                              </div>
-                              {watch().questionnaire[index].labelType ===
-                              'Multiple Choice' ? (
-                                <MultipleChoice
-                                  register={register}
-                                  index={index}
+                                  Question Title
+                                </label>
+                                <input
+                                  className={classNames(
+                                    'w-full py-2 px-3 rounded border-2 bg-mainBgWhite outline-none',
+                                    {
+                                      'bg-secondaryBgBlack text-white':
+                                        context?.isDarkMode,
+                                    },
+                                    {
+                                      'border-primaryYellow':
+                                        isEditQuestionnaire === id,
+                                    }
+                                  )}
+                                  placeholder="Question Title"
+                                  disabled={
+                                    isEditQuestionnaire !== id ? true : false
+                                  }
+                                  value={
+                                    isEditQuestionnaire !== id
+                                      ? question.labelName
+                                      : editQuestionnaire.labelName
+                                  }
+                                  name="labelName"
+                                  onChange={editState}
                                 />
-                              ) : watch().questionnaire[index].labelType ===
-                                'True or False' ? (
-                                <TrueOrFalse
-                                  register={register}
-                                  index={index}
+                              </div>
+                              <div className="flex flex-col items-start gap-2">
+                                <label
+                                  className={classNames(
+                                    'text-secondaryWhite font-medium',
+                                    {
+                                      'text-teriaryWhite': context?.isDarkMode,
+                                    }
+                                  )}
+                                >
+                                  Question Field Name
+                                </label>
+                                <input
+                                  className={classNames(
+                                    'w-full py-2 px-3 rounded border-2 bg-mainBgWhite outline-none',
+                                    {
+                                      'bg-secondaryBgBlack text-white':
+                                        context?.isDarkMode,
+                                    },
+                                    {
+                                      'border-primaryYellow':
+                                        isEditQuestionnaire === id,
+                                    }
+                                  )}
+                                  type="text"
+                                  placeholder="Questionnaire Field Name"
+                                  disabled={
+                                    isEditQuestionnaire !== id ? true : false
+                                  }
+                                  value={
+                                    isEditQuestionnaire !== id
+                                      ? question.labelId
+                                      : editQuestionnaire.labelId
+                                  }
+                                  name="labelId"
+                                  onChange={editState}
+                                />
+                              </div>
+                              <div className="flex flex-col items-start gap-2">
+                                <label
+                                  className={classNames(
+                                    'text-secondaryWhite font-medium',
+                                    {
+                                      'text-teriaryWhite': context?.isDarkMode,
+                                    }
+                                  )}
+                                >
+                                  Question Type
+                                </label>
+                                <input
+                                  className={classNames(
+                                    'w-full py-2 px-3 rounded border-2 bg-customBorder outline-none',
+                                    {
+                                      'bg-backDropDark text-white':
+                                        context?.isDarkMode,
+                                    }
+                                  )}
+                                  type="text"
+                                  placeholder="Questionnaire Type"
+                                  disabled
+                                  readOnly
+                                  value={question.labelType}
+                                />
+                              </div>
+                              <div className="flex flex-row items-start gap-2">
+                                {isEditQuestionnaire !== id ? (
+                                  <>
+                                    <button
+                                      className="buttonIcon-edit mt-9"
+                                      onClick={() => editHandler(id, question)}
+                                    >
+                                      <AiOutlineEdit size={20} color="#fff" />
+                                    </button>
+                                    <button
+                                      className="buttonIcon-delete mt-9"
+                                      onClick={() =>
+                                        crudHandler('DELETE', ques[0])
+                                      }
+                                    >
+                                      <BsTrash size={20} color="#fff" />
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      className="buttonIcon-edit mt-9"
+                                      onClick={() =>
+                                        crudHandler('UPDATE', ques[0])
+                                      }
+                                    >
+                                      <AiOutlineCheckCircle
+                                        size={20}
+                                        color="#fff"
+                                      />
+                                    </button>
+                                    <button
+                                      className="buttonIcon-delete mt-9"
+                                      onClick={() =>
+                                        editHandler(0, {
+                                          labelName: '',
+                                          labelId: '',
+                                          labelType: '',
+                                          mutltipleChoice: [],
+                                        })
+                                      }
+                                    >
+                                      <AiOutlineCloseCircle
+                                        size={20}
+                                        color="#fff"
+                                      />
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex justify-start">
+                              {question.labelType === 'Multiple Choice' ||
+                              question.labelType === 'True or False' ? (
+                                <QuestionnaireOptions
+                                  editedQuestionnaires={{
+                                    editQuestionnaire,
+                                    setEditQuestionnaire,
+                                  }}
+                                  isEditQuestionnaire={isEditQuestionnaire}
+                                  id={id}
+                                  question={question}
                                 />
                               ) : null}
                             </div>
-                          );
-                        })
-                      )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </Dialog.Panel>
@@ -310,6 +349,83 @@ function AddQuestionnaire({
       </Transition>
     </>
   );
+
+  // INPUT STATE FOR EDIT
+  function editState(e: React.ChangeEvent<HTMLInputElement>) {
+    setEditQuestionnaire((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+
+  // EDIT HANDLER
+  function editHandler(id: number, question: FormListQuestionnaireInterface) {
+    setIsEditQuestionnaire(id);
+    setEditQuestionnaire((prev) => {
+      return {
+        ...prev,
+        labelName: question.labelName,
+        labelId: question.labelId,
+        labelType: question.labelType,
+        mutltipleChoice: question.mutltipleChoice,
+      };
+    });
+  }
+
+  // IS ADD NEW QUESTIONNAIRE
+  function isAddedNewHandler() {
+    setIsAddedNewQuestionnaire((prev) => !prev);
+  }
+
+  // CRUD HANDLER
+  function crudHandler(crudName: string, id?: string) {
+    if (crudName === 'ADD') {
+      const lala = new CrudQuestionnnaire(
+        localStorage.getItem('userId') || '',
+        addFreshQuestionnaire.labelId,
+        addFreshQuestionnaire.labelName,
+        addFreshQuestionnaire.labelType,
+        addFreshQuestionnaire.mutltipleChoice
+      );
+
+      lala.addNewQuestionnaire().then((res) => {
+        isAddedNewHandler();
+        notify(res || 'Ok');
+      });
+    } else if (crudName === 'UPDATE') {
+      const lala = new CrudQuestionnnaire(
+        localStorage.getItem('userId') || '',
+        editQuestionnaire.labelId,
+        editQuestionnaire.labelName,
+        editQuestionnaire.labelType,
+        editQuestionnaire.mutltipleChoice
+      );
+
+      lala.editQuestionnaire(id || '').then((res) => {
+        editHandler(0, {
+          labelName: '',
+          labelId: '',
+          labelType: '',
+          mutltipleChoice: [],
+        });
+        notify(res || 'Ok');
+      });
+    } else {
+      const lala = new CrudQuestionnnaire(
+        localStorage.getItem('userId') || '',
+        editQuestionnaire.labelId,
+        editQuestionnaire.labelName,
+        editQuestionnaire.labelType,
+        editQuestionnaire.mutltipleChoice
+      );
+
+      lala.deleteQuestionnaire(id || '').then((res) => {
+        notify(res || 'Ok');
+      });
+    }
+  }
 }
 
 export default AddQuestionnaire;
