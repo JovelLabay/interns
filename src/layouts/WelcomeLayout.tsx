@@ -98,12 +98,14 @@ function LayoutStatic({ children }: { children: ReactNode }) {
                 {data.cookieBanner.options.map((option, index) => {
                   return (
                     <button
+                      title="Not available yet"
+                      disabled
                       onClick={() => handleCookieBanner(index)}
                       key={index}
                       className={
                         index === 0
-                          ? 'bg-primaryYellow py-2 w-[150px] rounded hover:bg-primaryYellowHover'
-                          : 'border-2 border-primaryYellow py-2 w-[150px] rounded hover:border-primaryYellowHover'
+                          ? 'bg-primaryYellow py-2 w-[150px] rounded hover:bg-primaryYellowHover hover:cursor-not-allowed'
+                          : 'border-2 border-primaryYellow py-2 w-[150px] rounded hover:border-primaryYellowHover hover:cursor-not-allowed'
                       }
                     >
                       {option}

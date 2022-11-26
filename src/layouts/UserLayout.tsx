@@ -8,6 +8,7 @@ function UserLayout({ children }: { children: ReactNode }) {
     userName: '',
     userEmail: '',
     userPhotoUrl: '',
+    userId: '',
   });
 
   useEffect(() => {

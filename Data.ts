@@ -101,6 +101,27 @@ export const data = {
     options: ['Company', 'Student'],
   },
   // DASHBOARD (COMPANY, STUDENT , ADMIN)
+  company: {
+    jobCategory: [
+      { id: 101, name: 'Select Job Category' },
+      { id: 1, name: 'Web Development' },
+      { id: 2, name: 'Mobile Development' },
+      { id: 3, name: 'Data Science' },
+      { id: 4, name: 'Artificial Intelligence' },
+      { id: 5, name: 'Machine Learning' },
+      { id: 6, name: 'Cloud Computing' },
+      { id: 7, name: 'Cyber Security' },
+      { id: 8, name: 'Software Engineering' },
+      { id: 9, name: 'Computer Engineering' },
+      { id: 10, name: 'Computer Science' },
+    ],
+    questionnaireType: [
+      { id: 101, name: 'Select' },
+      { id: 1, name: 'Essay' },
+      { id: 2, name: 'Multiple Choice' },
+      { id: 3, name: 'True or False' },
+    ],
+  },
   admin: {
     tabs: [
       { id: 1, name: 'Student' },
@@ -110,12 +131,32 @@ export const data = {
     ],
     colleges: [
       { id: 1, name: 'Agriculture', category: 'College' },
-      { id: 2, name: 'Arts and Sciences', category: 'College' },
-      { id: 3, name: 'Computer Studes', category: 'College' },
+      { id: 2, name: 'Arts_and_Sciences', category: 'College' },
+      { id: 3, name: 'Computer_Studes', category: 'College' },
       { id: 4, name: 'Engineering', category: 'College' },
       { id: 5, name: 'Nursing', category: 'College' },
-      { id: 6, name: 'Business and Management', category: 'School' },
+      { id: 6, name: 'Business_and_Management', category: 'School' },
       { id: 7, name: 'Education', category: 'School' },
+    ],
+    companyApplicationStatus: [
+      { id: 1, name: 'Approved' },
+      { id: 2, name: 'Pending' },
+      { id: 3, name: 'Rejected' },
+      { id: 4, name: 'To Be Reviewed' },
+    ],
+    collegeDeanProfession: [
+      { id: 101, name: 'Select' },
+      { id: 1, name: 'PhD' },
+      { id: 2, name: 'Engr.' },
+      { id: 3, name: 'CPA' },
+      { id: 4, name: 'Atty.' },
+      { id: 5, name: 'Dr.' },
+      { id: 6, name: 'Prof.' },
+    ],
+    collegeType: [
+      { id: 101, name: 'Select' },
+      { id: 1, name: 'College' },
+      { id: 2, name: 'School' },
     ],
   },
   networkProvider: [
@@ -129,9 +170,8 @@ export const data = {
   companyDashboardMenu: [
     { id: 1, name: 'Home' },
     { id: 2, name: 'Interns' },
-    { id: 3, name: 'Applicants' },
-    { id: 4, name: 'Internship Programs' },
-    { id: 5, name: 'Students' },
+    { id: 3, name: 'Internship Programs' },
+    { id: 4, name: 'Applicants' },
   ],
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },

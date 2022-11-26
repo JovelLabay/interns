@@ -1,48 +1,46 @@
-import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+// REACT
+import React, { Fragment, useState } from 'react';
 
-import internsLogo from '../../../public/logo/interns_logo.png';
-
-import Image from 'next/image';
-
-import { Tab } from '@headlessui/react';
-
-import { DynamicContext } from '@/src/contexts/context';
-
-import { FiUsers } from 'react-icons/fi';
-import { IoSettingsOutline, IoPersonAddOutline } from 'react-icons/io5';
+// ICONS
 import {
   AiOutlineCheckCircle,
   AiOutlinePlusCircle,
   AiOutlineUnorderedList,
   AiOutlineDelete,
+  AiOutlineCloseCircle,
 } from 'react-icons/ai';
 
+// TOAST
 import { ToastContainer } from 'react-toastify';
 import { notify } from '@/src/components/common/toast';
 
 // STATIC DATA
 import { data } from 'Data';
+
+// OTHERS
 import classNames from 'classnames';
+
+// FIREBASE FUNCTIONS
 import {
   addNewUser,
   updateCurrentNumber,
   deleteCurrentNumber,
 } from '@/src/functions/firebaseDatabase';
 
+// USEFORM
 import { useForm } from 'react-hook-form';
+
+// SCHEMA VALIDATOR
 import { SchoolNumberUsers } from '@/src/validator/LogSignValidator';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+// UI
 import { Listbox } from '@headlessui/react';
+import { Tab } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 
+// REACT
 import { FiChevronDown } from 'react-icons/fi';
-
-interface UsersList {
-  provider: string;
-  dateAdded: string;
-  number: string;
-}
 
 function AddUsers({
   addRemoveModal,
@@ -52,20 +50,23 @@ function AddUsers({
 }: {
   addRemoveModal: boolean;
   addModalToggle: () => void;
-  userList: any;
-  userCurrentNumber: any;
+  userList: object;
+  userCurrentNumber: string;
 }) {
   // SCHEMA VALIDATION
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    reset,
   } = useForm<SchoolRegistrationInterface>({
     resolver: yupResolver(SchoolNumberUsers),
+    defaultValues: {
+      number: '+63',
+    },
   });
 
-  const values: any[] = Object.entries(userList) || [];
+  const values: [string, AddUserInterface][] = Object.entries(userList) || [];
 
   const [networkProvider, setNetworkProvider] = useState('Select Network');
 
@@ -81,7 +82,13 @@ function AddUsers({
       addNewUser(data.number, networkProvider, date)
         .then(() => {
           updateCurrentNumber(data.number)
-            .then(() => notify('User Number has been updated successfully'))
+            .then(() => {
+              reset({
+                number: '+63',
+              });
+              setNetworkProvider('Select Network'),
+                notify('User Number has been updated successfully');
+            })
             .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
@@ -244,15 +251,21 @@ function AddUsers({
                                       'bg-yellow-500 p-2 rounded',
                                       {
                                         'bg-blue-500':
-                                          userCurrentNumber.number ===
-                                          item[1].number,
+                                          userCurrentNumber === item[1].number,
                                       }
                                     )}
                                   >
-                                    <AiOutlineCheckCircle
-                                      size={25}
-                                      color="#fff"
-                                    />
+                                    {userCurrentNumber === item[1].number ? (
+                                      <AiOutlineCheckCircle
+                                        size={25}
+                                        color="#fff"
+                                      />
+                                    ) : (
+                                      <AiOutlineCloseCircle
+                                        size={25}
+                                        color="#fff"
+                                      />
+                                    )}
                                   </button>
                                   <button
                                     className="bg-red-500 p-2 rounded"
@@ -263,8 +276,7 @@ function AddUsers({
                                         );
                                       } else {
                                         if (
-                                          userCurrentNumber.number !==
-                                          item[1].number
+                                          userCurrentNumber !== item[1].number
                                         ) {
                                           deleteCurrentNumber(item[0])
                                             .then((res) => console.log(res))

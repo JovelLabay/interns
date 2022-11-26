@@ -1,11 +1,24 @@
-import { addStudents } from '@/src/functions/firebaseFirestore';
-import { AddStudent } from '@/src/validator/LogSignValidator';
-import { Dialog, Transition } from '@headlessui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
+// REACT
 import React, { Fragment, useState } from 'react';
+
+// FIREABSE
+import { addStudents } from '@/src/functions/firebaseFirestore';
+
+// SHCHEMA VALIDATOR
+import { AddStudent } from '@/src/validator/LogSignValidator';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// UI
+import { Dialog, Switch, Transition } from '@headlessui/react';
+
+// USEFORM
 import { useForm } from 'react-hook-form';
+
+// OTHERS
 import uniqid from 'uniqid';
-import ClipLoader from 'react-spinners/ClipLoader';
+import { BeatLoader } from 'react-spinners';
+
+// TOAST
 import { notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
 
@@ -21,6 +34,7 @@ function AddStudents({
   const [loading, setLoading] = useState({
     addStudentLoading: false,
   });
+  const [enabled, setEnabled] = useState(false);
 
   const {
     handleSubmit,
@@ -37,11 +51,12 @@ function AddStudents({
       data.firstName,
       data.middleName,
       data.lastName,
-      uniqid('-', `${data.firstName}@interns.com`),
-      addStudentsTitle
+      uniqid(undefined, `${data.firstName}-@interns.com`),
+      addStudentsTitle,
+      enabled
     )
-      .then((res) => {
-        notify(res);
+      .then(() => {
+        notify('success, Student Added Successfully');
         setLoading((prev) => ({
           ...prev,
           addStudentLoading: false,
@@ -101,7 +116,7 @@ function AddStudents({
                       onClick={handleSubmit(handleSubmitGenerateStudentHandler)}
                     >
                       {loading.addStudentLoading ? (
-                        <ClipLoader color="#000" size={20} />
+                        <BeatLoader color="#fff" size={5} />
                       ) : (
                         'Generate'
                       )}
@@ -144,6 +159,24 @@ function AddStudents({
                         {errors.lastName.message}
                       </p>
                     )}
+                    <label htmlFor="name">Activate Student Status</label>
+                    <Switch
+                      checked={enabled}
+                      onChange={setEnabled}
+                      className={`${
+                        enabled ? 'bg-primaryYellow' : 'bg-mainBgWhite'
+                      }
+          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                    >
+                      <span className="sr-only">Use setting</span>
+                      <span
+                        aria-hidden="true"
+                        className={`${
+                          enabled ? 'translate-x-9' : 'translate-x-0'
+                        }
+            pointer-events-none inline-block h-[34px] w-[34px] transform rounded bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                      />
+                    </Switch>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
