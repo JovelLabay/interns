@@ -27,6 +27,7 @@ function CompanyDashboard() {
   const signout = () => {
     signOut(emailPassAuth)
       .then(() => {
+        localStorage.removeItem('userId');
         null;
       })
       .catch(() => null);
@@ -63,6 +64,8 @@ function CompanyDashboard() {
             userId: user.displayName || 'Unknown',
           });
         });
+
+        localStorage.setItem('userId', user.displayName);
       }
 
       return null;

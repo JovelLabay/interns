@@ -21,16 +21,19 @@ import { BsTrash } from 'react-icons/bs';
 
 // COMPONENTS
 import QuestionnaireOptions from './questionnaireOptions';
+import AddOnlyQuestionnaireForm from './addOnlyQuestionnaireForm';
+import { notify } from '../common/toast';
 
+// REACT ICONS
 import {
   AiOutlineCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineEdit,
   AiOutlineInfoCircle,
 } from 'react-icons/ai';
-import CrudQuestionnnaire from '@/src/functions/firebaseDatabase2nd';
-import AddOnlyQuestionnaireForm from './addOnlyQuestionnaireForm';
-import { notify } from '../common/toast';
+
+// FUNCTIONS
+import { CrudQuestionnnaire } from '@/src/functions/firebaseDatabase2nd';
 
 function AddQuestionnaire({
   addRemoveModal,
@@ -389,7 +392,6 @@ function AddQuestionnaire({
         addFreshQuestionnaire.labelType,
         addFreshQuestionnaire.mutltipleChoice
       );
-
       lala.addNewQuestionnaire().then((res) => {
         isAddedNewHandler();
         notify(res || 'Ok');

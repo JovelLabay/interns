@@ -38,11 +38,11 @@ const Home: NextPage = () => {
           <div className="grid md:grid-cols-3 sm:grid-cols-1 lg:mt-14 md:mt-10 mt-5 mx-0 md:mx-5 lg:mx-10">
             <div className="md:col-span-2 flex justify-center items-center mb-4 md:mb-0">
               <p className="lg:text-[64px] md:text-[44px] text-[28px] sm:text-[30px] font-medium">
-                Get your most suited{' '}
+                Get your most suited
                 <span className="relative">
                   Internships
                   <span className="absolute bottom-1 md:bottom-2 lg:bottom-4 right-0 w-full bg-primaryYellow h-3 md:h-5 lg:h-7 -z-10" />
-                </span>{' '}
+                </span>
                 Now!
               </p>
             </div>
@@ -57,12 +57,8 @@ const Home: NextPage = () => {
               Interns will help you find the most suited internship jobs for you
               in any of your field and expertse.
             </p>
-            {/* <Link href="/views/user/getstarted"> */}
-            <Link href="">
-              <button
-                className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6 hover:cursor-not-allowed"
-                title="Not Available yet"
-              >
+            <Link href="/views/user/getstarted">
+              <button className="bg-primaryYellow rounded px-8 py-2 font-medium lg:my-12 md:my-10 my-6">
                 Get Stated
               </button>
             </Link>

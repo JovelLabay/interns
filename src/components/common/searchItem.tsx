@@ -1,7 +1,12 @@
+// REACT
+import React, { Fragment, useContext } from 'react';
+
+// CONTECT
 import { DynamicContext } from '@/src/contexts/context';
+
+// EXTERNAL
 import { Dialog, Transition } from '@headlessui/react';
 import classNames from 'classnames';
-import React, { Fragment, useContext } from 'react';
 
 function SearchItem({
   addRemoveModal,

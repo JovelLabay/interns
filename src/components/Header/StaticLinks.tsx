@@ -54,19 +54,17 @@ const ButtonLinks = ({ isYellowBg }: { isYellowBg?: boolean }) => {
     <>
       {data.headerButtons.headButtons.map((button, index) => {
         return (
-          // <Link key={index} href={button.url}>
-          <Link key={index} href={''}>
+          <Link key={index} href={button.url}>
             <a
-              title="Not available yet"
-              // onClick={() => cookieHandler(button.name)}
+              onClick={() => cookieHandler(button.name)}
               className={
                 index === 0
                   ? isYellowBg
                     ? 'w-[120px] border-2 py-2 font-semibold border-white rounded flex items-center justify-center'
-                    : 'w-[120px] py-2 font-semibold bg-primaryYellow rounded flex items-center justify-center hover:cursor-not-allowed'
+                    : 'w-[120px] py-2 font-semibold bg-primaryYellow rounded flex items-center justify-center'
                   : isYellowBg
                   ? 'w-[120px] py-2 font-semibold bg-white rounded flex items-center justify-center'
-                  : 'w-[120px] border-2 py-2 font-semibold border-primaryYellow rounded flex items-center justify-center hover:cursor-not-allowed'
+                  : 'w-[120px] border-2 py-2 font-semibold border-primaryYellow rounded flex items-center justify-center'
               }
             >
               {button.name}

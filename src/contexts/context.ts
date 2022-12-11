@@ -1,3 +1,4 @@
+// REACT
 import { createContext } from 'react';
 
 // STATIC STATE MANAGEMENT

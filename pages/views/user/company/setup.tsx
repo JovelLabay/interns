@@ -50,8 +50,8 @@ function Setup() {
     days: data.days[0].name,
     months: data.months[0].name,
     years: data.years[0].name,
-    typeOfCompany: data.typeOfCompany[0].name,
-    locationOfCompany: data.locationOfCompany[0].name,
+    typeOfCompany: 'Select',
+    locationOfCompany: 'Select',
     companyLogoUrl: '',
     companyEmail: '',
   });
@@ -72,10 +72,10 @@ function Setup() {
 
     const photoUrl =
       e.target.name === 'companyPhotos'
-        ? 'images/companyPhotos/'
+        ? 'images/company/photos/'
         : e.target.name === 'companyDocuments'
-        ? 'documents/CompanyDocuments/'
-        : 'images/CompanyLogos/';
+        ? 'documents/company/companyDocuments/'
+        : 'images/company/logo/';
 
     const storgaeRef = ref(storgae, photoUrl + uuidv4());
     const uploadTask = uploadBytesResumable(storgaeRef, fileObject);
@@ -186,6 +186,12 @@ function Setup() {
           user?.providerData[0].providerId === 'google.com')
       ) {
         setIsLoading(false);
+        setCompanyDates((prev) => {
+          return {
+            ...prev,
+            companyEmail: user?.email as string,
+          };
+        });
       }
     });
 
@@ -224,7 +230,7 @@ function Setup() {
       <div className="min-h-[80vh] lg:block hidden">
         <header className="bg-primaryYellow h-[70px] flex items-center">
           <div className="dynamic-main-container flex w-screen justify-around">
-            <h1 className="font-bold text-lg mt-2">Company Account Setup</h1>
+            <p className="font-bold text-lg mt-2">Company Account Setup</p>
             <div className="flex flex-row justify-center items-center gap-10">
               <button
                 onClick={handleSubmit(companyRegistrationSubmit)}
@@ -618,6 +624,7 @@ function Setup() {
           </div>
         </main>
       </div>
+
       {/* TOAST */}
       <ToastContainer />
     </div>
