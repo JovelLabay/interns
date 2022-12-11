@@ -56,9 +56,9 @@ function CompaniesContainer() {
           >
             {/* TITLES */}
             <div className="col-span-3 border-r-2 pr-3">
-              <h1 className="font-bold text-lg text-primaryYellow">
+              <p className="font-bold text-lg text-primaryYellow">
                 {company[1].companyName}
-              </h1>
+              </p>
               <p className="w-full font-semibold text-secondaryWhite">
                 Type of Company:{' '}
                 <span className="text-placeholderColor font-normal">

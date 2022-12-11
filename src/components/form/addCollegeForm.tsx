@@ -30,6 +30,7 @@ function AddCollegeForm() {
   const [addCollegeData, setAddCollegeData] = useState({
     deanProfession: data.admin.collegeDeanProfession[0].name,
     collegeType: data.admin.collegeType[0].name,
+    collegeColor: '',
   });
 
   const { register, handleSubmit, formState, setValue } =
@@ -40,7 +41,8 @@ function AddCollegeForm() {
   useEffect(() => {
     setValue('professionOfDean', addCollegeData.deanProfession);
     setValue('collegeType', addCollegeData.collegeType);
-  }, [addCollegeData.collegeType, addCollegeData.deanProfession]);
+    setValue('collegeColor', addCollegeData.collegeColor);
+  }, [addCollegeData]);
 
   return (
     <div>
@@ -160,7 +162,7 @@ function AddCollegeForm() {
 
         <label htmlFor="shortNameOfCollege">College Passcode</label>
         <input
-          type="text"
+          type="password"
           placeholder="******"
           className={
             formState.errors.collegePasscode
@@ -171,6 +173,35 @@ function AddCollegeForm() {
         />
 
         <p>{JSON.stringify(formState.errors.collegePasscode?.message)}</p>
+        <label htmlFor="shortNameOfCollege" className="flex items-center gap-2">
+          College Color Theme
+          <div
+            style={{
+              backgroundColor: addCollegeData.collegeColor,
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+            }}
+          />
+        </label>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          {data.colors.map((color) => (
+            <button
+              key={color.id}
+              style={{ backgroundColor: color.name }}
+              className="rounded-full p-5"
+              title={color.name}
+              onClick={(e) => {
+                e.preventDefault();
+
+                setAddCollegeData({
+                  ...addCollegeData,
+                  collegeColor: color.name,
+                });
+              }}
+            />
+          ))}
+        </div>
 
         <input
           type="submit"
@@ -188,7 +219,8 @@ function AddCollegeForm() {
       data.nameOfDean,
       data.professionOfDean,
       data.collegeType,
-      parseInt(data.collegePasscode)
+      parseInt(data.collegePasscode),
+      data.collegeColor
     )
       .then((res: string) => notify(res))
       .catch((err: any) => console.log(err));

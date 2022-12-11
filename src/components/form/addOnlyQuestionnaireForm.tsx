@@ -1,10 +1,19 @@
+// REACT
+import React, { useContext, useEffect, useState } from 'react';
+
+// HOOK
 import { DynamicContext } from '@/src/contexts/context';
+
+// EXTERNAL
 import { Listbox } from '@headlessui/react';
 import classNames from 'classnames';
-import { data } from 'Data';
-import React, { useContext, useEffect, useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
 import { notify } from '../common/toast';
+
+// STATIC DATA
+import { data } from 'Data';
+
+// ICONS
+import { FiChevronDown } from 'react-icons/fi';
 
 function AddOnlyQuestionnaireForm({
   typeOfCustomField,

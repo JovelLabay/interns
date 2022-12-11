@@ -1,10 +1,12 @@
 import * as yup from 'yup';
 
+// EMAIL PASS
 const LogSignValidator = yup.object({
   email: yup.string().email().required(),
   password: yup.string().min(6).max(12).required(),
 });
 
+// COMPANY
 const CompanyRegistration = yup.object({
   companyName: yup.string().required(),
   companyDescription: yup.string().min(100).max(300).required(),
@@ -38,6 +40,7 @@ const AddCollegeValidator = yup.object({
     .required('Give the passcode of the college')
     .min(6)
     .max(6),
+  collegeColor: yup.string(),
 });
 
 export {

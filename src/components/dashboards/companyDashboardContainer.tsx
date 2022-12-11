@@ -13,8 +13,8 @@ import InternshipProgramsContainer from '../menuContainer/company/InternshipProg
 import ApplicantsContainer from '../menuContainer/company/applicantsContainer';
 import HomeContainer from '../menuContainer/company/homeContainer';
 import InternsContainer from '../menuContainer/company/internsContainer';
-
 import AddQuestionnaire from '../form/addQuestionnaire';
+import SearchItem from '../common/searchItem';
 
 // STATIC DATA
 import { data } from 'Data';
@@ -30,14 +30,18 @@ import {
 
 // ICONS
 import { AiOutlinePlus } from 'react-icons/ai';
-import { BiSearch, BiTrashAlt } from 'react-icons/bi';
+import { BiSearch } from 'react-icons/bi';
 import AddInternships from '../modals/addInternships';
 import { FiList } from 'react-icons/fi';
 import { database, store } from '@/src/firebase/firebaseConfig';
 import { onValue, ref } from 'firebase/database';
 import { ToastContainer } from 'react-toastify';
-import { collection, onSnapshot } from 'firebase/firestore';
-import SearchItem from '../common/searchItem';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 
 const initialState = { id: 1 };
 
@@ -95,7 +99,7 @@ function CompanyDashboardContainer() {
       });
     });
 
-    // GET INTERNSHIP PROGRAMS
+    // GET COMPANY CATEGORIES
     const internshipReference = ref(db, 'school/categories');
     onValue(internshipReference, (snapshot) => {
       const data = snapshot.val() === null ? {} : snapshot.val();
@@ -108,29 +112,35 @@ function CompanyDashboardContainer() {
     });
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
     const theCollegeName = activeCompanyJobCategory
       .toLowerCase()
       .replace(/\s/g, '_');
 
-    const abort = onSnapshot(collection(store, theCollegeName), (snapshot) => {
-      const data = snapshot.docs.map((doc) => {
-        return {
-          ...doc.data(),
-          id: doc.id,
-        };
-      });
+    (async () => {
+      const q = query(
+        collection(store, theCollegeName),
+        where(
+          'companyShortDetails.userId',
+          '==',
+          localStorage.getItem('userId')
+        )
+      );
+
+      // GET COMPANY INTERNSHIPS
+      const querySnapshot = await getDocs(q);
       setCompanyUserObject((prev: any) => {
         return {
           ...prev,
-          companyInternships: data,
+          companyInternships: querySnapshot.docs.map((doc) => {
+            return {
+              ...doc.data(),
+              id: doc.id,
+            };
+          }),
         };
       });
-    });
-
-    return () => {
-      abort();
-    };
+    })();
   }, [activeCompanyJobCategory]);
 
   return (
@@ -147,41 +157,36 @@ function CompanyDashboardContainer() {
         <div className="col-span-4 h-[90vh] px-2">
           <section
             className={classNames(
-              'bg-white rounded-md h-[10vh] mt-2 flex flex-row gap-10 px-3 py-3',
+              'bg-white rounded-md h-[10vh] mt-2 flex flex-row gap-10 px-3 py-3 justify-between',
               {
                 'bg-secondaryBgBlack': context?.isDarkMode,
               }
             )}
           >
-            <button
-              onClick={addModalToggle}
-              className={classNames(
-                'text-secondaryWhite flex flex-row items-center justify-center gap-5 font-medium',
-                { 'text-teriaryWhite': context?.isDarkMode }
-              )}
-            >
-              <AiOutlinePlus size={20} />
-              Add internship programs
-            </button>
-            <button
-              className={classNames(
-                'text-secondaryWhite flex flex-row items-center justify-center gap-5 font-medium',
-                { 'text-teriaryWhite': context?.isDarkMode }
-              )}
-            >
-              <BiTrashAlt size={20} />
-              Rejected Applicants
-            </button>
-            <button
-              className={classNames(
-                'text-secondaryWhite flex flex-row items-center justify-center gap-5 font-medium',
-                { 'text-teriaryWhite': context?.isDarkMode }
-              )}
-              onClick={addModalToggle2}
-            >
-              <FiList size={20} />
-              Initial Application Questionnaire
-            </button>
+            <div className="flex gap-5">
+              <button
+                onClick={addModalToggle}
+                className={classNames(
+                  'text-secondaryWhite flex flex-row items-center justify-center gap-5 font-medium',
+                  { 'text-teriaryWhite': context?.isDarkMode }
+                )}
+              >
+                <AiOutlinePlus size={20} />
+                Add internship programs
+              </button>
+              <button
+                className={classNames(
+                  'text-secondaryWhite flex flex-row items-center justify-center gap-5 font-medium',
+                  { 'text-teriaryWhite': context?.isDarkMode }
+                )}
+                onClick={addModalToggle2}
+              >
+                <FiList size={20} />
+                Initial Application Questionnaires
+              </button>
+            </div>
+
+            {/* SEARCH BUTTON */}
             <button
               className={classNames(
                 'text-secondaryWhite flex flex-row items-center justify-center font-thin gap-5 bg-mainBgWhite rounded outline-none px-5',

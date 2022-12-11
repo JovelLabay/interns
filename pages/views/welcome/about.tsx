@@ -20,6 +20,7 @@ function about() {
   const textBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
+
   return (
     <div>
       <Head>

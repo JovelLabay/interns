@@ -1,9 +1,18 @@
-import SplashLoading from '@/src/components/common/SplashLoading';
-import { DynamicContext } from '@/src/contexts/context';
-import { emailPassAuth } from '@/src/firebase/firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
-import { useRouter } from 'next/router';
+// REACT
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
+
+// LOADING
+import SplashLoading from '@/src/components/common/SplashLoading';
+
+// NEXT
+import { useRouter } from 'next/router';
+
+// REDUX
+import { DynamicContext } from '@/src/contexts/context';
+
+// FIREBASE
+import { emailPassAuth } from '@/src/firebase/firebaseConfig';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 function StudentDashboard() {
   const router = useRouter();
@@ -46,11 +55,22 @@ function StudentDashboard() {
     <div
       className={
         context?.isDarkMode
-          ? 'bg-mainBgBlack min-h-screen lg:block hidden duration-300'
-          : 'bg-mainBgWhite min-h-screen lg:block hidden duration-300'
+          ? 'bg-mainBgBlack min-h-screen duration-300'
+          : 'bg-mainBgWhite min-h-screen duration-300'
       }
     >
-      <h1>dashboard</h1>
+      <p
+        onClick={() => {
+          signOut(emailPassAuth)
+            .then(() => {
+              localStorage.removeItem('studentDetials');
+              null;
+            })
+            .catch(() => null);
+        }}
+      >
+        dashboard
+      </p>
     </div>
   );
 }

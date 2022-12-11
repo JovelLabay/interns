@@ -123,6 +123,7 @@ interface AddCollegeInterface {
   professionOfDean: string;
   collegeType: string;
   collegePasscode: string;
+  collegeColor: string;
 }
 
 // SEND EMAIL MESSAGE
@@ -141,6 +142,7 @@ interface CollegeListInterface {
   collegeType: string;
   professionOfDean: string;
   shortCollegeName: string;
+  collegeColor: string;
 }
 
 // FORM LIST QUESTIONNAIRE

@@ -1,6 +1,9 @@
 // REACT
 import React, { ReactElement, useEffect, useState } from 'react';
 
+// NEXT
+import { useRouter } from 'next/router';
+
 // FOOTER OR HEADER
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
 
@@ -13,20 +16,13 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from 'firebase/auth';
-
-// NEXT
-import { useRouter } from 'next/router';
-
-// LOADING
-import SplashLoading from '@/src/components/common/SplashLoading';
-
-// FIREBASE
 import { onValue, ref } from 'firebase/database';
 
-// TOAST
-import { notify } from '@/src/components/common/toast';
+// TOAST AND LOADER
+import { errorNotify, notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
+import SplashLoading from '@/src/components/common/SplashLoading';
 
 function Auth() {
   const router = useRouter();
@@ -112,7 +108,7 @@ function Auth() {
         .confirm(combinedCode)
         .then(() => router.push('/views/user/school/dashboard'))
         .catch(() => {
-          console.log("Couldn't verify OTP");
+          errorNotify("Couldn't verify OTP");
         });
     }
   };

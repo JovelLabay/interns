@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 
+// QUESTIONNAIRE
 const QuestionnaireValidator = yup.object({
   labelName: yup.string().required(),
   labelType: yup.string().required(),

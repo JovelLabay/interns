@@ -1,9 +1,14 @@
+// REACT
+import React, { useContext } from 'react';
+
+// REDUX CONTEXT
 import {
   CompanyUserDetailsContext,
   DynamicContext,
 } from '@/src/contexts/context';
+
+// EXTERNAL
 import classNames from 'classnames';
-import React, { useContext } from 'react';
 
 function ViewOnlyQuestionnaire() {
   const context = useContext(DynamicContext);

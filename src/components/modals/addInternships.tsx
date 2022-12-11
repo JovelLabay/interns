@@ -5,10 +5,7 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 // STATE MANAGEMENT
-import {
-  CompanyUserDetailsContext,
-  DynamicContext,
-} from '@/src/contexts/context';
+import { DynamicContext } from '@/src/contexts/context';
 
 // OTHERS
 import classNames from 'classnames';
@@ -32,7 +29,6 @@ function AddInternships({
   addModalToggle: () => void;
 }) {
   const context = useContext(DynamicContext);
-  const context2 = useContext(CompanyUserDetailsContext);
 
   const [paginatedInternships, setPaginatedInternships] = useState(1);
   const [categories, setCategories] = useState<[string, any][]>();
