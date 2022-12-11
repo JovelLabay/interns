@@ -12,7 +12,7 @@ import {
 
 // TOAST
 import { ToastContainer } from 'react-toastify';
-import { notify } from '@/src/components/common/toast';
+import { errorNotify, notify } from '@/src/components/common/toast';
 
 // STATIC DATA
 import { data } from 'Data';
@@ -271,8 +271,8 @@ function AddUsers({
                                     className="bg-red-500 p-2 rounded"
                                     onClick={() => {
                                       if (values.length <= 1) {
-                                        alert(
-                                          'not allowed to delete the last user'
+                                        errorNotify(
+                                          'Could not empty the list of numbers as users'
                                         );
                                       } else {
                                         if (
@@ -282,7 +282,9 @@ function AddUsers({
                                             .then((res) => console.log(res))
                                             .catch((err) => console.log(err));
                                         } else {
-                                          alert("can't delete current user");
+                                          errorNotify(
+                                            "Can't delete current number"
+                                          );
                                         }
                                       }
                                     }}

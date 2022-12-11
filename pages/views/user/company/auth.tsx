@@ -9,12 +9,6 @@ import { useRouter } from 'next/router';
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
 import AuthContainer from '@/src/components/common/AuthContainer';
 
-// USEFORM
-
-// SCHEMA VALIDATOR
-
-// REACT ICONS
-
 // FIREBASE FUNCTIONS
 import { emailPassAuth } from '@/src/firebase/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';

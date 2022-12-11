@@ -10,15 +10,16 @@ import StudentListingContainer from '@/src/components/blocks/studentListingConta
 
 // FIREBASE
 import { collection, onSnapshot } from 'firebase/firestore';
-import { database, store } from '@/src/firebase/firebaseConfig';
-
-// FIREBASE
-import { onValue, ref } from 'firebase/database';
+import { store } from '@/src/firebase/firebaseConfig';
 
 // UI
 import { Popover } from '@headlessui/react';
 
-function StudentListContainer() {
+function StudentListContainer({
+  listingOfColleges,
+}: {
+  listingOfColleges: [string, CollegeListInterface][];
+}) {
   const [isOpen, setIsOpen] = useState({
     addStudents: false,
     addStudentsTitle: '',
@@ -27,21 +28,6 @@ function StudentListContainer() {
     searchInput: '',
     studentNumber: 0,
   });
-
-  const [listOfColleges, setListOfColleges] = useState({});
-
-  const listingOfColleges: [string, CollegeListInterface][] =
-    Object.entries(listOfColleges);
-
-  useEffect(() => {
-    // LIST OF COLLEGES
-    const db = database;
-    const collegeReference = ref(db, 'school/colleges');
-    onValue(collegeReference, (snapshot) => {
-      const data = snapshot.val() === null ? {} : snapshot.val();
-      setListOfColleges(data);
-    });
-  }, []);
 
   return (
     <div className="flex gap-3 overflow-x-auto">
@@ -149,7 +135,7 @@ function StudentListContainer() {
     searchInput: string;
     isSearch: string;
   }) {
-    const theCollegeName = name.toLowerCase().replace(/\s/g, '_');
+    const theCollegeName = name?.toLowerCase().replace(/\s/g, '_');
 
     const [listOfStudents, setListOfStudents] = useState({});
     const listsOfStudents: [string, AddStudentWithCollegeInterface][] =

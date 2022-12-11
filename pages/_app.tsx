@@ -20,6 +20,7 @@ import UserLayout from '@/src/layouts/UserLayout';
 import NextNProgress from 'nextjs-progressbar';
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  // DYNAMIC LAYOUT
   if (Component.getLayout) {
     return Component.getLayout(
       <UserLayout>
@@ -29,6 +30,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   }
 
   return (
+    // STATIC LAYOUT
     <WelcomeLayout>
       <NextNProgress
         color="#000"

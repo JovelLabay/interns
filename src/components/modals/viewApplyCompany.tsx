@@ -63,45 +63,45 @@ function ViewApplyCompany({
                       />
                     </div>
                     <div className="col-span-2 flex flex-col justify-center items-start gap-3">
-                      <h1 className="text-primaryYellow font-bold text-[40px]">
+                      <p className="text-primaryYellow font-bold text-[40px]">
                         {viewCompanyDetails?.companyName}
-                      </h1>
-                      <h1 className="text-secondaryWhite font-bold">
+                      </p>
+                      <p className="text-secondaryWhite font-bold">
                         {'Type of Company: '}{' '}
                         <span className="text-placeholderColor font-normal">
                           {viewCompanyDetails?.typeOfCompany}
                         </span>
-                      </h1>
-                      <h1 className="text-secondaryWhite font-bold">
+                      </p>
+                      <p className="text-secondaryWhite font-bold">
                         {'Location of the Company: '}{' '}
                         <span className="text-placeholderColor font-normal">
                           {viewCompanyDetails?.locationOfCompany}
                         </span>
-                      </h1>
+                      </p>
                     </div>
                   </div>
                   {/* BODY */}
                   <div className="my-10 flex flex-col gap-5">
                     <div>
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         MISSON
-                      </h1>
+                      </p>
                       <p className="text-center mx-10 italic tracking-wider text-placeholderColor font-light">
                         {viewCompanyDetails?.companyMission}
                       </p>
                     </div>
                     <div>
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         VISON
-                      </h1>
+                      </p>
                       <p className="text-center mx-10 italic tracking-wider text-placeholderColor font-light">
                         {viewCompanyDetails?.companyVison}
                       </p>
                     </div>
                     <div>
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         COMPANY DESCRIPTION
-                      </h1>
+                      </p>
                       <p className="text-center mx-10 italic tracking-wider text-placeholderColor font-light">
                         {viewCompanyDetails?.companyDescription}
                       </p>
@@ -110,9 +110,9 @@ function ViewApplyCompany({
                   {/* OTHERS */}
                   <div className="mb-10">
                     <div className="mb-5">
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         DATE FOUNDED
-                      </h1>
+                      </p>
                       <div className="flex justify-center items-center">
                         <p className="text-center mx-10 italic tracking-wider text-white font-light py-1 px-10 border-2 border-primaryYellow bg-primaryYellowHover rounded-full">
                           {viewCompanyDetails?.dateFounded.DD}
@@ -127,9 +127,9 @@ function ViewApplyCompany({
                     </div>
                     {/* PHOTOTS */}
                     <div>
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         COMPANY PHOTOS
-                      </h1>
+                      </p>
                       <div className="flex justify-center items-center gap-5">
                         {viewCompanyDetails?.companyPhotos.map(
                           (photo, index) => {
@@ -148,9 +148,9 @@ function ViewApplyCompany({
                     </div>
                     {/* PAPERS */}
                     <div className="my-10">
-                      <h1 className="mb-4 font-semibold text-primaryYellow">
+                      <p className="mb-4 font-semibold text-primaryYellow">
                         SUBMITTED COMPANY DOCUMENTS
-                      </h1>
+                      </p>
                       <button className="border-2 border-dashed border-primaryYellow rounded py-2 px-4">
                         Registration
                       </button>

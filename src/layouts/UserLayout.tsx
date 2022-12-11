@@ -1,4 +1,7 @@
+// REACT
 import React, { ReactNode, useEffect, useState } from 'react';
+
+// REDUX CONTAINER
 import { DynamicContext } from '../contexts/context';
 
 function UserLayout({ children }: { children: ReactNode }) {

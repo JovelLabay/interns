@@ -89,13 +89,13 @@ function CompanyOptionModals({
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex flex-row justify-between items-center">
-                  <h1 className="font-semibold text-lg">
+                  <p className="font-semibold text-lg">
                     {action === 'Accept'
                       ? 'Accept Company'
                       : action === 'Dismiss'
                       ? 'Reject Company'
                       : 'Pending Company'}
-                  </h1>
+                  </p>
                   <button
                     onClick={() => isOptionToggle('')}
                     className="rounded bg-primaryYellow p-2"
@@ -221,13 +221,13 @@ function CompanyOptionModals({
             companyEmail,
             subject: data.subject,
             message: `
-              <p>${data.greetings} ${companyName},</p>
+              <h3>${data.greetings} ${companyName},</h3>
 
               <p>${data.introduction}</p>
               
               <p>${data.bodyMessage}</p>
 
-              <p>${data.closing}, Interns Team</p>
+              <h5>${data.closing}, Interns Team</h5>
               `,
           }),
         })

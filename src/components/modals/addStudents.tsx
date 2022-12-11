@@ -51,7 +51,7 @@ function AddStudents({
       data.firstName,
       data.middleName,
       data.lastName,
-      uniqid(undefined, `${data.firstName}-@interns.com`),
+      uniqid(undefined, `${data.firstName}_@interns.com`),
       addStudentsTitle,
       enabled
     )
