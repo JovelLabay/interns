@@ -141,7 +141,7 @@ const studentRegistration = async (
   const idReference = JSON.parse(uniqueId || '').id;
   try {
     const db = database;
-    await set(ref(db, `student/${idReference}`), {
+    await set(ref(db, `students/${idReference}`), {
       studentDetails: {
         firstName,
         lastName,

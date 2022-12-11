@@ -101,8 +101,7 @@ export const data = {
     options: ['Company', 'Student'],
   },
 
-  // ====================== Company ======================
-
+  // COMPANY DASHBOARD
   company: {
     questionnaireType: [
       { id: 101, name: 'Select' },
@@ -256,5 +255,14 @@ export const data = {
     { id: 20, name: '2002' },
     { id: 21, name: '2001' },
     { id: 22, name: '2000' },
+  ],
+
+  // STUDENT DASHBOARD
+  navigationLinks: [
+    { id: 1, name: 'Saved Companies' },
+    { id: 2, name: 'Coversations' },
+    { id: 3, name: 'Preferences' },
+    { id: 4, name: 'Theme' },
+    { id: 5, name: 'Exit Interns' },
   ],
 };
