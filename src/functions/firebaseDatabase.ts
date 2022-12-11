@@ -1,4 +1,7 @@
+// FIREBASE CONFIG
 import { database } from '../firebase/firebaseConfig';
+
+// FIREBASE
 import {
   set,
   ref,
@@ -8,8 +11,11 @@ import {
   Database,
   get,
 } from 'firebase/database';
+
+// STATIC DATA
 import { data } from 'Data';
 
+// SAVE COMPANY REGISTRATION
 const saveCompanyRegistration = async (
   days: string,
   months: string,
@@ -159,7 +165,8 @@ const addNewCollege = async (
   collegeDean: string,
   professionOfDean: string,
   collegeType: string,
-  collegePasscode: number
+  collegePasscode: number,
+  collegeColor: string
 ) => {
   try {
     const db = database;
@@ -173,6 +180,7 @@ const addNewCollege = async (
       professionOfDean,
       collegeType,
       collegePasscode: Number(collegePasscode),
+      collegeColor,
     });
 
     return 'New College has been added successfully.';

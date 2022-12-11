@@ -33,14 +33,14 @@ function InternshipProgramsContainer() {
           }
         )}
       >
-        <h1
+        <p
           className={classNames('text-secondaryWhite font-medium', {
             'text-white': context?.isDarkMode,
           })}
         >
           Current Company Internship Programs
-        </h1>
-        <h1
+        </p>
+        <p
           className={classNames(
             'text-secondaryWhite font-medium tracking-widest',
             {
@@ -49,7 +49,7 @@ function InternshipProgramsContainer() {
           )}
         >
           CONTROLS
-        </h1>
+        </p>
       </div>
       {/* FILTER */}
       <div
@@ -102,9 +102,9 @@ function InternshipProgramsContainer() {
                         )}
                       >
                         <Disclosure.Button className="col-span-2 border-r-2 flex flex-col justify-center items-start">
-                          <h1 className="font-bold text-primaryYellow uppercase text-3xl">
+                          <p className="font-bold text-primaryYellow uppercase text-3xl">
                             {item.jobTitle}
-                          </h1>
+                          </p>
                           <p
                             className={classNames(
                               'text-secondaryWhite font-medium',
@@ -155,18 +155,18 @@ function InternshipProgramsContainer() {
                         leaveFrom="transform scale-100 opacity-100"
                         leaveTo="transform scale-95 opacity-0"
                       >
-                        <Disclosure.Panel className="flex flex-col gap-2">
+                        <Disclosure.Panel className="flex flex-col gap-2 border-t-2 ">
                           <div>
-                            <h1
+                            <p
                               className={classNames(
-                                'text-secondaryWhite font-medium',
+                                'text-secondaryWhite font-medium mt-3',
                                 {
                                   'text-white': context?.isDarkMode,
                                 }
                               )}
                             >
                               Job Description
-                            </h1>
+                            </p>
                             <p
                               className={classNames(
                                 'text-secondaryWhite font-light',
@@ -180,7 +180,7 @@ function InternshipProgramsContainer() {
                           </div>
                           <div className="flex gap-10">
                             <div>
-                              <h1
+                              <p
                                 className={classNames(
                                   'text-secondaryWhite font-medium',
                                   {
@@ -189,7 +189,7 @@ function InternshipProgramsContainer() {
                                 )}
                               >
                                 Job Responsibilities
-                              </h1>
+                              </p>
                               {item.jobResponsibilities.map((jonRes, index) => (
                                 <p
                                   key={index}
@@ -205,7 +205,7 @@ function InternshipProgramsContainer() {
                               ))}
                             </div>
                             <div>
-                              <h1
+                              <p
                                 className={classNames(
                                   'text-secondaryWhite font-medium',
                                   {
@@ -214,7 +214,7 @@ function InternshipProgramsContainer() {
                                 )}
                               >
                                 Job Qualifications
-                              </h1>
+                              </p>
                               {item.jobQualifications.map((jobQual, index) => (
                                 <p
                                   key={index}
@@ -233,7 +233,7 @@ function InternshipProgramsContainer() {
                           </div>
                           <div className="flex gap-3">
                             <div>
-                              <h1
+                              <p
                                 className={classNames(
                                   'text-secondaryWhite font-medium',
                                   {
@@ -242,7 +242,7 @@ function InternshipProgramsContainer() {
                                 )}
                               >
                                 Allowance
-                              </h1>
+                              </p>
                               <p
                                 className={classNames(
                                   'text-secondaryWhite font-light',
@@ -255,7 +255,7 @@ function InternshipProgramsContainer() {
                               </p>
                             </div>
                             <div>
-                              <h1
+                              <p
                                 className={classNames(
                                   'text-secondaryWhite font-medium',
                                   {
@@ -264,7 +264,7 @@ function InternshipProgramsContainer() {
                                 )}
                               >
                                 Allowance Amount
-                              </h1>
+                              </p>
                               <p
                                 className={classNames(
                                   'text-secondaryWhite font-light',
@@ -290,16 +290,31 @@ function InternshipProgramsContainer() {
             )}
           </>
         ) : (
-          <h1
-            className={classNames(
-              'text-center my-10 text-secondaryWhite font-light',
-              {
-                'text-white': context?.isDarkMode,
-              }
+          <>
+            {context2?.activeCompanyJobCategory !== 'Unspecified' ? (
+              <p
+                className={classNames(
+                  'text-center my-10 text-secondaryWhite font-light',
+                  {
+                    'text-white': context?.isDarkMode,
+                  }
+                )}
+              >
+                No Internship Programs for {context2?.activeCompanyJobCategory}
+              </p>
+            ) : (
+              <p
+                className={classNames(
+                  'text-center my-10 text-secondaryWhite font-light',
+                  {
+                    'text-white': context?.isDarkMode,
+                  }
+                )}
+              >
+                Select a Job Category
+              </p>
             )}
-          >
-            No Internship Programs for {context2?.activeCompanyJobCategory}
-          </h1>
+          </>
         )}
       </div>
     </div>

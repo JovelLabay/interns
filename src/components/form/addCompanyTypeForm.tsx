@@ -1,15 +1,22 @@
+// REACT
+import React, { useState } from 'react';
+
+// DATABASE
 import {
   addNewCompanyType,
   deleteCompanyType,
   editCompanyType as editCompanyTypeAction,
 } from '@/src/functions/firebaseDatabase';
-import React, { useState } from 'react';
+
+// REACT ICONS
 import {
   AiOutlineCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineDelete,
   AiOutlineEdit,
 } from 'react-icons/ai';
+
+// COMPONENTS
 import { notify } from '../common/toast';
 
 function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {

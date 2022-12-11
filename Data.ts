@@ -73,19 +73,20 @@ export const data = {
     {
       id: 3,
       description:
-        'We would be proud that students and interns have able to complete the required hours to be deployed in the real world situation.',
+        'We would be proud that students and interns have been able to complete the required hours to be deployed in a real-world situation.',
     },
   ],
   aboutDescriptions: [
     {
       id: 1,
       title: 'Trust',
-      description: 'Live your trust with for you to help find internships.',
+      description:
+        'Live your trust with us,  for us to help you find your most suited internship.',
     },
     {
       id: 2,
       title: 'Easy',
-      description: 'Easy to customize and filter internhips just for you.',
+      description: 'Easy to customize and filter internships just for you.',
     },
     {
       id: 3,
@@ -93,28 +94,16 @@ export const data = {
       description: 'Your accounts will be safe with us.',
     },
   ],
-  // COOKIE BANNER
   cookieBanner: {
     title: 'We just want to know if what type of user are you?',
     description:
-      'Clicking either the options below means you aggreed to the terms and condition impost in this software.',
+      'Clicking either of the options below means you agree to the terms and conditions imposed in this software.',
     options: ['Company', 'Student'],
   },
-  // DASHBOARD (COMPANY, STUDENT , ADMIN)
+
+  // ====================== Company ======================
+
   company: {
-    jobCategory: [
-      { id: 101, name: 'Select Job Category' },
-      { id: 1, name: 'Web Development' },
-      { id: 2, name: 'Mobile Development' },
-      { id: 3, name: 'Data Science' },
-      { id: 4, name: 'Artificial Intelligence' },
-      { id: 5, name: 'Machine Learning' },
-      { id: 6, name: 'Cloud Computing' },
-      { id: 7, name: 'Cyber Security' },
-      { id: 8, name: 'Software Engineering' },
-      { id: 9, name: 'Computer Engineering' },
-      { id: 10, name: 'Computer Science' },
-    ],
     questionnaireType: [
       { id: 101, name: 'Select' },
       { id: 1, name: 'Essay' },
@@ -126,17 +115,9 @@ export const data = {
     tabs: [
       { id: 1, name: 'Student' },
       { id: 2, name: 'Companies' },
-      { id: 3, name: 'Type of Company' },
+      { id: 3, name: 'Template Forms' },
       { id: 4, name: 'Professionals' },
-    ],
-    colleges: [
-      { id: 1, name: 'Agriculture', category: 'College' },
-      { id: 2, name: 'Arts_and_Sciences', category: 'College' },
-      { id: 3, name: 'Computer_Studes', category: 'College' },
-      { id: 4, name: 'Engineering', category: 'College' },
-      { id: 5, name: 'Nursing', category: 'College' },
-      { id: 6, name: 'Business_and_Management', category: 'School' },
-      { id: 7, name: 'Education', category: 'School' },
+      { id: 5, name: 'Activity Logs' },
     ],
     companyApplicationStatus: [
       { id: 1, name: 'Approved' },
@@ -146,12 +127,12 @@ export const data = {
     ],
     collegeDeanProfession: [
       { id: 101, name: 'Select' },
-      { id: 1, name: 'PhD' },
-      { id: 2, name: 'Engr.' },
-      { id: 3, name: 'CPA' },
-      { id: 4, name: 'Atty.' },
-      { id: 5, name: 'Dr.' },
-      { id: 6, name: 'Prof.' },
+      { id: 1, name: 'Artist' },
+      { id: 2, name: 'Accountant' },
+      { id: 3, name: 'Lawyer' },
+      { id: 4, name: 'Engineer' },
+      { id: 5, name: 'Physician' },
+      { id: 6, name: 'Teacher' },
     ],
     collegeType: [
       { id: 101, name: 'Select' },
@@ -176,6 +157,29 @@ export const data = {
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },
     { id: 2, name: 'View Users' },
+  ],
+  formTemplates: [
+    { id: 1, name: 'Waiver', completeName: 'Waiver Form' },
+    { id: 2, name: 'LOI', completeName: 'Letter of Intent' },
+    { id: 3, name: 'MOA', completeName: 'Memorandum of Agreement' },
+  ],
+  gender: [
+    { id: 1, name: 'Male' },
+    { id: 2, name: 'Female' },
+    { id: 3, name: 'Other' },
+    { id: 4, name: 'Prefer not to say' },
+  ],
+  colors: [
+    { id: 1, name: 'red' },
+    { id: 2, name: 'blue' },
+    { id: 3, name: 'green' },
+    { id: 4, name: 'yellow' },
+    { id: 5, name: 'orange' },
+    { id: 6, name: 'purple' },
+    { id: 7, name: 'pink' },
+    { id: 8, name: 'brown' },
+    { id: 9, name: 'grey' },
+    { id: 10, name: 'black' },
   ],
   months: [
     { id: 101, name: 'MM' },
@@ -226,9 +230,10 @@ export const data = {
     { id: 30, name: '30' },
     { id: 31, name: '31' },
   ],
-  // create an array of years from 1900 to current year
   years: [
     { id: 101, name: 'YYYY' },
+    { id: 25, name: '2023' },
+    { id: 23, name: '2022' },
     { id: 1, name: '2021' },
     { id: 2, name: '2020' },
     { id: 3, name: '2019' },
@@ -251,18 +256,5 @@ export const data = {
     { id: 20, name: '2002' },
     { id: 21, name: '2001' },
     { id: 22, name: '2000' },
-    { id: 23, name: '1999' },
-  ],
-  typeOfCompany: [
-    { id: 101, name: 'Select' },
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'Business' },
-    { id: 3, name: 'Engineering' },
-    { id: 4, name: 'Education' },
-    { id: 5, name: 'Agriculture' },
-  ],
-  locationOfCompany: [
-    { id: 101, name: 'Select' },
-    { id: 1, name: 'Cagayan de Oro City' },
   ],
 };

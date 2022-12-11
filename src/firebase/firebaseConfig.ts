@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from 'firebase/analytics';
 
 // DB METHODS
 import { getFirestore } from 'firebase/firestore';
@@ -24,7 +23,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
-  databaseUrl: 'https://interns-ff52a-default-rtdb.firebaseio.com',
+  databaseUrl: process.env.NEXT_PUBLIC_DATABASE_URL,
 };
 
 // Initialize Firebase

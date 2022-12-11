@@ -3,25 +3,30 @@ import React, { ReactElement, useEffect, useState } from 'react';
 
 // NEXT
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // COMPONENTS OR LAYOUTS
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
+import SplashLoading from '@/src/components/common/SplashLoading';
+import ExistingFormAuth from './forms/existingFormAuth';
+
+// ICONS
 import { FiChevronDown } from 'react-icons/fi';
+
+// EXTERNAL
 import classNames from 'classnames';
 import { Listbox } from '@headlessui/react';
-import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
+import { errorNotify } from '@/src/components/common/toast';
+import { ToastContainer } from 'react-toastify';
 
+// FIREBASE
+import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
+import { onValue, ref } from 'firebase/database';
+import { verifyStudentEmailAndCollege } from '@/src/functions/firebaseFirestore';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { onValue, ref } from 'firebase/database';
-import { verifyStudentEmailAndCollege } from '@/src/functions/firebaseFirestore';
-import SplashLoading from '@/src/components/common/SplashLoading';
-import { useRouter } from 'next/router';
-import { ToastContainer } from 'react-toastify';
-import { errorNotify } from '@/src/components/common/toast';
-import ExistingForm from './existingForm';
 
 function Auth() {
   const router = useRouter();
@@ -84,7 +89,7 @@ function Auth() {
         <div className="w-[350px] bg-white rounded-lg p-5">
           <h2 className="text-center text-[28px]">
             <span className="font-bold">Student |</span>
-            {' Sign up'}
+            {isNewStudentUser ? ' Register' : ' Login'}
           </h2>
           {isNewStudentUser ? (
             <form
@@ -205,7 +210,10 @@ function Auth() {
               />
             </form>
           ) : (
-            <ExistingForm />
+            <ExistingFormAuth
+              setIsNewStudentUser={setIsNewStudentUser}
+              isNewStudentUser={isNewStudentUser}
+            />
           )}
         </div>
 
@@ -221,7 +229,7 @@ function Auth() {
       collegesList.setCollege === 'Select College' ||
       collegesList.setEmail === ''
     ) {
-      alert('Please select college and enter email');
+      errorNotify('Please fill all the fields');
     } else {
       verifyStudentEmailAndCollege(
         collegesList.setCollege,
@@ -236,13 +244,13 @@ function Auth() {
                 email: res?.data.defaultEmail,
                 firstName: res?.data.firstName,
                 lastName: res?.data.lastName,
-                middleName: res?.data.middlerName,
+                middleName: res?.data.middleName,
                 college: res?.data.college,
+                id: res?.id,
               })
             );
           } else {
-            console.log('Email not found');
-            alert('Email not found');
+            errorNotify('Email not found');
           }
         })
         .catch((err) => {
@@ -262,9 +270,7 @@ function Auth() {
         console.log(userCredential);
       })
       .catch((error) => {
-        console.error(error);
-        alert('Sdfsdf');
-        errorNotify('Dfgdfg');
+        errorNotify(error.message);
       });
   }
 }

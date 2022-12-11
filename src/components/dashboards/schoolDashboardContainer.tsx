@@ -1,5 +1,5 @@
 // REACT
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // UI
 import { Tab } from '@headlessui/react';
@@ -14,10 +14,31 @@ import { data } from 'Data';
 import CompaniesContainer from '../menuContainer/school/companiesContainer';
 import ProfessionsContainer from '../menuContainer/school/professionsContainer';
 import StudentListContainer from '../menuContainer/school/studentListContainer';
-import TypeOfCompanyContainer from '../menuContainer/school/typeOfCompanyContainer';
+import TemplatedFormContainer from '../menuContainer/school/templatedFormContainer';
+
+// FIREBASE
+import { database } from '@/src/firebase/firebaseConfig';
+
+// FIREBASE
+import { onValue, ref } from 'firebase/database';
 
 function SchoolDashboardContainer() {
   const [tabSelected, setTabSelected] = useState(0);
+
+  const [listOfColleges, setListOfColleges] = useState({});
+
+  const listingOfColleges: [string, CollegeListInterface][] =
+    Object.entries(listOfColleges);
+
+  useEffect(() => {
+    // LIST OF COLLEGES
+    const db = database;
+    const collegeReference = ref(db, 'school/colleges');
+    onValue(collegeReference, (snapshot) => {
+      const data = snapshot.val() === null ? {} : snapshot.val();
+      setListOfColleges(data);
+    });
+  }, []);
 
   return (
     <div className="px-2">
@@ -54,13 +75,13 @@ function SchoolDashboardContainer() {
         {/* MAIN COMPONENTS */}
         <Tab.Panels>
           <Tab.Panel>
-            <StudentListContainer />
+            <StudentListContainer listingOfColleges={listingOfColleges} />
           </Tab.Panel>
           <Tab.Panel>
             <CompaniesContainer />
           </Tab.Panel>
           <Tab.Panel>
-            <TypeOfCompanyContainer />
+            <TemplatedFormContainer listingOfColleges={listingOfColleges} />
           </Tab.Panel>
           <Tab.Panel>
             <ProfessionsContainer />
