@@ -166,7 +166,8 @@ const addNewCollege = async (
   professionOfDean: string,
   collegeType: string,
   collegePasscode: number,
-  collegeColor: string
+  collegeColor: string,
+  courses: string[]
 ) => {
   try {
     const db = database;
@@ -181,6 +182,7 @@ const addNewCollege = async (
       collegeType,
       collegePasscode: Number(collegePasscode),
       collegeColor,
+      courses,
     });
 
     return 'New College has been added successfully.';

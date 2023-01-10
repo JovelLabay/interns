@@ -22,7 +22,7 @@ function StudentHeader({ signoutStudent }: { signoutStudent: () => void }) {
   return (
     <div
       className={classNames(
-        'flex flex-row justify-between items-center h-[10vh] px-2',
+        'flex h-[10vh] flex-row items-center justify-between px-2',
         context?.isDarkMode ? 'bg-secondaryBgBlack' : 'bg-white'
       )}
     >
@@ -31,7 +31,7 @@ function StudentHeader({ signoutStudent }: { signoutStudent: () => void }) {
           <div className="logo hover:cursor-pointer">
             <p
               className={classNames(
-                'text-[26px] sm:text-[32px] md:text-[38px] font-bold',
+                'text-[26px] font-bold sm:text-[32px] md:text-[38px]',
                 {
                   'text-white': context?.isDarkMode,
                 }
@@ -46,7 +46,7 @@ function StudentHeader({ signoutStudent }: { signoutStudent: () => void }) {
 
       {/* SETTINGS */}
       <div className="flex items-center justify-center gap-5">
-        <div className="hidden md:flex flex-row items-center justify-center gap-3">
+        <div className="hidden flex-row items-center justify-center gap-3 md:flex">
           <Image
             src={context?.user.userPhotoUrl || internsLogo}
             width={40}
@@ -81,26 +81,28 @@ function StudentHeader({ signoutStudent }: { signoutStudent: () => void }) {
       {isShowMobileNav && (
         <motion.div
           className={classNames(
-            'px-3 lg:hidden bg-white shadow-md absolute top-0 right-0 w-full z-50 h-screen',
+            'absolute top-0 right-0 z-50 h-screen w-full overflow-auto px-3 lg:hidden',
             context?.isDarkMode ? 'bg-secondaryBgBlack' : 'bg-white'
           )}
           initial={{ y: -400 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="flex flex-row justify-between items-center mt-6 mx-0 md:mx-10">
+          <div className="mx-0 mt-6 flex flex-row items-center justify-between md:mx-10">
             <div className="logo hover:cursor-pointer">
-              <p
-                className={classNames(
-                  'text-[26px] sm:text-[32px] md:text-[38px] font-bold',
-                  {
-                    'text-white': context?.isDarkMode,
-                  }
-                )}
-              >
-                <span className={'text-primaryYellow'}>I</span>
-                nterns
-              </p>
+              <Link href="/">
+                <p
+                  className={classNames(
+                    'text-[26px] font-bold sm:text-[32px] md:text-[38px]',
+                    {
+                      'text-white': context?.isDarkMode,
+                    }
+                  )}
+                >
+                  <span className={'text-primaryYellow'}>I</span>
+                  nterns
+                </p>
+              </Link>
             </div>
             <button onClick={mobileNavhandler}>
               <AiOutlineClose
@@ -112,19 +114,19 @@ function StudentHeader({ signoutStudent }: { signoutStudent: () => void }) {
 
           {/* OPTIONS */}
           <div className="mt-10">
-            <div className="flex md:hidden flex-col items-center justify-center gap-3 mb-10 mt-[-20px]">
+            <div className="mb-10 mt-[-20px] flex flex-col items-center justify-center gap-3 md:hidden">
               <Image
-                src={internsLogo}
+                src={context?.user.userPhotoUrl || internsLogo}
                 width={80}
                 height={80}
                 style={{ borderRadius: '100%', border: '2px solid #F2C94C' }}
               />
               <p
-                className={classNames('font-medium', {
+                className={classNames('text-lg font-medium', {
                   'text-white': context?.isDarkMode,
                 })}
               >
-                Your account has been disabled. Please contact your coordinator
+                {context?.user.userName}
               </p>
             </div>
 

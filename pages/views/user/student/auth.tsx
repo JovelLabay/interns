@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 // COMPONENTS OR LAYOUTS
 import SecondayStaticFooter from '@/src/components/Footer/SecondayStaticFooter';
 import SplashLoading from '@/src/components/common/SplashLoading';
-import ExistingFormAuth from './forms/existingFormAuth';
+import ExistingFormAuth from '../../../../src/components/form/student/existingFormAuth';
 
 // ICONS
 import { FiChevronDown } from 'react-icons/fi';
@@ -45,7 +45,6 @@ function Auth() {
 
     // GET AUTHENTICATION DATA
     const authMe = onAuthStateChanged(emailPassAuth, (user) => {
-      console.log(user);
       if (user === null) {
         setIsLoading(false);
       }
@@ -85,15 +84,15 @@ function Auth() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-[80vh] bg-primaryYellow flex flex-col justify-center items-center">
-        <div className="w-[350px] bg-white rounded-lg p-5">
+      <main className="flex min-h-[80vh] flex-col items-center justify-center bg-primaryYellow">
+        <div className="w-[350px] rounded-lg bg-white p-5">
           <h2 className="text-center text-[28px]">
             <span className="font-bold">Student |</span>
             {isNewStudentUser ? ' Register' : ' Login'}
           </h2>
           {isNewStudentUser ? (
             <form
-              className="flex flex-col gap-3 mt-5"
+              className="mt-5 flex flex-col gap-3"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!isStudentOkay) {
@@ -109,7 +108,7 @@ function Auth() {
                 </label>
                 <input
                   className={classNames(
-                    'border-2 rounded py-3 px-2 outline-none border-primaryYellow',
+                    'rounded border-2 border-primaryYellow py-3 px-2 outline-none',
                     {
                       'bg-teriaryWhite': isStudentOkay,
                     }
@@ -140,7 +139,7 @@ function Auth() {
                     <div className="relative">
                       <Listbox.Button
                         className={classNames(
-                          'bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-full flex justify-between',
+                          'flex w-full justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none',
                           {
                             'bg-teriaryWhite': isStudentOkay,
                           }
@@ -150,14 +149,14 @@ function Auth() {
                         <FiChevronDown
                           size={30}
                           className={classNames(
-                            'duration-300 text-secondaryWhite',
+                            'text-secondaryWhite duration-300',
                             {
                               'rotate-180': open,
                             }
                           )}
                         />
                       </Listbox.Button>
-                      <Listbox.Options className="absolute bg-white rounded-md p-2 w-full shadow-md hover:cursor-pointer max-h-[150px] z-30 overflow-auto">
+                      <Listbox.Options className="absolute z-30 max-h-[150px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                         {colleges.map(
                           (
                             person: [string, CollegeListInterface],
@@ -184,7 +183,7 @@ function Auth() {
                   </label>
                   <input
                     type="password"
-                    className="border-2 rounded py-3 px-2 outline-none"
+                    className="rounded border-2 py-3 px-2 outline-none"
                     placeholder="Password"
                     value={collegesList.setPassword}
                     onChange={(e) => {
@@ -197,14 +196,14 @@ function Auth() {
               )}
 
               <button
-                className="self-end text-primaryYellow my-3 underline"
+                className="my-3 self-end text-primaryYellow underline"
                 onClick={() => setIsNewStudentUser(!isNewStudentUser)}
               >
                 Login Existing Student Account
               </button>
 
               <input
-                className="bg-primaryYellow rounded-md py-2 w-full flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-primaryYellowHover duration-150"
+                className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:bg-primaryYellowHover"
                 value={isStudentOkay ? 'Sign In' : 'Continue'}
                 type="submit"
               />
@@ -260,6 +259,8 @@ function Auth() {
   }
 
   function signInStudent() {
+    errorNotify('Signing in...');
+
     const auth = emailPassAuth;
     createUserWithEmailAndPassword(
       auth,

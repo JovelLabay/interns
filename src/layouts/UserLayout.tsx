@@ -3,6 +3,9 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 // REDUX CONTAINER
 import { DynamicContext } from '../contexts/context';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { StudentObjectValidator } from '../validator/studentObjectValidator';
 
 function UserLayout({ children }: { children: ReactNode }) {
   // DARK MODE STATE
@@ -12,6 +15,13 @@ function UserLayout({ children }: { children: ReactNode }) {
     userEmail: '',
     userPhotoUrl: '',
     userId: '',
+    collegeId: '',
+  });
+
+  // STUDENT OBJECT DETAILS
+  const { register, handleSubmit, watch, setValue } = useForm<StudentObject>({
+    mode: 'onBlur',
+    resolver: yupResolver(StudentObjectValidator),
   });
 
   useEffect(() => {
@@ -30,6 +40,8 @@ function UserLayout({ children }: { children: ReactNode }) {
         setIsDarkMode,
         user,
         setUser,
+        watch,
+        setValue,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
 import { data } from 'Data';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import {
   AiOutlineHeart,
@@ -9,7 +10,11 @@ import {
 } from 'react-icons/ai';
 import { BiExit, BiMoon } from 'react-icons/bi';
 import { BsBookmarkDash, BsSun } from 'react-icons/bs';
-import { MdOutlineDarkMode } from 'react-icons/md';
+import {
+  MdAccountCircle,
+  MdOutlineAccountCircle,
+  MdOutlineDarkMode,
+} from 'react-icons/md';
 
 function StudentHeaderOptions({
   theClass,
@@ -21,32 +26,40 @@ function StudentHeaderOptions({
   signoutStudent: () => void;
 }) {
   const context = useContext(DynamicContext);
+  const router = useRouter();
+
+  const paths = router.pathname.split('/');
 
   return (
     <div className={theClass}>
-      <ul className="flex flex-col lg:flex-row gap-7 md:gap-14 lg:gap-5 mx-10 md:mx-20 lg:mx-0">
+      <ul className="mx-10 mb-10 flex flex-col gap-7 md:mx-20 md:mb-0 md:gap-14 lg:mx-0 lg:flex-row lg:gap-5">
         {data.navigationLinks.map((link) => {
           return (
             <li
+              title={link.name}
               key={link.id}
-              className="flex items-center hover:cursor-pointer "
-              onClick={() => linkHandler(link.id)}
+              className="flex items-center hover:cursor-pointer"
+              onClick={() => {
+                link.path !== paths[paths.length - 1]
+                  ? linkHandler(link.id, link.slug, context?.user.userId)
+                  : null;
+              }}
             >
               {link.id === 1 ? (
                 <BsBookmarkDash
-                  className="p-2 bg-primaryYellow rounded-md"
+                  className="rounded-md bg-primaryYellow p-2"
                   size={38}
                   color={context?.isDarkMode ? ' #fff' : ' #000'}
                 />
               ) : link.id === 2 ? (
-                <AiOutlineSetting
-                  className="p-2 bg-primaryYellow rounded-md"
+                <MdOutlineAccountCircle
+                  className="rounded-md bg-primaryYellow p-2"
                   size={38}
                   color={context?.isDarkMode ? ' #fff' : ' #000'}
                 />
               ) : link.id === 3 ? (
                 <AiOutlineMessage
-                  className="p-2 bg-primaryYellow rounded-md"
+                  className="rounded-md bg-primaryYellow p-2"
                   size={38}
                   color={context?.isDarkMode ? ' #fff' : ' #000'}
                 />
@@ -54,13 +67,13 @@ function StudentHeaderOptions({
                 <>
                   {context?.isDarkMode ? (
                     <BsSun
-                      className="p-2 bg-primaryYellow rounded-md"
+                      className="rounded-md bg-primaryYellow p-2"
                       size={38}
                       color={context?.isDarkMode ? ' #fff' : ' #000'}
                     />
                   ) : (
                     <BiMoon
-                      className="p-2 bg-primaryYellow rounded-md"
+                      className="rounded-md bg-primaryYellow p-2"
                       size={38}
                       color={context?.isDarkMode ? ' #fff' : ' #000'}
                     />
@@ -68,7 +81,7 @@ function StudentHeaderOptions({
                 </>
               ) : (
                 <BiExit
-                  className="p-2 bg-primaryYellow rounded-md"
+                  className="rounded-md bg-primaryYellow p-2"
                   size={38}
                   color={context?.isDarkMode ? ' #fff' : ' #000'}
                 />
@@ -76,7 +89,7 @@ function StudentHeaderOptions({
 
               <span
                 className={classNames(
-                  'block lg:hidden ml-9 md:ml-8',
+                  'ml-9 block md:ml-8 lg:hidden',
                   context?.isDarkMode ? ' text-white' : ' text-black'
                 )}
               >
@@ -93,12 +106,12 @@ function StudentHeaderOptions({
     </div>
   );
 
-  function linkHandler(id: number) {
+  function linkHandler(id: number, slug: string, e?: string) {
     {
       id === 1
-        ? null
+        ? router.push(`${slug}/sdfsdf`)
         : id === 2
-        ? null
+        ? router.push(`${slug}/${e}`)
         : id === 3
         ? null
         : id === 4
