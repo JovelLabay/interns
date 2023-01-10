@@ -19,7 +19,7 @@ function UserLayout({ children }: { children: ReactNode }) {
   });
 
   // STUDENT OBJECT DETAILS
-  const { register, handleSubmit, watch, setValue } = useForm<StudentObject>({
+  const { watch, setValue } = useForm<StudentObject>({
     mode: 'onBlur',
     resolver: yupResolver(StudentObjectValidator),
   });

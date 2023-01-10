@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 
 // NEXT
 import Image from 'next/image';
-import Link from 'next/link';
 
 // INTERNS LOGO
 import internsLogo from '../../../public/logo/interns_logo.png';

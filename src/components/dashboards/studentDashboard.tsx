@@ -32,13 +32,13 @@ function StudentDashboard() {
         {/* PROGRAMS AND COMPANIES */}
         <div
           className={classNames(
-            'flex flex-row items-center gap-5 h-[8vh] px-2 py-7 m-2 md:m-3 rounded-md',
+            'm-2 flex h-[8vh] flex-row items-center gap-5 rounded-md px-2 py-7 md:m-3',
             context?.isDarkMode ? 'bg-secondaryBgBlack' : 'bg-white'
           )}
         >
           {/* MENU BUTTON */}
           <Popover className="relative">
-            {({ open }) => (
+            {() => (
               <>
                 <Popover.Button className="outline-none">
                   <BsThreeDotsVertical
@@ -56,10 +56,10 @@ function StudentDashboard() {
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute left-0 z-10 w-[200px] text-left">
-                    <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 text- text-left">
+                    <div className="text- overflow-hidden rounded-lg text-left shadow-lg ring-1 ring-black ring-opacity-5">
                       <div
                         className={classNames(
-                          'p-5 flex gap-2 flex-col items-start',
+                          'flex flex-col items-start gap-2 p-5',
                           context?.isDarkMode
                             ? 'bg-mainBgBlack text-teriaryWhite'
                             : 'bg-white text-secondaryWhite'
@@ -82,7 +82,7 @@ function StudentDashboard() {
               <button
                 key={item.id}
                 className={classNames(
-                  'text-base md:text-md font-medium border-b-[3px] pb-1',
+                  'md:text-md border-b-[3px] pb-1 text-base font-medium',
                   context?.isDarkMode
                     ? 'text-teriaryWhite '
                     : 'text-secondaryWhite',

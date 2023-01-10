@@ -46,7 +46,7 @@ interface Dynamic {
       userEmail: string;
       userPhotoUrl: string;
       userId: string;
-      collegeId: string;
+      collegeId?: string;
     }>
   >;
   watch: UseFormWatch<StudentObject>;
