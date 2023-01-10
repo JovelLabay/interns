@@ -100,9 +100,11 @@ export const data = {
       'Clicking either of the options below means you agree to the terms and conditions imposed in this software.',
     options: ['Company', 'Student'],
   },
+  others: {
+    developers: 'Developed by Eluvent Corporation',
+  },
 
-  // ====================== Company ======================
-
+  // COMPANY DASHBOARD
   company: {
     questionnaireType: [
       { id: 101, name: 'Select' },
@@ -256,5 +258,60 @@ export const data = {
     { id: 20, name: '2002' },
     { id: 21, name: '2001' },
     { id: 22, name: '2000' },
+  ],
+
+  // STUDENT DASHBOARD
+  navigationLinks: [
+    {
+      id: 1,
+      name: 'Saved Companies',
+      path: 'savedCompanies',
+      slug: '/views/user/student/savedCompanies',
+    },
+    {
+      id: 2,
+      name: 'Account Preferences',
+      path: 'accountPreferences',
+      slug: '/views/user/student/accountPreferences',
+    },
+    {
+      id: 3,
+      name: 'Coversations',
+      path: 'coversations',
+      slug: '/views/user/student/others/savedCompanies',
+    },
+    {
+      id: 4,
+      name: 'Theme',
+      path: 'theme',
+      slug: '/views/user/student/others/savedCompanies',
+    },
+    {
+      id: 5,
+      name: 'Exit Interns',
+      path: 'exitInterns',
+      slug: '/views/user/student/others/savedCompanies',
+    },
+  ],
+  dashboardMenu: [
+    { id: 1, name: 'Find Internships' },
+    { id: 2, name: 'View Companies' },
+  ],
+  listFilter: [
+    { id: 1, filterName: 'All' },
+    { id: 2, filterName: 'Urgent' },
+    { id: 3, filterName: 'Environemnt | On-site' },
+    { id: 4, filterName: 'With Allowance' },
+  ],
+
+  backRoute: '/views/user/student/dashboard',
+  internshipsRoute: '/views/user/student/internships/',
+  companiesRoute: '/views/user/student/dashboard',
+
+  // ACCOUNT PREFERENCES TABS
+  accountPreferencesTabs: [
+    { id: 1, name: 'Details' },
+    { id: 2, name: 'Forms' },
+    { id: 3, name: 'Documents' },
   ],
 };

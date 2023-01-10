@@ -20,7 +20,9 @@ const addStudents = async (
   lastName: string,
   defaultEmail: string,
   addStudentsTitle: string,
-  studentStatus: boolean
+  studentStatus: boolean,
+  collegeId: string,
+  studentCourse: string
 ) => {
   const theCollegeName = addStudentsTitle.toLowerCase().replace(/\s/g, '_');
 
@@ -32,6 +34,8 @@ const addStudents = async (
       defaultEmail,
       college: addStudentsTitle,
       studentStatus,
+      collegeId,
+      studentCourse,
     });
     return studentDoc.id;
   } catch (error) {
@@ -81,6 +85,8 @@ const deleteStudents = async (collegeName: string, studentId: string) => {
 
 // ADD INTERNSHIP PROGRAMS
 const addInternshipProgram = async (
+  jobLocation: string,
+  companyDescription: string,
   jobTitle: string,
   jobDescription: string,
   jobEnvironment: boolean,
@@ -115,6 +121,8 @@ const addInternshipProgram = async (
       isResponsiveHr,
       isHiredImmediately,
       isUrgent,
+      jobLocation,
+      companyDescription,
       companyShortDetails: {
         userEmail,
         userPhotoUrl,

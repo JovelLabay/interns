@@ -1,8 +1,8 @@
 // REACT
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // UI
-import { Disclosure, Transition } from '@headlessui/react';
+import { Disclosure, Switch, Transition } from '@headlessui/react';
 
 // ICONS
 import {
@@ -10,6 +10,7 @@ import {
   AiOutlineDelete,
   AiOutlineCloseCircle,
   AiOutlineCheckCircle,
+  AiOutlinePlusCircle,
 } from 'react-icons/ai';
 
 // OTHERS
@@ -24,192 +25,157 @@ import {
   deleteStudents,
   updateStudents,
 } from '@/src/functions/firebaseFirestore';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { store } from '@/src/firebase/firebaseConfig';
+import { BeatLoader } from 'react-spinners';
+import EditStudents from '../modals/EditStudents';
 
-function StudentListingContainer(
-  props: AddStudentWithCollegeInterfaceWithHanler
-) {
-  const {
-    firstName,
-    lastName,
-    middleName,
-    college,
-    id,
-    defaultEmail,
-    isEdit,
-    setIsOpen,
-  } = props;
-
-  const [editStudent, setEditStudent] = useState({
-    firstName,
-    middleName,
-    lastName,
+function StudentListingContainer({
+  isOpen,
+}: {
+  isOpen: {
+    addStudents: boolean;
+    addStudentsTitle: string;
+    isSearch: string;
+    isEdit: string;
+    searchInput: string;
+    studentNumber: number;
+    collegeId: string;
+    index: number;
+    collegeName: string;
+    id: string;
+    collegeCourses: string[];
+    studentCourse: string;
+    studentStatus: boolean;
+  };
+}) {
+  const [listOfStudents, setListOfStudents] = useState<
+    StudentListObjectInterface[]
+  >([]);
+  const [isEdit, setIsEdit] = useState({
+    editStatus: false,
   });
 
+  useEffect(() => {
+    const abort = onSnapshot(
+      collection(
+        store,
+        `${isOpen.collegeName.toLowerCase().replace(/\s/g, '_')}`
+      ),
+      (snapshot) => {
+        const data = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            college: doc.data().college,
+            collegeId: doc.data().collegeId,
+            defaultEmail: doc.data().defaultEmail,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            middleName: doc.data().middleName,
+            studentCourse: doc.data().studentCourse,
+            studentStatus: doc.data().studentStatus,
+          };
+        });
+        setListOfStudents(data);
+      }
+    );
+
+    return () => {
+      abort();
+    };
+  }, [isOpen.id]);
+
   return (
-    <div
-      className={classNames(
-        'py-2 hover:cursor-pointer hover:bg-mainBgWhite rounded-md my-2',
-        {
-          'bg-mainBgWhite': isEdit === id,
-        }
+    <>
+      {listOfStudents.length === 0 ? (
+        <BeatLoader color="#000" size={20} className="my-20 text-center" />
+      ) : (
+        <table className="w-full text-left text-sm ">
+          <thead className="bg-gray-50 text-xs uppercase">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Default Email
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Full Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Student Course
+              </th>
+              <th scope="col" className="px-6 py-3 text-center">
+                Student Status
+              </th>
+              <th scope="col" className="px-6 py-3 text-center">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {listOfStudents.map((listStudent, index) => (
+              <tr
+                className="border-b bg-white duration-300 hover:cursor-pointer hover:bg-mainBgWhite"
+                key={index}
+              >
+                <th className="whitespace-nowrap px-6 py-4 font-semibold">
+                  {listStudent.defaultEmail}
+                </th>
+                <td className="px-6 py-4">{`${listStudent.firstName} ${listStudent.middleName} ${listStudent.lastName}`}</td>
+                <td className="px-6 py-4">{listStudent.studentCourse}</td>
+                <td className="px-6 py-4 text-center">
+                  <span
+                    className={classNames(
+                      'rounded-full py-2 px-3 text-secondaryWhite',
+                      listStudent.studentStatus ? 'bg-green-300' : 'bg-red-300'
+                    )}
+                  >
+                    {listStudent.studentStatus ? 'Active' : 'Inactive'}
+                  </span>
+                </td>
+                <td className="flex justify-center gap-2 px-6 py-4">
+                  <button
+                    className="buttonIcon-edit"
+                    onClick={() => {
+                      setIsEdit((prev) => {
+                        return {
+                          ...prev,
+                          editStatus: true,
+                        };
+                      });
+                    }}
+                  >
+                    <AiOutlineEdit size={20} color="#fff" />
+                  </button>
+                  <button
+                    className="buttonIcon-delete"
+                    onClick={() => {
+                      if (listStudent.studentStatus) {
+                        notify('Cannot delete active student');
+                      } else {
+                        deleteThisStudent(listStudent.college, listStudent.id);
+                      }
+                    }}
+                  >
+                    <AiOutlineDelete size={20} color="#fff" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
-    >
-      <Disclosure>
-        <Disclosure.Button
-          className="flex flex-col w-full justify-between px-2"
-          onClick={() => {
-            editHandler(id);
-          }}
-        >
-          <p>
-            {isEdit !== id &&
-              `Fullname: ${firstName} ${middleName} ${lastName}`}
-          </p>
-          <p>{isEdit !== id && `Email: ${defaultEmail}`}</p>
-          <p>{isEdit !== id && `Student ID: ${id}`}</p>
-          <p>
-            {isEdit !== id && (
-              <>
-                Status:{' '}
-                <span className="px-3 rounded-full bg-red-300 text-white">
-                  ACTIVE
-                </span>
-              </>
-            )}
-          </p>
-        </Disclosure.Button>
-        <Transition show={isEdit === id}>
-          <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-            <div className="flex flex-col gap-2">
-              <input
-                type="text"
-                placeholder="First Name..."
-                className="border bg-customBorder rounded px-2 py-1 outline-none"
-                value={editStudent.firstName}
-                onChange={(e) => {
-                  setEditStudent((prev) => {
-                    return {
-                      ...prev,
-                      firstName: e.target.value,
-                    };
-                  });
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Middle Name..."
-                className="border bg-customBorder rounded px-2 py-1 outline-none"
-                value={editStudent.middleName}
-                onChange={(e) => {
-                  setEditStudent((prev) => {
-                    return {
-                      ...prev,
-                      middleName: e.target.value,
-                    };
-                  });
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Last Name..."
-                className="border bg-customBorder rounded px-2 py-1 outline-none"
-                value={editStudent.lastName}
-                onChange={(e) => {
-                  setEditStudent((prev) => {
-                    return {
-                      ...prev,
-                      lastName: e.target.value,
-                    };
-                  });
-                }}
-              />
-            </div>
 
-            <div className="flex justify-around items-center gap-3 pt-4">
-              <button className="bg-yellow-500 w-[50%] flex justify-center py-2 rounded">
-                <AiOutlineEdit
-                  size={20}
-                  color="#fff"
-                  onClick={() => {
-                    updateHandler(
-                      college,
-                      id,
-                      editStudent.firstName,
-                      editStudent.middleName,
-                      editStudent.lastName
-                    );
-                  }}
-                />
-              </button>
-              <button
-                className="bg-red-500 w-[50%] flex justify-center py-2 rounded"
-                onClick={() => {
-                  deleteHandler(college, id);
-                }}
-              >
-                <AiOutlineDelete size={20} color="#fff" />
-              </button>
-              <button className="bg-green-500 w-[50%] flex justify-center py-2 rounded">
-                <AiOutlineCheckCircle size={20} color="#fff" />
-              </button>
-              <button
-                className="bg-blue-400 w-[50%] flex justify-center py-2 rounded"
-                onClick={() => {
-                  editHandler('');
-                  setEditStudent({
-                    firstName: '',
-                    lastName: '',
-                    middleName: '',
-                  });
-                }}
-              >
-                <AiOutlineCloseCircle size={20} color="#fff" />
-              </button>
-            </div>
-          </Disclosure.Panel>
-        </Transition>
-      </Disclosure>
-
-      {/* NOTIFICATION CONTAINER */}
-      <ToastContainer />
-    </div>
+      {/* EDIT */}
+      <EditStudents isEdit={isEdit} setIsEdit={setIsEdit} />
+    </>
   );
 
-  // EDIT STUDENT
-  function editHandler(studentId: string) {
-    setIsOpen((prev) => {
-      return {
-        ...prev,
-        isEdit: studentId,
-      };
-    });
-  }
-
-  // UPDATE STUDENT
-  function updateHandler(
-    collegeName: string,
-    studentId: string,
-    firstName: string,
-    middleName: string,
-    lastName: string
-  ) {
-    updateStudents(collegeName, studentId, firstName, middleName, lastName)
-      .then(() => {
-        notify('Student updated successfully');
+  function deleteThisStudent(collegeName: string, id: string) {
+    deleteStudents(collegeName, id)
+      .then((res) => {
+        notify(res);
       })
-      .catch((err) => {
-        notify(err.message);
-      });
-  }
-
-  // DELETE STUDENT
-  function deleteHandler(collegeName: string, studentId: string) {
-    deleteStudents(collegeName, studentId)
-      .then(() => {
-        notify('Student deleted successfully');
-      })
-      .catch((err) => {
-        notify(err.message);
+      .catch((error) => {
+        notify(error);
       });
   }
 }

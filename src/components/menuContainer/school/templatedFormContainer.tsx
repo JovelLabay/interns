@@ -21,6 +21,7 @@ function TemplatedFormContainer({
     collegeName: '',
     collegeId: '',
     action: '',
+    collegeColor: '',
   });
 
   const collegeTemplateForm = useMemo(() => {
@@ -44,6 +45,7 @@ function TemplatedFormContainer({
         <BreadCrumbs
           activeBreadCrumbs={activeBreadCrumbs}
           setActiveBreadcrumb={setActiveBreadcrumb}
+          color={activeBreadCrumbs.collegeColor}
         />
         <div className="mx-10">
           {activeBreadCrumbs.collegeId !== '' ? (
@@ -62,12 +64,14 @@ function TemplatedFormContainer({
                         collegeName: college[1].collegeName,
                         collegeId: college[0],
                         action: '',
+                        collegeColor: college[1].collegeColor,
                       })
                     }
                     key={index}
-                    className={`py-8 rounded text-white uppercase shadow-xl`}
+                    className={`py-8 rounded uppercase shadow font-semibold text-secondaryWhite`}
                     style={{
-                      backgroundColor: college[1].collegeColor,
+                      borderLeftWidth: '10px',
+                      borderLeftColor: college[1].collegeColor,
                     }}
                   >
                     {college[1].collegeName}

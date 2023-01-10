@@ -9,7 +9,7 @@ import { AddStudent } from '@/src/validator/LogSignValidator';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // UI
-import { Dialog, Switch, Transition } from '@headlessui/react';
+import { Dialog, Listbox, Switch, Transition } from '@headlessui/react';
 
 // USEFORM
 import { useForm } from 'react-hook-form';
@@ -21,15 +21,45 @@ import { BeatLoader } from 'react-spinners';
 // TOAST
 import { notify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
+import { FiChevronDown } from 'react-icons/fi';
+import classNames from 'classnames';
 
 function AddStudents({
   isOpen,
-  addStudentToggle,
-  addStudentsTitle,
+  setIsOpen,
 }: {
-  isOpen: boolean;
-  addStudentToggle: (name: string) => void;
-  addStudentsTitle: string;
+  isOpen: {
+    addStudents: boolean;
+    addStudentsTitle: string;
+    isSearch: string;
+    isEdit: string;
+    searchInput: string;
+    studentNumber: number;
+    collegeId: string;
+    index: number;
+    collegeName: string;
+    id: string;
+    collegeCourses: string[];
+    studentCourse: string;
+    studentStatus: boolean;
+  };
+  setIsOpen: React.Dispatch<
+    React.SetStateAction<{
+      addStudents: boolean;
+      addStudentsTitle: string;
+      isSearch: string;
+      isEdit: string;
+      searchInput: string;
+      studentNumber: number;
+      collegeId: string;
+      index: number;
+      collegeName: string;
+      id: string;
+      collegeCourses: string[];
+      studentCourse: string;
+      studentStatus: boolean;
+    }>
+  >;
 }) {
   const [loading, setLoading] = useState({
     addStudentLoading: false,
@@ -51,9 +81,11 @@ function AddStudents({
       data.firstName,
       data.middleName,
       data.lastName,
-      uniqid(undefined, `${data.firstName}_@interns.com`),
-      addStudentsTitle,
-      enabled
+      uniqid(undefined, `_${data.firstName}_@interns.com`),
+      isOpen.collegeName,
+      enabled,
+      isOpen.id,
+      isOpen.studentCourse
     )
       .then(() => {
         notify('success, Student Added Successfully');
@@ -66,18 +98,17 @@ function AddStudents({
           middleName: '',
           lastName: '',
         });
-        addStudentToggle('');
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={isOpen.addStudents} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
-          onClose={() => addStudentToggle('')}
+          onClose={() => setIsOpen({ ...isOpen, addStudents: false })}
         >
           <Transition.Child
             as={Fragment}
@@ -102,17 +133,19 @@ function AddStudents({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-[600px] min-h-[300px] transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex flex-row justify-between items-center">
+                <Dialog.Panel className="min-h-[300px] w-[600px] transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex flex-row items-center justify-between">
                     <button
-                      className="rounded border-2 border-primaryYellow w-[100px] py-2"
-                      onClick={() => addStudentToggle('')}
+                      className="w-[100px] rounded border-2 border-primaryYellow py-2"
+                      onClick={() =>
+                        setIsOpen({ ...isOpen, addStudents: false })
+                      }
                     >
                       Cancel
                     </button>
-                    <p>Student to {addStudentsTitle}</p>
+                    <p>Student to {isOpen.collegeName}</p>
                     <button
-                      className="rounded bg-primaryYellow w-[100px] py-2 flex justify-around items-center gap-2"
+                      className="flex w-[100px] items-center justify-around gap-2 rounded bg-primaryYellow py-2"
                       onClick={handleSubmit(handleSubmitGenerateStudentHandler)}
                     >
                       {loading.addStudentLoading ? (
@@ -122,16 +155,53 @@ function AddStudents({
                       )}
                     </button>
                   </div>
-                  <div className="mt-2 flex flex-col mx-10 py-5 gap-3">
+                  <div className="mx-10 mt-2 flex flex-col gap-3 py-5">
+                    <label htmlFor="name">College Department</label>
+
+                    <Listbox
+                      value={isOpen.studentCourse}
+                      onChange={(value) =>
+                        setIsOpen({ ...isOpen, studentCourse: value })
+                      }
+                    >
+                      {({ open }: { open: boolean }) => (
+                        <div className="relative">
+                          <Listbox.Button className="flex w-full justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none">
+                            <>{isOpen.studentCourse}</>
+                            <FiChevronDown
+                              size={30}
+                              className={classNames(
+                                'text-secondaryWhite duration-300',
+                                {
+                                  'rotate-180': open,
+                                }
+                              )}
+                            />
+                          </Listbox.Button>
+                          <Listbox.Options className="absolute z-50 max-h-[200px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
+                            {isOpen.collegeCourses.map((person, index) => (
+                              <Listbox.Option
+                                className="py-1"
+                                key={index}
+                                value={person}
+                              >
+                                {person}
+                              </Listbox.Option>
+                            ))}
+                          </Listbox.Options>
+                        </div>
+                      )}
+                    </Listbox>
+
                     <label htmlFor="name">First Name</label>
                     <input
                       type="text"
                       placeholder="Student First Name..."
-                      className="border-2 border-primaryYellow bg-mainBgWhite rounded p-2 outline-none"
+                      className="rounded border-2 border-primaryYellow bg-mainBgWhite p-2 outline-none"
                       {...register('firstName')}
                     />
                     {errors.firstName && (
-                      <p className="text-red-500 text-sm">
+                      <p className="text-sm text-red-500">
                         {errors.firstName.message}
                       </p>
                     )}
@@ -139,11 +209,11 @@ function AddStudents({
                     <input
                       type="text"
                       placeholder="Student Last Name..."
-                      className="border-2 border-primaryYellow bg-mainBgWhite rounded p-2 outline-none"
+                      className="rounded border-2 border-primaryYellow bg-mainBgWhite p-2 outline-none"
                       {...register('middleName')}
                     />
                     {errors.middleName && (
-                      <p className="text-red-500 text-sm">
+                      <p className="text-sm text-red-500">
                         {errors.middleName.message}
                       </p>
                     )}
@@ -151,11 +221,11 @@ function AddStudents({
                     <input
                       type="text"
                       placeholder="Student Last Name..."
-                      className="border-2 border-primaryYellow bg-mainBgWhite rounded p-2 outline-none"
+                      className="rounded border-2 border-primaryYellow bg-mainBgWhite p-2 outline-none"
                       {...register('lastName')}
                     />
                     {errors.lastName && (
-                      <p className="text-red-500 text-sm">
+                      <p className="text-sm text-red-500">
                         {errors.lastName.message}
                       </p>
                     )}
@@ -166,7 +236,7 @@ function AddStudents({
                       className={`${
                         enabled ? 'bg-primaryYellow' : 'bg-mainBgWhite'
                       }
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
                     >
                       <span className="sr-only">Use setting</span>
                       <span

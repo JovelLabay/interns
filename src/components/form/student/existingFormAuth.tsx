@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // TOAST
 import { errorNotify } from '@/src/components/common/toast';
@@ -24,6 +24,8 @@ function ExistingForm({
     emailAddress: string;
     password: string;
   };
+
+  const [isSendLoading, setIsSendLoading] = useState(false);
 
   const { register, handleSubmit } = useForm<EmailPassword>();
 
@@ -71,16 +73,18 @@ function ExistingForm({
 
       <input
         className="bg-primaryYellow rounded-md py-2 w-full flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-primaryYellowHover duration-150"
-        value="Login"
+        value={!isSendLoading ? 'Login' : 'Logging in...'}
         type="submit"
       />
     </form>
   );
 
   function signInExisitingStudent(data: EmailPassword) {
+    setIsSendLoading(true);
     signInWithEmailAndPassword(emailPassAuth, data.emailAddress, data.password)
       .then((res) => console.log(res))
       .catch((err) => {
+        setIsSendLoading(false);
         errorNotify(err.message);
       });
   }

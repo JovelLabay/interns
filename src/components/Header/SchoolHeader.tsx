@@ -107,16 +107,16 @@ function SchoolHeader({
 
   return (
     <>
-      <div className="bg-white flex flex-row justify-between items-center h-[10vh] px-2">
+      <div className="flex h-[10vh] flex-row items-center justify-between bg-white px-2">
         <div>
-          <Link href="/">
-            <div className="logo hover:cursor-pointer">
-              <p className="text-[38px] font-bold">
-                <span className="text-primaryYellow">I</span>
-                nterns
-              </p>
-            </div>
-          </Link>
+          {/* <Link href="/"> */}
+          <div className="logo hover:cursor-pointer">
+            <p className="text-[38px] font-bold">
+              <span className="text-primaryYellow">I</span>
+              nterns
+            </p>
+          </div>
+          {/* </Link> */}
         </div>
 
         <div className="flex flex-row items-center justify-center gap-10">
@@ -138,8 +138,8 @@ function SchoolHeader({
                 <IoSettingsOutline />
               </Popover.Button>
 
-              <Popover.Panel className="absolute z-10 w-[300px] right-0">
-                <div className="flex flex-col gap-4 shadow-md bg-white rounded mt-2 p-3">
+              <Popover.Panel className="absolute right-0 z-10 w-[300px]">
+                <div className="mt-2 flex flex-col gap-4 rounded bg-white p-3 shadow-md">
                   <button
                     name="manageCategory"
                     className="school-header-buttons"

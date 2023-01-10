@@ -5,7 +5,10 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 // STATE MANAGEMENT
-import { DynamicContext } from '@/src/contexts/context';
+import {
+  CompanyUserDetailsContext,
+  DynamicContext,
+} from '@/src/contexts/context';
 
 // OTHERS
 import classNames from 'classnames';
@@ -29,6 +32,7 @@ function AddInternships({
   addModalToggle: () => void;
 }) {
   const context = useContext(DynamicContext);
+  const companyContext = useContext(CompanyUserDetailsContext);
 
   const [paginatedInternships, setPaginatedInternships] = useState(1);
   const [categories, setCategories] = useState<[string, any][]>();
@@ -208,6 +212,10 @@ function AddInternships({
       addInternshipForm.jobCategory !== 'Select Job Category'
     ) {
       addInternshipProgram(
+        companyContext?.companyUserObject?.companyDetails?.companyLocation ||
+          'Unknown',
+        companyContext?.companyUserObject?.companyDetails?.companyDescription ||
+          'Unknown',
         jobTitle,
         jobDescription,
         jobEnvironment,

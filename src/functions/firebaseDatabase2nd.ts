@@ -80,6 +80,10 @@ class CollegeFormTemplated {
     dateAdded: string,
     fileName: string
   ) => Promise<string>;
+  public editCollegeFormTemplate: (
+    objectFile: string,
+    fileName: string
+  ) => Promise<string>;
   public deleteNewCollegeFormTemplate: (formId: string) => Promise<string>;
 
   constructor(id: string) {
@@ -115,6 +119,10 @@ class CollegeFormTemplated {
         return 'error';
       }
     };
+
+    this.editCollegeFormTemplate = async () => {
+      return 'null';
+    };
   }
 }
 
@@ -135,13 +143,14 @@ const studentRegistration = async (
     province_state,
     gender,
     studentImageProfile,
+    studentImageCover,
     studentDocuments,
   } = data;
 
   const idReference = JSON.parse(uniqueId || '').id;
   try {
     const db = database;
-    await set(ref(db, `student/${idReference}`), {
+    await set(ref(db, `students/${idReference}`), {
       studentDetails: {
         firstName,
         lastName,
@@ -152,6 +161,7 @@ const studentRegistration = async (
       },
       selfDescription: selfDescription || 'NOT SET',
       studentImageProfile: studentImageProfile || 'NOT SET',
+      studentImageCover: studentImageCover || 'NOT SET',
       birthDate: {
         day: birthDate?.day || 'NOT SET',
         month: birthDate?.month || 'NOT SET',

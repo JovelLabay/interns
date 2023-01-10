@@ -177,7 +177,6 @@ function CompanyOptionModals({
   function dismissCompany(uuid: string, data: SendEmailInterface) {
     dismissCompanyApplication(uuid)
       .then((res) => {
-        notify(res || 'Company Rejected');
         fetch(`${domain}/email/${companyEmail}`, {
           method: 'POST',
           headers: {
@@ -185,7 +184,7 @@ function CompanyOptionModals({
           },
           body: JSON.stringify({
             companyEmail,
-            subject: data.subject,
+            subject: `${data.subject} | ${companyName} | Company Rejected`,
             message: `
               <p>${data.greetings} ${companyName},</p>
 
@@ -211,7 +210,6 @@ function CompanyOptionModals({
   function acceptCompany(uuid: string, data: SendEmailInterface) {
     approveCompanyApplication(uuid)
       .then((res) => {
-        notify(res || 'Company Accepted');
         fetch(`${domain}/email/${companyEmail}`, {
           method: 'POST',
           headers: {
@@ -219,7 +217,7 @@ function CompanyOptionModals({
           },
           body: JSON.stringify({
             companyEmail,
-            subject: data.subject,
+            subject: `${data.subject} | ${companyName} | Company Accepted`,
             message: `
               <h3>${data.greetings} ${companyName},</h3>
 
@@ -246,7 +244,6 @@ function CompanyOptionModals({
   function pendingCompany(uuid: string, data: SendEmailInterface) {
     pendingCompanyApplication(uuid)
       .then((res) => {
-        notify(res || 'Company Pending');
         fetch(`${domain}/email/${companyEmail}`, {
           method: 'POST',
           headers: {
@@ -254,7 +251,7 @@ function CompanyOptionModals({
           },
           body: JSON.stringify({
             companyEmail,
-            subject: data.subject,
+            subject: `${data.subject} | ${companyName} | Company Pending`,
             message: `
               <p>${data.greetings} ${companyName},</p>
 
@@ -272,7 +269,7 @@ function CompanyOptionModals({
             clearValues();
             notify(data.message);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
       })
       .catch((err) => console.error(err));
   }
