@@ -33,15 +33,12 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 import AddInternships from '../modals/addInternships';
 import { FiList } from 'react-icons/fi';
+
+// FIREBASE
 import { database, store } from '@/src/firebase/firebaseConfig';
 import { onValue, ref } from 'firebase/database';
 import { ToastContainer } from 'react-toastify';
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const initialState = { id: 1 };
 
@@ -59,6 +56,10 @@ function CompanyDashboardContainer() {
     companyQuestionnaire: [],
     companyCategories: [],
     companyInternships: [],
+    companyDetails: {
+      companyLocation: '',
+      companyDescription: '',
+    },
   });
 
   const [activeCompanyJobCategory, setActiveCompanyJobCategory] =
@@ -107,6 +108,25 @@ function CompanyDashboardContainer() {
         return {
           ...prev,
           companyCategories: data,
+        };
+      });
+    });
+
+    // GET COMPANY DETAILS
+    const companyDetailsRef = ref(
+      db,
+      `companies/${localStorage.getItem('userId')}`
+    );
+    onValue(companyDetailsRef, (snapshot) => {
+      const { locationOfCompany, companyDescription } = snapshot.val();
+
+      setCompanyUserObject((prev) => {
+        return {
+          ...prev,
+          companyDetails: {
+            companyLocation: locationOfCompany,
+            companyDescription,
+          },
         };
       });
     });
@@ -228,7 +248,7 @@ function CompanyDashboardContainer() {
   );
 
   // HANDLERS
-  function addModalToggle() {
+  function addModalToggle(){
     setAddRemoveModal((prev) => {
       return { ...prev, addInternship: !prev.addInternship };
     });

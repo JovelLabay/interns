@@ -35,6 +35,8 @@ function SchoolDashboard() {
         if (user?.phoneNumber === null) {
           router.push('/views/user/school/auth');
         } else {
+          document.title = 'Interns | School Dashboard';
+
           setIsLoading(false);
           context?.setUser((prev) => {
             return {

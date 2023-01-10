@@ -19,6 +19,7 @@ import { successfulNotify } from '../../common/toast';
 
 // EXTERNAL
 import ReactToPrint from 'react-to-print';
+import JsPDF from 'jspdf';
 
 // FIREBASE
 import { CollegeFormTemplated } from '@/src/functions/firebaseDatabase2nd';
@@ -32,6 +33,7 @@ function CollegeTemplateForms({
     collegeName: string;
     collegeId: string;
     action: string;
+    collegeColor: string;
   };
   collegeTemplateForm: any;
   setActiveBreadcrumb: React.Dispatch<
@@ -39,6 +41,7 @@ function CollegeTemplateForms({
       collegeName: string;
       collegeId: string;
       action: string;
+      collegeColor: string;
     }>
   >;
 }) {
@@ -193,10 +196,9 @@ function CollegeTemplateForms({
       <Transition appear show={isOpenDocument} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-20"
+          className="relative z-10"
           onClose={() => {
             setIsOpenDocument(!isOpenDocument);
-            setlala('');
           }}
         >
           <Transition.Child
@@ -211,7 +213,7 @@ function CollegeTemplateForms({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 ">
+          <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4">
               <Transition.Child
                 as={Fragment}
@@ -223,25 +225,42 @@ function CollegeTemplateForms({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className="h-[95vh] shadow-xl transition-all bg-white w-[1000px] overflow-y-auto p-16"
+                  className="w-[1000px] bg-white h-[95vh] p-16 rounded-md overflow-auto"
                   ref={componentRef}
                 >
                   <ReactToPrint
                     trigger={() => (
-                      <button className="fixed bottom-6 right-6 bg-primaryYellow p-3 rounded-full shadow-lg">
+                      <button className="fixed top-5 right-5 bg-primaryYellow p-2 rounded-full shadow-lg">
                         <AiOutlinePrinter size={25} color={'#fff'} />
                       </button>
                     )}
                     content={() => componentRef.current}
                   />
-                  <button className="fixed bottom-6 right-24 bg-primaryYellow p-3 rounded-full shadow-lg">
+                  <button
+                    className="fixed top-20 right-5 bg-primaryYellow p-2 rounded-full shadow-lg"
+                    onClick={() => {
+                      const report = new JsPDF('portrait', 'pt', 'a4');
+                      report
+                        .html(
+                          document.getElementById(
+                            'printableArea'
+                          ) as HTMLElement
+                        )
+                        .then(() => {
+                          report.save('report.pdf');
+                        });
+                    }}
+                  >
                     <AiOutlineCloudDownload size={25} color={'#fff'} />
                   </button>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: lala,
-                    }}
-                  />
+                  <div className="flex flex-row justify-start items-center">
+                    <div
+                      id="printableArea"
+                      dangerouslySetInnerHTML={{
+                        __html: lala,
+                      }}
+                    />
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -260,6 +279,7 @@ function CollegeTemplateForms({
           collegeId: '',
           collegeName: '',
           action: '',
+          collegeColor: '',
         });
       })
       .catch((err) => console.error(err));

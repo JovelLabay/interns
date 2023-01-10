@@ -2,6 +2,34 @@ interface Welcome {
   starterWelcome: boolean;
 }
 
+interface StudentObject {
+  studentDetails: {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    collegeName: string;
+    emailAddress: string;
+    gender: string;
+  };
+  birthDate: {
+    day: string;
+    month: string;
+    year: string;
+  };
+  address: {
+    city_municipality: string;
+    province_state: string;
+  };
+  selfDescription: string;
+  studentImageProfile: string;
+  studentDocuments: {
+    applicationLetter: string;
+    birthCerficate: string;
+    curriculumVitae: string;
+    schoolId: string;
+  };
+}
+
 interface Dynamic {
   isDarkMode: boolean;
   setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +38,7 @@ interface Dynamic {
     userEmail: string;
     userPhotoUrl: string;
     userId: string;
+    collegeId: string;
   };
   setUser: React.Dispatch<
     React.SetStateAction<{
@@ -17,8 +46,11 @@ interface Dynamic {
       userEmail: string;
       userPhotoUrl: string;
       userId: string;
+      collegeId: string;
     }>
   >;
+  watch: UseFormWatch<StudentObject>;
+  setValue: UseFormSetValue<StudentObject>;
 }
 
 // JOB CATEGORY IS ACTIVE
@@ -31,12 +63,20 @@ interface UserCompanyObject extends JobCategoryIsActiveInterface {
     companyQuestionnaire: never[];
     companyCategories: never[];
     companyInternships: never[];
+    companyDetails: {
+      companyLocation: string;
+      companyDescription: string;
+    };
   };
   setCompanyUserObject: React.Dispatch<
     React.SetStateAction<{
       companyQuestionnaire: never[];
       companyCategories: never[];
       companyInternships: never[];
+      companyDetails: {
+        companyLocation: string;
+        companyDescription: string;
+      };
     }>
   >;
 }
@@ -84,8 +124,23 @@ interface AddStudentWithCollegeInterfaceWithHanler
       isEdit: string;
       searchInput: string;
       studentNumber: number;
+      collegeId: string;
+      collegeCourses: string[];
+      studentCourse: string;
     }>
   >;
+}
+
+interface StudentListObjectInterface {
+  college: string;
+  collegeId: string;
+  defaultEmail: string;
+  firstName: string;
+  id: string;
+  lastName: string;
+  middleName: string;
+  studentCourse: string;
+  studentStatus: boolean;
 }
 
 // COMPANY OBJECT LIST
@@ -143,6 +198,7 @@ interface CollegeListInterface {
   professionOfDean: string;
   shortCollegeName: string;
   collegeColor: string;
+  courses: string[];
 }
 
 // FORM LIST QUESTIONNAIRE
@@ -209,4 +265,7 @@ interface InternshipObjectInterface {
   jobQualifications: string[];
   jobResponsibilities: string[];
   jobTitle: string;
+  id: string;
+  jobLocation: string;
+  companyDescription: string;
 }

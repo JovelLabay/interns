@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // EXTERNAL
 import { Listbox } from '@headlessui/react';
@@ -33,48 +33,13 @@ function ExisitingFormSetup({
     }
   ][];
 }) {
+  const count = useMemo(() => {
+    return watch().selfDescription?.length;
+  }, [watch().selfDescription]);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
       {/* PERSONAL DETAILS */}
-      <div className="flex flex-col">
-        <label htmlFor="" className="inputlabel">
-          First Name
-        </label>
-        <input
-          type="text"
-          placeholder="First Name"
-          title="CompanyName"
-          className="border-2 rounded py-3 px-2 outline-none border-primaryYellow bg-teriaryWhite"
-          disabled
-          {...register('firstName')}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="" className="inputlabel">
-          Middle Name
-        </label>
-        <input
-          type="text"
-          placeholder="Middle Name"
-          title="CompanyName"
-          className="border-2 rounded py-3 px-2 outline-none border-primaryYellow bg-teriaryWhite"
-          disabled
-          {...register('middleName')}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="" className="inputlabel">
-          Last Name
-        </label>
-        <input
-          type="text"
-          placeholder="Last Name"
-          title="CompanyName"
-          className="border-2 rounded py-3 px-2 outline-none border-primaryYellow bg-teriaryWhite"
-          disabled
-          {...register('lastName')}
-        />
-      </div>
       <div className="flex flex-col">
         <label htmlFor="" className="inputlabel">
           Email Address
@@ -83,7 +48,7 @@ function ExisitingFormSetup({
           type="email"
           placeholder="Email Address"
           title="CompanyName"
-          className="border-2 rounded py-3 px-2 outline-none border-primaryYellow bg-teriaryWhite"
+          className="rounded border-2 border-primaryYellow bg-teriaryWhite py-3 px-2 outline-none"
           disabled
           {...register('emailAddress')}
         />
@@ -96,14 +61,23 @@ function ExisitingFormSetup({
           type="email"
           placeholder="College/School"
           title="CompanyName"
-          className="border-2 rounded py-3 px-2 outline-none border-primaryYellow bg-teriaryWhite"
+          className="rounded border-2 border-primaryYellow bg-teriaryWhite py-3 px-2 outline-none"
           disabled
           {...register('collegeName')}
         />
       </div>
       <div className="flex flex-col">
         <label htmlFor="" className="inputlabel">
-          Self Description
+          Self Description{' '}
+          <span
+            className={
+              count >= 120
+                ? 'rounded-full bg-red-500 px-2 font-thin text-white'
+                : 'rounded-full bg-green-500 px-2 font-thin text-white'
+            }
+          >
+            {count}
+          </span>
         </label>
         <textarea
           placeholder="Self Description"
@@ -118,22 +92,22 @@ function ExisitingFormSetup({
         <label htmlFor="" className="inputlabel">
           Birth Date
         </label>
-        <div className="flex justify-between items-center mt-1">
+        <div className="mt-1 flex items-center justify-between">
           <Listbox>
             {({ open }: { open: boolean }) => (
               <div className="relative">
-                <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-[80px] flex justify-between ">
+                <Listbox.Button className="flex w-[80px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none ">
                   {watch().birthDate?.month === undefined
                     ? 'MM'
                     : watch().birthDate?.month}
                   <FiChevronDown
                     size={30}
-                    className={classNames('duration-300 text-secondaryWhite', {
+                    className={classNames('text-secondaryWhite duration-300', {
                       'rotate-180': open,
                     })}
                   />
                 </Listbox.Button>
-                <Listbox.Options className="absolute bg-white rounded-md p-2 w-[80px] shadow-md hover:cursor-pointer max-h-[150px] overflow-auto z-50">
+                <Listbox.Options className="absolute z-50 max-h-[150px] w-[80px] overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                   {data.months.map((item) => (
                     <Listbox.Option
                       className="py-1"
@@ -152,18 +126,18 @@ function ExisitingFormSetup({
           <Listbox>
             {({ open }: { open: boolean }) => (
               <div className="relative">
-                <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-[80px] flex justify-between ">
+                <Listbox.Button className="flex w-[80px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none ">
                   {watch().birthDate?.day === undefined
                     ? 'DD'
                     : watch().birthDate?.day}
                   <FiChevronDown
                     size={30}
-                    className={classNames('duration-300 text-secondaryWhite', {
+                    className={classNames('text-secondaryWhite duration-300', {
                       'rotate-180': open,
                     })}
                   />
                 </Listbox.Button>
-                <Listbox.Options className="absolute bg-white rounded-md p-2 w-[80px] shadow-md hover:cursor-pointer max-h-[150px] overflow-auto z-50">
+                <Listbox.Options className="absolute z-50 max-h-[150px] w-[80px] overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                   {data.days.map((item) => (
                     <Listbox.Option
                       className="py-1"
@@ -182,18 +156,18 @@ function ExisitingFormSetup({
           <Listbox>
             {({ open }: { open: boolean }) => (
               <div className="relative">
-                <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-[100px] flex justify-between ">
+                <Listbox.Button className="flex w-[100px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none ">
                   {watch().birthDate?.year === undefined
                     ? 'YYYY'
                     : watch().birthDate?.year}
                   <FiChevronDown
                     size={30}
-                    className={classNames('duration-300 text-secondaryWhite', {
+                    className={classNames('text-secondaryWhite duration-300', {
                       'rotate-180': open,
                     })}
                   />
                 </Listbox.Button>
-                <Listbox.Options className="absolute bg-white rounded-md p-2 w-[100px] shadow-md hover:cursor-pointer max-h-[150px] overflow-auto z-50">
+                <Listbox.Options className="absolute z-50 max-h-[150px] w-[100px] overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                   {data.years.map((item) => (
                     <Listbox.Option
                       className="py-1"
@@ -220,18 +194,18 @@ function ExisitingFormSetup({
         <Listbox>
           {({ open }: { open: boolean }) => (
             <div className="relative">
-              <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-full flex justify-between mt-1">
+              <Listbox.Button className="mt-1 flex w-full justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none">
                 {watch().city_municipality === undefined
                   ? 'Select City or Municipality'
                   : watch().city_municipality}
                 <FiChevronDown
                   size={30}
-                  className={classNames('duration-300 text-secondaryWhite', {
+                  className={classNames('text-secondaryWhite duration-300', {
                     'rotate-180': open,
                   })}
                 />
               </Listbox.Button>
-              <Listbox.Options className="absolute bg-white rounded-md p-2 w-full shadow-md hover:cursor-pointer max-h-[150px] overflow-auto">
+              <Listbox.Options className="absolute max-h-[150px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                 {locationLists.map((item) => (
                   <Listbox.Option
                     className="py-1"
@@ -269,16 +243,16 @@ function ExisitingFormSetup({
         <Listbox>
           {({ open }: { open: boolean }) => (
             <div className="relative">
-              <Listbox.Button className="bg-mainBgWhite outline-none px-2 py-3 rounded-md border-2 border-primaryYellow w-full flex justify-between mt-1">
+              <Listbox.Button className="mt-1 flex w-full justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-3 outline-none">
                 {watch().gender === undefined ? 'Select' : watch().gender}
                 <FiChevronDown
                   size={30}
-                  className={classNames('duration-300 text-secondaryWhite', {
+                  className={classNames('text-secondaryWhite duration-300', {
                     'rotate-180': open,
                   })}
                 />
               </Listbox.Button>
-              <Listbox.Options className="absolute bg-white rounded-md p-2 w-full shadow-md hover:cursor-pointer max-h-[150px] overflow-auto z-50">
+              <Listbox.Options className="absolute z-50 max-h-[150px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
                 {data.gender.map((item) => (
                   <Listbox.Option
                     className="py-1"

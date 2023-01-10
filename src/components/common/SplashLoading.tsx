@@ -1,4 +1,5 @@
 // REACT
+import { data } from 'Data';
 import React from 'react';
 
 function SplashLoading() {
@@ -11,9 +12,7 @@ function SplashLoading() {
         </p>
       </div>
       <div className="text-center">
-        <p className="text-teriaryWhite mt-20">
-          Developed by Eluvent Corporation
-        </p>
+        <p className="text-teriaryWhite mt-20">{data.others.developers}</p>
       </div>
     </div>
   );

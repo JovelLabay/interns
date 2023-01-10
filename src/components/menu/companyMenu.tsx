@@ -52,7 +52,7 @@ function CompanyMenu({
           />
           <p
             className={classNames(
-              'text-[20px] font-semibold text-secondaryWhite mt-5',
+              'text-[20px] font-semibold text-secondaryWhite mt-5 text-center',
               {
                 'text-white': context?.isDarkMode,
               }
