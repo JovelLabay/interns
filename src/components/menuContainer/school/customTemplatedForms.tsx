@@ -32,12 +32,14 @@ function CustomTemplatedForms({
     collegeName: string;
     collegeId: string;
     action: string;
+    collegeColor: string;
   };
   setActiveBreadcrumb: React.Dispatch<
     React.SetStateAction<{
       collegeName: string;
       collegeId: string;
       action: string;
+      collegeColor: string;
     }>
   >;
   fileName: string;
@@ -49,6 +51,7 @@ function CustomTemplatedForms({
       toolbar: [
         ['bold', 'italic', 'underline', 'strike'],
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ align: ['', 'center', 'right', 'justify'] }],
       ],
     },
   });
@@ -96,7 +99,7 @@ function CustomTemplatedForms({
             )}
             onClick={() => {
               activeBreadCrumbs.action === 'EDIT'
-                ? null
+                ? updateCustomTemplated()
                 : addToCustomTemplated();
             }}
             disabled={activeBreadCrumbs.action === 'EDIT'}
@@ -104,7 +107,6 @@ function CustomTemplatedForms({
             {activeBreadCrumbs.action === 'EDIT' ? 'Update' : 'Save'}
           </button>
         </div>
-
         <input
           type="text"
           placeholder="File Name"
@@ -127,9 +129,16 @@ function CustomTemplatedForms({
           collegeId: '',
           collegeName: '',
           action: '',
+          collegeColor: '',
         });
       })
       .catch((err) => console.error(err));
+  }
+
+  function updateCustomTemplated() {
+    if (!fileName) return errorNotify('Please enter a file name');
+
+    alert('sfsf');
   }
 }
 

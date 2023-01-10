@@ -15,6 +15,7 @@ interface StudentRegistration {
   province_state: string;
   gender: string;
   studentImageProfile: string;
+  studentImageCover: string;
   studentDocuments: {
     birthCertificate: string;
     schoolId: string;

@@ -1,5 +1,5 @@
 // REACT
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // ICONS
 import {
@@ -35,6 +35,8 @@ function CompaniesContainer() {
   const values: [string, CompanyListInterface][] =
     companyList !== null ? Object.entries(companyList) : [];
 
+  const [sample, setSample] = useState(0);
+
   useEffect(() => {
     const db = database;
 
@@ -47,33 +49,33 @@ function CompaniesContainer() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 h-[80vh] overflow-auto">
+    <div className="flex h-[80vh] flex-col gap-2 overflow-auto">
       {values.map((company, index) => {
         return (
           <div
             key={index}
-            className="mx-28 bg-white rounded p-3 grid grid-cols-4"
+            className="grid grid-cols-4 rounded bg-white p-3 lg:mx-14 2xl:mx-28"
           >
             {/* TITLES */}
             <div className="col-span-3 border-r-2 pr-3">
-              <p className="font-bold text-lg text-primaryYellow">
+              <p className="text-lg font-bold text-primaryYellow">
                 {company[1].companyName}
               </p>
               <p className="w-full font-semibold text-secondaryWhite">
                 Type of Company:{' '}
-                <span className="text-placeholderColor font-normal">
+                <span className="font-normal text-placeholderColor">
                   {company[1].typeOfCompany}
                 </span>
               </p>
               <p className="w-full font-semibold text-secondaryWhite">
                 Location of the Comapny:{' '}
-                <span className="text-placeholderColor font-normal">
+                <span className="font-normal text-placeholderColor">
                   {company[1].locationOfCompany}
                 </span>
               </p>
               <p className="w-full font-semibold text-secondaryWhite">
                 Company Application Status:{' '}
-                <span className="text-placeholderColor font-normal">
+                <span className="font-normal text-placeholderColor">
                   {company[1].companyApproval}
                 </span>
               </p>
@@ -81,7 +83,7 @@ function CompaniesContainer() {
             {/* CONTROLS */}
             <div className="flex flex-row items-center justify-evenly">
               <button
-                className="bg-green-500 rounded p-3"
+                className="rounded bg-green-500 p-3"
                 onClick={() => {
                   isOptionToggle(
                     'Accept',
@@ -94,7 +96,7 @@ function CompaniesContainer() {
                 <AiOutlineCheck color="#fff" size={20} />
               </button>
               <button
-                className="bg-violet-500 rounded p-3"
+                className="rounded bg-violet-500 p-3"
                 onClick={() => {
                   isViewToggle();
                   setViewCompanyDetails(company[1]);
@@ -103,7 +105,7 @@ function CompaniesContainer() {
                 <AiFillEye color="#fff" size={20} />
               </button>
               <button
-                className="bg-blue-500 rounded p-3"
+                className="rounded bg-blue-500 p-3"
                 onClick={() => {
                   isOptionToggle(
                     'Pending',
@@ -116,7 +118,7 @@ function CompaniesContainer() {
                 <AiOutlineFieldTime color="#fff" size={20} />
               </button>
               <button
-                className="bg-red-500 rounded p-3"
+                className="rounded bg-red-500 p-3"
                 onClick={() => {
                   isOptionToggle(
                     'Dismiss',

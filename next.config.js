@@ -7,6 +7,7 @@ const nextConfig = {
       'firebasestorage.googleapis.com',
       'graph.facebook.com',
       'lh3.googleusercontent.com',
+      'picsum.photos',
     ],
   },
 };

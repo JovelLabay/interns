@@ -274,7 +274,10 @@ function AddEditInternshipForm({
           <button
             onClick={jobQualificationHandler}
             className={classNames(
-              'w-full border-2 border-dashed border-primaryYellow py-3 rounded flex justify-center items-center'
+              'w-full border-2 border-primaryYellow py-3 rounded flex justify-center items-center',
+              {
+                'text-white': context?.isDarkMode,
+              }
             )}
           >
             {!isOpen.jobQualification ? (
@@ -283,10 +286,7 @@ function AddEditInternshipForm({
                 color={context?.isDarkMode ? '#fff' : '#000'}
               />
             ) : (
-              <AiOutlineMinus
-                size={20}
-                color={context?.isDarkMode ? '#fff' : '#000'}
-              />
+              'Close'
             )}
           </button>
         </div>
