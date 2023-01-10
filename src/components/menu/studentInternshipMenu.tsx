@@ -2,7 +2,6 @@ import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, {
-  Fragment,
   useContext,
   useEffect,
   useMemo,
@@ -11,26 +10,20 @@ import React, {
 
 import { database, store } from '@/src/firebase/firebaseConfig';
 import { onValue, ref } from 'firebase/database';
-import { ToastContainer } from 'react-toastify';
 import {
   collection,
-  getDocs,
   onSnapshot,
-  query,
-  where,
+
 } from 'firebase/firestore';
-import { Dialog, Transition } from '@headlessui/react';
-import { HiLocationMarker } from 'react-icons/hi';
+
 import { BsArrowRightCircle, BsFilter } from 'react-icons/bs';
 import {
   AiOutlineCheckCircle,
   AiOutlineHeart,
-  AiOutlineMoneyCollect,
   AiOutlineReload,
 } from 'react-icons/ai';
 import { IoLocationOutline } from 'react-icons/io5';
 import { MdAttachMoney } from 'react-icons/md';
-import { BiCurrentLocation } from 'react-icons/bi';
 import { data } from 'Data';
 
 function StudentIntenshipMenu() {

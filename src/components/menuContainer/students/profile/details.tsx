@@ -1,8 +1,6 @@
 import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
-import Image from 'next/image';
 import React, { useContext } from 'react';
-import internsLogo from 'public/logo/interns_logo.png';
 
 function Details() {
   const context = useContext(DynamicContext);

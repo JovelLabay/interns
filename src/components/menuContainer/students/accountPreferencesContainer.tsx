@@ -1,17 +1,12 @@
 import { DynamicContext } from '@/src/contexts/context';
-import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
+import { emailPassAuth } from '@/src/firebase/firebaseConfig';
 import classNames from 'classnames';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import internsLogo from 'public/logo/interns_logo.png';
 import { data } from 'Data';
-import {
-  AiOutlineCloudUpload,
-  AiOutlineEdit,
-  AiOutlineFileImage,
-} from 'react-icons/ai';
+import { AiOutlineFileImage } from 'react-icons/ai';
 import Details from './profile/details';
 import Form from './profile/form';
 import Documents from './profile/documents';
