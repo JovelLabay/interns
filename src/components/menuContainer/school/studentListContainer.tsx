@@ -1,19 +1,14 @@
 // REACT
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 // ICONS
-import { BiCategoryAlt, BiDotsVerticalRounded, BiFilter } from 'react-icons/bi';
+import { BiCategoryAlt, BiFilter } from 'react-icons/bi';
 
 // COMPONENTS OR LAYOUTS
 import AddStudents from '@/src/components/modals/addStudents';
 import StudentListingContainer from '@/src/components/blocks/studentListingContainer';
-
-// FIREBASE
-import { collection, onSnapshot } from 'firebase/firestore';
-import { store } from '@/src/firebase/firebaseConfig';
-
 // UI
-import { Menu, Popover, Transition } from '@headlessui/react';
+import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import {
   AiOutlineDelete,
@@ -132,7 +127,7 @@ function StudentListContainer({
               </p>
               {/* MENU BUTTON */}
               <Popover className="relative">
-                {({ open }) => (
+                {() => (
                   <>
                     <Popover.Button
                       className={classNames(
