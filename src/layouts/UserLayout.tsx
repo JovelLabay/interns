@@ -10,7 +10,13 @@ import { StudentObjectValidator } from '../validator/studentObjectValidator';
 function UserLayout({ children }: { children: ReactNode }) {
   // DARK MODE STATE
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<{
+    userName: string;
+    userEmail: string;
+    userPhotoUrl: string;
+    userId: string;
+    collegeId?: string;
+  }>({
     userName: '',
     userEmail: '',
     userPhotoUrl: '',
@@ -19,7 +25,7 @@ function UserLayout({ children }: { children: ReactNode }) {
   });
 
   // STUDENT OBJECT DETAILS
-  const { register, handleSubmit, watch, setValue } = useForm<StudentObject>({
+  const { watch, setValue } = useForm<StudentObject>({
     mode: 'onBlur',
     resolver: yupResolver(StudentObjectValidator),
   });

@@ -1,8 +1,6 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import SecondayFooter from '@/src/components/Footer/SecondayStaticFooter';
-import axios from 'axios';
-import { BsArrowReturnLeft } from 'react-icons/bs';
 import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
 import ApplicantsContainer from '@/src/components/menuContainer/company/applicantsContainer';

@@ -9,7 +9,6 @@ import { DynamicContext } from '@/src/contexts/context';
 import internsLogo from 'public/logo/interns_logo.png';
 import { FiMenu } from 'react-icons/fi';
 import StudentHeaderOptions from './StudentHeaderOptions';
-import { GrClose } from 'react-icons/gr';
 import { motion } from 'framer-motion';
 import classNames from 'classnames';
 import { AiOutlineClose } from 'react-icons/ai';

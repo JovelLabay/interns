@@ -49,7 +49,7 @@ function CollegeTemplateForms({
   const [isOpenDocument, setIsOpenDocument] = useState(false);
   const [lala, setlala] = useState<any>();
   const [fileName, setFileName] = useState('');
-  const [formId, setFormId] = useState('');
+  const [formId, setFormId] = useState(''); // To be used
 
   const componentRef = useRef(null);
   const formTemplates =
@@ -60,21 +60,21 @@ function CollegeTemplateForms({
   const addTemplateForm = new CollegeFormTemplated(activeBreadCrumbs.collegeId);
 
   return (
-    <div className="h-[69vh] flex flex-col relative overflow-auto gap-5">
+    <div className="relative flex h-[69vh] flex-col gap-5 overflow-auto">
       {formTemplates.length > 0 ? (
         <>
           {formTemplates.map((formTemplate: any, index) => {
             return (
               <div
                 key={index}
-                className="border-2 border-primaryYellow flex justify-between items-center py-5 px-10 rounded-md"
+                className="flex items-center justify-between rounded-md border-2 border-primaryYellow py-5 px-10"
               >
                 <div className="w-[50%] truncate">
                   {formTemplate[1].fileName}
                 </div>
                 <div className="flex flex-row items-center justify-center gap-5">
                   <button
-                    className="p-2 rounded bg-red-500"
+                    className="rounded bg-red-500 p-2"
                     onClick={() => {
                       setActiveBreadcrumb((prev) => {
                         return {
@@ -88,7 +88,7 @@ function CollegeTemplateForms({
                     <BsTrash color="#fff" size={25} />
                   </button>
                   <button
-                    className="p-2 rounded bg-green-500"
+                    className="rounded bg-green-500 p-2"
                     onClick={() => {
                       setFileName(formTemplate[1].fileName);
                       setlala(formTemplate[1].objectFile);
@@ -105,7 +105,7 @@ function CollegeTemplateForms({
                     <AiOutlineEdit color="#fff" size={25} />
                   </button>
                   <button
-                    className="p-2 rounded bg-blue-500"
+                    className="rounded bg-blue-500 p-2"
                     onClick={() => {
                       setlala(formTemplate[1].objectFile);
                       setIsOpenDocument(!isOpenDocument);
@@ -119,13 +119,13 @@ function CollegeTemplateForms({
           })}
         </>
       ) : (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex h-full items-center justify-center">
           <p className="text-xl text-secondaryWhite">No Form Templates</p>
         </div>
       )}
 
       <button
-        className="fixed bottom-8 right-[150px] bg-primaryYellow p-2 rounded-md shadow-lg"
+        className="fixed bottom-8 right-[150px] rounded-md bg-primaryYellow p-2 shadow-lg"
         onClick={() => {
           setIsOpen(!isOpen);
           setFileName('');
@@ -173,7 +173,7 @@ function CollegeTemplateForms({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="h-[95vh] shadow-xl transition-all bg-white w-[800px] rounded-md overflow-y-auto p-5">
+                <Dialog.Panel className="h-[95vh] w-[800px] overflow-y-auto rounded-md bg-white p-5 shadow-xl transition-all">
                   <CustomTemplatedForms
                     setIsOpenDocument={setIsOpenDocument}
                     isOpenDocument={isOpenDocument}
@@ -225,19 +225,19 @@ function CollegeTemplateForms({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className="w-[1000px] bg-white h-[95vh] p-16 rounded-md overflow-auto"
+                  className="h-[95vh] w-[1000px] overflow-auto rounded-md bg-white p-16"
                   ref={componentRef}
                 >
                   <ReactToPrint
                     trigger={() => (
-                      <button className="fixed top-5 right-5 bg-primaryYellow p-2 rounded-full shadow-lg">
+                      <button className="fixed top-5 right-5 rounded-full bg-primaryYellow p-2 shadow-lg">
                         <AiOutlinePrinter size={25} color={'#fff'} />
                       </button>
                     )}
                     content={() => componentRef.current}
                   />
                   <button
-                    className="fixed top-20 right-5 bg-primaryYellow p-2 rounded-full shadow-lg"
+                    className="fixed top-20 right-5 rounded-full bg-primaryYellow p-2 shadow-lg"
                     onClick={() => {
                       const report = new JsPDF('portrait', 'pt', 'a4');
                       report
@@ -253,7 +253,7 @@ function CollegeTemplateForms({
                   >
                     <AiOutlineCloudDownload size={25} color={'#fff'} />
                   </button>
-                  <div className="flex flex-row justify-start items-center">
+                  <div className="flex flex-row items-center justify-start">
                     <div
                       id="printableArea"
                       dangerouslySetInnerHTML={{
