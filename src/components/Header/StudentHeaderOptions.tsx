@@ -3,18 +3,10 @@ import classNames from 'classnames';
 import { data } from 'Data';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
-import {
-  AiOutlineHeart,
-  AiOutlineMessage,
-  AiOutlineSetting,
-} from 'react-icons/ai';
+import { AiOutlineMessage } from 'react-icons/ai';
 import { BiExit, BiMoon } from 'react-icons/bi';
 import { BsBookmarkDash, BsSun } from 'react-icons/bs';
-import {
-  MdAccountCircle,
-  MdOutlineAccountCircle,
-  MdOutlineDarkMode,
-} from 'react-icons/md';
+import { MdOutlineAccountCircle } from 'react-icons/md';
 
 function StudentHeaderOptions({
   theClass,

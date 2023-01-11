@@ -1,5 +1,5 @@
 // REACT
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // ICONS
 import {
@@ -35,7 +35,7 @@ function CompaniesContainer() {
   const values: [string, CompanyListInterface][] =
     companyList !== null ? Object.entries(companyList) : [];
 
-  const [sample, setSample] = useState(0);
+  const [sample, setSample] = useState(0); // To be used
 
   useEffect(() => {
     const db = database;
