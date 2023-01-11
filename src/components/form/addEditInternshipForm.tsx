@@ -12,7 +12,7 @@ import classNames from 'classnames';
 
 // ICONS
 import { FiChevronDown } from 'react-icons/fi';
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 function AddEditInternshipForm({
   addInternshipForm,
@@ -26,13 +26,13 @@ function AddEditInternshipForm({
   const context = useContext(DynamicContext);
 
   return (
-    <div className="grid grid-cols-2 gap-x-10 gap-y-5 mx-20">
+    <div className="mx-20 grid grid-cols-2 gap-x-10 gap-y-5">
       {/* LEFT */}
       <div className="flex flex-col gap-8">
         {/* JOB TITLE */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -50,7 +50,7 @@ function AddEditInternshipForm({
               });
             }}
             className={classNames(
-              'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+              'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
               {
                 'bg-secondaryBgBlack text-white': context?.isDarkMode,
               }
@@ -61,7 +61,7 @@ function AddEditInternshipForm({
         {/* JOB DESCRIPTION */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -79,7 +79,7 @@ function AddEditInternshipForm({
               });
             }}
             className={classNames(
-              'w-full py-2 px-3 min-h-[80px]  rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+              'min-h-[80px] w-full rounded border-2  border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
               {
                 'bg-secondaryBgBlack text-white': context?.isDarkMode,
               }
@@ -90,7 +90,7 @@ function AddEditInternshipForm({
         {/* JOB CATEGORY */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -109,7 +109,7 @@ function AddEditInternshipForm({
               <div className="relative">
                 <Listbox.Button
                   className={classNames(
-                    'bg-mainBgWhite outline-none px-2 py-2 rounded-md border-2 border-primaryYellow w-[335px] flex justify-between',
+                    'flex w-[335px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none',
                     {
                       'bg-secondaryBgBlack text-white': context?.isDarkMode,
                     }
@@ -118,14 +118,14 @@ function AddEditInternshipForm({
                   {addInternshipForm.jobCategory}
                   <FiChevronDown
                     size={30}
-                    className={classNames('duration-300 text-secondaryWhite', {
+                    className={classNames('text-secondaryWhite duration-300', {
                       'rotate-180': open,
                     })}
                   />
                 </Listbox.Button>
                 <Listbox.Options
                   className={classNames(
-                    'absolute bg-white rounded-md p-2 w-[335px] shadow-md hover:cursor-pointer max-h-[150px] z-30 overflow-auto',
+                    'absolute z-30 max-h-[150px] w-[335px] overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer',
                     {
                       'bg-secondaryBgBlack text-white': context?.isDarkMode,
                     }
@@ -148,7 +148,7 @@ function AddEditInternshipForm({
         {/* JOB RESPONSIBILITY */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -160,7 +160,7 @@ function AddEditInternshipForm({
             {addInternshipForm.jobResponsibilities.map((item, index) => {
               return (
                 <li
-                  className={classNames('text-secondaryWhite text-left', {
+                  className={classNames('text-left text-secondaryWhite', {
                     'text-white': context?.isDarkMode,
                   })}
                   key={index}
@@ -173,7 +173,7 @@ function AddEditInternshipForm({
             <>
               <textarea
                 className={classNames(
-                  'w-full py-2 px-3 min-h-[80px]  rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+                  'min-h-[80px] w-full rounded border-2  border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
                   {
                     'bg-secondaryBgBlack text-white': context?.isDarkMode,
                   }
@@ -190,7 +190,7 @@ function AddEditInternshipForm({
                 }
               />
               <button
-                className="w-full bg-primaryYellow rounded py-3"
+                className="w-full rounded bg-primaryYellow py-3"
                 onClick={addListJobRes}
               >
                 Add
@@ -200,7 +200,7 @@ function AddEditInternshipForm({
           <button
             onClick={jobResponsibilitiesHandler}
             className={classNames(
-              'w-full border-2 border-primaryYellow py-3 rounded flex justify-center items-center',
+              'flex w-full items-center justify-center rounded border-2 border-primaryYellow py-3',
               {
                 'border-dashed': !isOpen.jobResponsibility,
               },
@@ -222,7 +222,7 @@ function AddEditInternshipForm({
         {/* JOB QUALIFICATION */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -234,7 +234,7 @@ function AddEditInternshipForm({
             {addInternshipForm.jobQualifications.map((item, index) => {
               return (
                 <li
-                  className={classNames('text-secondaryWhite text-left', {
+                  className={classNames('text-left text-secondaryWhite', {
                     'text-white': context?.isDarkMode,
                   })}
                   key={index}
@@ -247,7 +247,7 @@ function AddEditInternshipForm({
             <>
               <textarea
                 className={classNames(
-                  'w-full py-2 px-3 min-h-[80px]  rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+                  'min-h-[80px] w-full rounded border-2  border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
                   {
                     'bg-secondaryBgBlack text-white': context?.isDarkMode,
                   }
@@ -264,7 +264,7 @@ function AddEditInternshipForm({
                 }
               />
               <button
-                className="w-full bg-primaryYellow rounded py-2"
+                className="w-full rounded bg-primaryYellow py-2"
                 onClick={addListJobQua}
               >
                 Add
@@ -274,7 +274,7 @@ function AddEditInternshipForm({
           <button
             onClick={jobQualificationHandler}
             className={classNames(
-              'w-full border-2 border-primaryYellow py-3 rounded flex justify-center items-center',
+              'flex w-full items-center justify-center rounded border-2 border-primaryYellow py-3',
               {
                 'text-white': context?.isDarkMode,
               }
@@ -296,7 +296,7 @@ function AddEditInternshipForm({
         {/* JOB ENVIRONMENT */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -308,7 +308,7 @@ function AddEditInternshipForm({
           </label>
           <p
             className={classNames(
-              'text-secondaryWhite font-extralight italic text-sm',
+              'text-sm font-extralight italic text-secondaryWhite',
               {
                 'text-white': context?.isDarkMode,
               }
@@ -343,7 +343,7 @@ function AddEditInternshipForm({
         {/* JOB ALLOWANCE */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -355,7 +355,7 @@ function AddEditInternshipForm({
           </label>
           <p
             className={classNames(
-              'text-secondaryWhite font-extralight italic text-sm text-left',
+              'text-left text-sm font-extralight italic text-secondaryWhite',
               {
                 'text-white': context?.isDarkMode,
               }
@@ -399,7 +399,7 @@ function AddEditInternshipForm({
                   });
                 }}
                 className={classNames(
-                  'w-full py-2 px-3 rounded border-2 bg-mainBgWhite border-primaryYellow outline-none',
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
                   {
                     'bg-secondaryBgBlack text-white': context?.isDarkMode,
                   }
@@ -412,7 +412,7 @@ function AddEditInternshipForm({
         {/* JOB ADD ONS */}
         <div className="flex flex-col items-start gap-2">
           <label
-            className={classNames('text-secondaryWhite font-medium', {
+            className={classNames('font-medium text-secondaryWhite', {
               'text-white': context?.isDarkMode,
             })}
             htmlFor="title"
@@ -422,7 +422,7 @@ function AddEditInternshipForm({
           <div className="flex flex-col justify-start gap-2">
             <p
               className={classNames(
-                'text-secondaryWhite font-extralight italic text-sm',
+                'text-sm font-extralight italic text-secondaryWhite',
                 {
                   'text-white': context?.isDarkMode,
                 }
@@ -457,7 +457,7 @@ function AddEditInternshipForm({
           <div className="flex flex-col justify-start gap-2">
             <p
               className={classNames(
-                'text-secondaryWhite font-extralight italic text-sm',
+                'text-sm font-extralight italic text-secondaryWhite',
                 {
                   'text-white': context?.isDarkMode,
                 }
@@ -492,7 +492,7 @@ function AddEditInternshipForm({
           <div className="flex flex-col justify-start gap-2">
             <p
               className={classNames(
-                'text-secondaryWhite font-extralight italic text-sm',
+                'text-sm font-extralight italic text-secondaryWhite',
                 {
                   'text-white': context?.isDarkMode,
                 }

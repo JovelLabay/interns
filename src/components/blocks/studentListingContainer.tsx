@@ -1,30 +1,17 @@
 // REACT
 import React, { useEffect, useState } from 'react';
 
-// UI
-import { Disclosure, Switch, Transition } from '@headlessui/react';
-
 // ICONS
-import {
-  AiOutlineEdit,
-  AiOutlineDelete,
-  AiOutlineCloseCircle,
-  AiOutlineCheckCircle,
-  AiOutlinePlusCircle,
-} from 'react-icons/ai';
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 // OTHERS
 import classNames from 'classnames';
 
 // TOAST COMPONENT
 import { notify } from '../common/toast';
-import { ToastContainer } from 'react-toastify';
 
 // FIREBASE
-import {
-  deleteStudents,
-  updateStudents,
-} from '@/src/functions/firebaseFirestore';
+import { deleteStudents } from '@/src/functions/firebaseFirestore';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { store } from '@/src/firebase/firebaseConfig';
 import { BeatLoader } from 'react-spinners';
