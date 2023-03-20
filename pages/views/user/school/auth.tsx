@@ -19,14 +19,14 @@ import {
 import { onValue, ref } from 'firebase/database';
 
 // TOAST AND LOADER
-import { errorNotify, notify } from '@/src/components/common/toast';
+import { errorNotify, successfulNotify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
 import SplashLoading from '@/src/components/common/SplashLoading';
 
 function Auth() {
   const router = useRouter();
-
+  const db = database;
   const [code, setCode] = useState({
     digit1: '',
     digit2: '',
@@ -62,7 +62,123 @@ function Auth() {
     React.createRef<HTMLInputElement>(),
   ];
 
-  const generateOtp = () => {
+  if (isLoading) {
+    return <SplashLoading />;
+  }
+
+  return (
+    <div className="min-h-[80vh] bg-primaryYellow">
+      <div className="dynamic-main-container hidden min-h-[80vh] flex-col items-center justify-center lg:flex">
+        <div className="rounded-md bg-white p-5">
+          <h2 className="text-center text-[28px]">
+            <span className="font-bold">School |</span>
+            {' Log in'}
+          </h2>
+          <p className="my-5 text-center font-medium text-secondaryWhite">
+            System Code for your University
+          </p>
+          <div>
+            <div className="my-4 flex flex-row justify-center gap-3">
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit1Ref}
+                value={code.digit1}
+                onChange={(e) => {
+                  setCode({ ...code, digit1: e.target.value });
+                  digit2Ref.current?.focus();
+                }}
+              />
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit2Ref}
+                value={code.digit2}
+                onChange={(e) => {
+                  setCode({ ...code, digit2: e.target.value });
+                  digit3Ref.current?.focus();
+                }}
+              />
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit3Ref}
+                value={code.digit3}
+                onChange={(e) => {
+                  setCode({ ...code, digit3: e.target.value });
+                  digit4Ref.current?.focus();
+                }}
+              />
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit4Ref}
+                value={code.digit4}
+                onChange={(e) => {
+                  setCode({ ...code, digit4: e.target.value });
+                  digit5Ref.current?.focus();
+                }}
+              />
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit5Ref}
+                value={code.digit5}
+                onChange={(e) => {
+                  setCode({ ...code, digit5: e.target.value });
+                  digit6Ref.current?.focus();
+                }}
+              />
+              <input
+                title="first_digit"
+                className="w-[20px] border-b-[2px] border-primaryYellow px-1 outline-none"
+                ref={digit6Ref}
+                value={code.digit6}
+                onChange={(e) => {
+                  setCode({ ...code, digit6: e.target.value });
+                  digit6Ref.current?.blur();
+                }}
+              />
+            </div>
+            <p className="mb-3 w-[300px] text-center font-light italic text-placeholderColor">
+              *
+              {
+                "Code will be sent to the active set phone number of the school's admin"
+              }
+            </p>
+            {isCodeSent ? null : (
+              <button
+                className="flex w-full flex-row items-center justify-center gap-3 rounded-md border-2 border-customBorder bg-white py-2 font-semibold text-secondaryWhite duration-150 hover:bg-customBorder"
+                onClick={requestOtp}
+              >
+                {!isSendLoading ? (
+                  'Request'
+                ) : (
+                  <BeatLoader color="#000" size={5} />
+                )}
+              </button>
+            )}
+
+            <br />
+            <button
+              className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:bg-primaryYellowHover"
+              onClick={verifyOtp}
+            >
+              Validate
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* RECAPTCHA DIV */}
+      <div id="recaptcha-container" />
+
+      {/* TOAST */}
+      <ToastContainer />
+    </div>
+  );
+
+  function generateOtp() {
     window.recaptchaVerifier = new RecaptchaVerifier(
       'recaptcha-container',
       {
@@ -71,12 +187,10 @@ function Auth() {
       },
       emailPassAuth
     );
-  };
+  }
 
-  const requestOtp = () => {
+  function requestOtp() {
     setIsSendLoading(true);
-
-    const db = database;
     generateOtp();
 
     const userCurrentNumber = ref(db, 'school/currentNumber');
@@ -90,19 +204,19 @@ function Auth() {
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
           setIsCodeSent(true);
-          notify('OTP sent successfully');
+          successfulNotify('OPT has been sent Successfully');
           setIsSendLoading(false);
         })
         .catch((err) => {
           console.error(err);
         });
     });
-  };
+  }
 
-  const verifyOtp = () => {
+  function verifyOtp() {
     const combinedCode = `${code.digit1}${code.digit2}${code.digit3}${code.digit4}${code.digit5}${code.digit6}`;
     if (!combinedCode) {
-      console.log('Please enter OTP');
+      errorNotify('Please enter OTP');
     } else {
       window.confirmationResult
         .confirm(combinedCode)
@@ -111,123 +225,7 @@ function Auth() {
           errorNotify("Couldn't verify OTP");
         });
     }
-  };
-
-  if (isLoading) {
-    return <SplashLoading />;
   }
-
-  return (
-    <div className="min-h-[80vh] bg-primaryYellow">
-      <div className="dynamic-main-container min-h-[80vh] flex-col justify-center items-center lg:flex hidden">
-        <div className="bg-white p-5 rounded-md">
-          <h2 className="text-center text-[28px]">
-            <span className="font-bold">School |</span>
-            {' Log in'}
-          </h2>
-          <p className="my-5 text-secondaryWhite font-medium text-center">
-            System Code for your University
-          </p>
-          <div>
-            <div className="flex flex-row gap-3 justify-center my-4">
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit1Ref}
-                value={code.digit1}
-                onChange={(e) => {
-                  setCode({ ...code, digit1: e.target.value });
-                  digit2Ref.current?.focus();
-                }}
-              />
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit2Ref}
-                value={code.digit2}
-                onChange={(e) => {
-                  setCode({ ...code, digit2: e.target.value });
-                  digit3Ref.current?.focus();
-                }}
-              />
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit3Ref}
-                value={code.digit3}
-                onChange={(e) => {
-                  setCode({ ...code, digit3: e.target.value });
-                  digit4Ref.current?.focus();
-                }}
-              />
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit4Ref}
-                value={code.digit4}
-                onChange={(e) => {
-                  setCode({ ...code, digit4: e.target.value });
-                  digit5Ref.current?.focus();
-                }}
-              />
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit5Ref}
-                value={code.digit5}
-                onChange={(e) => {
-                  setCode({ ...code, digit5: e.target.value });
-                  digit6Ref.current?.focus();
-                }}
-              />
-              <input
-                title="first_digit"
-                className="outline-none border-b-[2px] border-primaryYellow w-[20px] px-1"
-                ref={digit6Ref}
-                value={code.digit6}
-                onChange={(e) => {
-                  setCode({ ...code, digit6: e.target.value });
-                  // unfocus
-                  digit6Ref.current?.blur();
-                }}
-              />
-            </div>
-            <p className="text-placeholderColor font-light italic text-center mb-3 w-[300px]">
-              *
-              {
-                "Code will be sent to the active set phone number of the school's admin"
-              }
-            </p>
-            {isCodeSent ? null : (
-              <button
-                className="bg-white rounded-md py-2 w-full border-2 flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-customBorder border-customBorder duration-150"
-                onClick={requestOtp}
-              >
-                {!isSendLoading ? (
-                  'Request'
-                ) : (
-                  <BeatLoader color="#000" size={5} />
-                )}
-              </button>
-            )}
-
-            <br />
-            <button
-              className="bg-primaryYellow rounded-md py-2 w-full flex flex-row justify-center items-center gap-3 font-semibold text-secondaryWhite hover:bg-primaryYellowHover duration-150"
-              onClick={verifyOtp}
-            >
-              Validate
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* RECAPTCHA DIV */}
-      <div id="recaptcha-container" />
-      {/* TOAST */}
-      <ToastContainer />
-    </div>
-  );
 }
 
 export default Auth;

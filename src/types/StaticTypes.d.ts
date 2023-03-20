@@ -192,6 +192,7 @@ interface SendEmailInterface {
 
 // LISTING OF COLLEGES
 interface CollegeListInterface {
+  collegePasscode: string;
   collegeDean: string;
   collegeName: string;
   collegeType: string;

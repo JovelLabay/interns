@@ -22,6 +22,7 @@ function CustomTemplatedForms({
   setActiveBreadcrumb,
   fileName,
   setFileName,
+  formId,
 }: {
   setIsOpenDocument: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenDocument: boolean;
@@ -44,6 +45,7 @@ function CustomTemplatedForms({
   >;
   fileName: string;
   setFileName: React.Dispatch<React.SetStateAction<string>>;
+  formId: string;
 }) {
   const { quill, quillRef } = useQuill({
     theme: 'snow',
@@ -73,10 +75,10 @@ function CustomTemplatedForms({
       <div style={{ width: '100%', height: '73vh' }}>
         <div ref={quillRef} />
       </div>
-      <div className="mt-16 flex gap-5 ju justify-between items-center">
+      <div className="ju mt-16 flex items-center justify-between gap-5">
         <div className="flex gap-3">
           <button
-            className="border-2 border-primaryYellow rounded-md py-1 w-[100px]"
+            className="w-[100px] rounded-md border-2 border-primaryYellow py-1"
             onClick={() => {
               setIsOpen(false);
               setlala('');
@@ -85,24 +87,20 @@ function CustomTemplatedForms({
             Cancel
           </button>
           <button
-            className="bg-blue-500 rounded-md py-1 w-[100px] text-white"
+            className="w-[100px] rounded-md bg-blue-500 py-1 text-white"
             onClick={() => setIsOpenDocument(!isOpenDocument)}
           >
             View
           </button>
           <button
             className={classNames(
-              'bg-primaryYellow rounded-md text-white py-1 w-[100px]',
-              {
-                'cursor-not-allowed': activeBreadCrumbs.action === 'EDIT',
-              }
+              'w-[100px] rounded-md bg-primaryYellow py-1 text-white'
             )}
             onClick={() => {
               activeBreadCrumbs.action === 'EDIT'
                 ? updateCustomTemplated()
                 : addToCustomTemplated();
             }}
-            disabled={activeBreadCrumbs.action === 'EDIT'}
           >
             {activeBreadCrumbs.action === 'EDIT' ? 'Update' : 'Save'}
           </button>
@@ -138,7 +136,18 @@ function CustomTemplatedForms({
   function updateCustomTemplated() {
     if (!fileName) return errorNotify('Please enter a file name');
 
-    alert('sfsf');
+    addTemplateForm
+      .editCollegeFormTemplate(lala, fileName, formId)
+      .then((res) => {
+        successfulNotify(res);
+        setActiveBreadcrumb({
+          collegeId: '',
+          collegeName: '',
+          action: '',
+          collegeColor: '',
+        });
+      })
+      .catch((err) => console.error(err));
   }
 }
 

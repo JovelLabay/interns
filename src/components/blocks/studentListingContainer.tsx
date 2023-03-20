@@ -1,5 +1,5 @@
 // REACT
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 // ICONS
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
@@ -8,7 +8,7 @@ import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import classNames from 'classnames';
 
 // TOAST COMPONENT
-import { notify } from '../common/toast';
+import { errorNotify, successfulNotify, warningNotify } from '../common/toast';
 
 // FIREBASE
 import { deleteStudents } from '@/src/functions/firebaseFirestore';
@@ -19,6 +19,10 @@ import EditStudents from '../modals/EditStudents';
 
 function StudentListingContainer({
   isOpen,
+  listOfStudents,
+  setListOfStudents,
+  isEdit,
+  setIsEdit,
 }: {
   isOpen: {
     addStudents: boolean;
@@ -35,14 +39,25 @@ function StudentListingContainer({
     studentCourse: string;
     studentStatus: boolean;
   };
+  listOfStudents: StudentListObjectInterface[];
+  setListOfStudents: React.Dispatch<
+    React.SetStateAction<StudentListObjectInterface[]>
+  >;
+  isEdit: {
+    editStatus: boolean;
+    editActiveCollege: string;
+    editActiveStudent?: boolean;
+    search: string;
+  };
+  setIsEdit: React.Dispatch<
+    React.SetStateAction<{
+      editStatus: boolean;
+      editActiveCollege: string;
+      editActiveStudent?: boolean;
+      search: string;
+    }>
+  >;
 }) {
-  const [listOfStudents, setListOfStudents] = useState<
-    StudentListObjectInterface[]
-  >([]);
-  const [isEdit, setIsEdit] = useState({
-    editStatus: false,
-  });
-
   useEffect(() => {
     const abort = onSnapshot(
       collection(
@@ -72,6 +87,34 @@ function StudentListingContainer({
     };
   }, [isOpen.id]);
 
+  const searchFilter = useMemo(() => {
+    return listOfStudents
+      .filter((studentListFilter) => {
+        if (
+          studentListFilter.studentCourse.includes(isEdit.editActiveCollege)
+        ) {
+          return studentListFilter;
+        }
+      })
+      .filter((studentListFilter) => {
+        if (studentListFilter.studentStatus === isEdit.editActiveStudent) {
+          return studentListFilter;
+        } else if (isEdit.editActiveStudent === undefined) {
+          return studentListFilter;
+        }
+      })
+      .filter((studentListFilter) => {
+        if (
+          studentListFilter.defaultEmail
+            .toLowerCase()
+            .includes(isEdit.search.toLowerCase())
+        ) {
+          return studentListFilter;
+        }
+      })
+      .map((studentList) => studentList);
+  }, [isEdit, listOfStudents]);
+
   return (
     <>
       {listOfStudents.length === 0 ? (
@@ -98,55 +141,70 @@ function StudentListingContainer({
             </tr>
           </thead>
           <tbody>
-            {listOfStudents.map((listStudent, index) => (
-              <tr
-                className="border-b bg-white duration-300 hover:cursor-pointer hover:bg-mainBgWhite"
-                key={index}
-              >
-                <th className="whitespace-nowrap px-6 py-4 font-semibold">
-                  {listStudent.defaultEmail}
-                </th>
-                <td className="px-6 py-4">{`${listStudent.firstName} ${listStudent.middleName} ${listStudent.lastName}`}</td>
-                <td className="px-6 py-4">{listStudent.studentCourse}</td>
-                <td className="px-6 py-4 text-center">
-                  <span
-                    className={classNames(
-                      'rounded-full py-2 px-3 text-secondaryWhite',
-                      listStudent.studentStatus ? 'bg-green-300' : 'bg-red-300'
-                    )}
-                  >
-                    {listStudent.studentStatus ? 'Active' : 'Inactive'}
-                  </span>
-                </td>
-                <td className="flex justify-center gap-2 px-6 py-4">
-                  <button
-                    className="buttonIcon-edit"
-                    onClick={() => {
-                      setIsEdit((prev) => {
-                        return {
-                          ...prev,
-                          editStatus: true,
-                        };
-                      });
-                    }}
-                  >
-                    <AiOutlineEdit size={20} color="#fff" />
-                  </button>
-                  <button
-                    className="buttonIcon-delete"
-                    onClick={() => {
-                      if (listStudent.studentStatus) {
-                        notify('Cannot delete active student');
-                      } else {
-                        deleteThisStudent(listStudent.college, listStudent.id);
-                      }
-                    }}
-                  >
-                    <AiOutlineDelete size={20} color="#fff" />
-                  </button>
-                </td>
+            {searchFilter.length === 0 ? (
+              <tr>
+                <td />
+                <td />
+                <td className="py-10 text-center text-lg">No Students Found</td>
+                <td />
+                <td />
               </tr>
-            ))}
+            ) : (
+              searchFilter.map((listStudent, index) => (
+                <tr
+                  className="border-b bg-white duration-300 hover:cursor-pointer hover:bg-mainBgWhite"
+                  key={index}
+                >
+                  <th className="whitespace-nowrap px-6 py-4 font-semibold">
+                    {listStudent.defaultEmail}
+                  </th>
+                  <td className="px-6 py-4">{`${listStudent.firstName} ${listStudent.middleName} ${listStudent.lastName}`}</td>
+                  <td className="px-6 py-4">{listStudent.studentCourse}</td>
+                  <td className="px-6 py-4 text-center">
+                    <span
+                      className={classNames(
+                        'rounded-full py-2 px-3 text-secondaryWhite',
+                        listStudent.studentStatus
+                          ? 'bg-green-300'
+                          : 'bg-red-300'
+                      )}
+                    >
+                      {listStudent.studentStatus ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td className="flex justify-center gap-2 px-6 py-4">
+                    <button
+                      className="buttonIcon-edit"
+                      onClick={() => {
+                        setIsEdit((prev) => {
+                          return {
+                            ...prev,
+                            editStatus: true,
+                          };
+                        });
+                      }}
+                    >
+                      <AiOutlineEdit size={20} color="#fff" />
+                    </button>
+                    <button
+                      className="buttonIcon-delete"
+                      onClick={() => {
+                        if (listStudent.studentStatus) {
+                          warningNotify('Cannot delete active student');
+                        } else {
+                          deleteThisStudent(
+                            listStudent.college,
+                            listStudent.id
+                          );
+                        }
+                      }}
+                    >
+                      <AiOutlineDelete size={20} color="#fff" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       )}
@@ -159,10 +217,10 @@ function StudentListingContainer({
   function deleteThisStudent(collegeName: string, id: string) {
     deleteStudents(collegeName, id)
       .then((res) => {
-        notify(res);
+        successfulNotify(res);
       })
       .catch((error) => {
-        notify(error);
+        errorNotify(error);
       });
   }
 }

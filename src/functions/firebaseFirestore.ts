@@ -76,10 +76,9 @@ const deleteStudents = async (collegeName: string, studentId: string) => {
 
   try {
     await deleteDoc(studentReference);
-    return 'Document successfully deleted!';
-  } catch (error) {
-    console.error('Error removing document: ', error);
-    return 'Error removing document: ' + error;
+    return 'Student has been deleted';
+  } catch {
+    return 'Something went wrong';
   }
 };
 

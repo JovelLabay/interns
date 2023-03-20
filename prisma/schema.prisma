@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// MODELS
+
+model School_Year {
+  id            Int               @id @default(autoincrement())
+  start_date    DateTime
+  end_date      DateTime
+  is_active     Boolean           @default(false)
+  Semester_Name School_Semester[]
+  Activity_Logs Activity_Logs[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now())
+  deletedAt     DateTime          @default(now())
+}
+
+model School_Semester {
+  id             Int             @id @default(autoincrement())
+  school_year    School_Year?    @relation(fields: [school_year_id], references: [id])
+  school_year_id Int?
+  semester_label Semester_Label  @default(FIRST_SEMESTER)
+  month_start    String
+  end_end        String
+  Student        Student[]
+  Activity_Logs  Activity_Logs[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+  deletedAt      DateTime        @default(now())
+}
+
+model Student {
+  id                 Int               @id @default(autoincrement())
+  first_name         String
+  last_name          String
+  middle_name        String?
+  email              String
+  School_Semester    School_Semester?  @relation(fields: [school_semester_id], references: [id])
+  school_semester_id Int?
+  department         Department?       @relation(fields: [department_id], references: [id])
+  department_id      Int?
+  is_illegible       Boolean           @default(false)
+  units_completed    Int               @default(0)
+  Student_Profile    Student_Profile[]
+  Documents          Documents[]
+  Activity_Logs      Activity_Logs[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now())
+  deletedAt          DateTime          @default(now())
+}
+
+model Department {
+  id                Int       @id @default(autoincrement())
+  name              String
+  short_name        String
+  chair_person_name String?
+  description       String?
+  Student           Student[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now())
+  deletedAt         DateTime  @default(now())
+}
+
+model Student_Profile {
+  id                 Int                  @id @default(autoincrement())
+  student            Student?             @relation(fields: [student_id], references: [id])
+  student_id         Int?
+  address            String
+  phone_number       String
+  date_of_birth      DateTime
+  sex                SEX                  @default(ALIEN)
+  profile_image      String?
+  Application_Status Application_Status[]
+  Activity_Logs      Activity_Logs[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+  deletedAt          DateTime             @default(now())
+}
+
+model Application_Status {
+  id         Int                        @id @default(autoincrement())
+  student    Student_Profile?           @relation(fields: [student_id], references: [id])
+  student_id Int?
+  status     STUDENT_APPLICATION_STATUS @default(APPLYING)
+  createdAt  DateTime                   @default(now())
+  updatedAt  DateTime                   @default(now())
+  deletedAt  DateTime                   @default(now())
+}
+
+model Documents {
+  id            Int      @id @default(autoincrement())
+  student       Student? @relation(fields: [student_id], references: [id])
+  student_id    Int?
+  document_name String
+  document_url  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  deletedAt     DateTime @default(now())
+}
+
+model Company_Partners {
+  id                  Int             @id @default(autoincrement())
+  company_name        String
+  address             String
+  phone_number        String
+  email               String
+  contact_person      String
+  company_logo        String?
+  company_description String?
+  company_type        Company_Type?   @relation(fields: [company_type_id], references: [id])
+  company_type_id     Int?
+  company_website     String?
+  Activity_Logs       Activity_Logs[]
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @default(now())
+  deletedAt           DateTime        @default(now())
+}
+
+model Company_Type {
+  id               Int                @id @default(autoincrement())
+  companyType      String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  deletedAt        DateTime           @default(now())
+  Company_Partners Company_Partners[]
+}
+
+model Activity_Logs {
+  id                 Int               @id @default(autoincrement())
+  Student_Profile    Student_Profile?  @relation(fields: [student_profile_id], references: [id])
+  student_profile_id Int?
+  School_Semester    School_Semester?  @relation(fields: [school_semester_id], references: [id])
+  school_semester_id Int?
+  School_Year        School_Year?      @relation(fields: [school_year_id], references: [id])
+  school_year_id     Int?
+  Student            Student?          @relation(fields: [studentId], references: [id])
+  studentId          Int?
+  Company_Partners   Company_Partners? @relation(fields: [company_PartnersId], references: [id])
+  company_PartnersId Int?
+  action             String
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now())
+  deletedAt          DateTime          @default(now())
+}
+
+// ENUMS
+
+enum Semester_Label {
+  FIRST_SEMESTER
+  SECOND_SEMESTER
+  SUMMER
+}
+
+enum SEX {
+  MALE
+  FEMALE
+  ALIEN
+}
+
+enum STUDENT_APPLICATION_STATUS {
+  APPLYING
+  ACCEPTED
+  COMPLETED
+}

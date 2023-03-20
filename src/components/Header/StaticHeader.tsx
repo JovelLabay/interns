@@ -22,10 +22,10 @@ function StaticHeader({ isYellowBg }: { isYellowBg?: boolean }) {
   return (
     <div className="absolute top-0 left-0 w-full">
       <section className="wrapper relative">
-        <div className="sub-container md:h-24 lg:h-28 h-20 flex flex-row justify-between items-center lg:px-0">
+        <div className="sub-container flex h-20 flex-row items-center justify-between md:h-24 lg:h-28 lg:px-0">
           <Link href="/">
             <div className="logo hover:cursor-pointer">
-              <p className="lg:text-[48px] md:text-[38px] text-[28px] font-bold">
+              <p className="text-[28px] font-bold md:text-[38px] lg:text-[48px]">
                 <span
                   className={isYellowBg ? 'text-white' : 'text-primaryYellow'}
                 >
@@ -35,11 +35,11 @@ function StaticHeader({ isYellowBg }: { isYellowBg?: boolean }) {
               </p>
             </div>
           </Link>
-          <div className="hidden links lg:flex gap-10">
+          <div className="links hidden gap-10 lg:flex">
             <MenuLinks isYellowBg={isYellowBg} />
           </div>
-          <div className="flex gap-10 flex-row">
-            <div className="gap-5 hidden md:flex">
+          <div className="flex flex-row gap-10">
+            <div className="hidden gap-5 md:flex">
               <ButtonLinks isYellowBg={isYellowBg} />
             </div>
             <button className="lg:hidden" onClick={mobileNavhandler}>
@@ -51,14 +51,14 @@ function StaticHeader({ isYellowBg }: { isYellowBg?: boolean }) {
         {/* MOBILE NAV */}
         {isShowMobileNav && (
           <motion.div
-            className="px-3 lg:hidden bg-white shadow-md absolute top-0 right-0 w-full z-50"
+            className="absolute top-0 right-0 z-50 w-full bg-green-500 px-3 shadow-md lg:hidden"
             initial={{ y: -400 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="flex flex-row justify-between items-center mt-6">
+            <div className="mt-6 flex flex-row items-center justify-between">
               <div className="logo hover:cursor-pointer">
-                <p className="lg:text-[48px] md:text-[38px] text-[28px] font-bold">
+                <p className="text-[28px] font-bold md:text-[38px] lg:text-[48px]">
                   <span
                     className={isYellowBg ? 'text-white' : 'text-primaryYellow'}
                   >
@@ -74,7 +74,7 @@ function StaticHeader({ isYellowBg }: { isYellowBg?: boolean }) {
             <div className="my-5 flex flex-col gap-6">
               <MenuLinks mobileNavhandler={mobileNavhandler} />
             </div>
-            <div className="gap-5 flex mt-10 mb-7">
+            <div className="mt-10 mb-7 flex gap-5">
               <ButtonLinks />
             </div>
           </motion.div>

@@ -31,6 +31,9 @@ function UserLayout({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
+    window.addEventListener('online', (data) => {
+      console.log(data);
+    });
     const darkMode = localStorage.getItem('darkModeCompany');
     if (darkMode === 'true') {
       setIsDarkMode(true);

@@ -42,6 +42,7 @@ function AddStudents({
     collegeCourses: string[];
     studentCourse: string;
     studentStatus: boolean;
+    collegePassCode: string;
   };
   setIsOpen: React.Dispatch<
     React.SetStateAction<{
@@ -58,6 +59,7 @@ function AddStudents({
       collegeCourses: string[];
       studentCourse: string;
       studentStatus: boolean;
+      collegePassCode: string;
     }>
   >;
 }) {
@@ -157,7 +159,6 @@ function AddStudents({
                   </div>
                   <div className="mx-10 mt-2 flex flex-col gap-3 py-5">
                     <label htmlFor="name">College Department</label>
-
                     <Listbox
                       value={isOpen.studentCourse}
                       onChange={(value) =>
@@ -252,9 +253,6 @@ function AddStudents({
               </Transition.Child>
             </div>
           </div>
-
-          {/* TOAST */}
-          <ToastContainer />
         </Dialog>
       </Transition>
     </>

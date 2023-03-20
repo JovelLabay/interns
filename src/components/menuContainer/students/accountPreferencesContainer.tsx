@@ -6,17 +6,26 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { data } from 'Data';
-import { AiOutlineFileImage } from 'react-icons/ai';
+import {
+  AiOutlineCloseCircle,
+  AiOutlineFileImage,
+  AiOutlineSave,
+} from 'react-icons/ai';
 import Details from './profile/details';
 import Form from './profile/form';
 import Documents from './profile/documents';
 import { MdOutlineAccountCircle } from 'react-icons/md';
 import { TbListDetails } from 'react-icons/tb';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { StudentUpdateObject } from '@/src/validator/studentObjectValidator';
 
 const SccountPreferencesContainer = () => {
   const router = useRouter();
   const context = useContext(DynamicContext);
+
   const [activeComponent, setActiveComponent] = useState(1);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
     const auth = onAuthStateChanged(emailPassAuth, (user) => {
@@ -30,8 +39,40 @@ const SccountPreferencesContainer = () => {
     };
   }, []);
 
+  const {
+    setValue,
+    watch,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{
+    studentDetails: {
+      firstName: string;
+      lastName: string;
+      middleName: string;
+    };
+  }>({
+    mode: 'onSubmit',
+    resolver: yupResolver(StudentUpdateObject),
+  });
+
+  useEffect(() => {
+    setValue(
+      'studentDetails.firstName',
+      context?.watch().studentDetails?.firstName
+    );
+    setValue(
+      'studentDetails.lastName',
+      context?.watch().studentDetails?.lastName
+    );
+    setValue(
+      'studentDetails.middleName',
+      context?.watch().studentDetails?.middleName
+    );
+  }, [isUpdate]);
+
   return (
-    <section className="">
+    <section className="pb-3">
       <div
         className={classNames(
           'mx-3 mt-3 rounded-md lg:mx-0 xl:mx-[250px] 2xl:mx-[300px]',
@@ -91,11 +132,29 @@ const SccountPreferencesContainer = () => {
             </div>
           </div>
           <div className="flex gap-2 md:self-end">
-            <button className="flex items-center justify-center gap-3 rounded bg-primaryYellow px-3 py-2 font-light">
-              <TbListDetails /> Update Details
+            <button
+              className="flex items-center justify-center gap-3 rounded bg-primaryYellow px-3 py-2 font-light"
+              onClick={toggleEdit}
+            >
+              {isUpdate ? <AiOutlineCloseCircle /> : <TbListDetails />}
+              {isUpdate ? 'Cancel' : 'Update Details'}
             </button>
-            <button className="flex items-center justify-center gap-3 rounded bg-customBorder px-3 py-2 font-light">
-              <MdOutlineAccountCircle />
+            <button
+              onClick={() => {
+                handleSubmit((data) => console.log(data))();
+              }}
+              disabled={!isUpdate}
+              className={classNames(
+                'flex items-center justify-center gap-3 rounded  px-3 py-2 font-light',
+                !isUpdate ? 'bg-customBorder' : 'bg-green-400',
+                !isUpdate ? 'cursor-not-allowed' : 'cursor-pointer'
+              )}
+            >
+              {isUpdate ? (
+                <AiOutlineSave color="#fff" />
+              ) : (
+                <MdOutlineAccountCircle />
+              )}
             </button>
           </div>
         </div>
@@ -139,7 +198,8 @@ const SccountPreferencesContainer = () => {
         )}
       >
         {activeComponent === 1 ? (
-          <Details />
+          // <Details isUpdate={isUpdate} register={register} errors={errors} />
+          <h1>dsf</h1>
         ) : activeComponent === 2 ? (
           <Form />
         ) : (
@@ -148,6 +208,15 @@ const SccountPreferencesContainer = () => {
       </div>
     </section>
   );
+
+  // HANDLERS
+  function toggleEdit() {
+    setIsUpdate(!isUpdate);
+  }
+
+  function updatStudentData(data: any) {
+    alert('sfd');
+  }
 };
 
 export default SccountPreferencesContainer;

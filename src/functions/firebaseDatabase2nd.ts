@@ -82,7 +82,8 @@ class CollegeFormTemplated {
   ) => Promise<string>;
   public editCollegeFormTemplate: (
     objectFile: string,
-    fileName: string
+    fileName: string,
+    formId: string
   ) => Promise<string>;
   public deleteNewCollegeFormTemplate: (formId: string) => Promise<string>;
 
@@ -120,8 +121,21 @@ class CollegeFormTemplated {
       }
     };
 
-    this.editCollegeFormTemplate = async () => {
-      return 'null';
+    this.editCollegeFormTemplate = async (
+      objectFile: string,
+      fileName: string,
+      formId: string
+    ) => {
+      try {
+        const db = CrudQuestionnnaire.db;
+        await set(ref(db, `school/colleges/${id}/formTemplates/${formId}`), {
+          objectFile,
+          fileName,
+        });
+        return 'Successfuly Updated';
+      } catch (error) {
+        return 'error';
+      }
     };
   }
 }

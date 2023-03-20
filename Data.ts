@@ -103,6 +103,11 @@ export const data = {
   others: {
     developers: 'Developed by Eluvent Corporation',
   },
+  labels: {
+    deletePromptMessage:
+      'You are about to delete. Are you sure you want to continue?',
+    viewDocument: 'What you want to do with your document?',
+  },
 
   // COMPANY DASHBOARD
   company: {

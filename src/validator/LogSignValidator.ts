@@ -33,13 +33,12 @@ const AddCollegeValidator = yup.object({
     .string()
     .required('Give the short name of the college'),
   nameOfDean: yup.string().required('Give the name of the dean'),
-  professionOfDean: yup.string(),
+  professionOfDean: yup.string().required(),
   collegeType: yup.string(),
   collegePasscode: yup
-    .string()
+    .number()
     .required('Give the passcode of the college')
-    .min(6)
-    .max(6),
+    .min(6),
   collegeColor: yup.string(),
 });
 

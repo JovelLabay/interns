@@ -17,7 +17,8 @@ import {
 } from 'react-icons/ai';
 
 // COMPONENTS
-import { notify } from '../common/toast';
+import { successfulNotify, errorNotify, warningNotify } from '../common/toast';
+import classNames from 'classnames';
 
 function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
   const [companyTypeList, setCompanyTypesList] = useState({
@@ -35,7 +36,7 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
     <div>
       <section>
         {companyTypeList.companyInputState ? (
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <input
               type="text"
               name="nameOfTheLocation"
@@ -45,39 +46,48 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
               onChange={(e) => setCompanyType(e.target.value)}
             />
             <button
-              className="bg-green-500 rounded-md h-[40px] flex flex-row items-center justify-center px-2 text-white"
+              className={classNames(
+                'flex h-[40px] flex-row items-center justify-center rounded-md bg-green-500 px-2 text-white',
+                {
+                  'cursor-not-allowed opacity-50': companyType === '',
+                }
+              )}
+              disabled={companyType === ''}
               onClick={() => addCompanyType(companyType)}
             >
               Add
             </button>
             <button
-              className="bg-red-500 rounded-md h-[40px] flex flex-row items-center justify-center px-2 text-white"
-              onClick={openHandler}
+              className="flex h-[40px] flex-row items-center justify-center rounded-md bg-red-500 px-2 text-white"
+              onClick={() => {
+                openHandler();
+                setCompanyType('');
+              }}
             >
               Cancel
             </button>
           </div>
         ) : (
           <button
-            className="bg-primaryYellow rounded-md h-[40px] px-3 text-balck"
+            className="text-balck h-[40px] rounded-md bg-primaryYellow px-3"
             onClick={openHandler}
           >
             Add New Type of Company
           </button>
         )}
       </section>
-      <div className="h-[300px] overflow-auto mt-5">
+      <div className="mt-5 h-[300px] overflow-auto">
         {values.map((value, index) => {
           return (
             <div
               key={index}
-              className="flex justify-between rounded bg-yellowBg py-5 px-3 text-left mb-3"
+              className="mb-3 flex justify-between rounded bg-yellowBg py-5 px-3 text-left"
             >
               {companyTypeList.editCompanyInputState === value[0] ? (
                 <input
                   type="text"
                   placeholder="Edit Location"
-                  className="inputBox w-full mr-2"
+                  className="inputBox mr-2 w-full"
                   value={editCompanyType}
                   onChange={(e) => setEditCompanyType(e.target.value)}
                 />
@@ -89,13 +99,16 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
                 {companyTypeList.editCompanyInputState === value[0] ? (
                   <>
                     <button
-                      className="bg-red-500 p-2 rounded"
+                      className="rounded bg-red-500 p-2"
                       onClick={() => editHandler('')}
                     >
                       <AiOutlineCloseCircle size={20} color="#fff" />
                     </button>
                     <button
-                      className="bg-green-500 p-2 rounded"
+                      className={classNames('rounded bg-green-500 p-2', {
+                        'cursor-not-allowed opacity-50': editCompanyType === '',
+                      })}
+                      disabled={editCompanyType === ''}
                       onClick={() => {
                         editCurrentCompanyType(editCompanyType, value[0]);
                       }}
@@ -105,7 +118,7 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
                   </>
                 ) : (
                   <>
-                    <button className="bg-orange-500 p-2 rounded">
+                    <button className="rounded bg-orange-500 p-2">
                       <AiOutlineEdit
                         size={20}
                         color="#fff"
@@ -116,7 +129,10 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
                       />
                     </button>
                     <button
-                      className="bg-red-500 p-2 rounded"
+                      className={classNames('rounded bg-red-500 p-2', {
+                        'cursor-not-allowed opacity-50': values.length === 1,
+                      })}
+                      disabled={values.length === 1}
                       onClick={() => {
                         deleteCurrentCompanyType(value[0]);
                       }}
@@ -156,14 +172,14 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
     );
 
     if (currentCompanyType) {
-      notify('This company type already exists');
+      warningNotify('This company type already exists');
     } else {
       addNewCompanyType(type)
         .then((res) => {
-          notify(res || 'Company Type Added Successfully');
+          successfulNotify(res || 'Company Type Added Successfully');
           setCompanyType('');
         })
-        .catch((err) => notify(err.message || 'Something went wrong'));
+        .catch((err) => errorNotify(err.message || 'Something went wrong'));
     }
   }
 
@@ -174,22 +190,24 @@ function AddCompanyTypeForm({ companyTypes }: { companyTypes: object }) {
     );
 
     if (currentCompanyType) {
-      notify('This company type already exists');
+      warningNotify('This company type already exists');
     } else {
       editCompanyTypeAction(type, id)
         .then((res) => {
-          notify(res || 'Company Type Edited Successfully');
+          successfulNotify(res || 'Company Type Edited Successfully');
           editHandler('');
         })
-        .catch((err) => notify(err.message || 'Something went wrong'));
+        .catch((err) => errorNotify(err.message || 'Something went wrong'));
     }
   }
 
   // DELETE COMPANY TYPE
   function deleteCurrentCompanyType(id: string) {
     deleteCompanyType(id)
-      .then((res) => notify(res || 'Company Type Deleted Successfully'))
-      .catch((err) => notify(err.message || 'Something went wrong'));
+      .then((res) =>
+        successfulNotify(res || 'Company Type Deleted Successfully')
+      )
+      .catch((err) => errorNotify(err.message || 'Something went wrong'));
   }
 }
 

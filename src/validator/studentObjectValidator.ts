@@ -29,4 +29,12 @@ const StudentObjectValidator = yup.object({
   }),
 });
 
-export { StudentObjectValidator };
+const StudentUpdateObject = yup.object({
+  studentDetails: yup.object({
+    firstName: yup.string().required('Your firstname is missing'),
+    lastName: yup.string().required('Your lastname is missing'),
+    middleName: yup.string().required('Your middlename is missing'),
+  }),
+});
+
+export { StudentObjectValidator, StudentUpdateObject };

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 // FIREBASE FUNCTIONS
 import { CompanyCategory } from '@/src/functions/firebaseDatabase';
-import { successfulNotify } from '../common/toast';
+import { successfulNotify, warningNotify, errorNotify } from '../common/toast';
 import {
   AiOutlineCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineDelete,
   AiOutlineEdit,
 } from 'react-icons/ai';
+import classNames from 'classnames';
 
 function AddJobCategoryForm() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -48,21 +49,30 @@ function AddJobCategoryForm() {
               onChange={(e) => setCategory(e.target.value)}
             />
             <button
-              className="bg-green-500 rounded-md h-[40px] flex flex-row items-center justify-center px-2 text-white"
+              className={classNames(
+                'flex h-[40px] flex-row items-center justify-center rounded-md bg-green-500 px-2 text-white',
+                {
+                  'cursor-not-allowed opacity-50': category === '',
+                }
+              )}
+              disabled={category === ''}
               onClick={addCategoryHandler}
             >
               Add
             </button>
             <button
-              className="bg-red-500 rounded-md h-[40px] flex flex-row items-center justify-center px-2 text-white"
-              onClick={() => setIsAddOpen(false)}
+              className="flex h-[40px] flex-row items-center justify-center rounded-md bg-red-500 px-2 text-white"
+              onClick={() => {
+                setIsAddOpen(false);
+                setCategory('');
+              }}
             >
               Cancel
             </button>
           </div>
         ) : (
           <button
-            className="bg-primaryYellow rounded-md h-[40px] px-3 text-balck"
+            className="text-balck h-[40px] rounded-md bg-primaryYellow px-3"
             onClick={() => setIsAddOpen(true)}
           >
             Add Job Category
@@ -74,9 +84,9 @@ function AddJobCategoryForm() {
           return (
             <div key={index}>
               {edit.isEdit === category[0] ? (
-                <div className="flex justify-between rounded bg-yellowBg py-5 px-3 text-left mb-3">
+                <div className="mb-3 flex justify-between rounded bg-yellowBg py-5 px-3 text-left">
                   <input
-                    className="inputBox w-full mr-2"
+                    className="inputBox mr-2 w-full"
                     value={edit.editInputState}
                     placeholder="Edit Category"
                     onChange={(e) =>
@@ -86,7 +96,7 @@ function AddJobCategoryForm() {
 
                   <div className="flex gap-2">
                     <button
-                      className="bg-red-500 p-2 rounded"
+                      className="rounded bg-red-500 p-2"
                       onClick={() => {
                         editToggle('', '');
                       }}
@@ -94,7 +104,11 @@ function AddJobCategoryForm() {
                       <AiOutlineCloseCircle size={20} color="#fff" />
                     </button>
                     <button
-                      className="bg-green-500 p-2 rounded"
+                      className={classNames('rounded bg-green-500 p-2', {
+                        'cursor-not-allowed opacity-50':
+                          edit.editInputState === '',
+                      })}
+                      disabled={edit.editInputState === ''}
                       onClick={() => {
                         editCategoryHandler(category[0], edit.editInputState);
                       }}
@@ -104,12 +118,12 @@ function AddJobCategoryForm() {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between rounded bg-yellowBg py-5 px-3 text-left mb-3">
+                <div className="mb-3 flex justify-between rounded bg-yellowBg py-5 px-3 text-left">
                   <p>{category[1].categoryName}</p>
 
                   <div className="flex gap-2">
                     <button
-                      className="bg-orange-500 p-2 rounded"
+                      className="rounded bg-orange-500 p-2"
                       onClick={() => {
                         editToggle(category[0], category[1].categoryName);
                       }}
@@ -117,7 +131,11 @@ function AddJobCategoryForm() {
                       <AiOutlineEdit size={20} color="#fff" />
                     </button>
                     <button
-                      className="bg-red-500 p-2 rounded"
+                      className={classNames('rounded bg-red-500 p-2', {
+                        'cursor-not-allowed opacity-50':
+                          categories?.length <= 1,
+                      })}
+                      disabled={categories?.length <= 1}
                       onClick={() => deleteCategoryHandler(category[0])}
                     >
                       <AiOutlineDelete size={20} color="#fff" />
@@ -141,7 +159,7 @@ function AddJobCategoryForm() {
     );
 
     if (isUnique) {
-      successfulNotify('Category already exist');
+      warningNotify('Category already exist');
     } else {
       new CompanyCategory(category)
         .setNewCategoryName()
@@ -173,7 +191,7 @@ function AddJobCategoryForm() {
     );
 
     if (isUnique) {
-      successfulNotify('Category already exist');
+      warningNotify('Category already exist');
     } else {
       new CompanyCategory(category)
         .editCategory(id, value)

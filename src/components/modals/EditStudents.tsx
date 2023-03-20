@@ -7,10 +7,14 @@ function EditStudents({
 }: {
   isEdit: {
     editStatus: boolean;
+    editActiveCollege: string;
+    search: string;
   };
   setIsEdit: React.Dispatch<
     React.SetStateAction<{
       editStatus: boolean;
+      editActiveCollege: string;
+      search: string;
     }>
   >;
 }) {

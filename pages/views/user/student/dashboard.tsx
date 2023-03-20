@@ -65,6 +65,12 @@ function StudentDashboard() {
             },
             address: { city_municipality, province_state },
             birthDate: { day, month, year },
+            studentDocuments: {
+              applicationLetter,
+              birthCertificate,
+              curreculumVitae,
+              schoolId,
+            },
           } = snapshot.val();
 
           const theCollegeName = collegeName.toLowerCase().replace(/\s/g, '_');
@@ -132,10 +138,10 @@ function StudentDashboard() {
               );
 
               context?.setValue('studentDocuments', {
-                applicationLetter: null,
-                birthCerficate: 'sdf',
-                curriculumVitae: 'sdf',
-                schoolId: 'sdf',
+                applicationLetter: applicationLetter,
+                birthCerficate: birthCertificate,
+                curriculumVitae: curreculumVitae,
+                schoolId: schoolId,
               });
             }
 

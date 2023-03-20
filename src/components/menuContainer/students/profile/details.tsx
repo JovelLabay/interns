@@ -1,8 +1,30 @@
 import { DynamicContext } from '@/src/contexts/context';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
+import {
+  FieldErrorsImpl,
+  FieldValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from 'react-hook-form';
 
-function Details() {
+function Details({
+  isUpdate,
+  register,
+  errors,
+}: {
+  isUpdate: boolean;
+  register: UseFormRegister<{
+    studentDetails: {
+      firstName: string;
+      lastName: string;
+      middleName: string;
+    };
+  }>;
+  errors: FieldErrorsImpl<{
+    [x: string]: any;
+  }>;
+}) {
   const context = useContext(DynamicContext);
 
   return (
@@ -21,31 +43,86 @@ function Details() {
       >
         Personal
       </h3>
-      <div className="grid grid-cols-1 gap-4 px-3 md:grid-cols-2 lg:grid-cols-3">
-        <section className="">
-          <h4 className="font-medium">First Name</h4>
-          <p className="italic">{context?.watch().studentDetails?.firstName}</p>
-        </section>
-        <section className="">
-          <h4 className="font-medium">Middle Name</h4>
-          <p className="italic">
-            {context?.watch().studentDetails?.middleName}
-          </p>
-        </section>
-        <section className="">
-          <h4 className="font-medium">Last Name</h4>
-          <p className="italic">{context?.watch().studentDetails?.lastName}</p>
-        </section>
-        <section className="">
-          <h4 className="font-medium">Gender</h4>
-          <p className="italic">{context?.watch().studentDetails?.gender}</p>
-        </section>
-        <section className="">
-          <h4 className="font-medium">Email Address</h4>
-          <p className="italic">
-            {context?.watch().studentDetails?.emailAddress}
-          </p>
-        </section>
+      <div className="grid grid-cols-1 gap-4 px-3 py-2 md:grid-cols-2 lg:grid-cols-3">
+        {isUpdate ? (
+          <>
+            <section className="">
+              <h4 className="font-medium">First Name</h4>
+              <input
+                type="text"
+                placeholder="First Name"
+                className={classNames(
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
+                  {
+                    'bg-secondaryBgBlack text-white': context?.isDarkMode,
+                  }
+                )}
+                {...register('studentDetails.firstName')}
+              />
+            </section>
+            <section className="">
+              <h4 className="font-medium">Middle Name</h4>
+              <input
+                type="text"
+                placeholder="Middle Name"
+                className={classNames(
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
+                  {
+                    'bg-secondaryBgBlack text-white': context?.isDarkMode,
+                  }
+                )}
+                {...register('studentDetails.middleName')}
+              />
+            </section>
+            <section className="">
+              <h4 className="font-medium">Last Name</h4>
+              <input
+                type="text"
+                placeholder="Last Name"
+                className={classNames(
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
+                  {
+                    'bg-secondaryBgBlack text-white': context?.isDarkMode,
+                  }
+                )}
+                {...register('studentDetails.lastName')}
+              />
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="">
+              <h4 className="font-medium">First Name</h4>
+              <p className="italic">
+                {context?.watch().studentDetails?.firstName}
+              </p>
+            </section>
+            <section className="">
+              <h4 className="font-medium">Middle Name</h4>
+              <p className="italic">
+                {context?.watch().studentDetails?.middleName}
+              </p>
+            </section>
+            <section className="">
+              <h4 className="font-medium">Last Name</h4>
+              <p className="italic">
+                {context?.watch().studentDetails?.lastName}
+              </p>
+            </section>
+            <section className="">
+              <h4 className="font-medium">Gender</h4>
+              <p className="italic">
+                {context?.watch().studentDetails?.gender}
+              </p>
+            </section>
+            <section className="">
+              <h4 className="font-medium">Email Address</h4>
+              <p className="italic">
+                {context?.watch().studentDetails?.emailAddress}
+              </p>
+            </section>
+          </>
+        )}
       </div>
 
       {/* ADDRESS */}
@@ -57,17 +134,52 @@ function Details() {
       >
         Address
       </h3>
-      <div className="grid grid-cols-1 gap-4 px-3 md:grid-cols-2 lg:grid-cols-3">
-        <section className="">
-          <h4 className="font-medium">First Name</h4>
-          <p className="italic">
-            {context?.watch().address?.city_municipality}
-          </p>
-        </section>
-        <section className="">
-          <h4 className="font-medium">Middle Name</h4>
-          <p className="italic">{context?.watch().address?.province_state}</p>
-        </section>
+      <div className="grid grid-cols-1 gap-4 px-3 py-2 md:grid-cols-2 lg:grid-cols-3">
+        {isUpdate ? (
+          <>
+            <section className="">
+              <h4 className="font-medium">City / Municipality</h4>
+              <input
+                type="text"
+                placeholder="City / Municipality"
+                className={classNames(
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
+                  {
+                    'bg-secondaryBgBlack text-white': context?.isDarkMode,
+                  }
+                )}
+              />
+            </section>
+            <section className="">
+              <h4 className="font-medium">State / Province</h4>
+              <input
+                type="text"
+                placeholder="State / Province"
+                className={classNames(
+                  'w-full rounded border-2 border-primaryYellow bg-mainBgWhite py-2 px-3 outline-none',
+                  {
+                    'bg-secondaryBgBlack text-white': context?.isDarkMode,
+                  }
+                )}
+              />
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="">
+              <h4 className="font-medium">City / Municipality</h4>
+              <p className="italic">
+                {context?.watch().address?.city_municipality}
+              </p>
+            </section>
+            <section className="">
+              <h4 className="font-medium">State / Province</h4>
+              <p className="italic">
+                {context?.watch().address?.province_state}
+              </p>
+            </section>
+          </>
+        )}
       </div>
 
       {/* BIRTHDATE */}
@@ -79,7 +191,7 @@ function Details() {
       >
         Birthdate
       </h3>
-      <div className="grid grid-cols-1 gap-4 px-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 px-3 py-2 md:grid-cols-2 lg:grid-cols-3">
         <section className="flex gap-2">
           <h4 className="font-medium">Day: </h4>
           <p className="italic">{context?.watch().birthDate?.day}</p>

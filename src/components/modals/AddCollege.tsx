@@ -65,18 +65,18 @@ function AddCollege({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-[500px] bg-white h-auto p-3 rounded-md overflow-auto">
-                <div className="flex flex-row justify-start items-center">
+              <Dialog.Panel className="h-auto w-[500px] overflow-auto rounded-md bg-white p-3">
+                <div className="flex flex-row items-center justify-start">
                   <button
                     onClick={() => toggleManageModals('')}
-                    className="border-2 rounded border-primaryYellow py-1 w-[100px]"
+                    className="w-[100px] rounded border-2 border-primaryYellow py-1"
                   >
                     Close
                   </button>
                 </div>
                 <div className="my-4 mx-10">
                   {addRemoveModal.manageCollege ? (
-                    <AddCollegeForm />
+                    <AddCollegeForm toggleManageModals={toggleManageModals} />
                   ) : addRemoveModal.manageCompanyType ? (
                     <AddCompanyTypeForm companyTypes={companyTypes} />
                   ) : addRemoveModal.manageJobCategory ? (

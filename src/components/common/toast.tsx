@@ -1,38 +1,44 @@
 // TOASTIFY
 import { toast } from 'react-toastify';
 
-const notify = (message: string) =>
-  toast(message, {
-    position: 'bottom-center',
-    autoClose: 3000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
-
 const successfulNotify = (message: string) =>
-  toast(message, {
-    position: 'bottom-center',
+  toast.success(message, {
+    position: 'bottom-right',
     autoClose: 3000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
+    theme: 'light',
+    icon: true,
   });
 
 const errorNotify = (message: string) =>
-  toast(message, {
-    type: 'error',
-    position: 'top-center',
+  toast.error(message, {
+    position: 'bottom-right',
     autoClose: 3000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
+    theme: 'light',
+    icon: true,
   });
 
-export { notify, successfulNotify, errorNotify };
+const warningNotify = (message: string) => {
+  toast.warning(message, {
+    position: 'bottom-right',
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+    icon: true,
+  });
+};
+
+export { successfulNotify, errorNotify, warningNotify };
