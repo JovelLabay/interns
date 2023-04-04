@@ -1,0 +1,25 @@
+{
+  "footerLinks": [
+    {
+      "footerTitle": "Services",
+      "footerLinks": [
+        { "id": 1, "name": "Internships", "route": "" },
+        { "id": 2, "name": "Students", "route": "" },
+        { "id": 3, "name": "Experiences", "route": "" }
+      ]
+    },
+    {
+      "footerTitle": "About",
+      "footerLinks": [
+        { "id": 1, "name": "Services", "route": "/views/welcome/service" },
+        { "id": 2, "name": "Learn More", "route": "/views/welcome/about" }
+      ]
+    }
+  ],
+  "footerContents": {
+    "one": {
+      "reserves": "All rights reserved",
+      "address": "Cagayan de Oro City, Philippines"
+    }
+  }
+}

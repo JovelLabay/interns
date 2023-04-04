@@ -8,6 +8,7 @@ const nextConfig = {
       'graph.facebook.com',
       'lh3.googleusercontent.com',
       'picsum.photos',
+      'vzcwjqjjfoylirliwhwq.supabase.co',
     ],
   },
 };

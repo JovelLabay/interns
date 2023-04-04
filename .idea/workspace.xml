@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.fleet/run.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.fleet/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/404.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/404.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/data/internshipData.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/data/other.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/company/auth.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/company/dashboard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/company/setup.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/getstarted.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/school/auth.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/school/dashboard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/accountPreferences/[studentNameSlug].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/auth.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/companies/[companySlug].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/dashboard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/internships/[internshipSlug].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/savedCompanies/[companyNameSlu].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/user/student/setup.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/welcome/about.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/views/welcome/service.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/seeder.data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/seeder.data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Footer/SecondayStaticFooter.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Footer/StaticFooter.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/SchoolHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/StaticHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/StaticLinks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/StaticLinks.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/blocks/AboutDescription.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/blocks/DescWithImage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/toast.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/toast.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modals/addUsers.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/UserLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/WelcomeLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/validator/LogSignValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/validator/LogSignValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="ProjectId" id="2NZanLNH65ElB7PV43BS2WzMluZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.13.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.13.0&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Documents\\interns\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="" />
+      <created>1679874229659</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679874229659</updated>
+      <workItem from="1679874233039" duration="2391000" />
+      <workItem from="1679889300815" duration="1379000" />
+      <workItem from="1680254049730" duration="1851000" />
+      <workItem from="1680324844786" duration="1700000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

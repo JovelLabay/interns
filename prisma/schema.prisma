@@ -6,168 +6,209 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 // MODELS
-
 model School_Year {
-  id            Int               @id @default(autoincrement())
-  start_date    DateTime
-  end_date      DateTime
-  is_active     Boolean           @default(false)
-  Semester_Name School_Semester[]
-  Activity_Logs Activity_Logs[]
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @default(now())
-  deletedAt     DateTime          @default(now())
+  id Int @id @default(autoincrement())
+
+  start_date              DateTime
+  end_date                DateTime
+  school_year_name        String
+  school_year_description String?
+  school_year_code        String
+  is_active               Boolean           @default(false)
+  School_Semester         School_Semester[]
+  Activity_Logs           Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
 model School_Semester {
-  id             Int             @id @default(autoincrement())
-  school_year    School_Year?    @relation(fields: [school_year_id], references: [id])
-  school_year_id Int?
-  semester_label Semester_Label  @default(FIRST_SEMESTER)
-  month_start    String
-  end_end        String
-  Student        Student[]
-  Activity_Logs  Activity_Logs[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now())
-  deletedAt      DateTime        @default(now())
+  id Int @id @default(autoincrement())
+
+  start_date                  DateTime
+  end_date                    DateTime
+  school_semester_name        String
+  school_semester_description String?
+  school_semester_code        String
+  is_active                   Boolean         @default(false)
+  Student                     Student_User?
+  school_year                 School_Year     @relation(fields: [school_year_id], references: [id])
+  school_year_id              Int
+  Activity_Logs               Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
-model Student {
-  id                 Int               @id @default(autoincrement())
-  first_name         String
-  last_name          String
-  middle_name        String?
-  email              String
-  School_Semester    School_Semester?  @relation(fields: [school_semester_id], references: [id])
-  school_semester_id Int?
-  department         Department?       @relation(fields: [department_id], references: [id])
-  department_id      Int?
-  is_illegible       Boolean           @default(false)
-  units_completed    Int               @default(0)
-  Student_Profile    Student_Profile[]
-  Documents          Documents[]
-  Activity_Logs      Activity_Logs[]
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now())
-  deletedAt          DateTime          @default(now())
+model Student_User {
+  id Int @id @default(autoincrement())
+
+  first_name              String
+  middle_name             String?
+  last_name               String
+  student_code            String
+  email                   String
+  student_status          Student_Status        @default(NOT_SET)
+  student_verfication     Boolean               @default(false)
+  is_active               Boolean               @default(false)
+  Student_User_Profile    Student_User_Profile? @relation(fields: [student_user_profile_id], references: [id])
+  student_user_profile_id Int?                  @unique
+  College_Program         College_Program?      @relation(fields: [college_ProgramId], references: [id])
+  college_ProgramId       Int?
+  school_semester         School_Semester       @relation(fields: [school_semester_id], references: [id])
+  school_semester_id      Int                   @unique
+  Activity_Logs           Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
-model Department {
-  id                Int       @id @default(autoincrement())
-  name              String
-  short_name        String
-  chair_person_name String?
-  description       String?
-  Student           Student[]
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @default(now())
-  deletedAt         DateTime  @default(now())
+model Student_User_Profile {
+  id Int @id @default(autoincrement())
+
+  student_profile_image String?         @db.Text
+  address               String?         @db.Text
+  phone_number          String?
+  self_introduction     String?         @db.Text
+  date_of_birth         DateTime?
+  sex                   String?
+  Student_User          Student_User?
+  Activity_Logs         Activity_Logs[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
-model Student_Profile {
-  id                 Int                  @id @default(autoincrement())
-  student            Student?             @relation(fields: [student_id], references: [id])
-  student_id         Int?
-  address            String
-  phone_number       String
-  date_of_birth      DateTime
-  sex                SEX                  @default(ALIEN)
-  profile_image      String?
-  Application_Status Application_Status[]
-  Activity_Logs      Activity_Logs[]
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  deletedAt          DateTime             @default(now())
+model Admin_User {
+  id Int @id @default(autoincrement())
+
+  admin_user_image String?         @db.Text
+  first_name       String
+  middle_name      String?
+  last_name        String
+  email_address    String          @unique
+  password         String
+  isActive         Boolean         @default(false)
+  level_of_user    Level_Of_User   @default(NOT_SET)
+  Activity_Logs    Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
-model Application_Status {
-  id         Int                        @id @default(autoincrement())
-  student    Student_Profile?           @relation(fields: [student_id], references: [id])
-  student_id Int?
-  status     STUDENT_APPLICATION_STATUS @default(APPLYING)
-  createdAt  DateTime                   @default(now())
-  updatedAt  DateTime                   @default(now())
-  deletedAt  DateTime                   @default(now())
+model College_Department {
+  id Int @id @default(autoincrement())
+
+  college_department_image       String?           @db.Text
+  college_department_name        String
+  college_department_description String?
+  college_coordinator            String?
+  College_Program                College_Program[]
+  Activity_Logs                  Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
-model Documents {
-  id            Int      @id @default(autoincrement())
-  student       Student? @relation(fields: [student_id], references: [id])
-  student_id    Int?
-  document_name String
-  document_url  String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now())
-  deletedAt     DateTime @default(now())
+model College_Program {
+  id Int @id @default(autoincrement())
+
+  college_program_name        String
+  college_program_description String?
+  Student                     Student_User[]
+  college_department          College_Department @relation(fields: [college_department_id], references: [id])
+  college_department_id       Int
+  Activity_Logs               Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
-model Company_Partners {
-  id                  Int             @id @default(autoincrement())
-  company_name        String
-  address             String
-  phone_number        String
-  email               String
-  contact_person      String
-  company_logo        String?
-  company_description String?
-  company_type        Company_Type?   @relation(fields: [company_type_id], references: [id])
-  company_type_id     Int?
-  company_website     String?
+model Company_List {
+  id Int @id @default(autoincrement())
+
+  company_name           String
+  company_description    String?            @db.Text
+  company_image          String?            @db.Text
+  company_address        String?            @db.Text
+  company_website        String?
+  company_email          String?
+  comapny_contact_person String
+  Company_Job_List       Company_Job_List[]
+  Activity_Logs          Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model Company_Job_List {
+  id Int @id @default(autoincrement())
+
+  job_title           String
+  job_description     String?         @db.Text
+  job_requirements    String          @db.Text
+  job_description_url String?
+  is_allowed          Boolean         @default(false)
+  is_active           Boolean         @default(false)
+  Company_List        Company_List    @relation(fields: [company_list_id], references: [id])
+  company_list_id     Int
   Activity_Logs       Activity_Logs[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @default(now())
-  deletedAt           DateTime        @default(now())
-}
 
-model Company_Type {
-  id               Int                @id @default(autoincrement())
-  companyType      String
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
-  deletedAt        DateTime           @default(now())
-  Company_Partners Company_Partners[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
 }
 
 model Activity_Logs {
-  id                 Int               @id @default(autoincrement())
-  Student_Profile    Student_Profile?  @relation(fields: [student_profile_id], references: [id])
-  student_profile_id Int?
-  School_Semester    School_Semester?  @relation(fields: [school_semester_id], references: [id])
-  school_semester_id Int?
-  School_Year        School_Year?      @relation(fields: [school_year_id], references: [id])
-  school_year_id     Int?
-  Student            Student?          @relation(fields: [studentId], references: [id])
-  studentId          Int?
-  Company_Partners   Company_Partners? @relation(fields: [company_PartnersId], references: [id])
-  company_PartnersId Int?
-  action             String
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now())
-  deletedAt          DateTime          @default(now())
+  id Int @id @default(autoincrement())
+
+  activity_message String @db.Text
+  activity_action  String
+
+  School_Year             School_Year?          @relation(fields: [school_year_id], references: [id])
+  school_year_id          Int?
+  School_Semester         School_Semester?      @relation(fields: [school_semester_id], references: [id])
+  school_semester_id      Int?
+  College_Department      College_Department?   @relation(fields: [college_department_id], references: [id])
+  college_department_id   Int?
+  College_Program         College_Program?      @relation(fields: [college_program_id], references: [id])
+  college_program_id      Int?
+  Student                 Student_User?         @relation(fields: [student_id], references: [id])
+  student_id              Int?
+  Student_User_Profile    Student_User_Profile? @relation(fields: [student_user_profile_id], references: [id])
+  student_user_profile_id Int?
+  Admin_User              Admin_User?           @relation(fields: [admin_user_id], references: [id])
+  admin_user_id           Int?
+  company_list            Company_List?         @relation(fields: [company_list_id], references: [id])
+  company_list_id         Int?
+  Company_Job_List        Company_Job_List?     @relation(fields: [company_Job_ListId], references: [id])
+  company_Job_ListId      Int?
+
+  createdAt DateTime @default(now())
 }
 
-// ENUMS
-
-enum Semester_Label {
-  FIRST_SEMESTER
-  SECOND_SEMESTER
-  SUMMER
+enum Level_Of_User {
+  SUPER_ADMINISTRATOR
+  ADMINISTRATOR
+  STAFF
+  NOT_SET
 }
 
-enum SEX {
-  MALE
-  FEMALE
-  ALIEN
-}
-
-enum STUDENT_APPLICATION_STATUS {
+enum Student_Status {
+  INTERN
+  FINISHED
   APPLYING
-  ACCEPTED
-  COMPLETED
+  NOT_SET
 }

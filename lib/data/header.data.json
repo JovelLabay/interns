@@ -1,0 +1,10 @@
+{
+  "links": [
+    { "id": 1, "name": "Home", "link": "/" },
+    { "id": 2, "name": "Services", "link": "/welcome/service" },
+    { "id": 3, "name": "Learn More", "link": "/welcome/about" }
+  ],
+  "headerButtons": [
+    { "id": 1, "url": "/user/student/dashboard", "name": "Student" }
+  ]
+}

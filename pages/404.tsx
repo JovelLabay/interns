@@ -8,8 +8,9 @@ import Image from 'next/image';
 import NotFoundIllustration from '../public/images/notFound/notFound.jpg';
 
 function NotFound() {
+  document.title = '404 Not Found';
   return (
-    <div className="min-h-[70vh] flex justify-center items-center mt-[80px] md:mt-[100px] lg:mt-[110px]">
+    <div className="mt-[80px] flex min-h-[70vh] items-center justify-center md:mt-[100px] lg:mt-[110px]">
       <Image src={NotFoundIllustration} width={500} height={500} />
     </div>
   );

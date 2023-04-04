@@ -148,12 +148,10 @@ export const data = {
     ],
   },
   networkProvider: [
-    { id: 1, name: 'Globe' },
-    { id: 2, name: 'Smart' },
-    { id: 3, name: 'Sun' },
-    { id: 4, name: 'TNT' },
-    { id: 5, name: 'TM' },
-    { id: 6, name: 'Dito' },
+    { id: 101, name: 'Select' },
+    { id: 1, name: 'Super Administrator' },
+    { id: 2, name: 'Administrator' },
+    { id: 3, name: 'Staff' },
   ],
   companyDashboardMenu: [
     { id: 1, name: 'Home' },

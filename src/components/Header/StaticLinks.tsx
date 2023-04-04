@@ -8,7 +8,7 @@ import Link from 'next/link';
 import classNames from 'classnames';
 
 // STATIC DATA
-import { data } from '../../../Data';
+import header from '@data/header.data.json';
 
 const MenuLinks = ({
   isYellowBg,
@@ -19,17 +19,17 @@ const MenuLinks = ({
 }) => {
   return (
     <>
-      {data.links.linkMenu.map((link, index) => {
+      {header.links.map((link, index) => {
         return (
           <Link href={link.link} key={index}>
             <a
               onClick={mobileNavhandler}
-              className={classNames(
-                'text-secondaryWhite duration-200 border-b-2 border-b-white lg:hover:border-primaryYellow',
-                {
-                  'border-b-primaryYellow lg:hover:border-white': isYellowBg,
-                }
-              )}
+              className={classNames({
+                'border-b-2 border-primaryYellow text-white duration-300 hover:border-white':
+                  isYellowBg,
+                'border-b-2 border-white text-mainBgBlack duration-300 hover:border-primaryYellow':
+                  !isYellowBg,
+              })}
             >
               {link.name}
             </a>
@@ -42,9 +42,6 @@ const MenuLinks = ({
 
 const ButtonLinks = ({ isYellowBg }: { isYellowBg?: boolean }) => {
   const cookieHandler = (name: string) => {
-    if (name === 'Company') {
-      localStorage.setItem('cookieInterns', 'company');
-    }
     if (name === 'Student') {
       localStorage.setItem('cookieInterns', 'student');
     }
@@ -52,23 +49,19 @@ const ButtonLinks = ({ isYellowBg }: { isYellowBg?: boolean }) => {
 
   return (
     <>
-      {data.headerButtons.headButtons.map((button, index) => {
+      {header.headerButtons.map((button, index) => {
         return (
           <Link key={index} href={button.url}>
-            <a
+            <button
               onClick={() => cookieHandler(button.name)}
               className={
-                index === 0
-                  ? isYellowBg
-                    ? 'w-[120px] border-2 py-2 font-semibold border-white rounded flex items-center justify-center'
-                    : 'w-[120px] py-2 font-semibold bg-primaryYellow rounded flex items-center justify-center'
-                  : isYellowBg
-                  ? 'w-[120px] py-2 font-semibold bg-white rounded flex items-center justify-center'
-                  : 'w-[120px] border-2 py-2 font-semibold border-primaryYellow rounded flex items-center justify-center'
+                isYellowBg
+                  ? 'flex w-[120px] items-center justify-center rounded-full bg-white py-2 font-semibold duration-300 hover:scale-105'
+                  : 'flex w-[120px] items-center justify-center rounded-full bg-primaryYellow py-2 font-semibold duration-300 hover:scale-105'
               }
             >
               {button.name}
-            </a>
+            </button>
           </Link>
         );
       })}
