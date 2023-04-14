@@ -24,7 +24,7 @@ model School_Year {
   Activity_Logs           Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -35,7 +35,7 @@ model School_Semester {
   end_date                    DateTime
   school_semester_name        String
   school_semester_description String?
-  school_semester_code        String
+  school_semester_code        String          @unique
   is_active                   Boolean         @default(false)
   Student                     Student_User?
   school_year                 School_Year     @relation(fields: [school_year_id], references: [id])
@@ -43,7 +43,7 @@ model School_Semester {
   Activity_Logs               Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -53,21 +53,21 @@ model Student_User {
   first_name              String
   middle_name             String?
   last_name               String
-  student_code            String
-  email                   String
+  student_code            String                @unique
+  email                   String                @unique
   student_status          Student_Status        @default(NOT_SET)
   student_verfication     Boolean               @default(false)
   is_active               Boolean               @default(false)
   Student_User_Profile    Student_User_Profile? @relation(fields: [student_user_profile_id], references: [id])
   student_user_profile_id Int?                  @unique
-  College_Program         College_Program?      @relation(fields: [college_ProgramId], references: [id])
-  college_ProgramId       Int?
   school_semester         School_Semester       @relation(fields: [school_semester_id], references: [id])
   school_semester_id      Int                   @unique
+  College_Department      College_Department    @relation(fields: [college_DepartmentId], references: [id])
+  college_DepartmentId    Int
   Activity_Logs           Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -83,8 +83,25 @@ model Student_User_Profile {
   Student_User          Student_User?
   Activity_Logs         Activity_Logs[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
+
+model College_Department {
+  id Int @id @default(autoincrement())
+
+  college_department_image       String?         @db.Text
+  college_department_name        String
+  college_department_description String?         @db.Text
+  college_coordinator            String
+  complete_program_name          String
+  abbreviated_program_name       String
+  Student                        Student_User[]
+  Activity_Logs                  Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
 }
 
 model Admin_User {
@@ -101,37 +118,7 @@ model Admin_User {
   Activity_Logs    Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  deletedAt DateTime?
-}
-
-model College_Department {
-  id Int @id @default(autoincrement())
-
-  college_department_image       String?           @db.Text
-  college_department_name        String
-  college_department_description String?
-  college_coordinator            String?
-  College_Program                College_Program[]
-  Activity_Logs                  Activity_Logs[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  deletedAt DateTime?
-}
-
-model College_Program {
-  id Int @id @default(autoincrement())
-
-  college_program_name        String
-  college_program_description String?
-  Student                     Student_User[]
-  college_department          College_Department @relation(fields: [college_department_id], references: [id])
-  college_department_id       Int
-  Activity_Logs               Activity_Logs[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -149,7 +136,7 @@ model Company_List {
   Activity_Logs          Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -167,7 +154,7 @@ model Company_Job_List {
   Activity_Logs       Activity_Logs[]
 
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime?
   deletedAt DateTime?
 }
 
@@ -183,8 +170,6 @@ model Activity_Logs {
   school_semester_id      Int?
   College_Department      College_Department?   @relation(fields: [college_department_id], references: [id])
   college_department_id   Int?
-  College_Program         College_Program?      @relation(fields: [college_program_id], references: [id])
-  college_program_id      Int?
   Student                 Student_User?         @relation(fields: [student_id], references: [id])
   student_id              Int?
   Student_User_Profile    Student_User_Profile? @relation(fields: [student_user_profile_id], references: [id])

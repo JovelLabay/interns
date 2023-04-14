@@ -11,17 +11,20 @@ import classNames from 'classnames';
 import { data } from 'Data';
 
 // COMPONENTS
-import CompaniesContainer from '../menuContainer/school/companiesContainer';
-import ProfessionsContainer from '../menuContainer/school/professionsContainer';
-import StudentListContainer from '../menuContainer/school/studentListContainer';
-import TemplatedFormContainer from '../menuContainer/school/templatedFormContainer';
+import CompaniesContainer from '../../../../../src/components/menuContainer/school/companiesContainer';
+import ProfessionsContainer from './tabs/companiesContainer';
+import StudentListContainer from '../../../../../src/components/menuContainer/school/studentListContainer';
+import TemplatedFormContainer from '../../../../../src/components/menuContainer/school/templatedFormContainer';
 
 // FIREBASE
 import { database } from '@/src/firebase/firebaseConfig';
 
 // FIREBASE
 import { onValue, ref } from 'firebase/database';
-import Activitylogs from '../menuContainer/school/activitylogs';
+import Activitylogs from './tabs/activitylogs';
+import SchoolYearSemestreContainer from './tabs/schoolYearSemestreContainer';
+import StudentContainer from './tabs/studentContainer';
+import DocumentsContainer from './tabs/documentsContainer';
 
 function SchoolDashboardContainer() {
   const [tabSelected, setTabSelected] = useState(0);
@@ -64,27 +67,21 @@ function SchoolDashboardContainer() {
               );
             })}
           </div>
-
-          {/* COMPANY TAB ONLY */}
-          {tabSelected === 1 ? (
-            <p className="font-bold tracking-[1rem] text-secondaryWhite xl:mr-[10rem]">
-              CONTROLS
-            </p>
-          ) : null}
         </Tab.List>
+
         {/* MAIN COMPONENTS */}
         <Tab.Panels>
           <Tab.Panel>
-            <StudentListContainer listingOfColleges={listingOfColleges} />
+            <SchoolYearSemestreContainer />
+          </Tab.Panel>
+          <Tab.Panel>
+            <StudentContainer />
+          </Tab.Panel>
+          <Tab.Panel>
+            <DocumentsContainer />
           </Tab.Panel>
           <Tab.Panel>
             <CompaniesContainer />
-          </Tab.Panel>
-          <Tab.Panel>
-            <TemplatedFormContainer listingOfColleges={listingOfColleges} />
-          </Tab.Panel>
-          <Tab.Panel>
-            <ProfessionsContainer />
           </Tab.Panel>
           <Tab.Panel>
             <Activitylogs />

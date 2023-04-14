@@ -120,10 +120,10 @@ export const data = {
   },
   admin: {
     tabs: [
-      { id: 1, name: 'Student' },
-      { id: 2, name: 'Companies' },
-      { id: 3, name: 'Template Forms' },
-      { id: 4, name: 'Professionals' },
+      { id: 1, name: 'School Year | Semestre' },
+      { id: 2, name: 'Student' },
+      { id: 3, name: 'Documents' },
+      { id: 4, name: 'Companies' },
       { id: 5, name: 'Activity Logs' },
     ],
     companyApplicationStatus: [
@@ -162,6 +162,10 @@ export const data = {
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },
     { id: 2, name: 'View Users' },
+  ],
+  schoolDashBoardHeaderManageCollege: [
+    { id: 1, name: 'Add College' },
+    { id: 2, name: 'View Colleges' },
   ],
   formTemplates: [
     { id: 1, name: 'Waiver', completeName: 'Waiver Form' },

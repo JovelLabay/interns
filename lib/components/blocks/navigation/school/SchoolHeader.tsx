@@ -22,7 +22,7 @@ import { AiOutlineAppstore, AiOutlineUserAdd } from 'react-icons/ai';
 import { BsBuilding } from 'react-icons/bs';
 
 // COMPONENTS
-import AddUsers from '../../../interface/modal/addUsers';
+import ManageUsers from '@component/interface/modal/ManageUsers';
 
 // FIREBASE CONFIG
 import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
@@ -34,6 +34,9 @@ import { ref, onValue } from 'firebase/database';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import AddCollege from '../../../../../src/components/modals/AddCollege';
+import ManageCollege from '@component/interface/modal/ManageCollege';
+import { MdOutlineSchool } from 'react-icons/md';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 function SchoolHeader({
   userName,
@@ -46,63 +49,10 @@ function SchoolHeader({
 }) {
   const router = useRouter();
 
-  const [userList, setUserList] = useState({
-    numbers: {},
-    currentNumber: '',
-    currentLocations: {},
-    companyTypes: {},
-  });
-
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,
     manageCollege: false,
-    manageJobCategory: false,
-    manageCompanyType: false,
-    locationOfCompany: false,
   });
-
-  useEffect(() => {
-    const db = database;
-
-    const usersNumberList = ref(db, 'school/numbers');
-    onValue(usersNumberList, (snapshot) => {
-      const data = snapshot.val();
-      setUserList((prev) => {
-        return { ...prev, numbers: data };
-      });
-    });
-
-    const userCurrentNumber = ref(db, 'school/currentNumber');
-    onValue(userCurrentNumber, (snapshot) => {
-      const data = snapshot.val();
-      setUserList((prev) => {
-        return { ...prev, currentNumber: data.number };
-      });
-    });
-
-    const currentLocations = ref(db, 'school/locations');
-    onValue(currentLocations, (snapshot) => {
-      const data = snapshot.val();
-      setUserList((prev) => {
-        return { ...prev, currentLocations: data };
-      });
-    });
-
-    const companyTypes = ref(db, 'school/companyTypes');
-    onValue(companyTypes, (snapshot) => {
-      const data = snapshot.val();
-      setUserList((prev) => {
-        return { ...prev, companyTypes: data };
-      });
-    });
-  }, []);
-
-  const {
-    manageJobCategory,
-    manageCompanyType,
-    manageCollege,
-    locationOfCompany,
-  } = addRemoveModal;
 
   return (
     <>
@@ -125,60 +75,29 @@ function SchoolHeader({
             <p className="font-medium">{userName || 'No Data'}</p>
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
-            {/* SETTINGS */}
-            <Popover className="relative">
-              <Popover.Button className="buttonIcon">
-                <IoSettingsOutline />
-              </Popover.Button>
-
-              <Popover.Panel className="absolute right-0 z-10 w-[300px]">
-                <div className="mt-2 flex flex-col gap-4 rounded bg-white p-3 shadow-md">
-                  <button
-                    name="manageCategory"
-                    className="school-header-buttons"
-                    onClick={(e: any) => toggleManageModals(e.target.name)}
-                  >
-                    <AiOutlineAppstore size={20} /> {'Job Categories'}
-                  </button>
-                  <button
-                    name="manageCompany"
-                    className="school-header-buttons"
-                    onClick={(e: any) => toggleManageModals(e.target.name)}
-                  >
-                    <BsBuilding size={20} /> {'Company Type'}
-                  </button>
-                  <button
-                    name="manageCollege"
-                    className="school-header-buttons"
-                    onClick={(e: any) => toggleManageModals(e.target.name)}
-                  >
-                    <AiOutlineUserAdd size={20} /> {'Add College'}
-                  </button>
-                  <button
-                    name="manageLocation"
-                    className="school-header-buttons"
-                    onClick={(e: any) => toggleManageModals(e.target.name)}
-                  >
-                    <BiCurrentLocation size={20} /> {'Location of Company'}
-                  </button>
-                </div>
-              </Popover.Panel>
-            </Popover>
-
             {/* MANAGE USERS */}
             <button
               className="buttonIcon"
-              onClick={addModalToggle}
-              title="manageUsers"
+              onClick={addModalToggleManageUser}
+              title="Manage Users"
             >
               <FiUsers />
+            </button>
+
+            {/* MANAGE COLLEGE */}
+            <button
+              className="buttonIcon"
+              onClick={addModalToggleManageCollege}
+              title="Manage College"
+            >
+              <HiOutlineOfficeBuilding />
             </button>
 
             {/* LOGOUT */}
             <button
               className="buttonIcon"
               onClick={schoolAdminLogoutHandler}
-              title="logout"
+              title="Logout"
             >
               <BiLogOut />
             </button>
@@ -186,73 +105,36 @@ function SchoolHeader({
         </div>
 
         {/* MODALS */}
-        <AddUsers
+        <ManageUsers
           addRemoveModal={addRemoveModal.manageUser}
-          addModalToggle={addModalToggle}
+          addModalToggle={addModalToggleManageUser}
         />
 
-        <AddCollege
-          addRemoveModal={{
-            manageJobCategory,
-            manageCompanyType,
-            manageCollege,
-            locationOfCompany,
-          }}
-          toggleManageModals={toggleManageModals}
-          currentLocations={userList.currentLocations}
-          companyTypes={userList.companyTypes}
+        <ManageCollege
+          addRemoveModal={addRemoveModal.manageCollege}
+          addModalToggle={addModalToggleManageCollege}
         />
       </div>
 
-      {/* TOAST CONTAINER */}
+      {/* TOAST */}
       <ToastContainer />
     </>
   );
 
   function schoolAdminLogoutHandler() {
-    signOut(emailPassAuth)
-      .then(() => {
-        router.push('/views/user/school/auth');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    null;
   }
 
-  function addModalToggle() {
+  function addModalToggleManageUser() {
     setAddRemoveModal((prev) => {
       return { ...prev, manageUser: !prev.manageUser };
     });
   }
 
-  function toggleManageModals(name?: string) {
-    if (name === 'manageCategory') {
-      setAddRemoveModal((prev) => {
-        return { ...prev, manageJobCategory: !prev.manageJobCategory };
-      });
-    } else if (name === 'manageCompany') {
-      setAddRemoveModal((prev) => {
-        return { ...prev, manageCompanyType: !prev.manageCompanyType };
-      });
-    } else if (name === 'manageCollege') {
-      setAddRemoveModal((prev) => {
-        return { ...prev, manageCollege: !prev.manageCollege };
-      });
-    } else if (name === 'manageLocation') {
-      setAddRemoveModal((prev) => {
-        return { ...prev, locationOfCompany: !prev.locationOfCompany };
-      });
-    } else if (name === '') {
-      setAddRemoveModal((prev) => {
-        return {
-          ...prev,
-          manageCollege: false,
-          manageJobCategory: false,
-          manageCompanyType: false,
-          locationOfCompany: false,
-        };
-      });
-    }
+  function addModalToggleManageCollege() {
+    setAddRemoveModal((prev) => {
+      return { ...prev, manageCollege: !prev.manageCollege };
+    });
   }
 }
 

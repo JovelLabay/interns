@@ -1,5 +1,5 @@
 // REACT
-import React, { Fragment, useEffect, useState, useMemo } from 'react';
+import React, { Fragment, useEffect, useState, useMemo, useRef } from 'react';
 
 // ICONS
 import {
@@ -17,7 +17,11 @@ import { Level_Of_User } from '@prisma/client';
 
 // TOAST
 import { ToastContainer } from 'react-toastify';
-import { errorNotify, successfulNotify } from '@/src/components/common/toast';
+import {
+  errorNotify,
+  successfulNotify,
+  warningNotify,
+} from '@/src/components/common/toast';
 
 // STATIC DATA
 import { data } from 'Data';
@@ -25,6 +29,7 @@ import pathData from '@data/path.data.json';
 
 // OTHERS
 import classNames from 'classnames';
+import { CSVLink } from 'react-csv';
 
 // FIREBASE FUNCTIONS
 import {
@@ -68,7 +73,7 @@ import { BsPerson } from 'react-icons/bs';
 
 const levelOfUser = Object.entries(Level_Of_User);
 
-function AddUsers({
+function ManageUsers({
   addRemoveModal,
   addModalToggle,
 }: {
@@ -108,120 +113,116 @@ function AddUsers({
   }, [watch().levelOfUser]);
 
   return (
-    <>
-      <Transition appear show={addRemoveModal} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => {
-            addModalToggle();
-            clearState();
-          }}
+    <Transition appear show={addRemoveModal} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10 hidden lg:block"
+        onClose={() => {
+          addModalToggle();
+          clearState();
+        }}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="h-[600px] w-[700px] overflow-auto rounded-md bg-white p-3">
-                  <div className="flex flex-row items-center justify-start">
-                    <button
-                      onClick={() => {
-                        addModalToggle();
-                        clearState();
-                      }}
-                      className="w-[100px] rounded border-2 border-primaryYellow py-1"
-                    >
-                      Close
-                    </button>
-                  </div>
-                  <div className="mt-4">
-                    <Tab.Group>
-                      <Tab.List className="flex justify-between rounded bg-mainBgWhite py-2">
-                        {data.schoolDashBoardHeaderManageUsers.map(
-                          (item, index) => (
-                            <Tab
-                              key={index}
-                              className={({ selected }) =>
-                                classNames(
-                                  'mx-2 flex w-full flex-row items-center justify-center gap-5',
-                                  selected
-                                    ? 'rounded-md bg-primaryYellow py-2'
-                                    : 'rounded-md bg-mainBgWhite py-2'
-                                )
-                              }
-                              onClick={() => reset()}
-                            >
-                              {item.id === 1 ? (
-                                <AiOutlinePlusCircle size={20} />
-                              ) : (
-                                <AiOutlineUnorderedList size={20} />
-                              )}
-                              {item.name}
-                            </Tab>
-                          )
-                        )}
-                      </Tab.List>
-                      <Tab.Panels className="mt-2">
-                        {/* ADD USERS */}
-                        <Tab.Panel>
-                          <AddUserComponentTab
-                            handleSubmit={handleSubmit}
-                            legend={legend}
-                            errors={errors}
-                            register={register}
-                            watch={watch}
-                            setValue={setValue}
-                            createNewUser={createNewUser}
-                            state={state}
-                            setState={setState}
-                            clearErrors={clearErrors}
-                          />
-                        </Tab.Panel>
+        <div className="fixed inset-0">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-[50vw] rounded-md bg-white p-3">
+                <div className="flex flex-row items-center justify-start">
+                  <button
+                    onClick={() => {
+                      addModalToggle();
+                      clearState();
+                    }}
+                    className="w-[100px] rounded border-2 border-primaryYellow py-1"
+                  >
+                    Close
+                  </button>
+                </div>
+                <Tab.Group>
+                  <Tab.List className="my-2 flex justify-between rounded bg-mainBgWhite py-2">
+                    {data.schoolDashBoardHeaderManageUsers.map(
+                      (item, index) => (
+                        <Tab
+                          key={index}
+                          className={({ selected }) =>
+                            classNames(
+                              'mx-2 flex w-full flex-row items-center justify-center gap-5',
+                              selected
+                                ? 'rounded-md bg-primaryYellow py-2'
+                                : 'rounded-md bg-mainBgWhite py-2'
+                            )
+                          }
+                          onClick={clearState}
+                        >
+                          {item.id === 1 ? (
+                            <AiOutlinePlusCircle size={20} />
+                          ) : (
+                            <AiOutlineUnorderedList size={20} />
+                          )}
+                          {item.name}
+                        </Tab>
+                      )
+                    )}
+                  </Tab.List>
+                  <Tab.Panels>
+                    {/* ADD USERS */}
+                    <Tab.Panel>
+                      <AddUserComponentTab
+                        handleSubmit={handleSubmit}
+                        legend={legend}
+                        errors={errors}
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        createNewUser={createNewUser}
+                        state={state}
+                        setState={setState}
+                        clearErrors={clearErrors}
+                      />
+                    </Tab.Panel>
 
-                        {/* LIST OF USERS */}
-                        <Tab.Panel>
-                          <ListsUserComponentTab
-                            handleSubmit={handleSubmit}
-                            errors={errors}
-                            register={register}
-                            watch={watch}
-                            setValue={setValue}
-                            clearErrors={clearErrors}
-                            reset={reset}
-                          />
-                        </Tab.Panel>
-                      </Tab.Panels>
-                    </Tab.Group>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-
-            {/* TOAST CONTAINER */}
-            <ToastContainer />
+                    {/* LIST OF USERS */}
+                    <Tab.Panel>
+                      <ListsUserComponentTab
+                        handleSubmit={handleSubmit}
+                        errors={errors}
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        reset={reset}
+                      />
+                    </Tab.Panel>
+                  </Tab.Panels>
+                </Tab.Group>
+              </Dialog.Panel>
+            </Transition.Child>
           </div>
-        </Dialog>
-      </Transition>
-    </>
+
+          {/* TOAST CONTAINER */}
+          <ToastContainer />
+        </div>
+      </Dialog>
+    </Transition>
   );
 
   function createNewUser(data: FormSchoolUserAdmin) {
@@ -244,8 +245,9 @@ function AddUsers({
       .catch((err) => {
         toogleCreatingState(false);
         errorNotify(
-          splitUnderScore(err.response.data.error.meta.target) ??
-            'Something went wrong!'
+          splitUnderScore(
+            err.response.data.error.meta.target ?? 'Something went wrong!'
+          )
         );
         console.error(err);
       });
@@ -253,7 +255,6 @@ function AddUsers({
 
   function clearState() {
     reset();
-
     clearErrors();
 
     setState((prev) => {
@@ -275,7 +276,7 @@ function AddUsers({
   }
 }
 
-export default AddUsers;
+export default ManageUsers;
 
 function AddUserComponentTab({
   handleSubmit,
@@ -314,7 +315,7 @@ function AddUserComponentTab({
   >;
 }) {
   return (
-    <div className="h-[460px] overflow-auto">
+    <div className="h-[70vh] overflow-auto">
       <p className="w-full rounded bg-primaryYellowHover p-3">
         <span className="font-medium">Type Of User</span> : {legend}
         {'.'}
@@ -533,7 +534,7 @@ function AddUserComponentTab({
                     })}
                   />
                 </Listbox.Button>
-                <Listbox.Options className="absolute z-30 max-h-[150px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
+                <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
                   {levelOfUser.map((person, index) => (
                     <Listbox.Option
                       className="py-1"
@@ -581,12 +582,19 @@ function ListsUserComponentTab({
   clearErrors: UseFormClearErrors<FormSchoolUserAdmin>;
   reset: UseFormReset<FormSchoolUserAdmin>;
 }) {
+  const csvRef: any = useRef(null);
+
   const [listUserAdmin, setListUserAdmin] = useState<ReturnAdminUserPayload[]>(
     []
   );
   const [filterState, setFilterState] = useState({
     search: '',
     isActive: true,
+  });
+  const [exportModal, setExportModal] = useState({
+    isOpen: false,
+    exportedData: [] as ExportedFormSchoolUserAdmin[],
+    filename: '',
   });
   const [isEdit, setIsEdit] = useState(-1);
   const [pagination, setPagination] = useState({
@@ -614,12 +622,21 @@ function ListsUserComponentTab({
   }, [listUserAdmin]);
 
   return (
-    <div>
-      <div className="my-2">
+    <>
+      <div className="flex items-center justify-start gap-2">
+        <button
+          className="w-[200px] rounded bg-green-500 py-2 text-white"
+          onClick={() => {
+            setExportModal({ ...exportModal, isOpen: true });
+            getAllDeleted();
+          }}
+        >
+          Export Deleted
+        </button>
         <input
           placeholder="Search Admin Name..."
           className={classNames(
-            'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+            'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite p-2 focus:outline-none',
             {
               'cursor-not-allowed opacity-50': isEdit !== -1,
             }
@@ -627,11 +644,9 @@ function ListsUserComponentTab({
           disabled={isEdit !== -1}
         />
       </div>
-      <div className="flex h-[358px] flex-col gap-3 overflow-auto">
+      <div className="my-2 h-[60vh] flex-col gap-3 overflow-auto">
         {filterAdminUserList.length === 0 ? (
-          <>
-            <h1 className="text-secondaryWhite">No Data Found</h1>
-          </>
+          <h1 className="py-5 text-secondaryWhite">No Data Found</h1>
         ) : (
           filterAdminUserList.map(
             ({
@@ -646,7 +661,7 @@ function ListsUserComponentTab({
               password,
             }) => (
               <section
-                className="relative flex items-start justify-between rounded bg-yellowBg p-3"
+                className="relative mb-2 flex items-start justify-between rounded bg-yellowBg p-3"
                 key={id}
               >
                 <div className=" flex flex-col items-start gap-3 text-secondaryWhite">
@@ -730,7 +745,7 @@ function ListsUserComponentTab({
                             <div className="relative">
                               <Listbox.Button
                                 className={classNames(
-                                  'outline-none" flex w-[300px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2',
+                                  'flex w-[300px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none',
                                   {
                                     'border-red-500 bg-red-100 placeholder:text-white':
                                       errors.levelOfUser?.message,
@@ -758,7 +773,7 @@ function ListsUserComponentTab({
                                   )}
                                 />
                               </Listbox.Button>
-                              <Listbox.Options className="absolute z-30 max-h-[150px] w-full overflow-auto rounded-md bg-white p-2 shadow-md hover:cursor-pointer">
+                              <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
                                 {levelOfUser.map((person, index) => (
                                   <Listbox.Option
                                     className="py-1"
@@ -775,7 +790,7 @@ function ListsUserComponentTab({
                       </div>
                       <div className="flex flex-col items-start gap-2">
                         <label htmlFor="email" className="text-secondaryWhite">
-                          IsActive{' '}
+                          Account Status
                         </label>
                         <Switch
                           checked={watch().isActive}
@@ -826,7 +841,7 @@ function ListsUserComponentTab({
                       </p>
                       <p
                         className={classNames(
-                          'absolute right-4 bottom-4 rounded-full px-3 py-1 text-xs text-mainBgWhite drop-shadow-md',
+                          'absolute right-4 bottom-4 rounded-full px-3 py-2 text-xs text-mainBgWhite drop-shadow-md',
                           {
                             'bg-green-400': isActive === true,
                             'bg-red-400': isActive === false,
@@ -842,6 +857,13 @@ function ListsUserComponentTab({
                   {isEdit === id ? (
                     <>
                       <button
+                        className="w-[100px] cursor-pointer rounded bg-primaryYellow p-2"
+                        title="Edit User"
+                        onClick={handleSubmit(updateAdminUserData)}
+                      >
+                        {crudState.isUpdate ? 'Updating...' : 'Save'}
+                      </button>
+                      <button
                         className="w-[100px] cursor-pointer rounded border-2 border-primaryYellow p-2"
                         title="Delete User"
                         onClick={() => {
@@ -850,13 +872,6 @@ function ListsUserComponentTab({
                         }}
                       >
                         Cancel
-                      </button>
-                      <button
-                        className="w-[100px] cursor-pointer rounded bg-primaryYellow p-2"
-                        title="Edit User"
-                        onClick={handleSubmit(updateAdminUserData)}
-                      >
-                        {crudState.isUpdate ? 'Updating...' : 'Save'}
                       </button>
                     </>
                   ) : (
@@ -895,12 +910,6 @@ function ListsUserComponentTab({
                       >
                         <BiReset size={25} className="text-mainBgWhite" />
                       </button>
-                      <button
-                        className="cursor-pointer rounded bg-green-400 p-2"
-                        title="Reset User Profile Image"
-                      >
-                        <BsPerson size={25} className="text-mainBgWhite" />
-                      </button>
                     </>
                   )}
                 </div>
@@ -910,7 +919,7 @@ function ListsUserComponentTab({
         )}
       </div>
 
-      <div className="my-2 flex items-center justify-center gap-3">
+      <div className="flex items-center justify-center gap-3">
         <button
           className={classNames(
             'w-[100px] rounded border-2 border-primaryYellow p-1',
@@ -948,11 +957,158 @@ function ListsUserComponentTab({
             }));
           }}
         >
-          Next {pagination.payloadLength}
+          Next
         </button>
       </div>
-    </div>
+
+      <Transition appear show={exportModal.isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10 hidden lg:block"
+          onClose={() =>
+            setExportModal({
+              ...exportModal,
+              isOpen: false,
+              exportedData: [],
+              filename: '',
+            })
+          }
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-[30vw] rounded-md bg-white p-3">
+                  <div className="mb-3 flex flex-row items-center justify-between">
+                    <p>Export Data to CSV</p>
+                    <button
+                      className="rounded bg-primaryYellow p-2"
+                      title="Close"
+                      onClick={() =>
+                        setExportModal({
+                          ...exportModal,
+                          isOpen: false,
+                          exportedData: [],
+                          filename: '',
+                        })
+                      }
+                    >
+                      <AiOutlineCloseCircle size={20} />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    <p className="px-10 text-sm font-thin italic text-secondaryWhite">
+                      *This will export all the data that were softly deleted.
+                      Once extported, It will hardly be deleted in the Database
+                      to fill new data. A CSV fill will be exported containing
+                      all the hardly deleted data.
+                    </p>
+
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                      )}
+                      type="text"
+                      placeholder="Filename"
+                      value={exportModal.filename}
+                      onChange={(e) =>
+                        setExportModal((prev) => {
+                          return {
+                            ...prev,
+                            filename: e.target.value,
+                          };
+                        })
+                      }
+                    />
+                    <button
+                      className="w-[150px] rounded bg-primaryYellow p-2"
+                      onClick={() => {
+                        if (exportModal.filename === '') {
+                          warningNotify("Filename can't be empty");
+                          return;
+                        }
+
+                        csvRef.current.link.click();
+
+                        setExportModal({
+                          ...exportModal,
+                          isOpen: false,
+                          exportedData: [],
+                          filename: '',
+                        });
+                      }}
+                    >
+                      Export Now
+                    </button>
+
+                    <CSVLink
+                      headers={[
+                        { label: 'ID', key: 'id' },
+                        { label: 'Admin User Image', key: 'admin_user_image' },
+                        { label: 'First Name', key: 'first_name' },
+                        { label: 'Middle Name', key: 'middle_name' },
+                        { label: 'Last Name', key: 'last_name' },
+                        { label: 'Email Address', key: 'email_address' },
+                        { label: 'Password', key: 'password' },
+                        { label: 'Is Active', key: 'isActive' },
+                        { label: 'Level Of User', key: 'level_of_user' },
+                        { label: 'Created At', key: 'createdAt' },
+                        { label: 'Updated At', key: 'updatedAt' },
+                        { label: 'Deleted At', key: 'deletedAt' },
+                      ]}
+                      filename={`${exportModal.filename}.csv`}
+                      data={exportModal.exportedData}
+                      ref={csvRef}
+                    />
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
   );
+
+  function getAllDeleted() {
+    axios
+      .get('/api/data/adminUser?isDeleted=true')
+      .then((res) => {
+        const data = res.data.responsePayload;
+
+        setExportModal((prev) => {
+          return {
+            ...prev,
+            exportedData: [...data],
+          };
+        });
+      })
+
+      .catch((err) => {
+        errorNotify("Something's wrong. Please try again later.");
+        console.error(err);
+      });
+  }
 
   function getAdminUserList() {
     axios

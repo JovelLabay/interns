@@ -42,7 +42,7 @@ function Auth() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
+    reset,
     clearErrors,
   } = useForm<FormLogin>({
     mode: 'onSubmit',
@@ -153,9 +153,11 @@ function Auth() {
               </button>
             </div>
 
-            <input
+            <button
               className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:cursor-pointer hover:bg-primaryYellowHover"
-              value={(function () {
+              type="submit"
+            >
+              {(function () {
                 if (isForgotPassword) {
                   if (submit.isSubmitting) {
                     return 'Sending...';
@@ -170,8 +172,7 @@ function Auth() {
                   return 'Login';
                 }
               })()}
-              type="submit"
-            />
+            </button>
           </form>
         </div>
       </div>
@@ -182,8 +183,7 @@ function Auth() {
   );
 
   function clearPassEmail() {
-    setValue('email', '');
-    setValue('password', '');
+    reset();
 
     clearErrors();
   }

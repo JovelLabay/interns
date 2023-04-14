@@ -14,6 +14,13 @@ interface FormSchoolUserAdmin {
   isActive: boolean;
 }
 
+interface ExportedFormSchoolUserAdmin extends FormSchoolUserAdmin {
+  id: number;
+  createdAt: any;
+  updatedAt: any;
+  deletedAt: any;
+}
+
 interface ReturnAdminUserPayload {
   id: number;
   admin_user_image: string;
@@ -24,4 +31,30 @@ interface ReturnAdminUserPayload {
   password: string;
   isActive: boolean;
   level_of_user: string;
+}
+
+interface FormCollegeProgram {
+  collegeLogo: string;
+  departmentName: string;
+  departmentDescription: string;
+  coordinator: string;
+  programName: string;
+  abbreaviatedProgramName: string;
+}
+
+interface ExportedFormCollegeProgram extends FormCollegeProgram {
+  id: number;
+  createdAt: any;
+  updatedAt: any;
+  deletedAt: any;
+}
+
+interface ReturnCollegeProgram {
+  id: number;
+  college_department_image: string;
+  college_department_name: string;
+  college_department_description: string;
+  college_coordinator: string;
+  complete_program_name: string;
+  abbreviated_program_name: string;
 }

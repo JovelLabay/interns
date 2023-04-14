@@ -33,4 +33,15 @@ const CreateSchoolAdminValidator = yup.object({
   isActive: yup.boolean(),
 });
 
-export { LogSignValidator, CreateSchoolAdminValidator };
+const CreateCollegeValidator = yup.object({
+  collegeLogo: yup.string(),
+  departmentName: yup.string().required('Department Name is required'),
+  departmentDescription: yup.string(),
+  coordinator: yup.string().required('Please select a coordinator'),
+  programName: yup.string().required('Program Name is required'),
+  abbreaviatedProgramName: yup
+    .string()
+    .required('Abbreaviated Program Name is required'),
+});
+
+export { LogSignValidator, CreateSchoolAdminValidator, CreateCollegeValidator };

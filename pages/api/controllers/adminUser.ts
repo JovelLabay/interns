@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { hashPassword } from '@utils/backendFunction';
 
-export class Users {
+class Users {
   private prisma = new PrismaClient();
 
   public getUsers: () => Promise<void>;
@@ -23,44 +23,71 @@ export class Users {
       isActive,
     } = req.body;
 
-    const { id, skip } = req.query;
+    const { id, skip, isDeleted } = req.query;
 
     this.getUsers = async () => {
       try {
-        const responsePayload = await this.prisma.admin_User.findMany({
-          where: {
-            deletedAt: {
-              equals: null,
-            },
-            ...(id && {
-              id: {
-                equals: Number(id),
+        if (isDeleted === 'true') {
+          const responsePayload = await this.prisma.admin_User.findMany({
+            where: {
+              deletedAt: {
+                not: null,
               },
-            }),
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          skip: skip ? Number(skip) : 0,
-          take: 20,
-          select: {
-            id: true,
-            admin_user_image: true,
-            first_name: true,
-            middle_name: true,
-            last_name: true,
-            email_address: true,
-            password: true,
-            isActive: true,
-            level_of_user: true,
-          },
-        });
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+          });
 
-        res.status(200).json({
-          message: 'Successful',
-          responsePayload,
-          responsePayloadLength: responsePayload.length,
-        });
+          await this.prisma.admin_User.deleteMany({
+            where: {
+              deletedAt: {
+                not: null,
+              },
+            },
+          });
+
+          res.status(200).json({
+            message: 'Successful',
+            responsePayload,
+            responsePayloadLength: responsePayload.length,
+          });
+        } else {
+          const responsePayload = await this.prisma.admin_User.findMany({
+            where: {
+              deletedAt: {
+                equals: null,
+              },
+              ...(id && {
+                id: {
+                  equals: Number(id),
+                },
+              }),
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+            skip: skip ? Number(skip) : 0,
+            take: 20,
+            select: {
+              id: true,
+              admin_user_image: true,
+              first_name: true,
+              middle_name: true,
+              last_name: true,
+              email_address: true,
+              password: true,
+              isActive: true,
+              level_of_user: true,
+            },
+          });
+
+          res.status(200).json({
+            message: 'Successful',
+            responsePayload,
+            responsePayloadLength: responsePayload.length,
+          });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
       }
@@ -153,3 +180,5 @@ export class Users {
     };
   }
 }
+
+export default Users;

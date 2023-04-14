@@ -1,25 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Users from '../controllers/adminUser';
+import CollegeProgram from '../controllers/collegeProgram';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const users = new Users(req, res);
+  const collegeProgram = new CollegeProgram(req, res);
   const { method } = req;
 
   switch (method) {
     case 'GET':
-      users.getUsers();
+      collegeProgram.getCollegProgram();
       break;
     case 'POST':
-      users.postUser();
+      collegeProgram.postCollegProgram();
       break;
     case 'PUT':
-      users.putUser();
+      collegeProgram.putCollegProgram();
       break;
     case 'DELETE':
-      users.deleteUser();
+      collegeProgram.deleteCollegProgram();
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);

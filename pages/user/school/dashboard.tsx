@@ -5,7 +5,7 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import SplashLoading from '@/src/components/common/SplashLoading';
 
 // COMPONENTS
-import SchoolDashboardContainer from '@/src/components/dashboards/schoolDashboardContainer';
+import SchoolDashboardContainer from '@component/blocks/navigation/school/schoolDashboardContainer';
 import SchoolHeader from 'lib/components/blocks/navigation/school/SchoolHeader';
 
 // STATE MANAGEMENT
