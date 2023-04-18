@@ -1,26 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import SchoolYearController from '../controllers/schoolYear';
+import SchoolSemestreController from '../controllers/schoolSemestre';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const schoolYearController = new SchoolYearController(req, res);
+  const schoolSemestreController = new SchoolSemestreController(req, res);
   const { method } = req;
 
   switch (method) {
     case 'GET':
-      schoolYearController.getSchoolYear();
+      schoolSemestreController.getSchoolSemestre();
       break;
     case 'POST':
-      schoolYearController.postSchoolYear();
+      schoolSemestreController.postSchoolSemestre();
       break;
     case 'PUT':
-      schoolYearController.putSchoolYear();
+      schoolSemestreController.putSchoolSemestre()
       break;
     case 'DELETE':
-      schoolYearController.deleteSchoolYear();
-      null;
+      schoolSemestreController.deleteSchoolSemestre();
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);

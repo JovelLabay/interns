@@ -39,6 +39,16 @@ class Users {
             },
           });
 
+          responsePayload.forEach(async (item) => {
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `User extported: ${item.first_name} ${item.middle_name} ${item.last_name}`,
+                activity_action: 'EXPORT',
+                admin_user_id: item.id,
+              },
+            });
+          });
+
           await this.prisma.admin_User.deleteMany({
             where: {
               deletedAt: {
@@ -111,7 +121,7 @@ class Users {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `New user created: ${firstName} ${middleName} ${lastName}`,
+            activity_message: `New user created: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
             activity_action: 'CREATE',
             admin_user_id: responsePayload.id,
           },
@@ -142,7 +152,7 @@ class Users {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `User updated: ${firstName} ${middleName} ${lastName}`,
+            activity_message: `User updated: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
             activity_action: 'UPDATED',
             admin_user_id: responsePayload.id,
           },

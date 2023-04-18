@@ -14,11 +14,11 @@ datasource db {
 model School_Year {
   id Int @id @default(autoincrement())
 
-  start_date              DateTime
-  end_date                DateTime
+  start_date              String
+  end_date                String
   school_year_name        String
   school_year_description String?
-  school_year_code        String
+  school_year_code        String            @unique
   is_active               Boolean           @default(false)
   School_Semester         School_Semester[]
   Activity_Logs           Activity_Logs[]
@@ -31,8 +31,6 @@ model School_Year {
 model School_Semester {
   id Int @id @default(autoincrement())
 
-  start_date                  DateTime
-  end_date                    DateTime
   school_semester_name        String
   school_semester_description String?
   school_semester_code        String          @unique

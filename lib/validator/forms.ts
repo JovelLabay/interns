@@ -44,4 +44,34 @@ const CreateCollegeValidator = yup.object({
     .required('Abbreaviated Program Name is required'),
 });
 
-export { LogSignValidator, CreateSchoolAdminValidator, CreateCollegeValidator };
+const CreateSchoolYear = yup.object({
+  start_date: yup.string().required('School year start-date is required'),
+  end_date: yup.string().required('School year end-date is required'),
+  school_year_name: yup.string().required('School name is required'),
+  school_year_description: yup.string(),
+  school_year_code: yup
+    .string()
+    .required('School year code is required')
+    .min(6, 'Must be 6 characters long'),
+  is_active: yup.boolean(),
+  id: yup.number(),
+});
+
+const CreateSchoolSemestre = yup.object({
+  school_semester_name: yup.string().required('Semestre name is required'),
+  school_semester_description: yup.string(),
+  school_semester_code: yup
+    .string()
+    .required('Semestre code is required')
+    .min(6, 'Must be 6 characters long'),
+});
+
+export {
+  LogSignValidator,
+
+  // SCHOOL DASHBOARD
+  CreateSchoolAdminValidator,
+  CreateCollegeValidator,
+  CreateSchoolYear,
+  CreateSchoolSemestre,
+};

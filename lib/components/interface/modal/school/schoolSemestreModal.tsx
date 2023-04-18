@@ -2,20 +2,22 @@ import { successfulNotify, errorNotify } from '@/src/components/common/toast';
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { splitUnderScore } from '@utils/commonFunction';
-import { CreateSchoolYear } from '@validator/forms';
+import { CreateSchoolSemestre, CreateSchoolYear } from '@validator/forms';
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 function SchoolYearModal({
   modal,
   toggleSchoolYearModal,
+  year,
   getSchoolYear,
 }: {
   modal: boolean;
   toggleSchoolYearModal: () => void;
+  year: number;
   getSchoolYear(schoolYearId?: number): void;
 }) {
   const {
@@ -26,14 +28,15 @@ function SchoolYearModal({
     setValue,
     clearErrors,
     reset,
-  } = useForm<FormSchoolYear>({
+  } = useForm<FormSchoolSemestre>({
     mode: 'onSubmit',
-    resolver: yupResolver(CreateSchoolYear),
+    resolver: yupResolver(CreateSchoolSemestre),
   });
 
   const [state, setState] = useState({
     isSubmitted: false,
   });
+
   return (
     <Transition appear show={modal} as={Fragment}>
       <Dialog
@@ -93,7 +96,7 @@ function SchoolYearModal({
                   >
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        Start Date{' '}
+                        School Semestre Name{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -101,83 +104,36 @@ function SchoolYearModal({
                           'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
                           {
                             'border-red-500 bg-red-100 placeholder:text-white':
-                              errors.start_date?.message,
-                          }
-                        )}
-                        type="date"
-                        placeholder="Start Date"
-                        {...register('start_date')}
-                      />
-                      {errors.start_date?.message && (
-                        <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                          {errors.start_date?.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        End Date <span className="text-xs text-red-500">*</span>
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                          {
-                            'border-red-500 bg-red-100 placeholder:text-white':
-                              errors.end_date?.message,
-                          }
-                        )}
-                        type="date"
-                        placeholder="End Date"
-                        {...register('end_date')}
-                      />
-                      {errors.end_date?.message && (
-                        <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                          {errors.end_date?.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        School Year Name{' '}
-                        <span className="text-xs text-red-500">*</span>
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                          {
-                            'border-red-500 bg-red-100 placeholder:text-white':
-                              errors.school_year_name?.message,
+                              errors.school_semester_name?.message,
                           }
                         )}
                         type="text"
-                        placeholder="School Year Name"
-                        {...register('school_year_name')}
+                        placeholder="School Semestre Name"
+                        {...register('school_semester_name')}
                       />
-                      {errors.school_year_name?.message && (
+                      {errors.school_semester_name?.message && (
                         <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                          {errors.school_year_name?.message}
+                          {errors.school_semester_name?.message}
                         </p>
                       )}
                     </div>
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Year Description
+                        School Semestre Description
                       </label>
                       <textarea
                         className={classNames(
                           'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
-                        placeholder="School Year Description"
-                        {...register('school_year_description')}
+                        placeholder="School Semestre Description"
+                        {...register('school_semester_description')}
                       />
                     </div>
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Year Code{' '}
+                        School Semestre Code{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -185,24 +141,32 @@ function SchoolYearModal({
                           'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
                           {
                             'border-red-500 bg-red-100 placeholder:text-white':
-                              errors.school_year_code?.message,
+                              errors.school_semester_code?.message,
                           }
                         )}
                         type="password"
                         placeholder="School Name"
-                        {...register('school_year_code')}
+                        {...register('school_semester_code')}
                       />
-                      {errors.school_year_code?.message && (
+                      {errors.school_semester_code?.message && (
                         <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                          {errors.school_year_code?.message}
+                          {errors.school_semester_code?.message}
                         </p>
                       )}
                     </div>
 
+                    {errors.school_year_id?.message && (
+                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                        {errors.school_year_id?.message}
+                      </p>
+                    )}
+
                     <input
                       className="cursor-pointer rounded bg-primaryYellow py-2 px-10"
                       value={
-                        state.isSubmitted ? 'Creating...' : 'Create School Year'
+                        state.isSubmitted
+                          ? 'Creating...'
+                          : 'Create School Semestre'
                       }
                       type="submit"
                     />
@@ -216,23 +180,24 @@ function SchoolYearModal({
     </Transition>
   );
 
-  function createSchoolYear(data: FormSchoolYear) {
+  function createSchoolYear(data: FormSchoolSemestre) {
     setState((prev) => ({ ...prev, isSubmitted: true }));
+
     const payload = JSON.stringify(data);
 
     axios
-      .post('/api/data/schoolYear', payload, {
+      .post(`/api/data/schoolSemestre?schoolYearId=${year}`, payload, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(() => {
-        successfulNotify('New School Year Created!');
+        successfulNotify('New Semestre Created!');
         setState((prev) => ({ ...prev, isSubmitted: false }));
         toggleSchoolYearModal();
         clearErrors();
         reset();
-        getSchoolYear();
+        getSchoolYear(year);
       })
       .catch((err) => {
         errorNotify(

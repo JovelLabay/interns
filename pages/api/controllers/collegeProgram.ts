@@ -36,7 +36,7 @@ class CollegeProgram {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `New user created: ${'firstName'} ${'middleName'} ${'lastName'}`,
+            activity_message: `New College created: ${responsePayload.college_department_name}`,
             activity_action: 'CREATE',
             college_department_id: responsePayload.id,
           },
@@ -67,7 +67,7 @@ class CollegeProgram {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `User updated: ${'firstName'} ${'middleName'} ${'lastName'}`,
+            activity_message: `College updated: ${responsePayload.college_department_name}`,
             activity_action: 'UPDATE',
             college_department_id: responsePayload.id,
           },
@@ -92,7 +92,7 @@ class CollegeProgram {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `User deleted: ${'firstName'} ${'middleName'} ${'lastName'}`,
+            activity_message: `College deleted: ${responsePayload.college_department_name}`,
             activity_action: 'DELETE',
             college_department_id: responsePayload.id,
           },
@@ -119,6 +119,16 @@ class CollegeProgram {
               },
             }
           );
+
+          responsePayload.forEach(async (item) => {
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `College extported: ${item.college_department_name}`,
+                activity_action: 'EXPORT',
+                college_department_id: item.id,
+              },
+            });
+          });
 
           await this.prisma.college_Department.deleteMany({
             where: {

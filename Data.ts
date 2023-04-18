@@ -118,6 +118,8 @@ export const data = {
       { id: 3, name: 'True or False' },
     ],
   },
+
+  // SCHOOL DASHBOARD
   admin: {
     tabs: [
       { id: 1, name: 'School Year | Semestre' },
@@ -126,6 +128,16 @@ export const data = {
       { id: 4, name: 'Companies' },
       { id: 5, name: 'Activity Logs' },
     ],
+    schoolYearSemestre: {
+      schoolYear: [
+        { id: 1, name: 'Add Semestre' },
+        { id: 2, name: 'Delete Semestre' },
+      ],
+      schoolSemestre: [
+        { id: 1, name: 'Delete' },
+        { id: 2, name: 'Information' },
+      ],
+    },
     companyApplicationStatus: [
       { id: 1, name: 'Approved' },
       { id: 2, name: 'Pending' },
@@ -147,6 +159,8 @@ export const data = {
       { id: 2, name: 'School' },
     ],
   },
+
+  // STUDENT DASHBOARD
   networkProvider: [
     { id: 101, name: 'Select' },
     { id: 1, name: 'Super Administrator' },

@@ -3,6 +3,7 @@ interface FormLogin {
   password: string;
 }
 
+// USER ADMIN
 interface FormSchoolUserAdmin {
   email: string;
   password: string;
@@ -33,6 +34,7 @@ interface ReturnAdminUserPayload {
   level_of_user: string;
 }
 
+// COLLEGE PROGRAM
 interface FormCollegeProgram {
   collegeLogo: string;
   departmentName: string;
@@ -57,4 +59,38 @@ interface ReturnCollegeProgram {
   college_coordinator: string;
   complete_program_name: string;
   abbreviated_program_name: string;
+}
+
+// SCHOOL YEAR
+interface FormSchoolYear {
+  start_date: string;
+  end_date: string;
+  school_year_name: string;
+  school_year_description: string;
+  school_year_code: string;
+  is_active: boolean;
+}
+
+interface ReturnFormSchoolYear extends FormSchoolYear {
+  id: number;
+  is_active: boolean;
+  createdAt: any;
+  updatedAt: any;
+  deletedAt: any;
+}
+
+// SCHOOL SEMESTER
+interface FormSchoolSemestre {
+  school_semester_name: string;
+  school_semester_description: string;
+  school_semester_code: string;
+  is_active: boolean;
+  school_year_id: number;
+}
+
+interface ReturnFormSchoolSemestre extends FormSchoolSemestre {
+  id: number;
+  createdAt: any;
+  updatedAt: any;
+  deletedAt: any;
 }
