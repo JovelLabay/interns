@@ -11,8 +11,8 @@
     {
       "footerTitle": "About",
       "footerLinks": [
-        { "id": 1, "name": "Services", "route": "/views/welcome/service" },
-        { "id": 2, "name": "Learn More", "route": "/views/welcome/about" }
+        { "id": 1, "name": "Services", "route": "/welcome/service" },
+        { "id": 2, "name": "Learn More", "route": "/welcome/about" }
       ]
     }
   ],

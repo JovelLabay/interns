@@ -84,42 +84,67 @@ class SchoolSemestreController {
 
     this.putSchoolSemestre = async () => {
       try {
-        const checkPassword = await this.prisma.school_Semester.findUnique({
-          where: {
-            id: Number(id),
-          },
-        });
+        const checkActiveSchoolSemestre =
+          await this.prisma.school_Semester.findFirst({
+            where: {
+              is_active: true,
+              deletedAt: {
+                equals: null,
+              },
+              school_year_id: {
+                equals: Number(schoolYearId),
+              },
+              id: {
+                not: Number(id),
+              },
+            },
+          });
 
-        const checkPasswordFirst = await comparePassword(
-          school_semester_code,
-          checkPassword?.school_semester_code as string
-        );
-
-        if (checkPasswordFirst) {
-          const responsePayload = await this.prisma.school_Semester.update({
+        if (checkActiveSchoolSemestre) {
+          res.status(200).json({
+            message:
+              'You Cannot Activate this School Semestre. An Active School Semestre is still Present',
+          });
+          return;
+        } else {
+          const checkPassword = await this.prisma.school_Semester.findUnique({
             where: {
               id: Number(id),
             },
-            data: {
-              is_active,
-              updatedAt: new Date(),
-            },
-            select: {
-              ...selection,
-            },
           });
 
-          await this.prisma.activity_Logs.create({
-            data: {
-              activity_message: `School semestre updated: ${responsePayload.school_semester_name}`,
-              activity_action: 'UPDATED',
-              school_semester_id: responsePayload.id,
-            },
-          });
+          const checkPasswordFirst = await comparePassword(
+            school_semester_code,
+            checkPassword?.school_semester_code as string
+          );
 
-          res.status(200).json({ message: 'Successful', responsePayload });
-        } else {
-          res.status(200).json({ message: 'Password is incorrect' });
+          if (checkPasswordFirst) {
+            const responsePayload = await this.prisma.school_Semester.update({
+              where: {
+                id: Number(id),
+              },
+              data: {
+                is_active,
+                school_semester_description,
+                updatedAt: new Date(),
+              },
+              select: {
+                ...selection,
+              },
+            });
+
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `School semestre updated: ${responsePayload.school_semester_name}`,
+                activity_action: 'UPDATED',
+                school_semester_id: responsePayload.id,
+              },
+            });
+
+            res.status(200).json({ message: 'Successful', responsePayload });
+          } else {
+            res.status(200).json({ message: 'Password is incorrect' });
+          }
         }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });

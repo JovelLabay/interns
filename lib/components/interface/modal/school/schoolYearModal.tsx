@@ -1,4 +1,8 @@
-import { successfulNotify, errorNotify } from '@/src/components/common/toast';
+import {
+  successfulNotify,
+  errorNotify,
+  warningNotify,
+} from '@component//interface/toast/toast';
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { splitUnderScore } from '@utils/commonFunction';
@@ -140,7 +144,7 @@ function SchoolYearModal({
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Year Name{' '}
+                        School Year Code{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -152,7 +156,7 @@ function SchoolYearModal({
                           }
                         )}
                         type="text"
-                        placeholder="School Year Name"
+                        placeholder="School Year Code"
                         {...register('school_year_name')}
                       />
                       {errors.school_year_name?.message && (
@@ -177,7 +181,7 @@ function SchoolYearModal({
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Year Code{' '}
+                        School Year Passcode{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -189,7 +193,7 @@ function SchoolYearModal({
                           }
                         )}
                         type="password"
-                        placeholder="School Name"
+                        placeholder="School Year Passcode"
                         {...register('school_year_code')}
                       />
                       {errors.school_year_code?.message && (
@@ -226,13 +230,18 @@ function SchoolYearModal({
           'Content-Type': 'application/json',
         },
       })
-      .then(() => {
-        successfulNotify('New School Year Created!');
-        setState((prev) => ({ ...prev, isSubmitted: false }));
-        toggleSchoolYearModal();
-        clearErrors();
-        reset();
-        getSchoolYear();
+      .then((res) => {
+        if (res.data.message === 'School Year Code Already Exist') {
+          warningNotify('School Year Code Already Exist');
+          setState((prev) => ({ ...prev, isSubmitted: true }));
+        } else {
+          successfulNotify('New School Year Created!');
+          setState((prev) => ({ ...prev, isSubmitted: false }));
+          toggleSchoolYearModal();
+          clearErrors();
+          reset();
+          getSchoolYear();
+        }
       })
       .catch((err) => {
         errorNotify(

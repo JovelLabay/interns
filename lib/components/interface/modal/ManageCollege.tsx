@@ -36,7 +36,7 @@ import {
   errorNotify,
   successfulNotify,
   warningNotify,
-} from '@/src/components/common/toast';
+} from '@component//interface/toast/toast';
 import axios from 'axios';
 
 import { CSVLink } from 'react-csv';
@@ -553,6 +553,9 @@ function ListsCollegeComponentTab({
               <th scope="col" className="min-w-[200px] max-w-[380px] px-6 py-3">
                 Abbreviated Program Name
               </th>
+              <th scope="col" className="min-w-[200px] max-w-[380px] px-6 py-3">
+                Date Creation
+              </th>
               <th className="sticky right-0 bg-gray-100 px-6 py-3">Action</th>
             </tr>
           </thead>
@@ -742,6 +745,7 @@ function ListsCollegeComponentTab({
                         data.abbreviated_program_name
                       )}
                     </td>
+                    <td>{new Date(data.createdAt).toLocaleString()}</td>
                     <td
                       className={classNames(
                         'sticky right-0 px-2 py-4',
@@ -814,7 +818,7 @@ function ListsCollegeComponentTab({
                             />
                           </button>
                           <button
-                            className="cursor-pointer rounded bg-red-400 p-2"
+                            className="cursor-pointer rounded bg-red-500 p-2"
                             title="Delete"
                             onClick={() => deleteCollegeData(data.id)}
                           >

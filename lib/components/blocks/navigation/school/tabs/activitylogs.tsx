@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 function Activitylogs() {
   const [data, setData] = useState('Loading...');

@@ -19,7 +19,7 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import ManageUsers from '@component/interface/modal/ManageUsers';
 import ManageCollege from '@component/interface/modal/ManageCollege';
 
-function SchoolHeader() {
+function StudentHeader() {
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,
     manageCollege: false,
@@ -47,66 +47,29 @@ function SchoolHeader() {
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
             {/* MANAGE USERS */}
-            <button
-              className="buttonIcon"
-              onClick={addModalToggleManageUser}
-              title="Manage Users"
-            >
+            <button className="buttonIcon" title="Manage Users">
               <FiUsers />
             </button>
 
             {/* MANAGE COLLEGE */}
-            <button
-              className="buttonIcon"
-              onClick={addModalToggleManageCollege}
-              title="Manage College"
-            >
+            <button className="buttonIcon" title="Manage College">
               <HiOutlineOfficeBuilding />
             </button>
 
             {/* LOGOUT */}
-            <button
-              className="buttonIcon"
-              onClick={schoolAdminLogoutHandler}
-              title="Logout"
-            >
+            <button className="buttonIcon" title="Logout">
               <BiLogOut />
             </button>
           </div>
         </div>
 
         {/* MODALS */}
-        <ManageUsers
-          addRemoveModal={addRemoveModal.manageUser}
-          addModalToggle={addModalToggleManageUser}
-        />
-
-        <ManageCollege
-          addRemoveModal={addRemoveModal.manageCollege}
-          addModalToggle={addModalToggleManageCollege}
-        />
       </div>
 
       {/* TOAST */}
       <ToastContainer />
     </>
   );
-
-  function schoolAdminLogoutHandler() {
-    null;
-  }
-
-  function addModalToggleManageUser() {
-    setAddRemoveModal((prev) => {
-      return { ...prev, manageUser: !prev.manageUser };
-    });
-  }
-
-  function addModalToggleManageCollege() {
-    setAddRemoveModal((prev) => {
-      return { ...prev, manageCollege: !prev.manageCollege };
-    });
-  }
 }
 
-export default SchoolHeader;
+export default StudentHeader;

@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import Papa from 'papaparse';
+import Student from '../controllers/student';
 
 export default async function handler(
   req: NextApiRequest,
@@ -6,12 +8,14 @@ export default async function handler(
 ) {
   const { method } = req;
 
+  const student = new Student(req, res);
+
   switch (method) {
     case 'GET':
       null;
       break;
     case 'POST':
-      null;
+      student.addStudent();
       break;
     case 'PUT':
       null;

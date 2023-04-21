@@ -32,6 +32,7 @@ interface ReturnAdminUserPayload {
   password: string;
   isActive: boolean;
   level_of_user: string;
+  createdAt: any;
 }
 
 // COLLEGE PROGRAM
@@ -59,6 +60,7 @@ interface ReturnCollegeProgram {
   college_coordinator: string;
   complete_program_name: string;
   abbreviated_program_name: string;
+  createdAt: any;
 }
 
 // SCHOOL YEAR
@@ -93,4 +95,8 @@ interface ReturnFormSchoolSemestre extends FormSchoolSemestre {
   createdAt: any;
   updatedAt: any;
   deletedAt: any;
+}
+
+interface SelectSchoolYearSemestre extends ReturnFormSchoolYear {
+  School_Semester: ReturnFormSchoolSemestre[];
 }

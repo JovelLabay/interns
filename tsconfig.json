@@ -17,13 +17,13 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"],
       "@/assets/*": ["public/*"],
       "@utils/*": ["lib/utils/*"],
       "@data/*": ["lib/data/*"],
       "@validator/*": ["lib/validator/*"],
       "@supabase/*": ["lib/supabase/*"],
-      "@component/*": ["lib/components/*"]
+      "@component/*": ["lib/components/*"],
+      "@redux/*": ["lib/redux/*"]
     }
   },
 

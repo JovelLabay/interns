@@ -10,10 +10,7 @@ import { GrClose } from 'react-icons/gr';
 import { motion } from 'framer-motion';
 
 // COMPONENTS
-import {
-  ButtonLinks,
-  MenuLinks,
-} from '../../../../src/components/Header/StaticLinks';
+import { ButtonLinks, MenuLinks } from './StaticLinks';
 
 function StaticHeader({ isYellowBg }: { isYellowBg?: boolean }) {
   const [isShowMobileNav, setIsShowMobileNav] = useState(false);

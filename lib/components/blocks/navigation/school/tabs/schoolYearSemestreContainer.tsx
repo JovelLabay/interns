@@ -2,7 +2,7 @@ import {
   errorNotify,
   successfulNotify,
   warningNotify,
-} from '@/src/components/common/toast';
+} from '@component//interface/toast/toast';
 import SchoolSemestreModal from '@component/interface/modal/school/schoolSemestreModal';
 import SchoolYearModal from '@component/interface/modal/school/schoolYearModal';
 import { Menu, Switch } from '@headlessui/react';
@@ -12,7 +12,7 @@ import { CreateSchoolSemestre, CreateSchoolYear } from '@validator/forms';
 import { data } from 'Data';
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useMemo } from 'react';
 import {
   FieldErrors,
   UseFormHandleSubmit,
@@ -53,6 +53,10 @@ function SchoolYearSemestreContainer() {
     ReturnFormSchoolSemestre[]
   >([]);
   const [viewSchoolSemestreInfo, setViewSchoolSemestreInfo] = useState('');
+  const [searchState, setSearchState] = useState({
+    isOpen: false,
+    searchInput: '',
+  });
 
   const {
     handleSubmit,
@@ -72,6 +76,16 @@ function SchoolYearSemestreContainer() {
     getSchoolYear();
   }, []);
 
+  const tableData = useMemo(() => {
+    return listSchoolYear.filter((item) => {
+      const regex = new RegExp(
+        searchState.searchInput.toLocaleLowerCase(),
+        'gi'
+      );
+      return item.school_year_name.toLocaleLowerCase().match(regex);
+    });
+  }, [searchState.searchInput, listSchoolYear]);
+
   return (
     <div className="mx-28 flex h-[80vh] flex-col gap-2 rounded bg-white p-3">
       <div className="flex items-center justify-between rounded-md bg-yellowBg p-2">
@@ -79,12 +93,6 @@ function SchoolYearSemestreContainer() {
           Manage School Year | Semestre
         </p>
         <div className="flex items-center justify-center gap-3">
-          <button
-            className="rounded bg-primaryYellow p-2"
-            title="Search School Year"
-          >
-            <AiOutlineSearch size={20} />
-          </button>
           <button
             className="rounded bg-primaryYellow p-2"
             title="Refresh"
@@ -112,6 +120,34 @@ function SchoolYearSemestreContainer() {
           >
             <AiOutlinePlusCircle size={20} />
           </button>
+          <div className="flex items-center justify-center gap-1">
+            <input
+              className={classNames(
+                'w-[250px] rounded-md border-2 border-primaryYellow bg-mainBgWhite p-2 text-sm focus:outline-none'
+              )}
+              type="text"
+              placeholder="Search School Year..."
+              value={searchState.searchInput}
+              onChange={(e) =>
+                setSearchState((prev) => ({
+                  ...prev,
+                  searchInput: e.target.value,
+                }))
+              }
+            />
+            <button
+              className="rounded bg-red-400 p-2 text-white"
+              title="Clear"
+              onClick={() =>
+                setSearchState((prev) => ({
+                  ...prev,
+                  searchInput: '',
+                }))
+              }
+            >
+              <AiOutlineClear size={20} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -123,23 +159,26 @@ function SchoolYearSemestreContainer() {
             listSchoolYear.length >= 1 && 'border-r-2'
           )}
         >
-          {listSchoolYear.map((item) => {
+          {tableData.map((item) => {
             return (
               <section
                 key={item.id}
                 className={classNames(
-                  'relative flex cursor-pointer items-center justify-between rounded-md px-1 py-2 duration-300',
+                  'relative flex cursor-pointer items-center justify-between rounded-md py-1 px-2 duration-300 hover:bg-mainBgWhite',
                   {
                     'bg-mainBgWhite': selectionState.schoolYear === item.id,
                   }
                 )}
               >
-                <span
-                  className="w-[90%]"
+                <p
+                  className="flex w-[90%] flex-col"
                   onClick={() => getSchoolYear(item.id)}
                 >
-                  {item.school_year_name}
-                </span>
+                  <span>{item.school_year_name}</span>
+                  <span className="mt-2 text-xs font-light italic">
+                    {new Date(item.createdAt).toLocaleString()}
+                  </span>
+                </p>
                 <Menu>
                   {selectionState.schoolYear === item.id &&
                     selectionState.schoolYearInformation === true && (
@@ -201,14 +240,14 @@ function SchoolYearSemestreContainer() {
               <section
                 key={item.id}
                 className={classNames(
-                  'relative flex cursor-pointer items-center justify-between rounded-md px-1 py-2 duration-300',
+                  'relative flex cursor-pointer items-center justify-between rounded-md py-1 px-2 duration-300 hover:bg-mainBgWhite',
                   {
                     'bg-mainBgWhite': selectionState.schoolSemestre === item.id,
                   }
                 )}
               >
-                <span
-                  className="w-[90%]"
+                <p
+                  className="flex w-[90%] flex-col"
                   onClick={() => {
                     informationForSchoolSemestre(item.id);
                     setViewSchoolSemestreInfo(
@@ -219,12 +258,16 @@ function SchoolYearSemestreContainer() {
                     );
                   }}
                 >
-                  {item.school_semester_name}
-                </span>
+                  <span>{item.school_semester_name}</span>
+                  <span className="mt-2 text-xs font-light italic">
+                    {new Date(item.createdAt).toLocaleString()}
+                  </span>
+                </p>
+
                 <button
-                  className={classNames('', !item.is_active && 'opacity-50')}
+                  className={classNames('', item.is_active && 'opacity-50')}
                   title="Delete Semestre"
-                  disabled={!item.is_active ? true : false}
+                  disabled={item.is_active ? true : false}
                   onClick={() =>
                     deleteSchoolSemestre(item.school_year_id, item.id)
                   }
@@ -261,7 +304,7 @@ function SchoolYearSemestreContainer() {
         </div>
       </div>
 
-      {/* MODEL */}
+      {/* MODAL */}
       <SchoolYearModal
         modal={modal.addSchoolyearModal}
         toggleSchoolYearModal={toggleSchoolYearModal}
@@ -277,6 +320,7 @@ function SchoolYearSemestreContainer() {
     </div>
   );
 
+  // HANDLERS
   function toggleSchoolYearModal() {
     setModal((prev) => ({
       ...prev,
@@ -481,7 +525,7 @@ function SchoolYear({
               )}
               type="date"
               disabled
-              placeholder="School Semestre End Date"
+              placeholder="School Year End Date"
               {...register('end_date')}
             />
           </div>
@@ -499,7 +543,7 @@ function SchoolYear({
               )}
               type="date"
               disabled
-              placeholder="School Semestre End Date"
+              placeholder="School Year End Date"
               {...register('end_date')}
             />
           </div>
@@ -507,7 +551,7 @@ function SchoolYear({
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Year Name
+            School Year Code
           </label>
           <input
             className={classNames(
@@ -519,7 +563,7 @@ function SchoolYear({
             )}
             type="text"
             disabled
-            placeholder="School Year Name"
+            placeholder="School Year Code"
             {...register('school_year_name')}
           />
         </div>
@@ -530,17 +574,16 @@ function SchoolYear({
           </label>
           <textarea
             className={classNames(
-              'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+              'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
             )}
-            disabled
-            placeholder="School Year Name"
+            placeholder="School Year Description"
             {...register('school_year_description')}
           />
         </div>
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Year Code <span className="text-xs text-red-500">*</span>
+            School Year Passcode <span className="text-xs text-red-500">*</span>
           </label>
           <input
             className={classNames(
@@ -551,7 +594,7 @@ function SchoolYear({
               }
             )}
             type="password"
-            placeholder="School Year Code"
+            placeholder="School Year Passcode"
             {...register('school_year_code')}
           />
         </div>
@@ -603,6 +646,7 @@ function SchoolYear({
     const payload = JSON.stringify({
       is_active: watch().is_active,
       school_year_code: watch().school_year_code,
+      school_year_description: watch().school_year_description,
     });
 
     axios
@@ -745,9 +789,8 @@ function SchoolSemestre({
           </label>
           <textarea
             className={classNames(
-              'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+              'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
             )}
-            disabled
             placeholder="School Semestre Description"
             {...register('school_semester_description')}
           />
@@ -819,14 +862,26 @@ function SchoolSemestre({
       .id as ReturnFormSchoolSemestre;
 
     axios
-      .put(`/api/data/schoolSemestre?id=${id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      .put(
+        `/api/data/schoolSemestre?id=${id}&schoolYearId=${data.school_year_id}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       .then((res) => {
         if (res.data.message === 'Password is incorrect') {
           warningNotify('School Semestre Code is Incorrect');
+          setIsUpdating(false);
+        } else if (
+          res.data.message ===
+          'You Cannot Activate this School Semestre. An Active School Semestre is still Present'
+        ) {
+          warningNotify(
+            'Not Allowed to Activate School Semestre. An Active School Semestre is still Present'
+          );
           setIsUpdating(false);
         } else {
           successfulNotify('Successfully updated school semestre');

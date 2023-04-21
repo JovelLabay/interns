@@ -89,6 +89,7 @@ class Users {
               password: true,
               isActive: true,
               level_of_user: true,
+              createdAt: true,
             },
           });
 

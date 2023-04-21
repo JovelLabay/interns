@@ -31,11 +31,11 @@ export const data = {
       },
       {
         name: 'Services',
-        link: '/views/welcome/service',
+        link: '/welcome/service',
       },
       {
         name: 'Learn More',
-        link: '/views/welcome/about',
+        link: '/welcome/about',
       },
     ],
   },
@@ -123,10 +123,11 @@ export const data = {
   admin: {
     tabs: [
       { id: 1, name: 'School Year | Semestre' },
-      { id: 2, name: 'Student' },
+      { id: 2, name: 'Students' },
       { id: 3, name: 'Documents' },
-      { id: 4, name: 'Companies' },
-      { id: 5, name: 'Activity Logs' },
+      { id: 4, name: 'Generate Reports' },
+      { id: 5, name: 'Companies' },
+      { id: 6, name: 'Activity Logs' },
     ],
     schoolYearSemestre: {
       schoolYear: [

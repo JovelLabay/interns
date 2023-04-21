@@ -1,4 +1,7 @@
-import { successfulNotify, errorNotify } from '@/src/components/common/toast';
+import {
+  successfulNotify,
+  errorNotify,
+} from '@component//interface/toast/toast';
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { splitUnderScore } from '@utils/commonFunction';
@@ -133,7 +136,7 @@ function SchoolYearModal({
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Semestre Code{' '}
+                        School Semestre Passcode{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -145,7 +148,7 @@ function SchoolYearModal({
                           }
                         )}
                         type="password"
-                        placeholder="School Name"
+                        placeholder="School Passcode"
                         {...register('school_semester_code')}
                       />
                       {errors.school_semester_code?.message && (

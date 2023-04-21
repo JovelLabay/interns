@@ -20,11 +20,11 @@ const CreateSchoolAdminValidator = yup.object({
   password: yup
     .string()
     .required('Password is required')
-    .min(6, 'Password must be at least 6 chars')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.])[A-Za-z\d@$!%*?&#.]{6,}$/,
-      'Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special char'
-    ),
+    .min(6, 'Password must be at least 6 chars'),
+  // .matches(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.])[A-Za-z\d@$!%*?&#.]{6,}$/,
+  //   'Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special char'
+  // ),
   firstName: yup.string().required('First Name is required'),
   middleName: yup.string(),
   lastName: yup.string().required('Last Name is required'),
@@ -47,11 +47,11 @@ const CreateCollegeValidator = yup.object({
 const CreateSchoolYear = yup.object({
   start_date: yup.string().required('School year start-date is required'),
   end_date: yup.string().required('School year end-date is required'),
-  school_year_name: yup.string().required('School name is required'),
+  school_year_name: yup.string().required('School code is required'),
   school_year_description: yup.string(),
   school_year_code: yup
     .string()
-    .required('School year code is required')
+    .required('School year passcode is required')
     .min(6, 'Must be 6 characters long'),
   is_active: yup.boolean(),
   id: yup.number(),
@@ -62,7 +62,7 @@ const CreateSchoolSemestre = yup.object({
   school_semester_description: yup.string(),
   school_semester_code: yup
     .string()
-    .required('Semestre code is required')
+    .required('Semestre password is required')
     .min(6, 'Must be 6 characters long'),
 });
 

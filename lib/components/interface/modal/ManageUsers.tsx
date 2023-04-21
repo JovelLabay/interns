@@ -21,24 +21,15 @@ import {
   errorNotify,
   successfulNotify,
   warningNotify,
-} from '@/src/components/common/toast';
+} from '@component//interface/toast/toast';
 
 // STATIC DATA
 import { data } from 'Data';
-import pathData from '@data/path.data.json';
 
 // OTHERS
 import classNames from 'classnames';
 import { CSVLink } from 'react-csv';
 
-// FIREBASE FUNCTIONS
-import {
-  addNewUser,
-  updateCurrentNumber,
-  deleteCurrentNumber,
-} from '@/src/functions/firebaseDatabase';
-
-// USEFORM
 import {
   FieldErrors,
   UseFormClearErrors,
@@ -50,8 +41,6 @@ import {
   useForm,
 } from 'react-hook-form';
 
-// SCHEMA VALIDATOR
-import { SchoolNumberUsers } from '@/src/validator/LogSignValidator';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CreateSchoolAdminValidator, LogSignValidator } from '@validator/forms';
@@ -659,6 +648,7 @@ function ListsUserComponentTab({
               level_of_user,
               admin_user_image,
               password,
+              createdAt,
             }) => (
               <section
                 className="relative mb-2 flex items-start justify-between rounded bg-yellowBg p-3"
@@ -839,6 +829,10 @@ function ListsUserComponentTab({
                         <span className="font-bold">Level Of User: </span>
                         <span>{splitUnderScore(level_of_user)}</span>
                       </p>
+                      <p>
+                        <span className="font-bold">Date Creation: </span>
+                        <span>{new Date(createdAt).toLocaleString()}</span>
+                      </p>
                       <p
                         className={classNames(
                           'absolute right-4 bottom-4 rounded-full px-3 py-2 text-xs text-mainBgWhite drop-shadow-md',
@@ -877,7 +871,7 @@ function ListsUserComponentTab({
                   ) : (
                     <>
                       <button
-                        className="cursor-pointer rounded bg-red-400 p-2"
+                        className="cursor-pointer rounded bg-orange-500 p-2"
                         title="Delete User"
                         onClick={() => deleteAdminUserData(id)}
                       >

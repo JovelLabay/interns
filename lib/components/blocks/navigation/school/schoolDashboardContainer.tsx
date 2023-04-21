@@ -9,39 +9,16 @@ import classNames from 'classnames';
 
 // STATIC DATA
 import { data } from 'Data';
-
-// COMPONENTS
-import CompaniesContainer from '../../../../../src/components/menuContainer/school/companiesContainer';
-import ProfessionsContainer from './tabs/companiesContainer';
-import StudentListContainer from '../../../../../src/components/menuContainer/school/studentListContainer';
-import TemplatedFormContainer from '../../../../../src/components/menuContainer/school/templatedFormContainer';
-
-// FIREBASE
-import { database } from '@/src/firebase/firebaseConfig';
-
-// FIREBASE
-import { onValue, ref } from 'firebase/database';
-import Activitylogs from './tabs/activitylogs';
-import SchoolYearSemestreContainer from './tabs/schoolYearSemestreContainer';
-import StudentContainer from './tabs/studentContainer';
-import DocumentsContainer from './tabs/documentsContainer';
+import StudentContainer from '@component/blocks/navigation/school/tabs/studentContainer';
+import DocumentsContainer from '@component/blocks/navigation/school/tabs/documentsContainer';
+import CompaniesContainer from '@component/blocks/navigation/school/tabs/companiesContainer';
+import Activitylogs from '@component/blocks/navigation/school/tabs/activitylogs';
+import SchoolYearSemestreContainer from '@component/blocks/navigation/school/tabs/schoolYearSemestreContainer';
+import GenerateReports from './tabs/generateReports';
 
 function SchoolDashboardContainer() {
   const [tabSelected, setTabSelected] = useState(0);
   const [listOfColleges, setListOfColleges] = useState({});
-
-  const listingOfColleges: [string, CollegeListInterface][] =
-    Object.entries(listOfColleges);
-
-  useEffect(() => {
-    // LIST OF COLLEGES
-    const db = database;
-    const collegeReference = ref(db, 'school/colleges');
-    onValue(collegeReference, (snapshot) => {
-      const data = snapshot.val() === null ? {} : snapshot.val();
-      setListOfColleges(data);
-    });
-  }, []);
 
   return (
     <div className="px-2">
@@ -79,6 +56,9 @@ function SchoolDashboardContainer() {
           </Tab.Panel>
           <Tab.Panel>
             <DocumentsContainer />
+          </Tab.Panel>
+          <Tab.Panel>
+            <GenerateReports />
           </Tab.Panel>
           <Tab.Panel>
             <CompaniesContainer />

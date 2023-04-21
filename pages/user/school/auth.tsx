@@ -7,29 +7,15 @@ import { useRouter } from 'next/router';
 // FOOTER OR HEADER
 import SecondayStaticFooter from 'lib/components/blocks/staticPage/SecondayStaticFooter';
 
-// FIREBASE CONFIG
-import { database, emailPassAuth } from '@/src/firebase/firebaseConfig';
-
-// FIREBASE FUNCTIONS
-import {
-  onAuthStateChanged,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from 'firebase/auth';
-import { onValue, ref } from 'firebase/database';
-
 // TOAST AND LOADER
-import { errorNotify, successfulNotify } from '@/src/components/common/toast';
 import { ToastContainer } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
-import SplashLoading from '@/src/components/common/SplashLoading';
+import SplashLoading from '@component//interface/loading/SplashLoading';
 import classNames from 'classnames';
 
-// SUPABASE
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogSignValidator } from '@validator/forms';
-import { supabase } from '@supabase/supabaseClient';
 
 function Auth() {
   const router = useRouter();

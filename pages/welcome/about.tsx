@@ -6,7 +6,7 @@ import Head from 'next/head';
 
 // COMPONENTS
 import AboutDescription from '@component/blocks/staticPage/AboutDescription';
-import InputBox from '@/src/components/common/InputBox';
+import InputBox from '@component//blocks/staticPage/InputBox';
 
 // STATIC DATA
 import { data } from '../../Data';

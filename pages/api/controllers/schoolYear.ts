@@ -29,33 +29,49 @@ class SchoolYearController {
       school_year_name: true,
       school_year_description: true,
       is_active: true,
+      createdAt: true,
     };
 
     this.postSchoolYear = async () => {
       try {
-        const responsePayload = await this.prisma.school_Year.create({
-          data: {
-            start_date: start_date,
-            end_date: end_date,
+        const chechSchoolYearCode = await this.prisma.school_Year.findFirst({
+          where: {
             school_year_name,
-            school_year_description,
-            school_year_code: await hashPassword(school_year_code),
-          },
-          select: {
-            ...selection,
-            School_Semester: true,
+            deletedAt: {
+              equals: null,
+            },
           },
         });
 
-        await this.prisma.activity_Logs.create({
-          data: {
-            activity_message: `New school year created: FROM:${start_date} END:${end_date}`,
-            activity_action: 'CREATE',
-            school_year_id: responsePayload.id,
-          },
-        });
+        if (chechSchoolYearCode) {
+          res.status(200).json({
+            message: 'School Year Code Already Exist',
+          });
+        } else {
+          const responsePayload = await this.prisma.school_Year.create({
+            data: {
+              start_date: start_date,
+              end_date: end_date,
+              school_year_name,
+              school_year_description,
+              school_year_code: await hashPassword(school_year_code),
+            },
+            select: {
+              ...selection,
+              School_Semester: true,
+            },
+          });
 
-        res.status(200).json({ message: 'Successful', responsePayload });
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `New school year created: FROM:${start_date} END:${end_date}`,
+              activity_action: 'CREATE',
+              school_year_id: responsePayload.id,
+            },
+          });
+
+          res.status(200).json({ message: 'Successful', responsePayload });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
         console.log(error);
@@ -129,7 +145,8 @@ class SchoolYearController {
                 id: Number(id),
               },
               data: {
-                is_active: is_active,
+                is_active,
+                school_year_description,
                 updatedAt: new Date(),
               },
               select: {
