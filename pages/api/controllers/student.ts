@@ -8,13 +8,37 @@ class Student {
   private prisma = new PrismaClient();
 
   public addStudent: () => Promise<void>;
+  public getStudents: () => Promise<void>;
+
   constructor(req: NextApiRequest, res: NextApiResponse) {
     // const {} = req.body;
 
-    const { id, bulkImport, objectData, objectData2nd } = req.query;
+    const { id, bulkImport, objectData, objectData2nd, skip } = req.query;
 
-    const parsedDataObject = JSON.parse(objectData as string);
-    const parsedDataObject2nd = JSON.parse(objectData2nd as string);
+    const parsedDataObject = objectData && JSON.parse(objectData as string);
+    const parsedDataObject2nd =
+      objectData2nd && JSON.parse(objectData2nd as string);
+
+    const selection = {
+      id: true,
+      first_name: true,
+      middle_name: true,
+      last_name: true,
+      email: true,
+      is_active: true,
+    };
+
+    const selection2nd = {
+      id: true,
+      student_profile_image: true,
+      address: true,
+      phone_number: true,
+      self_introduction: true,
+      date_of_birth: true,
+      sex: true,
+      student_verfication: true,
+      student_status: true,
+    };
 
     this.addStudent = async () => {
       if (bulkImport === 'true') {
@@ -101,6 +125,54 @@ class Student {
         });
       } else {
         res.send('Sdf');
+      }
+    };
+
+    this.getStudents = async () => {
+      try {
+        const responsePayload = await this.prisma.student_User.findMany({
+          where: {
+            deletedAt: {
+              equals: null,
+            },
+            school_semester_id: {
+              equals: 1,
+            },
+            Student_User_Profile: {
+              college_Department_Id: {
+                equals: 1,
+              },
+            },
+            ...(id && {
+              id: {
+                equals: Number(id),
+              },
+            }),
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            ...selection,
+            school_semester: true,
+            Student_User_Profile: {
+              select: {
+                ...selection2nd,
+                College_Department: true,
+              },
+            },
+          },
+          skip: skip ? Number(skip) : 0,
+          take: 20,
+        });
+
+        res.status(200).json({
+          message: 'Successful',
+          responsePayload,
+          responsePayloadLength: responsePayload.length,
+        });
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
       }
     };
   }

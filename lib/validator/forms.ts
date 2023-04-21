@@ -66,6 +66,16 @@ const CreateSchoolSemestre = yup.object({
     .min(6, 'Must be 6 characters long'),
 });
 
+const CreateStudent = yup.object({
+  firstName: yup.string().required('First Name is required'),
+  middleName: yup.string(),
+  lastName: yup.string().required('Last Name is required'),
+  emailAddress: yup
+    .string()
+    .email('Enter proper email address')
+    .required('Email is required'),
+});
+
 export {
   LogSignValidator,
 
@@ -74,4 +84,5 @@ export {
   CreateCollegeValidator,
   CreateSchoolYear,
   CreateSchoolSemestre,
+  CreateStudent,
 };

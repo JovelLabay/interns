@@ -136,7 +136,7 @@ function SchoolYearSemestreContainer() {
               }
             />
             <button
-              className="rounded bg-red-400 p-2 text-white"
+              className="rounded bg-red-500 p-2 text-white"
               title="Clear"
               onClick={() =>
                 setSearchState((prev) => ({

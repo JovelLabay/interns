@@ -3,9 +3,13 @@ import {
   successfulNotify,
 } from '@component/interface/toast/toast';
 import { Dialog, Transition } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { csvUploader, imageUploader } from '@utils/uploaderFunction';
+import { CreateStudent } from '@validator/forms';
 import axios from 'axios';
+import classNames from 'classnames';
 import React, { Fragment, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 
 function AdStudent({
@@ -15,6 +19,22 @@ function AdStudent({
   modal: boolean;
   toggleAddStudent: () => void;
 }) {
+  const [state, setState] = useState({
+    isCreating: false,
+  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    watch,
+    setValue,
+    clearErrors,
+    reset,
+  } = useForm<FormCreateStudent>({
+    mode: 'onSubmit',
+    resolver: yupResolver(CreateStudent),
+  });
+
   return (
     <Transition appear show={modal} as={Fragment}>
       <Dialog
@@ -58,6 +78,106 @@ function AdStudent({
                     Close
                   </button>
                 </div>
+
+                <form
+                  className="flex flex-col items-center justify-center gap-5 pt-5"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+
+                    handleSubmit((data) => console.log(data))();
+                  }}
+                >
+                  <div className="flex flex-col items-start gap-2">
+                    <label htmlFor="email" className="text-secondaryWhite">
+                      First Name <span className="text-xs text-red-500">*</span>
+                    </label>
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                        {
+                          'border-red-500 bg-red-100 placeholder:text-white':
+                            errors.firstName?.message,
+                        }
+                      )}
+                      type="text"
+                      placeholder="First Name"
+                      {...register('firstName')}
+                    />
+                    {errors.firstName?.message && (
+                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                        {errors.firstName?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <label htmlFor="email" className="text-secondaryWhite">
+                      Middle Name
+                    </label>
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                      )}
+                      type="text"
+                      placeholder="Middle Name"
+                      {...register('middleName')}
+                    />
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <label htmlFor="email" className="text-secondaryWhite">
+                      Last Name <span className="text-xs text-red-500">*</span>
+                    </label>
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                        {
+                          'border-red-500 bg-red-100 placeholder:text-white':
+                            errors.lastName?.message,
+                        }
+                      )}
+                      type="text"
+                      placeholder="Last Name"
+                      {...register('lastName')}
+                    />
+                    {errors.lastName?.message && (
+                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                        {errors.lastName?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <label htmlFor="email" className="text-secondaryWhite">
+                      Email Address{' '}
+                      <span className="text-xs text-red-500">*</span>
+                    </label>
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                        {
+                          'border-red-500 bg-red-100 placeholder:text-white':
+                            errors.emailAddress?.message,
+                        }
+                      )}
+                      type="email"
+                      placeholder="Email Address"
+                      {...register('emailAddress')}
+                    />
+                    {errors.emailAddress?.message && (
+                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                        {errors.emailAddress?.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <input
+                    className="cursor-pointer rounded bg-primaryYellow py-2 px-10"
+                    value={
+                      state.isCreating
+                        ? 'Creating New Student...'
+                        : 'Create Student'
+                    }
+                    type="submit"
+                  />
+                </form>
               </Dialog.Panel>
             </Transition.Child>
           </div>

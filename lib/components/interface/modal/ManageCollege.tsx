@@ -784,7 +784,7 @@ function ListsCollegeComponentTab({
                       ) : (
                         <div className="flex items-center justify-center gap-3">
                           <button
-                            className="cursor-pointer rounded bg-orange-400 p-2"
+                            className="cursor-pointer rounded bg-orange-500 p-2"
                             title="Edit"
                             onClick={() => {
                               setIsEdit(data.id);

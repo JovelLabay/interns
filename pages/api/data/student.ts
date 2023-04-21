@@ -12,7 +12,7 @@ export default async function handler(
 
   switch (method) {
     case 'GET':
-      null;
+      student.getStudents();
       break;
     case 'POST':
       student.addStudent();

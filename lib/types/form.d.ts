@@ -100,3 +100,11 @@ interface ReturnFormSchoolSemestre extends FormSchoolSemestre {
 interface SelectSchoolYearSemestre extends ReturnFormSchoolYear {
   School_Semester: ReturnFormSchoolSemestre[];
 }
+
+// CREATE STUDENT
+interface FormCreateStudent {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  emailAddress: string;
+}

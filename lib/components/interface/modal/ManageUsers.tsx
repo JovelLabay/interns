@@ -837,8 +837,8 @@ function ListsUserComponentTab({
                         className={classNames(
                           'absolute right-4 bottom-4 rounded-full px-3 py-2 text-xs text-mainBgWhite drop-shadow-md',
                           {
-                            'bg-green-400': isActive === true,
-                            'bg-red-400': isActive === false,
+                            'bg-green-500': isActive === true,
+                            'bg-red-500': isActive === false,
                           }
                         )}
                       >
@@ -871,7 +871,7 @@ function ListsUserComponentTab({
                   ) : (
                     <>
                       <button
-                        className="cursor-pointer rounded bg-orange-500 p-2"
+                        className="cursor-pointer rounded bg-red-500 p-2"
                         title="Delete User"
                         onClick={() => deleteAdminUserData(id)}
                       >
@@ -881,7 +881,7 @@ function ListsUserComponentTab({
                         />
                       </button>
                       <button
-                        className="cursor-pointer rounded bg-orange-400 p-2"
+                        className="cursor-pointer rounded bg-orange-500 p-2"
                         title="Edit User"
                         onClick={() => {
                           setIsEdit(id);
@@ -899,7 +899,7 @@ function ListsUserComponentTab({
                         <AiOutlineEdit size={25} className="text-mainBgWhite" />
                       </button>
                       <button
-                        className="cursor-pointer rounded bg-blue-400 p-2"
+                        className="cursor-pointer rounded bg-blue-500 p-2"
                         title="Reset User Password"
                       >
                         <BiReset size={25} className="text-mainBgWhite" />
