@@ -808,7 +808,7 @@ function ListsCollegeComponentTab({
                               );
                               setValue(
                                 'collegeLogo',
-                                data.college_department_image
+                                data.college_department_image || ''
                               );
                             }}
                           >
@@ -858,7 +858,7 @@ function ListsCollegeComponentTab({
         </button>
         <p>
           {pagination.skip === 0 ? 1 : pagination.skip} - {pagination.take}
-        </p>{' '}
+        </p>
         <button
           className={classNames(
             'w-[100px] rounded border-2 border-primaryYellow p-1',

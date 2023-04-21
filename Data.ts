@@ -182,6 +182,10 @@ export const data = {
     { id: 1, name: 'Add College' },
     { id: 2, name: 'View Colleges' },
   ],
+  schoolDashBoardStudentSelectSchoolYearSemestre: [
+    { id: 1, name: 'Select Year/Semestre' },
+    { id: 2, name: 'Select College' },
+  ],
   formTemplates: [
     { id: 1, name: 'Waiver', completeName: 'Waiver Form' },
     { id: 2, name: 'LOI', completeName: 'Letter of Intent' },

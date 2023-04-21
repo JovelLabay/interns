@@ -14,16 +14,26 @@ import Papa from 'papaparse';
 import classNames from 'classnames';
 import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
 import { errorNotify } from '@component/interface/toast/toast';
+import {
+  AdStudent,
+  AddStudentBulk,
+} from '@component/interface/modal/school/addStudent';
+import SelectCollege from '@component/interface/modal/school/selectCollege';
 
 function StudentContainer() {
   const [modal, setModal] = useState({
     selectSchoolYearSemestre: false,
+    selectCollege: false,
+    addStudentBulk: false,
+    addStudent: false,
   });
 
   const [active, setActive] = useState({
     schoolYear: '',
     schoolSemestre: '',
+    collegeDepartment: '',
     objectData: '',
+    objectData2nd: '',
   });
 
   const [schoolYearSemestreList, setSchoolYearSemestreList] = useState<
@@ -42,10 +52,11 @@ function StudentContainer() {
           {active.schoolYear && (
             <p
               className={classNames(
-                'rounded-full bg-green-500 px-2 py-1 font-light text-white'
+                'rounded-full bg-green-500 px-3 py-1 text-xs font-light text-white'
               )}
             >
-              {active.schoolYear} / {active.schoolSemestre}
+              {active.schoolYear} / {active.schoolSemestre} /{' '}
+              {active.collegeDepartment}
             </p>
           )}
         </div>
@@ -59,32 +70,67 @@ function StudentContainer() {
           </button>
           <button
             className={classNames('rounded bg-primaryYellow p-2', {
-              'cursor-not-allowed opacity-50': active.schoolYear === '',
+              'cursor-not-allowed opacity-50':
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === '',
             })}
-            disabled={active.schoolYear === ''}
+            disabled={
+              active.schoolYear === '' ||
+              active.schoolSemestre === '' ||
+              active.collegeDepartment === ''
+            }
             title="Add Students"
+            onClick={() => toggleAddStudent()}
           >
             <AiOutlineUserAdd size={20} />
           </button>
           <button
             className={classNames('rounded bg-primaryYellow p-2', {
-              'cursor-not-allowed opacity-50': active.schoolYear === '',
+              'cursor-not-allowed opacity-50':
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === '',
             })}
-            disabled={active.schoolYear === ''}
+            disabled={
+              active.schoolYear === '' ||
+              active.schoolSemestre === '' ||
+              active.collegeDepartment === ''
+            }
             title="Bulk Import Students"
+            onClick={() => toggleAddStudentBulk()}
           >
             <AiOutlineUsergroupAdd size={20} />
           </button>
 
-          <div className="flex items-center justify-center gap-1">
+          <div className={classNames('flex items-center justify-center gap-1')}>
             <input
               className={classNames(
-                'w-[250px] rounded-md border-2 border-primaryYellow bg-mainBgWhite p-2 text-sm focus:outline-none'
+                'w-[250px] rounded-md border-2 border-primaryYellow bg-mainBgWhite p-2 text-sm focus:outline-none',
+                {
+                  'cursor-not-allowed opacity-50': active.schoolYear === '',
+                }
               )}
               type="text"
+              disabled={active.schoolYear === ''}
               placeholder="Search Student..."
             />
-            <button className="rounded bg-red-500 p-2 text-white" title="Clear">
+            <button
+              className={classNames('rounded bg-red-500 p-2 text-white', {
+                'cursor-not-allowed opacity-50': active.schoolYear === '',
+              })}
+              title="Clear All"
+              disabled={active.schoolYear === ''}
+              onClick={() => {
+                setActive({
+                  schoolYear: '',
+                  schoolSemestre: '',
+                  collegeDepartment: '',
+                  objectData: '',
+                  objectData2nd: '',
+                });
+              }}
+            >
               <AiOutlineClear size={20} />
             </button>
           </div>
@@ -136,8 +182,28 @@ function StudentContainer() {
       <SelectSchoolYearSemestreModal
         modal={modal.selectSchoolYearSemestre}
         toggleSelectSchoolYearSemestre={toggleSelectSchoolYearSemestre}
+        toggleSelectCollege={toggleSelectCollege}
         schoolYearSemestreList={schoolYearSemestreList}
+        active={active}
         setActive={setActive}
+      />
+
+      <SelectCollege
+        modal={modal.selectCollege}
+        toggleSelectCollege={toggleSelectCollege}
+        toggleSelectSchoolYearSemestre={toggleSelectSchoolYearSemestre}
+        setActive={setActive}
+      />
+
+      <AdStudent modal={modal.addStudent} toggleAddStudent={toggleAddStudent} />
+
+      <AddStudentBulk
+        modal={modal.addStudentBulk}
+        toggleAddStudentBulk={toggleAddStudentBulk}
+        object={{
+          dataObject: active.objectData,
+          dataObject2nd: active.objectData2nd,
+        }}
       />
 
       {/* TOAST */}
@@ -149,6 +215,27 @@ function StudentContainer() {
     setModal((prev) => ({
       ...prev,
       selectSchoolYearSemestre: !prev.selectSchoolYearSemestre,
+    }));
+  }
+
+  function toggleSelectCollege() {
+    setModal((prev) => ({
+      ...prev,
+      selectCollege: !prev.selectCollege,
+    }));
+  }
+
+  function toggleAddStudentBulk() {
+    setModal((prev) => ({
+      ...prev,
+      addStudentBulk: !prev.addStudentBulk,
+    }));
+  }
+
+  function toggleAddStudent() {
+    setModal((prev) => ({
+      ...prev,
+      addStudent: !prev.addStudent,
     }));
   }
 

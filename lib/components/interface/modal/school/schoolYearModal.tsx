@@ -233,7 +233,7 @@ function SchoolYearModal({
       .then((res) => {
         if (res.data.message === 'School Year Code Already Exist') {
           warningNotify('School Year Code Already Exist');
-          setState((prev) => ({ ...prev, isSubmitted: true }));
+          setState((prev) => ({ ...prev, isSubmitted: false }));
         } else {
           successfulNotify('New School Year Created!');
           setState((prev) => ({ ...prev, isSubmitted: false }));

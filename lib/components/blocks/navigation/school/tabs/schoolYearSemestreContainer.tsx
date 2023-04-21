@@ -155,8 +155,7 @@ function SchoolYearSemestreContainer() {
         {/* SCHOOL YEAR */}
         <div
           className={classNames(
-            'flex h-[70vh] flex-col gap-1 overflow-auto p-2',
-            listSchoolYear.length >= 1 && 'border-r-2'
+            'flex h-[70vh] flex-col gap-1 overflow-auto p-2'
           )}
         >
           {tableData.map((item) => {
@@ -200,11 +199,16 @@ function SchoolYearSemestreContainer() {
                           'ui-active:bg-blue-500 ui-active:text-white ui-not-active:bg-white ui-not-active:text-black',
                           option.id === 1 &&
                             listSchoolSemestre.length >= 3 &&
-                            'opacity-50',
-                          option.id === 1 && !item.is_active && 'opacity-50',
+                            'cursor-not-allowed opacity-50',
+                          option.id === 1 &&
+                            !item.is_active &&
+                            'cursor-not-allowed opacity-50',
                           option.id === 2 &&
                             listSchoolSemestre.length > 0 &&
-                            'opacity-50'
+                            'cursor-not-allowed opacity-50',
+                          option.id === 2 &&
+                            item.is_active &&
+                            'cursor-not-allowed opacity-50'
                         )}
                         onClick={() => {
                           option.id === 1
@@ -214,9 +218,11 @@ function SchoolYearSemestreContainer() {
                         disabled={
                           !item.is_active && option.id === 1
                             ? true
+                            : option.id === 1 && listSchoolSemestre.length >= 3
+                            ? true
                             : option.id === 2 && listSchoolSemestre.length > 0
                             ? true
-                            : option.id === 1 && listSchoolSemestre.length >= 3
+                            : option.id === 2 && item.is_active
                         }
                       >
                         {option.name}
@@ -265,7 +271,10 @@ function SchoolYearSemestreContainer() {
                 </p>
 
                 <button
-                  className={classNames('', item.is_active && 'opacity-50')}
+                  className={classNames(
+                    '',
+                    item.is_active && 'cursor-not-allowed opacity-50'
+                  )}
                   title="Delete Semestre"
                   disabled={item.is_active ? true : false}
                   onClick={() =>
@@ -279,7 +288,7 @@ function SchoolYearSemestreContainer() {
           })}
         </div>
 
-        <div className="relative col-span-2 h-[70vh] overflow-auto">
+        <div className="relative col-span-2 h-[70vh] overflow-auto p-2">
           {selectionState.schoolYear >= 1 &&
           selectionState.schoolYearInformation === true ? (
             <SchoolYear
@@ -475,7 +484,7 @@ function SchoolYear({
   const [isUpdating, setIsUpdating] = useState(false);
 
   return (
-    <div className="ml-3 rounded-md bg-contastWhite p-3">
+    <div className="rounded-md bg-contastWhite p-3">
       <div className=" flex items-center justify-between">
         <h2 className="my-3 w-[80%] overflow-hidden text-clip text-left font-semibold">
           {watch().school_year_name || 'Enter School Name'}
@@ -633,7 +642,7 @@ function SchoolYear({
         </div>
 
         <input
-          className="mx-20 cursor-pointer rounded bg-primaryYellow py-2 px-10"
+          className="cursor-pointer rounded bg-primaryYellow py-2"
           value={isUpdating ? 'Updating...' : 'Update School Year Status'}
           type="submit"
         />
@@ -656,26 +665,40 @@ function SchoolYear({
         },
       })
       .then((res) => {
-        if (res.data.message === 'Password is incorrect') {
-          warningNotify('School Year Code is Incorrect');
-
+        // CHECK PASSWORD
+        if (res.data.message === 'INCORRECT_PASSCODE') {
+          warningNotify('Incorrect Passcode');
           setIsUpdating(false);
+
+          // CHECK IF SCHOOL YEAR IS ACTIVE
         } else if (
           res.data.message ===
-          'You Cannot Activate this School Year. An Active School Year is still Present'
+          'CANNOT_ACTIVATE_SCHOOL_YEAR_ANOTHER_SCHOOL_YEAR_IS_ACTIVE'
         ) {
           warningNotify(
-            'Not Allowed to Activate School Year. An Active School Year is still Present'
+            'Cannot Activate School Year. Another School Year is Active'
           );
           setValue('school_year_code', '');
-
           setIsUpdating(false);
+
+          // CHECK IF HAS ACTIVE SEMESTRE
+        } else if (
+          res.data.message ===
+          'CANNOT_INACTIVATE_SCHOOL_YEAR_SCHOOL_SEMESTER_IS_NOT_EMPTY'
+        ) {
+          warningNotify(
+            'Cannot Inactivate School Year. School Semestre is not Empty'
+          );
+          setValue('school_year_code', '');
+          setIsUpdating(false);
+
+          // SUCCESS
         } else {
           successfulNotify('Successfully updated school year');
           setValue('school_year_code', '');
-
           setIsUpdating(false);
         }
+
         getSchoolYear();
       })
       .catch((err) => {
@@ -734,7 +757,7 @@ function SchoolSemestre({
   }, [viewSchoolSemestreInfo]);
 
   return (
-    <div className="ml-3 h-full rounded-md bg-contastWhite p-3">
+    <div className="h-full rounded-md bg-contastWhite p-3">
       <div className=" flex items-center justify-between">
         <h2 className="my-3 w-[80%] overflow-hidden text-clip text-left font-semibold">
           {watch().school_semester_name || 'Enter Semestre Name'}
@@ -848,7 +871,7 @@ function SchoolSemestre({
         </div>
 
         <input
-          className="cursor-pointer rounded bg-primaryYellow py-2 px-10"
+          className="cursor-pointer rounded bg-primaryYellow py-2"
           value={isUpdating ? 'Updating...' : 'Upate School Semestre Status'}
           type="submit"
         />
