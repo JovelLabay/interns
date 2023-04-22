@@ -5,6 +5,18 @@ interface Welcome {
 interface Dynamic {
   isDarkMode: boolean;
   setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  userData: {
+    image: string;
+    name: string;
+    levelOfUser: string;
+  };
+  setUserData: React.Dispatch<
+    React.SetStateAction<{
+      image: string;
+      name: string;
+      levelOfUser: string;
+    }>
+  >;
 }
 
 // LISTING OF COLLEGES

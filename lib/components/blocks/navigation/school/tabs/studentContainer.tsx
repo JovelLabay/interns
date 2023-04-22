@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   AiOutlineClear,
   AiOutlineConsoleSql,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineEye,
   AiOutlineMenu,
   AiOutlinePlusCircle,
   AiOutlineSearch,
@@ -101,7 +104,7 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
-            title="Bulk Import Students"
+            title="Refresh"
             onClick={() => {
               setPagination({
                 skip: 0,
@@ -203,29 +206,32 @@ function StudentContainer() {
                 </th>
                 <th
                   scope="col"
-                  className="min-w-[200px] max-w-[380px] px-6 py-3"
+                  className="min-w-[250px] max-w-[380px] px-6 py-3"
                 >
                   Full Name
                 </th>
                 <th
                   scope="col"
-                  className="min-w-[200px] max-w-[380px] px-6 py-3"
+                  className="min-w-[250px] max-w-[380px] px-6 py-3"
                 >
                   Email Address
                 </th>
                 <th
                   scope="col"
-                  className="min-w-[200px] max-w-[380px] px-6 py-3"
+                  className="min-w-[250px] max-w-[400px] px-6 py-3"
                 >
-                  Is Active
+                  Department
+                </th>
+                <th scope="col" className="min-w-[130px] px-6 py-3">
+                  Account Active
+                </th>
+                <th scope="col" className="min-w-[130px] px-6 py-3">
+                  Requirement Status
                 </th>
                 <th
                   scope="col"
-                  className="min-w-[200px] max-w-[380px] px-6 py-3"
+                  className="sticky right-0 min-w-[130px] bg-gray-100 px-6 py-3"
                 >
-                  Date Creation
-                </th>
-                <th scope="col" className="sticky right-0 px-6 py-3">
                   Action
                 </th>
               </tr>
@@ -239,6 +245,12 @@ function StudentContainer() {
                   </td>
                   <td>{item.email}</td>
                   <td>
+                    {
+                      item.Student_User_Profile.College_Department
+                        .college_department_name
+                    }
+                  </td>
+                  <td>
                     <span
                       className={classNames(
                         'rounded-full py-2 px-3 text-white',
@@ -249,8 +261,32 @@ function StudentContainer() {
                     </span>
                   </td>
                   <td>sdfsd</td>
-                  <td className={classNames('sticky right-0 px-2 py-4')}>
-                    sdfsdf
+                  <td
+                    className={classNames('sticky right-0 bg-white px-2 py-4')}
+                  >
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        className="cursor-pointer rounded bg-red-400 p-2"
+                        title="Delete User"
+                      >
+                        <AiOutlineDelete
+                          size={25}
+                          className="text-mainBgWhite"
+                        />
+                      </button>
+                      <button
+                        className="cursor-pointer rounded bg-orange-400 p-2"
+                        title="Delete User"
+                      >
+                        <AiOutlineEdit size={25} className="text-mainBgWhite" />
+                      </button>
+                      <button
+                        className="cursor-pointer rounded bg-blue-400 p-2"
+                        title="Delete User"
+                      >
+                        <AiOutlineEye size={25} className="text-mainBgWhite" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

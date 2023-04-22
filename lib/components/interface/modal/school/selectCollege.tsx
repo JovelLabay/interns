@@ -1,8 +1,12 @@
-import { errorNotify } from '@component/interface/toast/toast';
+import {
+  errorNotify,
+  successfulNotify,
+} from '@component/interface/toast/toast';
 import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import classNames from 'classnames';
 import React, { Fragment, useEffect, useState } from 'react';
+import { BiRefresh } from 'react-icons/bi';
 
 function SelectCollege({
   modal,
@@ -67,7 +71,7 @@ function SelectCollege({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
-                <div className="flex flex-row items-center justify-start">
+                <div className="flex items-center justify-between">
                   <button
                     onClick={() => {
                       toggleSelectCollege();
@@ -75,6 +79,16 @@ function SelectCollege({
                     className="w-[100px] rounded border-2 border-primaryYellow py-1"
                   >
                     Close
+                  </button>
+                  <button
+                    className={classNames('rounded bg-primaryYellow p-2')}
+                    title="Refresh"
+                    onClick={() => {
+                      getCollegeList();
+                      successfulNotify('Refreshed Successfully');
+                    }}
+                  >
+                    <BiRefresh size={20} />
                   </button>
                 </div>
 
@@ -90,10 +104,10 @@ function SelectCollege({
                     </tr>
                   ) : (
                     <>
-                      {listCollege.map((college) => (
+                      {listCollege.map((college, index) => (
                         <button
                           key={college.id}
-                          className="flex w-full flex-col justify-center gap-1 rounded bg-primaryYellow p-3 font-semibold text-secondaryWhite"
+                          className="flex w-full items-center justify-start gap-4 rounded bg-primaryYellow p-3 font-semibold text-secondaryWhite"
                           onClick={() => {
                             setActive((prev) => ({
                               ...prev,
@@ -106,12 +120,15 @@ function SelectCollege({
                             toggleSelectSchoolYearSemestre();
                           }}
                         >
-                          <span>{college.college_department_name}</span>
-                          <span className="text-sm font-light">
-                            {college.complete_program_name}
-                          </span>
-                          <span className="text-xs font-light italic">
-                            {college.college_coordinator}
+                          <span>{index + 1}</span>
+                          <span className="flex flex-col items-start justify-center">
+                            <span>{college.college_department_name}</span>
+                            <span className="text-sm font-light">
+                              {college.complete_program_name}
+                            </span>
+                            <span className="text-xs font-light italic">
+                              {college.college_coordinator}
+                            </span>
                           </span>
                         </button>
                       ))}

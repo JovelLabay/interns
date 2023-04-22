@@ -52,7 +52,7 @@ function Activitylogs() {
           <thead className="sticky top-0 bg-gray-100 text-xs uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Unique Indentifier
+                Unique Identifier
               </th>
               <th scope="col" className="min-w-[200px] max-w-[380px] px-6 py-3">
                 Message

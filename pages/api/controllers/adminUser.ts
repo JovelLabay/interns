@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
 
-import { hashPassword } from '@utils/backendFunction';
+import { comparePassword, hashPassword } from '@utils/backendFunction';
 
 class Users {
   private prisma = new PrismaClient();
@@ -23,7 +24,8 @@ class Users {
       isActive,
     } = req.body;
 
-    const { id, skip, isDeleted } = req.query;
+    const { id, skip, isDeleted, authPassword, authEmail, checkAuth } =
+      req.query;
 
     this.getUsers = async () => {
       try {
@@ -105,32 +107,129 @@ class Users {
     };
 
     this.postUser = async () => {
-      const hashedPassword = await hashPassword(password);
-
-      try {
-        const responsePayload = await this.prisma.admin_User.create({
-          data: {
-            admin_user_image: profileImage || null,
-            first_name: firstName,
-            middle_name: middleName,
-            last_name: lastName,
-            email_address: email,
-            password: hashedPassword,
-            level_of_user: levelOfUser,
+      // CHECK FOR UPON AUTHENTICATION
+      if (authPassword && authEmail) {
+        const responsePayload = await this.prisma.admin_User.findUnique({
+          where: {
+            email_address: authEmail as string,
           },
         });
 
-        await this.prisma.activity_Logs.create({
-          data: {
-            activity_message: `New user created: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
-            activity_action: 'CREATE',
-            admin_user_id: responsePayload.id,
+        // CHECK IF ACCOUNT EXISTS
+        if (responsePayload) {
+          const responsePayloadPassword = responsePayload?.password as string;
+          const checkpass = await comparePassword(
+            authPassword as string,
+            responsePayloadPassword
+          );
+
+          // CHECK IF PASSWORD IS CORRECT
+          if (checkpass) {
+            res.status(200).json({
+              message: 'CORRECT_CREDENTIALS',
+              responsePayload: jwt.sign(
+                {
+                  email: responsePayload?.email_address,
+                  password: responsePayload?.password,
+                },
+                process.env.NEXT_PUBLIC_JWT_SECRET as string
+              ),
+              otherData: {
+                name: `${responsePayload?.first_name} ${responsePayload?.middle_name} ${responsePayload?.last_name}`,
+                levelOfUser: responsePayload?.level_of_user,
+                image: responsePayload?.admin_user_image || '',
+              },
+            });
+
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `Admin user: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name} is logged in`,
+                activity_action: 'LOGIN',
+                admin_user_id: responsePayload.id,
+              },
+            });
+          } else {
+            res.status(200).json({
+              message: 'INCORRECT_CREDENTIALS',
+            });
+          }
+        } else {
+          res.status(200).json({
+            message: 'ACCOUNT_NOT_FOUND',
+          });
+        }
+
+        // CHECK OLD TOKEN
+      } else if (checkAuth) {
+        const decoded = jwt.verify(
+          checkAuth as string,
+          process.env.NEXT_PUBLIC_JWT_SECRET as string
+        ) as { email: string; password: string; iat: number };
+
+        const responsePayload = await this.prisma.admin_User.findUnique({
+          where: {
+            email_address: decoded.email,
           },
         });
 
-        res.status(200).json({ message: 'Successful', responsePayload });
-      } catch (error) {
-        res.status(500).json({ message: 'Unsuccessful', error });
+        if (
+          responsePayload?.email_address === decoded.email &&
+          responsePayload?.password === decoded.password
+        ) {
+          res.status(200).json({
+            message: 'CORRECT_CREDENTIALS',
+            responsePayload: jwt.sign(
+              {
+                email: responsePayload?.email_address,
+                password: responsePayload?.password,
+              },
+              process.env.NEXT_PUBLIC_JWT_SECRET as string
+            ),
+            otherData: {
+              name: `${responsePayload?.first_name} ${responsePayload?.middle_name} ${responsePayload?.last_name}`,
+              levelOfUser: responsePayload?.level_of_user,
+              image: responsePayload?.admin_user_image || '',
+            },
+          });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Admin user: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name} is relogged in`,
+              activity_action: 'RELOGIN',
+              admin_user_id: responsePayload.id,
+            },
+          });
+        }
+
+        // CREATE NEW USER
+      } else {
+        const hashedPassword = await hashPassword(password);
+
+        try {
+          const responsePayload = await this.prisma.admin_User.create({
+            data: {
+              admin_user_image: profileImage || null,
+              first_name: firstName,
+              middle_name: middleName,
+              last_name: lastName,
+              email_address: email,
+              password: hashedPassword,
+              level_of_user: levelOfUser,
+            },
+          });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `New user created: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
+              activity_action: 'CREATE',
+              admin_user_id: responsePayload.id,
+            },
+          });
+
+          res.status(200).json({ message: 'Successful', responsePayload });
+        } catch (error) {
+          res.status(500).json({ message: 'Unsuccessful', error });
+        }
       }
     };
 

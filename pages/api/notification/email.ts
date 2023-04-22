@@ -13,7 +13,20 @@ export default async function handler(
   const content = {
     personalizations: [{ to: [{ email: companyEmail }], subject: subject }],
     from: { email: process.env.NEXT_DEFAULT_INTERNS_EMAIL },
-    content: [{ type: 'text/html', value: message }],
+    content: [
+      {
+        type: 'text/html',
+        value: `
+    <h5>Hi there,</h5>
+
+    <p>${message}</p>
+
+    <h5>Best,</h5>
+    <h4>Interns</h4>
+    <p>Developed by Eluvent Platforms</p>
+    `,
+      },
+    ],
   };
 
   // AXIOS CONFIG

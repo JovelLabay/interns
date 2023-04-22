@@ -6,118 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/activitylogs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/activitylogs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/staticPage/StaticHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/staticPage/StaticHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/footer.data.json" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/footer.data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/layouts/UserLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/layouts/UserLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/layouts/WelcomeLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/layouts/WelcomeLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/form.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/form.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/validator/forms.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validator/forms.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/adminUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/adminUser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/schoolSemestre.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/schoolSemestre.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/schoolYear.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/schoolYear.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/data/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/data/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/company/auth.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/company/dashboard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/company/setup.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/school/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/school/auth.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/user/school/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/school/dashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/accountPreferences/[studentNameSlug].tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/student/auth.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/companies/[companySlug].tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/student/dashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/internships/[internshipSlug].tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/savedCompanies/[companyNameSlu].tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/student/setup.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/welcome/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/welcome/about.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/seed.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/seeder.data.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/CompanyHeader.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/StaticLinks.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/StudentHeader.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/StudentHeaderOptions.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/companyType.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/jobCategory.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/blocks/studentListingContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/AuthContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/InputBox.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/SplashLoading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/searchItem.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/toast.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/viewOnlyQuestionnaire.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboards/companyDashboardContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboards/studentDashboard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/emailMessage/sendEmailMessage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addCollegeForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addCompanyTypeForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addEditInternshipForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addJobCategoryForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addListCompanyLocation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addOnlyQuestionnaireForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/addQuestionnaire.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/questionnaireOptions.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/student/documentForm.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/student/exisitingFormSetup.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/student/existingFormAuth.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/logs/adminLogs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/logs/companyLogs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/logs/studentLogs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menu/companyMenu.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menu/studentCompanyMenu.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menu/studentInternshipMenu.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/company/InternshipProgramsContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/company/applicantsContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/company/homeContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/company/internsContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/breadCrumbs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/collegeTemplateForms.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/companiesContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/companyOptionModals.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/customTemplatedForms.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/schoolColleges/deleteCollege.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/schoolColleges/editCollege.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/studentListContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/school/templatedFormContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/students/accountPreferencesContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/students/applyContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/students/profile/details.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/students/profile/documents.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menuContainer/students/profile/form.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/modals/AddCollege.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/modals/EditStudents.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/modals/addInternships.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/modals/addStudents.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/modals/viewApplyCompany.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contexts/context.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/firebase/firebaseConfig.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/firebaseDatabase.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/firebaseDatabase2nd.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/firebaseFirestore.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/firebasetEmailPassAuth.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/utils/accountUtils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/utils/commonFunctions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions/utils/fileUpload.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/StaticTypeSecond.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/StaticTypes.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/WindowType.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validator/LogSignValidator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validator/QuestionnaireValidator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validator/SendEmailMessageValidator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validator/studentObjectValidator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,29 +37,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "dev",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "18.13.0",
-    "javascript.nodejs.core.library.typings.version": "18.13.0",
-    "last_opened_file_path": "D:/Documents/interns/lib/components/blocks/navigation/student",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "prettierjs.PrettierConfiguration.Package": "D:\\Documents\\interns\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "editor.preferences.appearance",
-    "ts.external.directory.path": "D:\\Documents\\interns\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.13.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.13.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/interns/lib/components/blocks/navigation/student&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Documents\\interns\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Documents\\interns\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Documents\interns\lib\components\blocks\navigation\student" />
@@ -215,6 +108,7 @@
       <workItem from="1681868433892" duration="6177000" />
       <workItem from="1681889421588" duration="1698000" />
       <workItem from="1681967003564" duration="3930000" />
+      <workItem from="1682123487810" duration="5086000" />
     </task>
     <servers />
   </component>

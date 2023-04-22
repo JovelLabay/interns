@@ -817,9 +817,9 @@ function ListsUserComponentTab({
                           className="rounded-full"
                           src={admin_user_image ?? internsLogo}
                         />
-                        <span>{first_name}</span>
-                        <span>{middle_name}</span>
-                        <span>{last_name}</span>
+                        <span className="text-lg font-bold">{first_name}</span>
+                        <span className="text-lg font-bold">{middle_name}</span>
+                        <span className="text-lg font-bold">{last_name}</span>
                       </div>
                       <p>
                         <span className="font-bold">Email Address: </span>
@@ -871,7 +871,7 @@ function ListsUserComponentTab({
                   ) : (
                     <>
                       <button
-                        className="cursor-pointer rounded bg-red-500 p-2"
+                        className="cursor-pointer rounded bg-red-400 p-2"
                         title="Delete User"
                         onClick={() => deleteAdminUserData(id)}
                       >
@@ -881,7 +881,7 @@ function ListsUserComponentTab({
                         />
                       </button>
                       <button
-                        className="cursor-pointer rounded bg-orange-500 p-2"
+                        className="cursor-pointer rounded bg-orange-400 p-2"
                         title="Edit User"
                         onClick={() => {
                           setIsEdit(id);
@@ -897,12 +897,6 @@ function ListsUserComponentTab({
                         }}
                       >
                         <AiOutlineEdit size={25} className="text-mainBgWhite" />
-                      </button>
-                      <button
-                        className="cursor-pointer rounded bg-blue-500 p-2"
-                        title="Reset User Password"
-                      >
-                        <BiReset size={25} className="text-mainBgWhite" />
                       </button>
                     </>
                   )}

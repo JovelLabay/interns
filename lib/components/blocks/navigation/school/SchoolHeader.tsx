@@ -1,8 +1,9 @@
 // REACT
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 // NEXT
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 // INTERNS LOGO
 import internsLogo from '../../../../../public/logo/interns_logo.png';
@@ -19,7 +20,12 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import ManageUsers from '@component/interface/modal/ManageUsers';
 import ManageCollege from '@component/interface/modal/ManageCollege';
 
+import { DynamicContext } from '@redux//context';
+
 function SchoolHeader() {
+  const router = useRouter();
+  const context = useContext(DynamicContext);
+
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,
     manageCollege: false,
@@ -38,12 +44,12 @@ function SchoolHeader() {
         <div className="flex flex-row items-center justify-center gap-10">
           <div className="flex flex-row items-center justify-center gap-3">
             <Image
-              src={internsLogo}
+              src={context?.userData.image || internsLogo}
               width={40}
               height={40}
               style={{ borderRadius: '100%' }}
             />
-            <p className="font-medium">{'No Data'}</p>
+            <p className="font-medium">{context?.userData.name || 'No Data'}</p>
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
             {/* MANAGE USERS */}
@@ -93,7 +99,10 @@ function SchoolHeader() {
   );
 
   function schoolAdminLogoutHandler() {
-    null;
+    document.cookie =
+      'authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    router.push('/user/school/auth');
   }
 
   function addModalToggleManageUser() {

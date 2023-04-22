@@ -16,12 +16,20 @@ import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogSignValidator } from '@validator/forms';
+import axios from 'axios';
+import {
+  errorNotify,
+  successfulNotify,
+  warningNotify,
+} from '@component/interface/toast/toast';
 
 function Auth() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [submit, setSubmit] = useState({
     isSubmitting: false,
+    incorrect: false,
+    notFound: false,
   });
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const {
@@ -30,6 +38,8 @@ function Auth() {
     formState: { errors },
     reset,
     clearErrors,
+    setValue,
+    watch,
   } = useForm<FormLogin>({
     mode: 'onSubmit',
     resolver: yupResolver(LogSignValidator),
@@ -37,6 +47,40 @@ function Auth() {
 
   useEffect(() => {
     document.title = 'School | Log in';
+
+    const expirationTime = new Date();
+    expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
+
+    const cookie = document.cookie
+      .split(';')
+      .find((c) => c.trim().startsWith('authCookie='));
+    const valueCookie = cookie?.split('=')[1];
+
+    if (valueCookie) {
+      axios
+        .post(`/api/data/adminUser?checkAuth=${valueCookie}`)
+        .then((res) => {
+          console.log(res);
+          if (res.data.message === 'CORRECT_CREDENTIALS') {
+            const cookieString = `authCookie=${
+              res.data.responsePayload
+            }; expires=${expirationTime.toUTCString()}; path=/`;
+            document.cookie = cookieString;
+
+            router.push('/user/school/dashboard');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          errorNotify('Something went wrong');
+          document.cookie =
+            'authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   if (isLoading) {
@@ -45,12 +89,12 @@ function Auth() {
 
   return (
     <div className="min-h-[80vh] bg-primaryYellow">
-      <div className="flex min-h-[80vh] items-center justify-center lg:hidden">
+      <div className="flex min-h-[80vh] items-center justify-center xl:hidden">
         <h2 className="text-center text-white">
           Please do not use Table/Phone devices
         </h2>
       </div>
-      <div className="dynamic-main-container hidden min-h-[80vh] flex-col items-center justify-center lg:flex">
+      <div className="dynamic-main-container hidden min-h-[80vh] flex-col items-center justify-center xl:flex">
         <div className="rounded-md bg-white p-5">
           {/* TITLE */}
           <h2 className="text-center text-[28px]">
@@ -74,7 +118,7 @@ function Auth() {
               e.preventDefault();
 
               handleSubmit((data) => {
-                console.log(data);
+                authentication(data);
               })();
             }}
           >
@@ -125,33 +169,23 @@ function Auth() {
               </div>
             )}
 
-            <div className="flex justify-end">
-              <button
-                className="my-3 text-primaryYellow underline"
-                onClick={(e) => {
-                  e.preventDefault();
+            {submit.incorrect && (
+              <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
+                Either Email or Password is incorrect
+              </p>
+            )}
 
-                  setIsForgotPassword(!isForgotPassword);
-                  clearPassEmail();
-                }}
-              >
-                {isForgotPassword ? 'Back' : 'Forgot your password?'}
-              </button>
-            </div>
+            {submit.notFound && (
+              <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
+                Account does not exist
+              </p>
+            )}
 
             <button
               className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:cursor-pointer hover:bg-primaryYellowHover"
               type="submit"
             >
               {(function () {
-                if (isForgotPassword) {
-                  if (submit.isSubmitting) {
-                    return 'Sending...';
-                  } else {
-                    return 'Forgot Password';
-                  }
-                }
-
                 if (submit.isSubmitting) {
                   return 'Logging...';
                 } else {
@@ -168,10 +202,44 @@ function Auth() {
     </div>
   );
 
-  function clearPassEmail() {
-    reset();
+  function authentication(data: FormLogin) {
+    setSubmit({ isSubmitting: true, incorrect: false, notFound: false });
 
-    clearErrors();
+    axios
+      .post(
+        `/api/data/adminUser?authPassword=${data.password}&authEmail=${data.email}`
+      )
+      .then((res) => {
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
+
+        const responseCookie = res.data.responsePayload;
+        const responseMessage = res.data.message;
+
+        if (responseMessage === 'CORRECT_CREDENTIALS') {
+          const cookieString = `authCookie=${responseCookie}; expires=${expirationTime.toUTCString()}; path=/`;
+          document.cookie = cookieString;
+
+          setSubmit({
+            isSubmitting: false,
+            incorrect: false,
+            notFound: false,
+          });
+
+          router.push('/user/school/dashboard');
+        } else if (responseMessage === 'INCORRECT_CREDENTIALS') {
+          warningNotify('Incorrect Credentials');
+          setValue('password', '');
+          setSubmit({ isSubmitting: false, incorrect: true, notFound: false });
+        } else {
+          warningNotify(`${watch('email')} Does Not Exist`);
+          setValue('password', '');
+          setSubmit({ isSubmitting: false, notFound: true, incorrect: false });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

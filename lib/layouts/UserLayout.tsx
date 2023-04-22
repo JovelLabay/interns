@@ -9,6 +9,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 function UserLayout({ children }: { children: ReactNode }) {
   // DARK MODE STATE
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [userData, setUserData] = useState({
+    image: '',
+    name: '',
+    levelOfUser: '',
+  });
 
   useEffect(() => {
     window.addEventListener('online', (data) => {
@@ -27,6 +32,8 @@ function UserLayout({ children }: { children: ReactNode }) {
       value={{
         isDarkMode,
         setIsDarkMode,
+        userData,
+        setUserData,
       }}
     >
       {children}
