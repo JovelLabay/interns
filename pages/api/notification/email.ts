@@ -1,31 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import jwt from 'jsonwebtoken';
+
+// APP DOMAIN
+const appDomain = process.env.NEXT_PUBLIC_EMAIL_ENDPOINT as string;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   // PAYLOAD
-  const { companyEmail, message, subject } = req.body;
+  const { subject, message, email, time, lastName } = req.body;
 
   // EMAIL CONTENT
   const content = {
-    personalizations: [{ to: [{ email: companyEmail }], subject: subject }],
+    personalizations: [{ to: [{ email: email }], subject: subject }],
     from: { email: process.env.NEXT_DEFAULT_INTERNS_EMAIL },
     content: [
-      {
-        type: 'text/html',
-        value: `
-    <h5>Hi there,</h5>
-
-    <p>${message}</p>
-
-    <h5>Best,</h5>
-    <h4>Interns</h4>
-    <p>Developed by Eluvent Platforms</p>
-    `,
-      },
+      selectionOfEmailType('RESET_EMAIL', {
+        message,
+        subject,
+        time,
+        lastName,
+        email,
+      }),
     ],
   };
 
@@ -51,4 +50,67 @@ export default async function handler(
   } else {
     res.status(500).send('Bad Request');
   }
+}
+
+function selectionOfEmailType(
+  type: string,
+  objectContent: {
+    message: string;
+    subject: string;
+    time: string;
+    lastName: string;
+    email: string;
+  }
+) {
+  if (type === 'RESET_EMAIL') {
+    const jsonWebToken = jwt.sign(
+      {
+        email: objectContent.email,
+        time: objectContent.time,
+      },
+      process.env.NEXT_PUBLIC_JWT_SECRET as string
+    );
+
+    const contentConfiguration = {
+      type: 'text/html',
+      value: `
+    <h4>Dear ${objectContent.lastName},</h4>
+
+    <p>We received a request to reset your password. If you did not make this request, please ignore this email and your account will remain secure.</p>
+    <p>If you did request a password reset, please follow the instructions below to create a new password:</p>
+
+    <ol>
+      <li>
+        <a href="${appDomain}/reset/${jsonWebToken}">Click here.</a>
+      </li>
+      <li>You will be redirected to a page where you can enter your new password. Please choose a strong password that is at least 8 characters long and contains a combination of uppercase and lowercase letters, numbers, and symbols.
+      </li>
+      <li>Once you have entered your new password, click the "Submit" button.
+      </li>
+    </ol>
+
+
+    <p>Thank you for your prompt attention to this matter.</p>
+
+    <h5>Best,</h5>
+    <h4>Interns</h4>
+    <h3>Developed by Eluvent Platforms</h3>
+    `,
+    };
+
+    return contentConfiguration;
+  }
+
+  return {
+    type: 'text/html',
+    value: `
+    <h5>Hi there,</h5>
+
+    <p>${objectContent.message}</p>
+
+    <h5>Best,</h5>
+    <h4>Interns</h4>
+    <p>Developed by Eluvent Platforms</p>
+    `,
+  };
 }

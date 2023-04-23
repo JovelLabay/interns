@@ -24,8 +24,15 @@ class Users {
       isActive,
     } = req.body;
 
-    const { id, skip, isDeleted, authPassword, authEmail, checkAuth } =
-      req.query;
+    const {
+      id,
+      skip,
+      isDeleted,
+      authPassword,
+      authEmail,
+      checkAuth,
+      resetPassword,
+    } = req.query;
 
     this.getUsers = async () => {
       try {
@@ -107,7 +114,7 @@ class Users {
     };
 
     this.postUser = async () => {
-      // CHECK FOR UPON AUTHENTICATION
+      // 1. CHECK FOR UPON AUTHENTICATION
       if (authPassword && authEmail) {
         const responsePayload = await this.prisma.admin_User.findUnique({
           where: {
@@ -115,7 +122,7 @@ class Users {
           },
         });
 
-        // CHECK IF ACCOUNT EXISTS
+        // 1.1 CHECK IF ACCOUNT EXISTS
         if (responsePayload) {
           const responsePayloadPassword = responsePayload?.password as string;
           const checkpass = await comparePassword(
@@ -123,7 +130,7 @@ class Users {
             responsePayloadPassword
           );
 
-          // CHECK IF PASSWORD IS CORRECT
+          // 1.2 CHECK IF PASSWORD IS CORRECT
           if (checkpass) {
             res.status(200).json({
               message: 'CORRECT_CREDENTIALS',
@@ -159,7 +166,7 @@ class Users {
           });
         }
 
-        // CHECK OLD TOKEN
+        // 2. CHECK OLD TOKEN
       } else if (checkAuth) {
         const decoded = jwt.verify(
           checkAuth as string,
@@ -172,6 +179,7 @@ class Users {
           },
         });
 
+        // 2.1 CHECK IF ACCOUNT IS CORRECT
         if (
           responsePayload?.email_address === decoded.email &&
           responsePayload?.password === decoded.password
@@ -201,7 +209,7 @@ class Users {
           });
         }
 
-        // CREATE NEW USER
+        // 3. CREATE NEW USER
       } else {
         const hashedPassword = await hashPassword(password);
 
@@ -235,30 +243,79 @@ class Users {
 
     this.putUser = async () => {
       try {
-        const responsePayload = await this.prisma.admin_User.update({
-          where: {
-            id: Number(id),
-          },
-          data: {
-            admin_user_image: profileImage || null,
-            first_name: firstName,
-            middle_name: middleName,
-            last_name: lastName,
-            level_of_user: levelOfUser,
-            isActive: isActive,
-            updatedAt: new Date(),
-          },
-        });
+        if (resetPassword === 'true') {
+          const checkFirstPassword = await this.prisma.admin_User.findUnique({
+            where: {
+              email_address: email,
+            },
+          });
 
-        await this.prisma.activity_Logs.create({
-          data: {
-            activity_message: `User updated: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
-            activity_action: 'UPDATED',
-            admin_user_id: responsePayload.id,
-          },
-        });
+          if (
+            (await comparePassword(
+              password,
+              checkFirstPassword?.password as string
+            )) === true
+          ) {
+            res.status(200).json({
+              message: 'THE_SAME_PASSWORD',
+            });
+          } else {
+            await this.prisma.admin_User.update({
+              where: {
+                email_address: email,
+              },
+              data: {
+                password: await hashPassword(password),
+              },
+            });
 
-        res.status(200).json({ message: 'Successful', responsePayload });
+            const resetResponsePayload = await this.prisma.admin_User.update({
+              where: {
+                email_address: email,
+              },
+              data: {
+                password: await hashPassword(password),
+              },
+            });
+
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `User reset: ${resetResponsePayload.first_name} ${resetResponsePayload.middle_name} ${resetResponsePayload.last_name}`,
+                activity_action: 'RESET',
+                admin_user_id: resetResponsePayload.id,
+              },
+            });
+
+            res
+              .status(200)
+              .json({ message: 'Successful', resetResponsePayload });
+          }
+        } else {
+          const responsePayload = await this.prisma.admin_User.update({
+            where: {
+              id: Number(id),
+            },
+            data: {
+              admin_user_image: profileImage || null,
+              first_name: firstName,
+              middle_name: middleName,
+              last_name: lastName,
+              level_of_user: levelOfUser,
+              isActive: isActive,
+              updatedAt: new Date(),
+            },
+          });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `User updated: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name}`,
+              activity_action: 'UPDATED',
+              admin_user_id: responsePayload.id,
+            },
+          });
+
+          res.status(200).json({ message: 'Successful', responsePayload });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
       }

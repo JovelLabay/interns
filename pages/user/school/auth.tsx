@@ -9,7 +9,6 @@ import SecondayStaticFooter from 'lib/components/blocks/staticPage/SecondayStati
 
 // TOAST AND LOADER
 import { ToastContainer } from 'react-toastify';
-import { BeatLoader } from 'react-spinners';
 import SplashLoading from '@component//interface/loading/SplashLoading';
 import classNames from 'classnames';
 
@@ -17,11 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogSignValidator } from '@validator/forms';
 import axios from 'axios';
-import {
-  errorNotify,
-  successfulNotify,
-  warningNotify,
-} from '@component/interface/toast/toast';
+import { errorNotify, warningNotify } from '@component/interface/toast/toast';
 
 function Auth() {
   const router = useRouter();
@@ -31,13 +26,10 @@ function Auth() {
     incorrect: false,
     notFound: false,
   });
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-    clearErrors,
     setValue,
     watch,
   } = useForm<FormLogin>({
@@ -99,16 +91,11 @@ function Auth() {
           {/* TITLE */}
           <h2 className="text-center text-[28px]">
             <span className="font-bold">
-              School |{' '}
-              <span className="font-light">
-                {isForgotPassword ? 'Forgot Password' : 'Log in'}
-              </span>
+              School | <span className="font-light">Log in</span>
             </span>
           </h2>
           <p className="my-5 text-center font-medium text-secondaryWhite">
-            {isForgotPassword
-              ? 'Forgot your password'
-              : 'Authentication for the College'}
+            Authentication for the College
           </p>
 
           {/* FORM */}
@@ -144,30 +131,28 @@ function Auth() {
                 </p>
               )}
             </div>
-            {!isForgotPassword && (
-              <div className="flex flex-col gap-1">
-                <label htmlFor="password" className="text-secondaryWhite">
-                  Password
-                </label>
-                <input
-                  className={classNames(
-                    'rounded border-2 border-primaryYellow py-3 px-2 outline-none',
-                    {
-                      'border-red-500 bg-red-100 placeholder:text-white':
-                        errors.password,
-                    }
-                  )}
-                  type="password"
-                  placeholder="Password"
-                  {...register('password')}
-                />
-                {errors.password?.message && (
-                  <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
-                    {errors.password?.message}
-                  </p>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="password" className="text-secondaryWhite">
+                Password
+              </label>
+              <input
+                className={classNames(
+                  'rounded border-2 border-primaryYellow py-3 px-2 outline-none',
+                  {
+                    'border-red-500 bg-red-100 placeholder:text-white':
+                      errors.password,
+                  }
                 )}
-              </div>
-            )}
+                type="password"
+                placeholder="Password"
+                {...register('password')}
+              />
+              {errors.password?.message && (
+                <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
+                  {errors.password?.message}
+                </p>
+              )}
+            </div>
 
             {submit.incorrect && (
               <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">

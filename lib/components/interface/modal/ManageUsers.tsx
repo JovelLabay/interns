@@ -3,13 +3,11 @@ import React, { Fragment, useEffect, useState, useMemo, useRef } from 'react';
 
 // ICONS
 import {
-  AiOutlineCheckCircle,
   AiOutlinePlusCircle,
   AiOutlineUnorderedList,
   AiOutlineDelete,
   AiOutlineCloseCircle,
   AiOutlineCloudUpload,
-  AiFillDelete,
   AiOutlineEdit,
 } from 'react-icons/ai';
 
@@ -43,7 +41,7 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CreateSchoolAdminValidator, LogSignValidator } from '@validator/forms';
+import { CreateSchoolAdminValidator } from '@validator/forms';
 
 // UI
 import { Listbox, Switch } from '@headlessui/react';
@@ -51,14 +49,13 @@ import { Tab } from '@headlessui/react';
 import { Dialog, Transition } from '@headlessui/react';
 
 // REACT
-import { FiChevronDown, FiUsers } from 'react-icons/fi';
-import { BiReset } from 'react-icons/bi';
+import { FiChevronDown } from 'react-icons/fi';
 import axios from 'axios';
 import { imageUploader } from '@utils/uploaderFunction';
 import Image from 'next/image';
 import internsLogo from '@/assets/logo/interns_logo.png';
 import { splitUnderScore } from '@utils/commonFunction';
-import { BsPerson } from 'react-icons/bs';
+import { MdPassword } from 'react-icons/md';
 
 const levelOfUser = Object.entries(Level_Of_User);
 
@@ -898,6 +895,13 @@ function ListsUserComponentTab({
                       >
                         <AiOutlineEdit size={25} className="text-mainBgWhite" />
                       </button>
+                      <button
+                        className="cursor-pointer rounded bg-blue-400 p-2"
+                        title="Send Admin User Password"
+                        onClick={() => sendResetEmail(last_name, email_address)}
+                      >
+                        <MdPassword size={25} className="text-mainBgWhite" />
+                      </button>
                     </>
                   )}
                 </div>
@@ -1146,6 +1150,38 @@ function ListsUserComponentTab({
       .catch((err) => {
         errorNotify('Something went wrong!');
         console.error(err);
+      });
+  }
+
+  function sendResetEmail(last_name: string, email_address: string) {
+    const currentTime = new Date().getTime();
+
+    const data = JSON.stringify({
+      subject: 'Reset Your Password',
+      message: '',
+      email: email_address,
+      time: currentTime,
+      lastName: last_name,
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/api/notification/email?fsdf=45645&fg=5645645',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then(() => {
+        successfulNotify('Reset Password Email Sent!');
+      })
+      .catch((error) => {
+        console.error(error);
+        successfulNotify('Something went wrong!');
       });
   }
 }

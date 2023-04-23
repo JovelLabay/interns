@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Papa from 'papaparse';
 import Student from '../controllers/student';
 
 export default async function handler(

@@ -6,7 +6,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 // STATIC DATA
-import { data } from 'Data';
 import generalData from '@data/general.data.json';
 
 // COMPONENTS OR LAYOUTS

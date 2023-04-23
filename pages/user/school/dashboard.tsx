@@ -11,17 +11,10 @@ import SchoolHeader from 'lib/components/blocks/navigation/school/SchoolHeader';
 // STATE MANAGEMENT
 import { DynamicContext } from '@redux//context';
 
-// FIREBASE
-// import { emailPassAuth } from '@/src/firebase/firebaseConfig';
-// import { onAuthStateChanged } from 'firebase/auth';
-
 // NEXT
 import { useRouter } from 'next/router';
-import { supabase } from 'lib/supabase/supabaseClient';
-import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { errorNotify } from '@component/interface/toast/toast';
-// import { errorNotify } from '@/src/components/common/toast';
 
 function SchoolDashboard() {
   const router = useRouter();
