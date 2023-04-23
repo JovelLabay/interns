@@ -15,9 +15,17 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 function AdStudent({
   modal,
   toggleAddStudent,
+  object,
+  getStudentList,
 }: {
   modal: boolean;
   toggleAddStudent: () => void;
+  object: {
+    objectDataSchoolYear: string;
+    objectDataSchoolSemestre: string;
+    ObjectDataCollegeDepartment: string;
+  };
+  getStudentList: () => void;
 }) {
   const [state, setState] = React.useState({
     isCreating: false,
@@ -84,7 +92,7 @@ function AdStudent({
                   onSubmit={(e) => {
                     e.preventDefault();
 
-                    handleSubmit((data) => console.log(data))();
+                    handleSubmit((data) => addStudent(data))();
                   }}
                 >
                   <div className="flex flex-col items-start gap-2">
@@ -185,12 +193,62 @@ function AdStudent({
       </Dialog>
     </Transition>
   );
+
+  function addStudent(data: FormCreateStudent) {
+    setState((prev) => {
+      return {
+        ...prev,
+        isUploading: true,
+      };
+    });
+
+    const config = {
+      method: 'post',
+      url: `/api/data/student?schoolYear=${object.objectDataSchoolYear}&schoolSemestre=${object.objectDataSchoolSemestre}&collegeDepartment=${object.ObjectDataCollegeDepartment}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(data),
+    };
+
+    axios
+      .request(config)
+      .then(() => {
+        getStudentList();
+        reset();
+        toggleAddStudent();
+
+        successfulNotify('Student Created Successfully!');
+
+        setState((prev) => {
+          return {
+            ...prev,
+            isUploading: false,
+          };
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+
+        errorNotify('Something went wrong');
+
+        setState((prev) => {
+          return {
+            ...prev,
+            isUploading: false,
+          };
+        });
+      });
+
+    null;
+  }
 }
 
 function AddStudentBulk({
   modal,
   toggleAddStudentBulk,
   object,
+  getStudentList,
 }: {
   modal: boolean;
   toggleAddStudentBulk: () => void;
@@ -199,6 +257,7 @@ function AddStudentBulk({
     objectDataSchoolSemestre: string;
     ObjectDataCollegeDepartment: string;
   };
+  getStudentList: () => void;
 }) {
   const [state, setState] = useState({
     isUploading: false,
@@ -318,6 +377,7 @@ function AddStudentBulk({
                                 });
 
                                 toggleAddStudentBulk();
+                                getStudentList();
                               })
                               .catch((error) => {
                                 console.log(error);

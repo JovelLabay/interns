@@ -11,7 +11,7 @@ function Activitylogs() {
       createdAt: string;
     }[]
   >([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   useEffect(() => {
     const updateTime = setInterval(() => {
@@ -41,7 +41,7 @@ function Activitylogs() {
             'w-[400px] rounded-md bg-mainBgWhite py-3 px-2 text-sm focus:outline-none'
           )}
           type="text"
-          placeholder="Search Activity History..."
+          placeholder="Search Activity History by Message..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -52,7 +52,7 @@ function Activitylogs() {
           <thead className="sticky top-0 bg-gray-100 text-xs uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Unique Identifier
+                No.
               </th>
               <th scope="col" className="min-w-[200px] max-w-[380px] px-6 py-3">
                 Message

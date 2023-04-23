@@ -7,12 +7,11 @@ import SchoolSemestreModal from '@component/interface/modal/school/schoolSemestr
 import SchoolYearModal from '@component/interface/modal/school/schoolYearModal';
 import { Menu, Switch } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getYear } from '@utils/commonFunction';
 import { CreateSchoolSemestre, CreateSchoolYear } from '@validator/forms';
 import { data } from 'Data';
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { useEffect, useState, Fragment, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   FieldErrors,
   UseFormHandleSubmit,
@@ -25,14 +24,11 @@ import {
 import {
   AiOutlineClear,
   AiOutlineCloseCircle,
-  AiOutlineConsoleSql,
   AiOutlineDelete,
   AiOutlinePlusCircle,
-  AiOutlineSearch,
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import footer from '@data/footer.data.json';
 
 function SchoolYearSemestreContainer() {
   const [modal, setModal] = useState({
@@ -173,6 +169,12 @@ function SchoolYearSemestreContainer() {
                   className="flex w-[90%] flex-col"
                   onClick={() => getSchoolYear(item.id)}
                 >
+                  <span
+                    className={classNames(
+                      'h-2 w-2 rounded-full',
+                      item.is_active ? 'bg-green-500' : 'bg-red-500'
+                    )}
+                  />
                   <span>{item.school_year_name}</span>
                   <span className="mt-2 text-xs font-light italic">
                     {new Date(item.createdAt).toLocaleString()}
@@ -264,6 +266,12 @@ function SchoolYearSemestreContainer() {
                     );
                   }}
                 >
+                  <span
+                    className={classNames(
+                      'h-2 w-2 rounded-full',
+                      item.is_active ? 'bg-green-500' : 'bg-red-500'
+                    )}
+                  />
                   <span>{item.school_semester_name}</span>
                   <span className="mt-2 text-xs font-light italic">
                     {new Date(item.createdAt).toLocaleString()}

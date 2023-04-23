@@ -1,7 +1,7 @@
 import { ToastContainer } from 'react-toastify';
 
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { Dialog, Listbox, Tab, Transition } from '@headlessui/react';
+import { Dialog, Tab, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import {
   AiOutlineCloseCircle,
@@ -17,7 +17,6 @@ import Image from 'next/image';
 import internsLogo from '@/assets/logo/interns_logo.png';
 import {
   FieldErrors,
-  FieldValues,
   UseFormClearErrors,
   UseFormHandleSubmit,
   UseFormRegister,
@@ -26,9 +25,7 @@ import {
   UseFormWatch,
   useForm,
 } from 'react-hook-form';
-import { FiChevronDown } from 'react-icons/fi';
 import { splitUnderScore } from '@utils/commonFunction';
-import { BiReset } from 'react-icons/bi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateCollegeValidator } from '@validator/forms';
 import { imageUploader } from '@utils/uploaderFunction';
@@ -70,7 +67,7 @@ function ManageCollege({
     <Transition appear show={addRemoveModal} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-10 hidden lg:block"
+        className="relative z-10 hidden xl:block"
         onClose={() => {
           addModalToggle();
           clearState();

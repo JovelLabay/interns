@@ -9,7 +9,7 @@ class Student {
   public getStudents: () => Promise<void>;
 
   constructor(req: NextApiRequest, res: NextApiResponse) {
-    // const {} = req.body;
+    const { emailAddress, firstName, middleName, lastName } = req.body;
 
     const {
       id,
@@ -34,6 +34,7 @@ class Student {
       last_name: true,
       email: true,
       is_active: true,
+      createdAt: true,
     };
 
     const selection2nd = {
@@ -61,13 +62,13 @@ class Student {
 
             const objectedValuesArray = valuesArray.map((d: string[]) => {
               return {
-                firsName: d[0],
+                firstName: d[0],
                 middleName: d[1],
                 lastName: d[2],
                 email: d[3],
               };
             }) as {
-              firsName: string;
+              firstName: string;
               middleName: string;
               lastName: string;
               email: string;
@@ -80,14 +81,14 @@ class Student {
                     email: d.email,
                   },
                   create: {
-                    first_name: d.firsName,
+                    first_name: d.firstName,
                     last_name: d.lastName,
                     middle_name: d.middleName,
                     email: d.email,
                     school_semester_id: parsedDataObjectSchoolSemestre.id,
                   },
                   update: {
-                    first_name: d.firsName,
+                    first_name: d.firstName,
                     last_name: d.lastName,
                     middle_name: d.middleName,
                   },
@@ -134,7 +135,61 @@ class Student {
           },
         });
       } else {
-        res.send('Sdf');
+        try {
+          const upsertImported = await this.prisma.student_User.upsert({
+            where: {
+              email: emailAddress,
+            },
+            create: {
+              first_name: firstName,
+              last_name: lastName,
+              middle_name: middleName,
+              email: emailAddress,
+              school_semester_id: parsedDataObjectSchoolSemestre.id,
+            },
+            update: {
+              first_name: firstName,
+              last_name: lastName,
+              middle_name: middleName,
+            },
+          });
+
+          const upsertImportedUserProfile =
+            await this.prisma.student_User_Profile.upsert({
+              where: {
+                student_user_id: upsertImported.id,
+              },
+              create: {
+                student_user_id: upsertImported.id,
+                college_Department_Id: parsedDataObjectCollegeDepartment.id,
+              },
+              update: {
+                student_user_id: upsertImported.id,
+                college_Department_Id: parsedDataObjectCollegeDepartment.id,
+              },
+            });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Student added: ${upsertImported.email}`,
+              activity_action: 'ADDED',
+              student_user_id: upsertImported.id,
+            },
+          });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Student profile added & created: ${upsertImported.email}`,
+              activity_action: 'ADDED & CREATED',
+              student_user_profile_id: upsertImportedUserProfile.id,
+            },
+          });
+
+          res.status(200).json({ message: 'Successful' });
+        } catch (error) {
+          res.status(500).json({ message: 'Unsuccessful', error });
+          console.log(error);
+        }
       }
     };
 

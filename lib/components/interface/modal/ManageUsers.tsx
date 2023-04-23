@@ -112,7 +112,7 @@ function ManageUsers({
     <Transition appear show={addRemoveModal} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-10 hidden lg:block"
+        className="relative z-10 hidden xl:block"
         onClose={() => {
           addModalToggle();
           clearState();
@@ -886,8 +886,12 @@ function ListsUserComponentTab({
                   ) : (
                     <>
                       <button
-                        className="cursor-pointer rounded bg-red-400 p-2"
+                        className={classNames(
+                          ' rounded bg-red-400 p-2',
+                          !isActive && 'cursor-not-allowed opacity-50'
+                        )}
                         title="Delete User"
+                        disabled={!isActive}
                         onClick={() => deleteAdminUserData(id)}
                       >
                         <AiOutlineDelete
@@ -918,7 +922,7 @@ function ListsUserComponentTab({
                           'rounded bg-blue-400 p-2',
                           !isActive && 'cursor-not-allowed opacity-50'
                         )}
-                        title="Send Admin User Password"
+                        title="Send Admin User Reset Password"
                         disabled={!isActive}
                         onClick={() => sendResetEmail(last_name, email_address)}
                       >

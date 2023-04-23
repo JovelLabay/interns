@@ -1,16 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   AiOutlineClear,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineEye,
   AiOutlineInfoCircle,
-  AiOutlineMenu,
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
 } from 'react-icons/ai';
-import { BiRefresh } from 'react-icons/bi';
+import { BiCategoryAlt, BiRefresh } from 'react-icons/bi';
 import classNames from 'classnames';
 import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
 import {
@@ -24,6 +23,7 @@ import {
 import SelectCollege from '@component/interface/modal/school/selectCollege';
 import InfoLegend from '@component/interface/modal/school/infoLegend';
 import { Student_Status } from '@prisma/client';
+import { BsToggleOff } from 'react-icons/bs';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -44,17 +44,33 @@ function StudentContainer() {
     objectDataSchoolSemestre: '',
     ObjectDataCollegeDepartment: '',
   });
-
   const [schoolYearSemestreList, setSchoolYearSemestreList] = useState<
     SelectSchoolYearSemestre[]
   >([]);
   const [ltudentList, setStudentList] = useState<any[]>([]);
-
   const [pagination, setPagination] = useState({
     skip: 0,
     take: 20,
     payloadLength: 0,
   });
+  const [searchState, setSearchState] = useState({
+    isOpen: false,
+    searchInput: '',
+  });
+
+  const filterStudentList = useMemo(() => {
+    return ltudentList.filter((item) => {
+      const regex = new RegExp(
+        searchState.searchInput.toLocaleLowerCase(),
+        'gi'
+      );
+
+      const first = item.first_name;
+      const middle = item.middle_name;
+      const last = item.last_name;
+      return `${first} ${middle} ${last}`.match(regex);
+    });
+  }, [ltudentList, searchState.searchInput]);
 
   useEffect(() => {
     getSchoolYear();
@@ -79,11 +95,18 @@ function StudentContainer() {
         </div>
         <div className="flex items-center justify-center gap-3">
           <button
+            className={classNames('rounded bg-green-500 p-2 text-white')}
+            title="Legend"
+            onClick={() => toggleInfo()}
+          >
+            <AiOutlineInfoCircle size={20} />
+          </button>
+          <button
             className={classNames('rounded bg-primaryYellow p-2')}
-            title="Select School Year/Semestre"
+            title="Select School Year/Semestre | College/Department"
             onClick={() => toggleSelectSchoolYearSemestre()}
           >
-            <AiOutlineMenu size={20} />
+            <BiCategoryAlt size={20} />
           </button>
           <button
             className={classNames('rounded bg-primaryYellow p-2', {
@@ -123,7 +146,7 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
-            title="Add Students"
+            title={`Add Student in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
             onClick={() => toggleAddStudent()}
           >
             <AiOutlineUserAdd size={20} />
@@ -140,10 +163,42 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
-            title="Bulk Import Students"
+            title={`Bulk Import Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
             onClick={() => toggleAddStudentBulk()}
           >
             <AiOutlineUsergroupAdd size={20} />
+          </button>
+          <button
+            className={classNames('rounded bg-blue-500 p-2 text-white', {
+              'cursor-not-allowed opacity-50':
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === '',
+            })}
+            disabled={
+              active.schoolYear === '' ||
+              active.schoolSemestre === '' ||
+              active.collegeDepartment === ''
+            }
+            title={`Delete All Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
+          >
+            <AiOutlineDelete size={20} />
+          </button>
+          <button
+            className={classNames('rounded bg-blue-500 p-2 text-white', {
+              'cursor-not-allowed opacity-50':
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === '',
+            })}
+            disabled={
+              active.schoolYear === '' ||
+              active.schoolSemestre === '' ||
+              active.collegeDepartment === ''
+            }
+            title="Inactivate All"
+          >
+            <BsToggleOff size={20} />
           </button>
 
           <div className={classNames('flex items-center justify-center gap-1')}>
@@ -151,17 +206,33 @@ function StudentContainer() {
               className={classNames(
                 'w-[250px] rounded-md border-2 border-primaryYellow bg-mainBgWhite p-2 text-sm focus:outline-none',
                 {
-                  'cursor-not-allowed opacity-50': active.schoolYear === '',
+                  'cursor-not-allowed opacity-50':
+                    active.schoolYear === '' ||
+                    active.schoolSemestre === '' ||
+                    active.collegeDepartment === '',
                 }
               )}
               type="text"
-              disabled={active.schoolYear === ''}
-              placeholder="Search Student..."
+              disabled={
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === ''
+              }
+              placeholder="Search Student Name..."
+              value={searchState.searchInput}
+              onChange={(e) => {
+                setSearchState((prev) => ({
+                  ...prev,
+                  searchInput: e.target.value,
+                }));
+              }}
             />
             <button
               className={classNames('rounded bg-red-500 p-2 text-white', {
                 'cursor-not-allowed opacity-50':
-                  active.schoolYear === '' || active.schoolSemestre === '',
+                  active.schoolYear === '' ||
+                  active.schoolSemestre === '' ||
+                  active.collegeDepartment === '',
               })}
               title="Clear All"
               disabled={active.schoolYear === ''}
@@ -175,6 +246,11 @@ function StudentContainer() {
                   ObjectDataCollegeDepartment: '',
                 });
 
+                setSearchState({
+                  isOpen: false,
+                  searchInput: '',
+                });
+
                 setStudentList([]);
 
                 setPagination({
@@ -185,13 +261,6 @@ function StudentContainer() {
               }}
             >
               <AiOutlineClear size={20} />
-            </button>
-            <button
-              className={classNames('rounded bg-green-500 p-2 text-white')}
-              title="legend"
-              onClick={() => toggleInfo()}
-            >
-              <AiOutlineInfoCircle size={20} />
             </button>
           </div>
         </div>
@@ -230,6 +299,12 @@ function StudentContainer() {
                 </th>
                 <th
                   scope="col"
+                  className="min-w-[250px] max-w-[400px] px-6 py-3"
+                >
+                  Date Creation
+                </th>
+                <th
+                  scope="col"
                   className="sticky right-0 min-w-[130px] bg-gray-100 px-6 py-3"
                 >
                   Action
@@ -237,7 +312,7 @@ function StudentContainer() {
               </tr>
             </thead>
             <tbody>
-              {ltudentList.map((item, index) => (
+              {filterStudentList.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>
@@ -253,14 +328,47 @@ function StudentContainer() {
                   <td>
                     <span
                       className={classNames(
-                        'rounded-full py-2 px-3 text-white',
-                        item.is_active ? 'bg-green-500' : 'bg-red-500'
+                        'rounded-full py-2 px-3 text-secondaryWhite',
+                        item.is_active ? 'bg-green-200' : 'bg-red-200'
                       )}
                     >
                       {item.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td>sdfsd</td>
+                  <td>
+                    <span
+                      className={classNames(
+                        'rounded-full py-2 px-3 text-white',
+                        item.Student_User_Profile.student_status ===
+                          'INCOMPLETE'
+                          ? 'bg-red-500'
+                          : item.Student_User_Profile.student_status ===
+                            'COMPLETE'
+                          ? 'bg-pink-500'
+                          : item.Student_User_Profile.student_status ===
+                            'APPLYING'
+                          ? 'bg-yellow-500'
+                          : item.Student_User_Profile.student_status ===
+                            'APPLIED'
+                          ? 'bg-blue-500'
+                          : item.Student_User_Profile.student_status ===
+                            'FINISHED'
+                          ? 'bg-green-500'
+                          : 'bg-gray-500'
+                      )}
+                    >
+                      {item.Student_User_Profile.student_status
+                        .split('_')
+                        .join(' ')
+                        .slice(0, 1)
+                        .toUpperCase()}
+                      {item.Student_User_Profile.student_status
+                        .slice(1)
+                        .split('_')
+                        .join(' ')}
+                    </span>
+                  </td>
+                  <td> {new Date(item.createdAt).toLocaleString()}</td>
                   <td
                     className={classNames('sticky right-0 bg-white px-2 py-4')}
                   >
@@ -296,16 +404,19 @@ function StudentContainer() {
 
         <div className="flex items-center justify-between">
           <div>
-            {active.schoolYear && (
-              <p
-                className={classNames(
-                  'rounded-full bg-green-500 px-3 py-1 text-sm font-light text-white'
-                )}
-              >
-                {active.schoolYear} / {active.schoolSemestre} /{' '}
-                {active.collegeDepartment}
-              </p>
-            )}
+            <p
+              className={classNames(
+                'rounded-full bg-green-500 px-3 py-1 text-sm font-light text-white'
+              )}
+            >
+              {'/ '}
+              {active.schoolYear && (
+                <>
+                  {active.schoolYear} / {active.schoolSemestre} /{' '}
+                  {active.collegeDepartment}
+                </>
+              )}
+            </p>
           </div>{' '}
           <div className="flex items-center justify-center gap-3">
             <button
@@ -369,7 +480,16 @@ function StudentContainer() {
         setActive={setActive}
       />
 
-      <AdStudent modal={modal.addStudent} toggleAddStudent={toggleAddStudent} />
+      <AdStudent
+        modal={modal.addStudent}
+        toggleAddStudent={toggleAddStudent}
+        object={{
+          objectDataSchoolYear: active.objectDataSchoolYear,
+          objectDataSchoolSemestre: active.objectDataSchoolYear,
+          ObjectDataCollegeDepartment: active.ObjectDataCollegeDepartment,
+        }}
+        getStudentList={getStudentList}
+      />
 
       <AddStudentBulk
         modal={modal.addStudentBulk}
@@ -379,6 +499,7 @@ function StudentContainer() {
           objectDataSchoolSemestre: active.objectDataSchoolYear,
           ObjectDataCollegeDepartment: active.ObjectDataCollegeDepartment,
         }}
+        getStudentList={getStudentList}
       />
 
       <InfoLegend
