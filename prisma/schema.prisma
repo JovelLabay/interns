@@ -189,8 +189,10 @@ enum Level_Of_User {
 }
 
 enum Student_Status {
-  INTERN
-  FINISHED
+  INCOMPLETE
+  COMPLETE
   APPLYING
+  APPLIED
+  FINISHED
   NOT_SET
 }

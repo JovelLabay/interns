@@ -5,6 +5,7 @@ import {
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineEye,
+  AiOutlineInfoCircle,
   AiOutlineMenu,
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
@@ -21,13 +22,18 @@ import {
   AddStudentBulk,
 } from '@component/interface/modal/school/addStudent';
 import SelectCollege from '@component/interface/modal/school/selectCollege';
+import InfoLegend from '@component/interface/modal/school/infoLegend';
+import { Student_Status } from '@prisma/client';
 
 function StudentContainer() {
+  const levelOfUser = Object.entries(Student_Status);
+
   const [modal, setModal] = React.useState({
     selectSchoolYearSemestre: false,
     selectCollege: false,
     addStudentBulk: false,
     addStudent: false,
+    info: false,
   });
 
   const [active, setActive] = useState({
@@ -70,16 +76,6 @@ function StudentContainer() {
       <div className="flex items-center justify-between rounded-md bg-yellowBg p-2">
         <div className="flex items-center justify-center gap-3 text-secondaryWhite">
           <p className={'font-bold'}>Manage Practicums</p>
-          {active.schoolYear && (
-            <p
-              className={classNames(
-                'rounded-full bg-green-500 px-3 py-1 text-xs font-light text-white'
-              )}
-            >
-              {active.schoolYear} / {active.schoolSemestre} /{' '}
-              {active.collegeDepartment}
-            </p>
-          )}
         </div>
         <div className="flex items-center justify-center gap-3">
           <button
@@ -190,6 +186,13 @@ function StudentContainer() {
             >
               <AiOutlineClear size={20} />
             </button>
+            <button
+              className={classNames('rounded bg-green-500 p-2 text-white')}
+              title="legend"
+              onClick={() => toggleInfo()}
+            >
+              <AiOutlineInfoCircle size={20} />
+            </button>
           </div>
         </div>
       </div>
@@ -291,47 +294,61 @@ function StudentContainer() {
           </table>
         </div>
 
-        <div className="flex items-center justify-center gap-3">
-          <button
-            className={classNames(
-              'w-[100px] rounded border-2 border-primaryYellow p-1',
-              {
-                'cursor-not-allowed opacity-50': pagination.skip <= 0,
-              }
+        <div className="flex items-center justify-between">
+          <div>
+            {active.schoolYear && (
+              <p
+                className={classNames(
+                  'rounded-full bg-green-500 px-3 py-1 text-sm font-light text-white'
+                )}
+              >
+                {active.schoolYear} / {active.schoolSemestre} /{' '}
+                {active.collegeDepartment}
+              </p>
             )}
-            disabled={pagination.skip <= 0}
-            onClick={() => {
-              setPagination((prev) => ({
-                ...prev,
-                skip: prev.skip - 20,
-                take: prev.take - 20,
-              }));
-            }}
-          >
-            Prev
-          </button>
-          <p>
-            {pagination.skip === 0 ? 1 : pagination.skip} - {pagination.take}
-          </p>
-          <button
-            className={classNames(
-              'w-[100px] rounded border-2 border-primaryYellow p-1',
-              {
-                'cursor-not-allowed opacity-50':
-                  pagination.payloadLength !== 20,
-              }
-            )}
-            disabled={pagination.payloadLength !== 20}
-            onClick={() => {
-              setPagination((prev) => ({
-                ...prev,
-                skip: prev.skip + 20,
-                take: prev.take + 20,
-              }));
-            }}
-          >
-            Next
-          </button>
+          </div>{' '}
+          <div className="flex items-center justify-center gap-3">
+            <button
+              className={classNames(
+                'w-[100px] rounded border-2 border-primaryYellow p-1',
+                {
+                  'cursor-not-allowed opacity-50': pagination.skip <= 0,
+                }
+              )}
+              disabled={pagination.skip <= 0}
+              onClick={() => {
+                setPagination((prev) => ({
+                  ...prev,
+                  skip: prev.skip - 20,
+                  take: prev.take - 20,
+                }));
+              }}
+            >
+              Prev
+            </button>
+            <p>
+              {pagination.skip === 0 ? 1 : pagination.skip} - {pagination.take}
+            </p>
+            <button
+              className={classNames(
+                'w-[100px] rounded border-2 border-primaryYellow p-1',
+                {
+                  'cursor-not-allowed opacity-50':
+                    pagination.payloadLength !== 20,
+                }
+              )}
+              disabled={pagination.payloadLength !== 20}
+              onClick={() => {
+                setPagination((prev) => ({
+                  ...prev,
+                  skip: prev.skip + 20,
+                  take: prev.take + 20,
+                }));
+              }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </>
 
@@ -363,7 +380,12 @@ function StudentContainer() {
           ObjectDataCollegeDepartment: active.ObjectDataCollegeDepartment,
         }}
       />
-      {/* TOAST */}
+
+      <InfoLegend
+        modal={modal.info}
+        toggleInfo={toggleInfo}
+        levelOfUser={levelOfUser}
+      />
     </div>
   );
 
@@ -393,6 +415,13 @@ function StudentContainer() {
     setModal((prev) => ({
       ...prev,
       addStudent: !prev.addStudent,
+    }));
+  }
+
+  function toggleInfo() {
+    setModal((prev) => ({
+      ...prev,
+      info: !prev.info,
     }));
   }
 

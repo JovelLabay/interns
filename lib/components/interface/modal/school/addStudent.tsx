@@ -250,6 +250,11 @@ function AddStudentBulk({
 
                 <div className="mt-2">
                   <>
+                    <p className="mx-5 mb-2 text-sm italic text-secondaryWhite">
+                      * Importing the same CSV file will overwrite the exisiting
+                      student list with its corresponding school year, school
+                      semestre and college department.
+                    </p>
                     <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
                       <AiOutlineCloudUpload
                         size={50}
@@ -304,9 +309,7 @@ function AddStudentBulk({
 
                             axios
                               .request(config)
-                              .then((response) => {
-                                console.log(response);
-
+                              .then(() => {
                                 setState((prev) => {
                                   return {
                                     ...prev,

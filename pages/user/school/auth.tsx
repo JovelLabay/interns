@@ -162,7 +162,7 @@ function Auth() {
 
             {submit.notFound && (
               <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
-                Account does not exist
+                Account does not exist or Account is Inactive
               </p>
             )}
 
