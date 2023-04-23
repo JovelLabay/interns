@@ -9,12 +9,14 @@ interface Dynamic {
     image: string;
     name: string;
     levelOfUser: string;
+    email: string;
   };
   setUserData: React.Dispatch<
     React.SetStateAction<{
       image: string;
       name: string;
       levelOfUser: string;
+      email: string;
     }>
   >;
 }

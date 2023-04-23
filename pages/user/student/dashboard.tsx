@@ -1,5 +1,5 @@
 // REACT
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { ReactElement, useContext, useEffect, useState } from 'react';
 
 // LOADER COMPONENT
 import SplashLoading from '@component//interface/loading/SplashLoading';
@@ -7,7 +7,7 @@ import SplashLoading from '@component//interface/loading/SplashLoading';
 // COMPONENTS
 
 // STATE MANAGEMENT
-import { DynamicContext } from '@redux//context';
+import { DynamicContext } from 'lib/context/context';
 
 // NEXT
 import { useRouter } from 'next/router';

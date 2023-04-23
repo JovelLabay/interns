@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
-import { Student_User } from '@prisma/client';
 import Papa from 'papaparse';
-import { v4 as uuidv4 } from 'uuid';
 
 class Student {
   private prisma = new PrismaClient();
@@ -13,11 +11,21 @@ class Student {
   constructor(req: NextApiRequest, res: NextApiResponse) {
     // const {} = req.body;
 
-    const { id, bulkImport, objectData, objectData2nd, skip } = req.query;
+    const {
+      id,
+      bulkImport,
+      schoolYear,
+      schoolSemestre,
+      collegeDepartment,
+      skip,
+    } = req.query;
 
-    const parsedDataObject = objectData && JSON.parse(objectData as string);
-    const parsedDataObject2nd =
-      objectData2nd && JSON.parse(objectData2nd as string);
+    const parsedDataObjectSchoolYear =
+      schoolYear && JSON.parse(schoolYear as string);
+    const parsedDataObjectSchoolSemestre =
+      schoolSemestre && JSON.parse(schoolSemestre as string);
+    const parsedDataObjectCollegeDepartment =
+      collegeDepartment && JSON.parse(collegeDepartment as string);
 
     const selection = {
       id: true,
@@ -76,7 +84,7 @@ class Student {
                     last_name: d.lastName,
                     middle_name: d.middleName,
                     email: d.email,
-                    school_semester_id: parsedDataObject.id,
+                    school_semester_id: parsedDataObjectSchoolSemestre.id,
                   },
                   update: {
                     first_name: d.firsName,
@@ -92,11 +100,13 @@ class Student {
                     },
                     create: {
                       student_user_id: upsertImported.id,
-                      college_Department_Id: parsedDataObject2nd.id,
+                      college_Department_Id:
+                        parsedDataObjectCollegeDepartment.id,
                     },
                     update: {
                       student_user_id: upsertImported.id,
-                      college_Department_Id: parsedDataObject2nd.id,
+                      college_Department_Id:
+                        parsedDataObjectCollegeDepartment.id,
                     },
                   });
 
@@ -136,11 +146,11 @@ class Student {
               equals: null,
             },
             school_semester_id: {
-              equals: 1,
+              equals: parsedDataObjectSchoolSemestre.id,
             },
             Student_User_Profile: {
               college_Department_Id: {
-                equals: 1,
+                equals: parsedDataObjectCollegeDepartment.id,
               },
             },
             ...(id && {

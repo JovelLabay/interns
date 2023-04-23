@@ -1,11 +1,11 @@
 // REACT
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 // NEXT
 import { useRouter } from 'next/router';
 
 // COMPONENTS
-import { StaticContext } from '@redux//context';
+import { StaticContext } from 'lib/context/context';
 import StaticHeader from 'lib/components/blocks/staticPage/StaticHeader';
 import StaticFooter from 'lib/components/blocks/staticPage/StaticFooter';
 

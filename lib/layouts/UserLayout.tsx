@@ -2,17 +2,16 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 
 // REDUX CONTAINER
-import { DynamicContext } from '@redux//context';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { DynamicContext } from 'lib/context/context';
 
 function UserLayout({ children }: { children: ReactNode }) {
   // DARK MODE STATE
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [userData, setUserData] = useState({
     image: '',
     name: '',
     levelOfUser: '',
+    email: '',
   });
 
   useEffect(() => {

@@ -2,18 +2,14 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   AiOutlineClear,
-  AiOutlineConsoleSql,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineEye,
   AiOutlineMenu,
-  AiOutlinePlusCircle,
-  AiOutlineSearch,
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
-import Papa from 'papaparse';
 import classNames from 'classnames';
 import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
 import {
@@ -27,7 +23,7 @@ import {
 import SelectCollege from '@component/interface/modal/school/selectCollege';
 
 function StudentContainer() {
-  const [modal, setModal] = useState({
+  const [modal, setModal] = React.useState({
     selectSchoolYearSemestre: false,
     selectCollege: false,
     addStudentBulk: false,
@@ -38,8 +34,9 @@ function StudentContainer() {
     schoolYear: '',
     schoolSemestre: '',
     collegeDepartment: '',
-    objectData: '',
-    objectData2nd: '',
+    objectDataSchoolYear: '',
+    objectDataSchoolSemestre: '',
+    ObjectDataCollegeDepartment: '',
   });
 
   const [schoolYearSemestreList, setSchoolYearSemestreList] = useState<
@@ -177,8 +174,9 @@ function StudentContainer() {
                   schoolYear: '',
                   schoolSemestre: '',
                   collegeDepartment: '',
-                  objectData: '',
-                  objectData2nd: '',
+                  objectDataSchoolYear: '',
+                  objectDataSchoolSemestre: '',
+                  ObjectDataCollegeDepartment: '',
                 });
 
                 setStudentList([]);
@@ -195,7 +193,6 @@ function StudentContainer() {
           </div>
         </div>
       </div>
-
       <>
         <div className="h-[70vh] w-full overflow-auto">
           <table className="w-full text-center text-sm">
@@ -361,11 +358,11 @@ function StudentContainer() {
         modal={modal.addStudentBulk}
         toggleAddStudentBulk={toggleAddStudentBulk}
         object={{
-          dataObject: active.objectData,
-          dataObject2nd: active.objectData2nd,
+          objectDataSchoolYear: active.objectDataSchoolYear,
+          objectDataSchoolSemestre: active.objectDataSchoolYear,
+          ObjectDataCollegeDepartment: active.ObjectDataCollegeDepartment,
         }}
       />
-
       {/* TOAST */}
     </div>
   );
@@ -414,7 +411,7 @@ function StudentContainer() {
   function getStudentList() {
     const config = {
       method: 'get',
-      url: `/api/data/student?skip=${pagination.skip}&objectData=${active.objectData}&objectData2nd=${active.objectData2nd}`,
+      url: `/api/data/student?skip=${pagination.skip}&schoolYear=${active.objectDataSchoolYear}&schoolSemestre=${active.objectDataSchoolSemestre}&collegeDepartment=${active.ObjectDataCollegeDepartment}`,
     };
 
     axios

@@ -4,7 +4,7 @@ import {
 } from '@component/interface/toast/toast';
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { csvUploader, imageUploader } from '@utils/uploaderFunction';
+import { csvUploader } from '@utils/uploaderFunction';
 import { CreateStudent } from '@validator/forms';
 import axios from 'axios';
 import classNames from 'classnames';
@@ -19,7 +19,7 @@ function AdStudent({
   modal: boolean;
   toggleAddStudent: () => void;
 }) {
-  const [state, setState] = useState({
+  const [state, setState] = React.useState({
     isCreating: false,
   });
   const {
@@ -195,8 +195,9 @@ function AddStudentBulk({
   modal: boolean;
   toggleAddStudentBulk: () => void;
   object: {
-    dataObject: string;
-    dataObject2nd: string;
+    objectDataSchoolYear: string;
+    objectDataSchoolSemestre: string;
+    ObjectDataCollegeDepartment: string;
   };
 }) {
   const [state, setState] = useState({
@@ -294,7 +295,7 @@ function AddStudentBulk({
                             const config = {
                               method: 'post',
                               maxBodyLength: Infinity,
-                              url: `/api/data/student?bulkImport=true&objectData=${object.dataObject}&objectData2nd=${object.dataObject2nd}`,
+                              url: `/api/data/student?bulkImport=true&schoolYear=${object.objectDataSchoolYear}&schoolSemestre=${object.objectDataSchoolSemestre}&collegeDepartment=${object.ObjectDataCollegeDepartment}`,
                               headers: {
                                 'Content-Type': 'text/csv',
                               },

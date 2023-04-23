@@ -1,5 +1,5 @@
 // REACT
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 // LOADER COMPONENT
 import SplashLoading from '@component//interface/loading/SplashLoading';
@@ -9,7 +9,7 @@ import SchoolDashboardContainer from '@component/blocks/navigation/school/school
 import SchoolHeader from 'lib/components/blocks/navigation/school/SchoolHeader';
 
 // STATE MANAGEMENT
-import { DynamicContext } from '@redux//context';
+import { DynamicContext } from 'lib/context/context';
 
 // NEXT
 import { useRouter } from 'next/router';
@@ -18,7 +18,7 @@ import { errorNotify } from '@component/interface/toast/toast';
 
 function SchoolDashboard() {
   const router = useRouter();
-  const context = useContext(DynamicContext);
+  const context = React.useContext(DynamicContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +47,7 @@ function SchoolDashboard() {
               image: res.data.otherData.image,
               name: res.data.otherData.name,
               levelOfUser: res.data.otherData.levelOfUser,
+              email: res.data.otherData.email,
             });
 
             setIsLoading(false);

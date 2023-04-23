@@ -20,7 +20,7 @@ import { errorNotify, warningNotify } from '@component/interface/toast/toast';
 
 function Auth() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [submit, setSubmit] = useState({
     isSubmitting: false,
     incorrect: false,
@@ -217,7 +217,7 @@ function Auth() {
           setValue('password', '');
           setSubmit({ isSubmitting: false, incorrect: true, notFound: false });
         } else {
-          warningNotify(`${watch('email')} Does Not Exist`);
+          warningNotify(`${watch('email')} Does Not Exist or is Inactive`);
           setValue('password', '');
           setSubmit({ isSubmitting: false, notFound: true, incorrect: false });
         }

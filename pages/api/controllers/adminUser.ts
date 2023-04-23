@@ -116,9 +116,10 @@ class Users {
     this.postUser = async () => {
       // 1. CHECK FOR UPON AUTHENTICATION
       if (authPassword && authEmail) {
-        const responsePayload = await this.prisma.admin_User.findUnique({
+        const responsePayload = await this.prisma.admin_User.findFirst({
           where: {
             email_address: authEmail as string,
+            isActive: true,
           },
         });
 
@@ -197,6 +198,7 @@ class Users {
               name: `${responsePayload?.first_name} ${responsePayload?.middle_name} ${responsePayload?.last_name}`,
               levelOfUser: responsePayload?.level_of_user,
               image: responsePayload?.admin_user_image || '',
+              email: responsePayload?.email_address,
             },
           });
 

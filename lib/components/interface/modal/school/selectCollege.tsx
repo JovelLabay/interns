@@ -22,8 +22,9 @@ function SelectCollege({
       schoolYear: string;
       schoolSemestre: string;
       collegeDepartment: string;
-      objectData: string;
-      objectData2nd: string;
+      objectDataSchoolYear: string;
+      objectDataSchoolSemestre: string;
+      ObjectDataCollegeDepartment: string;
     }>
   >;
 }) {
@@ -113,7 +114,8 @@ function SelectCollege({
                               ...prev,
                               collegeDepartment:
                                 college.college_department_name,
-                              objectData2nd: JSON.stringify(college),
+                              ObjectDataCollegeDepartment:
+                                JSON.stringify(college),
                             }));
 
                             toggleSelectCollege();

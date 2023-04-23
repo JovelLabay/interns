@@ -23,7 +23,7 @@
       "@validator/*": ["lib/validator/*"],
       "@supabase/*": ["lib/supabase/*"],
       "@component/*": ["lib/components/*"],
-      "@redux/*": ["lib/redux/*"]
+      "@redux/*": ["lib/context/*"]
     }
   },
 

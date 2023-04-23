@@ -1,5 +1,12 @@
 // REACT
-import React, { Fragment, useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useContext,
+} from 'react';
 
 // ICONS
 import {
@@ -56,6 +63,7 @@ import Image from 'next/image';
 import internsLogo from '@/assets/logo/interns_logo.png';
 import { splitUnderScore } from '@utils/commonFunction';
 import { MdPassword } from 'react-icons/md';
+import { DynamicContext } from 'lib/context/context';
 
 const levelOfUser = Object.entries(Level_Of_User);
 
@@ -66,6 +74,8 @@ function ManageUsers({
   addRemoveModal: boolean;
   addModalToggle: () => void;
 }) {
+  const context = useContext(DynamicContext);
+
   const [state, setState] = useState({
     isCreating: false,
     uploadingImage: false,
@@ -132,7 +142,7 @@ function ManageUsers({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-[50vw] rounded-md bg-white p-3">
-                <div className="flex flex-row items-center justify-start">
+                <div className="flex flex-row items-center justify-between">
                   <button
                     onClick={() => {
                       addModalToggle();
@@ -142,6 +152,10 @@ function ManageUsers({
                   >
                     Close
                   </button>
+
+                  <p className="rounded-full bg-green-500 px-3 py-2 text-xs text-white">
+                    {context?.userData.email}
+                  </p>
                 </div>
                 <Tab.Group>
                   <Tab.List className="my-2 flex justify-between rounded bg-mainBgWhite py-2">
@@ -569,6 +583,7 @@ function ListsUserComponentTab({
   reset: UseFormReset<FormSchoolUserAdmin>;
 }) {
   const csvRef: any = useRef(null);
+  const context = useContext(DynamicContext);
 
   const [listUserAdmin, setListUserAdmin] = useState<ReturnAdminUserPayload[]>(
     []
@@ -599,6 +614,9 @@ function ListsUserComponentTab({
 
   const filterAdminUserList = useMemo(() => {
     return listUserAdmin
+      .filter((user) => {
+        return user.email_address !== context?.userData.email;
+      })
       .filter((user) => {
         return user;
       })
@@ -896,8 +914,12 @@ function ListsUserComponentTab({
                         <AiOutlineEdit size={25} className="text-mainBgWhite" />
                       </button>
                       <button
-                        className="cursor-pointer rounded bg-blue-400 p-2"
+                        className={classNames(
+                          'rounded bg-blue-400 p-2',
+                          !isActive && 'cursor-not-allowed opacity-50'
+                        )}
                         title="Send Admin User Password"
+                        disabled={!isActive}
                         onClick={() => sendResetEmail(last_name, email_address)}
                       >
                         <MdPassword size={25} className="text-mainBgWhite" />

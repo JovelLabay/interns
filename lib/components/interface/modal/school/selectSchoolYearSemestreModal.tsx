@@ -1,8 +1,6 @@
-import { Dialog, Disclosure, Tab, Transition } from '@headlessui/react';
-import { data } from 'Data';
+import { Dialog, Disclosure, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
-import { AiOutlinePlusCircle, AiOutlineUnorderedList } from 'react-icons/ai';
 import { FiChevronDown } from 'react-icons/fi';
 
 function SelectSchoolYearSemestreModal({
@@ -21,16 +19,18 @@ function SelectSchoolYearSemestreModal({
     schoolYear: string;
     schoolSemestre: string;
     collegeDepartment: string;
-    objectData: string;
-    objectData2nd: string;
+    objectDataSchoolYear: string;
+    objectDataSchoolSemestre: string;
+    ObjectDataCollegeDepartment: string;
   };
   setActive: React.Dispatch<
     React.SetStateAction<{
       schoolYear: string;
       schoolSemestre: string;
       collegeDepartment: string;
-      objectData: string;
-      objectData2nd: string;
+      objectDataSchoolYear: string;
+      objectDataSchoolSemestre: string;
+      ObjectDataCollegeDepartment: string;
     }>
   >;
 }) {
@@ -145,8 +145,10 @@ function SelectSchoolYearSemestreModal({
                                               schoolYearData.school_year_name,
                                             schoolSemestre:
                                               schoolSemestre.school_semester_name,
-                                            objectData:
+                                            objectDataSchoolYear:
                                               JSON.stringify(schoolYearData),
+                                            objectDataSchoolSemestre:
+                                              JSON.stringify(schoolSemestre),
                                           }));
 
                                           toggleSelectCollege();

@@ -1,5 +1,5 @@
 // REACT
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 
 // NEXT
 import Image from 'next/image';
@@ -20,7 +20,7 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import ManageUsers from '@component/interface/modal/ManageUsers';
 import ManageCollege from '@component/interface/modal/ManageCollege';
 
-import { DynamicContext } from '@redux//context';
+import { DynamicContext } from 'lib/context/context';
 
 function SchoolHeader() {
   const router = useRouter();
