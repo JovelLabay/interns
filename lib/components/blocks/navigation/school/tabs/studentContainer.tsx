@@ -21,7 +21,7 @@ import {
   AddStudentBulk,
 } from '@component/interface/modal/school/addStudent';
 import SelectCollege from '@component/interface/modal/school/selectCollege';
-import InfoLegend from '@component/interface/modal/school/infoLegend';
+import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
 import { Student_Status } from '@prisma/client';
 import { BsToggleOff } from 'react-icons/bs';
 
@@ -228,14 +228,8 @@ function StudentContainer() {
               }}
             />
             <button
-              className={classNames('rounded bg-red-500 p-2 text-white', {
-                'cursor-not-allowed opacity-50':
-                  active.schoolYear === '' ||
-                  active.schoolSemestre === '' ||
-                  active.collegeDepartment === '',
-              })}
+              className={classNames('rounded bg-red-500 p-2 text-white', {})}
               title="Clear All"
-              disabled={active.schoolYear === ''}
               onClick={() => {
                 setActive({
                   schoolYear: '',
@@ -502,7 +496,7 @@ function StudentContainer() {
         getStudentList={getStudentList}
       />
 
-      <InfoLegend
+      <InfoLegendStudent
         modal={modal.info}
         toggleInfo={toggleInfo}
         levelOfUser={levelOfUser}

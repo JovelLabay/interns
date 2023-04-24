@@ -84,28 +84,21 @@ class SchoolSemestreController {
 
     this.putSchoolSemestre = async () => {
       try {
-        const checkActiveSchoolSemestre =
+        const checkSchoolYearIfActive =
           await this.prisma.school_Semester.findFirst({
             where: {
-              is_active: true,
-              deletedAt: {
-                equals: null,
-              },
-              school_year_id: {
-                equals: Number(schoolYearId),
-              },
-              id: {
-                not: Number(id),
-              },
+              id: Number(id),
+            },
+            include: {
+              school_year: true,
             },
           });
 
-        if (checkActiveSchoolSemestre) {
+        if (!checkSchoolYearIfActive?.school_year.is_active) {
           res.status(200).json({
             message:
-              'You Cannot Activate this School Semestre. An Active School Semestre is still Present',
+              'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_SCHOOL_YEAR_IS_NOT_ACTIVE',
           });
-          return;
         } else {
           const checkPassword = await this.prisma.school_Semester.findUnique({
             where: {
@@ -141,9 +134,11 @@ class SchoolSemestreController {
               },
             });
 
-            res.status(200).json({ message: 'Successful', responsePayload });
+            res
+              .status(200)
+              .json({ message: 'CORRECT_PASSCODE', responsePayload });
           } else {
-            res.status(200).json({ message: 'Password is incorrect' });
+            res.status(200).json({ message: 'INCORRECT_PASSCODE' });
           }
         }
       } catch (error) {

@@ -201,14 +201,6 @@ class Users {
               email: responsePayload?.email_address,
             },
           });
-
-          await this.prisma.activity_Logs.create({
-            data: {
-              activity_message: `Admin user: ${responsePayload.first_name} ${responsePayload.middle_name} ${responsePayload.last_name} is relogged in`,
-              activity_action: 'RELOGIN',
-              admin_user_id: responsePayload.id,
-            },
-          });
         }
 
         // 3. CREATE NEW USER

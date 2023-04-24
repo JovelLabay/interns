@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
 
-function InfoLegend({
+function InfoLegendStudent({
   modal,
   toggleInfo,
   levelOfUser,
@@ -116,4 +116,92 @@ function InfoLegend({
   );
 }
 
-export default InfoLegend;
+function InfoLegendYearSemestre({
+  modal,
+  toggleInfo,
+  levelOfUser,
+}: {
+  modal: boolean;
+  toggleInfo: () => void;
+  levelOfUser: [
+    string,
+    'INCOMPLETE' | 'COMPLETE' | 'APPLYING' | 'APPLIED' | 'FINISHED' | 'NOT_SET'
+  ][];
+}) {
+  return (
+    <Transition appear show={modal} as={React.Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10 hidden xl:block"
+        onClose={() => {
+          toggleInfo();
+        }}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
+                <div className="flex flex-row items-center justify-between">
+                  <button
+                    onClick={() => {
+                      toggleInfo();
+                    }}
+                    className="w-[100px] rounded border-2 border-primaryYellow py-1"
+                  >
+                    Close
+                  </button>
+                  <p className="font-medium">School Year & Semestre Statuses</p>
+                </div>
+
+                <div>
+                  <p className="my-2 text-left text-secondaryWhite">
+                    <span
+                      className={classNames(
+                        'mr-2 inline-block h-3 w-3 rounded-full bg-red-500'
+                      )}
+                    />
+                    <span className="font-bold">{'Inactive'}</span>
+                    {' - '}
+                    {'Certain actions are restricted.'}
+                  </p>
+                  <p className="my-2 text-left text-secondaryWhite">
+                    <span
+                      className={classNames(
+                        'mr-2 inline-block h-3 w-3 rounded-full bg-green-500'
+                      )}
+                    />
+                    <span className="font-bold">{'Active'}</span>
+                    {' - '}
+                    {'Manipulation of the School Year & Semestre.'}
+                  </p>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+}
+
+export { InfoLegendStudent, InfoLegendYearSemestre };

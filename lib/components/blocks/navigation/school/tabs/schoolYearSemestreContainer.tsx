@@ -12,6 +12,8 @@ import { data } from 'Data';
 import axios from 'axios';
 import classNames from 'classnames';
 import React, { useEffect, useState, useMemo } from 'react';
+import { Student_Status } from '@prisma/client';
+
 import {
   FieldErrors,
   UseFormHandleSubmit,
@@ -25,15 +27,20 @@ import {
   AiOutlineClear,
   AiOutlineCloseCircle,
   AiOutlineDelete,
+  AiOutlineInfoCircle,
   AiOutlinePlusCircle,
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { InfoLegendYearSemestre } from '@component/interface/modal/school/infoLegend';
 
 function SchoolYearSemestreContainer() {
+  const levelOfUser = Object.entries(Student_Status);
+
   const [modal, setModal] = useState({
     addSchoolyearModal: false,
     addSchoolSemestre: false,
+    info: false,
   });
   const [selectionState, setSelectionState] = useState({
     year: -1,
@@ -89,6 +96,13 @@ function SchoolYearSemestreContainer() {
           Manage School Year | Semestre
         </p>
         <div className="flex items-center justify-center gap-3">
+          <button
+            className={classNames('rounded bg-green-500 p-2 text-white')}
+            title="Legend"
+            onClick={() => toggleInfo()}
+          >
+            <AiOutlineInfoCircle size={20} />
+          </button>
           <button
             className="rounded bg-primaryYellow p-2"
             title="Refresh"
@@ -198,34 +212,31 @@ function SchoolYearSemestreContainer() {
                         as="button"
                         key={option.id}
                         className={classNames(
-                          'ui-active:bg-blue-500 ui-active:text-white ui-not-active:bg-white ui-not-active:text-black',
+                          '',
                           option.id === 1 &&
-                            listSchoolSemestre.length >= 3 &&
+                            listSchoolSemestre.length === 3 &&
                             'cursor-not-allowed opacity-50',
                           option.id === 1 &&
                             !item.is_active &&
                             'cursor-not-allowed opacity-50',
                           option.id === 2 &&
-                            listSchoolSemestre.length > 0 &&
-                            'cursor-not-allowed opacity-50',
-                          option.id === 2 &&
                             item.is_active &&
                             'cursor-not-allowed opacity-50'
                         )}
+                        disabled={
+                          option.id === 1 && listSchoolSemestre.length === 3
+                            ? true
+                            : option.id === 1 && !item.is_active
+                            ? true
+                            : option.id === 2 && item.is_active
+                            ? true
+                            : false
+                        }
                         onClick={() => {
                           option.id === 1
                             ? toggleSchoolSemestreModal(item.id)
                             : deleteSchoolYear(item.id);
                         }}
-                        disabled={
-                          !item.is_active && option.id === 1
-                            ? true
-                            : option.id === 1 && listSchoolSemestre.length >= 3
-                            ? true
-                            : option.id === 2 && listSchoolSemestre.length > 0
-                            ? true
-                            : option.id === 2 && item.is_active
-                        }
                       >
                         {option.name}
                       </Menu.Item>
@@ -284,7 +295,7 @@ function SchoolYearSemestreContainer() {
                     item.is_active && 'cursor-not-allowed opacity-50'
                   )}
                   title="Delete Semestre"
-                  disabled={item.is_active ? true : false}
+                  disabled={item.is_active}
                   onClick={() =>
                     deleteSchoolSemestre(item.school_year_id, item.id)
                   }
@@ -334,6 +345,12 @@ function SchoolYearSemestreContainer() {
         year={selectionState.year}
         getSchoolYear={getSchoolYear}
       />
+
+      <InfoLegendYearSemestre
+        modal={modal.info}
+        toggleInfo={toggleInfo}
+        levelOfUser={levelOfUser}
+      />
     </div>
   );
 
@@ -357,6 +374,13 @@ function SchoolYearSemestreContainer() {
         year: id,
       }));
     }
+  }
+
+  function toggleInfo() {
+    setModal((prev) => ({
+      ...prev,
+      info: !prev.info,
+    }));
   }
 
   function informationForSchoolSemestre(schoolSemestreId?: number) {
@@ -673,44 +697,27 @@ function SchoolYear({
         },
       })
       .then((res) => {
-        // CHECK PASSWORD
-        if (res.data.message === 'INCORRECT_PASSCODE') {
-          warningNotify('Incorrect Passcode');
-          setIsUpdating(false);
-
-          // CHECK IF SCHOOL YEAR IS ACTIVE
-        } else if (
-          res.data.message ===
-          'CANNOT_ACTIVATE_SCHOOL_YEAR_ANOTHER_SCHOOL_YEAR_IS_ACTIVE'
-        ) {
-          warningNotify(
-            'Cannot Activate School Year. Another School Year is Active'
-          );
-          setValue('school_year_code', '');
-          setIsUpdating(false);
-
-          // CHECK IF HAS ACTIVE SEMESTRE
-        } else if (
-          res.data.message ===
-          'CANNOT_INACTIVATE_SCHOOL_YEAR_SCHOOL_SEMESTER_IS_NOT_EMPTY'
-        ) {
-          warningNotify(
-            'Cannot Inactivate School Year. School Semestre is not Empty'
-          );
-          setValue('school_year_code', '');
-          setIsUpdating(false);
-
-          // SUCCESS
-        } else {
-          successfulNotify('Successfully updated school year');
-          setValue('school_year_code', '');
-          setIsUpdating(false);
+        switch (res.data.message) {
+          case 'CORRECT_PASSCODE':
+            successfulNotify('School Year Updated Successfully');
+            break;
+          case 'INCORRECT_PASSCODE':
+            warningNotify('Incorrect School Year Passcode');
+            break;
+          case 'THERE_ARE_ACTIVE_SCHOOL_SEMESTRE':
+            warningNotify(
+              'Cannot Inactive School Year. There are Semestre that are Active'
+            );
+            break;
+          default:
         }
 
+        setValue('school_year_code', '');
+        setIsUpdating(false);
         getSchoolYear();
       })
       .catch((err) => {
-        errorNotify("Something's wrong. Please try again later.");
+        errorNotify('Something went wrong');
         console.error(err);
       });
   }
@@ -903,24 +910,23 @@ function SchoolSemestre({
         }
       )
       .then((res) => {
-        if (res.data.message === 'Password is incorrect') {
-          warningNotify('School Semestre Code is Incorrect');
-          setIsUpdating(false);
-        } else if (
-          res.data.message ===
-          'You Cannot Activate this School Semestre. An Active School Semestre is still Present'
-        ) {
-          warningNotify(
-            'Not Allowed to Activate School Semestre. An Active School Semestre is still Present'
-          );
-          setIsUpdating(false);
-        } else {
-          successfulNotify('Successfully updated school semestre');
-          setValue('school_semester_code', '');
-
-          getSchoolYear(watch().school_year_id);
-          setIsUpdating(false);
+        switch (res.data.message) {
+          case 'CORRECT_PASSCODE':
+            successfulNotify('School Semestre Updated Successfully');
+            break;
+          case 'INCORRECT_PASSCODE':
+            warningNotify('Incorrect School Semestre Passcode');
+            break;
+          case 'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_SCHOOL_YEAR_IS_NOT_ACTIVE':
+            warningNotify(
+              'Cannot Activate School Semestre. School School Year is not Active'
+            );
+            break;
+          default:
         }
+
+        getSchoolYear(watch().school_year_id);
+        setIsUpdating(false);
       })
       .catch((err) => {
         errorNotify("Something's wrong. Please try again later.");
