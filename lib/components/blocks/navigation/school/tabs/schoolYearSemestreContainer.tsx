@@ -173,9 +173,9 @@ function SchoolYearSemestreContainer() {
               <section
                 key={item.id}
                 className={classNames(
-                  'relative flex cursor-pointer items-center justify-between rounded-md py-1 px-2 duration-300 hover:bg-mainBgWhite',
+                  'relative flex cursor-pointer items-center justify-between rounded-md bg-mainBgWhite py-1 px-2 duration-300',
                   {
-                    'bg-mainBgWhite': selectionState.schoolYear === item.id,
+                    'bg-customBorder': selectionState.schoolYear === item.id,
                   }
                 )}
               >
@@ -259,9 +259,10 @@ function SchoolYearSemestreContainer() {
               <section
                 key={item.id}
                 className={classNames(
-                  'relative flex cursor-pointer items-center justify-between rounded-md py-1 px-2 duration-300 hover:bg-mainBgWhite',
+                  'relative flex cursor-pointer items-center justify-between rounded-md bg-mainBgWhite py-1 px-2 duration-300',
                   {
-                    'bg-mainBgWhite': selectionState.schoolSemestre === item.id,
+                    'bg-customBorder':
+                      selectionState.schoolSemestre === item.id,
                   }
                 )}
               >
@@ -709,6 +710,11 @@ function SchoolYear({
               'Cannot Inactive School Year. There are Semestre that are Active'
             );
             break;
+          case 'THERE_ARE_ACTIVE_SCHOOL_YEAR':
+            warningNotify(
+              'Cannot Inactive School Year. There are School Year that are Active'
+            );
+            break;
           default:
         }
 
@@ -920,6 +926,11 @@ function SchoolSemestre({
           case 'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_SCHOOL_YEAR_IS_NOT_ACTIVE':
             warningNotify(
               'Cannot Activate School Semestre. School School Year is not Active'
+            );
+            break;
+          case 'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_OTHER_SCHOOL_SEMESTRE_IS_ACTIVE':
+            warningNotify(
+              'Cannot Activate School Semestre. Other School Semestre is Active'
             );
             break;
           default:

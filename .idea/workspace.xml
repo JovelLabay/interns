@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/adminUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/adminUser.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/controllers/schoolSemestre.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/schoolSemestre.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/controllers/schoolYear.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/schoolYear.ts" afterDir="false" />
     </list>
@@ -110,7 +108,7 @@
       <workItem from="1681889421588" duration="1698000" />
       <workItem from="1681967003564" duration="3930000" />
       <workItem from="1682123487810" duration="5086000" />
-      <workItem from="1682297738629" duration="10903000" />
+      <workItem from="1682297738629" duration="16685000" />
     </task>
     <servers />
   </component>

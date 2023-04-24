@@ -94,51 +94,68 @@ class SchoolSemestreController {
             },
           });
 
+        const checkOtherSchoolSemestreIfActive =
+          await this.prisma.school_Semester.findFirst({
+            where: {
+              id: {
+                not: Number(id),
+              },
+              deletedAt: null,
+            },
+          });
+
         if (!checkSchoolYearIfActive?.school_year.is_active) {
           res.status(200).json({
             message:
               'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_SCHOOL_YEAR_IS_NOT_ACTIVE',
           });
         } else {
-          const checkPassword = await this.prisma.school_Semester.findUnique({
-            where: {
-              id: Number(id),
-            },
-          });
-
-          const checkPasswordFirst = await comparePassword(
-            school_semester_code,
-            checkPassword?.school_semester_code as string
-          );
-
-          if (checkPasswordFirst) {
-            const responsePayload = await this.prisma.school_Semester.update({
+          if (checkOtherSchoolSemestreIfActive?.is_active) {
+            res.status(200).json({
+              message:
+                'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_OTHER_SCHOOL_SEMESTRE_IS_ACTIVE',
+            });
+          } else {
+            const checkPassword = await this.prisma.school_Semester.findUnique({
               where: {
                 id: Number(id),
               },
-              data: {
-                is_active,
-                school_semester_description,
-                updatedAt: new Date(),
-              },
-              select: {
-                ...selection,
-              },
             });
 
-            await this.prisma.activity_Logs.create({
-              data: {
-                activity_message: `School semestre updated: ${responsePayload.school_semester_name}`,
-                activity_action: 'UPDATED',
-                school_semester_id: responsePayload.id,
-              },
-            });
+            const checkPasswordFirst = await comparePassword(
+              school_semester_code,
+              checkPassword?.school_semester_code as string
+            );
 
-            res
-              .status(200)
-              .json({ message: 'CORRECT_PASSCODE', responsePayload });
-          } else {
-            res.status(200).json({ message: 'INCORRECT_PASSCODE' });
+            if (checkPasswordFirst) {
+              const responsePayload = await this.prisma.school_Semester.update({
+                where: {
+                  id: Number(id),
+                },
+                data: {
+                  is_active,
+                  school_semester_description,
+                  updatedAt: new Date(),
+                },
+                select: {
+                  ...selection,
+                },
+              });
+
+              await this.prisma.activity_Logs.create({
+                data: {
+                  activity_message: `School semestre updated: ${responsePayload.school_semester_name}`,
+                  activity_action: 'UPDATED',
+                  school_semester_id: responsePayload.id,
+                },
+              });
+
+              res
+                .status(200)
+                .json({ message: 'CORRECT_PASSCODE', responsePayload });
+            } else {
+              res.status(200).json({ message: 'INCORRECT_PASSCODE' });
+            }
           }
         }
       } catch (error) {

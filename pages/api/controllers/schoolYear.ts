@@ -124,49 +124,62 @@ class SchoolYearController {
             },
           });
 
+        const checkOtherSchoolYear = await this.prisma.school_Year.findFirst({
+          where: {
+            id: {
+              not: Number(id),
+            },
+            deletedAt: null,
+          },
+        });
+
         if (getAllSemesterUnderThisSchoolYear?.School_Semester.length !== 0) {
           res.status(200).json({ message: 'THERE_ARE_ACTIVE_SCHOOL_SEMESTRE' });
         } else {
-          const checkPassword = await this.prisma.school_Year.findUnique({
-            where: {
-              id: Number(id),
-            },
-          });
-
-          const checkPasswordFirst = await comparePassword(
-            school_year_code,
-            checkPassword?.school_year_code as string
-          );
-
-          if (checkPasswordFirst) {
-            const responsePayload = await this.prisma.school_Year.update({
+          if (checkOtherSchoolYear?.is_active) {
+            res.status(200).json({ message: 'THERE_ARE_ACTIVE_SCHOOL_YEAR' });
+          } else {
+            const checkPassword = await this.prisma.school_Year.findUnique({
               where: {
                 id: Number(id),
               },
-              data: {
-                is_active,
-                school_year_description,
-                updatedAt: new Date(),
-              },
-              select: {
-                ...selection,
-                School_Semester: true,
-              },
             });
 
-            await this.prisma.activity_Logs.create({
-              data: {
-                activity_message: `School year updated: ${responsePayload.school_year_name}`,
-                activity_action: 'UPDATE',
-                school_year_id: responsePayload.id,
-              },
-            });
+            const checkPasswordFirst = await comparePassword(
+              school_year_code,
+              checkPassword?.school_year_code as string
+            );
 
-            res
-              .status(200)
-              .json({ message: 'CORRECT_PASSCODE', responsePayload });
-          } else {
-            res.status(200).json({ message: 'INCORRECT_PASSCODE' });
+            if (checkPasswordFirst) {
+              const responsePayload = await this.prisma.school_Year.update({
+                where: {
+                  id: Number(id),
+                },
+                data: {
+                  is_active,
+                  school_year_description,
+                  updatedAt: new Date(),
+                },
+                select: {
+                  ...selection,
+                  School_Semester: true,
+                },
+              });
+
+              await this.prisma.activity_Logs.create({
+                data: {
+                  activity_message: `School year updated: ${responsePayload.school_year_name}`,
+                  activity_action: 'UPDATE',
+                  school_year_id: responsePayload.id,
+                },
+              });
+
+              res
+                .status(200)
+                .json({ message: 'CORRECT_PASSCODE', responsePayload });
+            } else {
+              res.status(200).json({ message: 'INCORRECT_PASSCODE' });
+            }
           }
         }
       } catch (error) {
