@@ -17,9 +17,9 @@ interface FormSchoolUserAdmin {
 
 interface ExportedFormSchoolUserAdmin extends FormSchoolUserAdmin {
   id: number;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
 
 interface ReturnAdminUserPayload {
@@ -32,7 +32,7 @@ interface ReturnAdminUserPayload {
   password: string;
   isActive: boolean;
   level_of_user: string;
-  createdAt: any;
+  createdAt: Date;
 }
 
 // COLLEGE PROGRAM
@@ -47,9 +47,9 @@ interface FormCollegeProgram {
 
 interface ExportedFormCollegeProgram extends FormCollegeProgram {
   id: number;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
 
 interface ReturnCollegeProgram {
@@ -60,7 +60,7 @@ interface ReturnCollegeProgram {
   college_coordinator: string;
   complete_program_name: string;
   abbreviated_program_name: string;
-  createdAt: any;
+  createdAt: Date;
 }
 
 // SCHOOL YEAR
@@ -76,9 +76,9 @@ interface FormSchoolYear {
 interface ReturnFormSchoolYear extends FormSchoolYear {
   id: number;
   is_active: boolean;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
 
 // SCHOOL SEMESTER
@@ -92,9 +92,9 @@ interface FormSchoolSemestre {
 
 interface ReturnFormSchoolSemestre extends FormSchoolSemestre {
   id: number;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 }
 
 interface SelectSchoolYearSemestre extends ReturnFormSchoolYear {

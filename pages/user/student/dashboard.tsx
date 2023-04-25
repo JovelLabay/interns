@@ -1,5 +1,5 @@
 // REACT
-import { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 // LOADER COMPONENT
 import SplashLoading from '@component//interface/loading/SplashLoading';
@@ -15,7 +15,7 @@ import StudentHeader from '@component/blocks/navigation/student/SchoolHeader';
 
 function StudentDashboard() {
   const router = useRouter();
-  const context = useContext(DynamicContext);
+  const context = React.useContext(DynamicContext);
 
   const [isLoading, setIsLoading] = useState(false);
 

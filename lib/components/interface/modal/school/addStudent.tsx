@@ -10,8 +10,7 @@ import axios from 'axios';
 import classNames from 'classnames';
 import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
-import { GrDocumentCsv } from 'react-icons/all';
+import { AiOutlineCloudUpload, AiOutlineFileExcel } from 'react-icons/ai';
 
 function AdStudent({
   modal,
@@ -316,7 +315,7 @@ function AddStudentBulk({
                       semestre and college department.
                     </p>
                     <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                      <GrDocumentCsv
+                      <AiOutlineFileExcel
                         size={40}
                         className="text-secondaryWhite"
                       />

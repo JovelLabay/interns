@@ -1,5 +1,5 @@
 // REACT
-import { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 // NEXT
 import Image from 'next/image';
@@ -24,7 +24,7 @@ import { DynamicContext } from 'lib/context/context';
 
 function SchoolHeader() {
   const router = useRouter();
-  const context = useContext(DynamicContext);
+  const context = React.useContext(DynamicContext);
 
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,

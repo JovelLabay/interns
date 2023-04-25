@@ -1,5 +1,5 @@
 // REACT
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // NEXT
 import { useRouter } from 'next/router';
@@ -15,7 +15,7 @@ import SplashLoading from '../components/interface/loading/SplashLoading';
 // STATIC DATA
 import generalData from '@data/general.data.json';
 
-function LayoutStatic({ children }: { children: ReactNode }) {
+function LayoutStatic({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const endpoint = typeof window !== 'undefined' && window.location.pathname;
 

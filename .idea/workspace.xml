@@ -6,12 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/seed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/seed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/layouts/WelcomeLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/layouts/WelcomeLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/form.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/form.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/user/student/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/student/dashboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +116,8 @@
       <workItem from="1681889421588" duration="1698000" />
       <workItem from="1681967003564" duration="3930000" />
       <workItem from="1682123487810" duration="5086000" />
-      <workItem from="1682297738629" duration="30419000" />
+      <workItem from="1682297738629" duration="33828000" />
+      <workItem from="1682401783882" duration="2558000" />
     </task>
     <servers />
   </component>

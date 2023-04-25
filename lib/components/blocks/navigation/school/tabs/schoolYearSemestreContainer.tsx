@@ -175,7 +175,7 @@ function SchoolYearSemestreContainer() {
                 className={classNames(
                   'relative flex cursor-pointer items-center justify-between rounded-md bg-mainBgWhite py-1 px-2 duration-300',
                   {
-                    'bg-customBorder': selectionState.schoolYear === item.id,
+                    'bg-teriaryWhite': selectionState.schoolYear === item.id,
                   }
                 )}
               >
@@ -261,7 +261,7 @@ function SchoolYearSemestreContainer() {
                 className={classNames(
                   'relative flex cursor-pointer items-center justify-between rounded-md bg-mainBgWhite py-1 px-2 duration-300',
                   {
-                    'bg-customBorder':
+                    'bg-teriaryWhite':
                       selectionState.schoolSemestre === item.id,
                   }
                 )}

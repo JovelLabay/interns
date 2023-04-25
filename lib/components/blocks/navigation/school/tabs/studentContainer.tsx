@@ -90,8 +90,6 @@ function StudentContainer() {
     getStudentList();
   }, [pagination.skip, active]);
 
-  console.log(JSON.parse(objectEditStudent || '{}'));
-
   return (
     <div className="mx-28 flex h-[80vh] flex-col gap-2 rounded bg-white p-3">
       <div className="flex items-center justify-between rounded-md bg-yellowBg p-2">

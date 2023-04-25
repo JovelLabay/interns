@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
-import { Transition, Dialog, Switch } from '@headlessui/react';
+import React, { useEffect } from 'react';
+import { Transition, Dialog, Switch, Listbox } from '@headlessui/react';
 import classNames from 'classnames';
-import { HiOutlineDocumentText, HiOutlinePhoto } from 'react-icons/all';
-import { BiCategoryAlt } from 'react-icons/bi';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
 import Image from 'next/image';
 import internsLogo from '@/assets/logo/interns_logo.png';
+import { Student_Status } from '@prisma/client';
+import { AiOutlineFileImage, AiOutlineFilePdf } from 'react-icons/ai';
+
+const studentStatus = Object.entries(Student_Status);
 
 function EditStudent({
   modal,
@@ -16,17 +17,23 @@ function EditStudent({
   toggleEditStudent(): void;
   objectEditStudent: string;
 }) {
+  useEffect(() => {
+    if (objectEditStudent) {
+      console.log(JSON.parse(objectEditStudent));
+    }
+  }, [objectEditStudent]);
+
   return (
-    <Transition appear show={modal} as={Fragment}>
+    <Transition appear show={modal} as={React.Fragment}>
       <Dialog
         as="div"
-        className="relative z-10 hidden lg:block"
+        className="relative z-10 hidden xl:block"
         onClose={() => {
           toggleEditStudent();
         }}
       >
         <Transition.Child
-          as={Fragment}
+          as={React.Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
@@ -40,14 +47,14 @@ function EditStudent({
         <div className="fixed inset-0">
           <div className="flex min-h-full items-center justify-end p-4">
             <Transition.Child
-              as={Fragment}
+              as={React.Fragment}
               enterFrom="opacity-0 translate-x-full"
               enterTo="opacity-100 translate-x-0"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-x-0"
               leaveTo="opacity-0 translate-x-full"
             >
-              <Dialog.Panel className="w-[40vw] rounded-md bg-white p-3">
+              <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
                 <div className="flex flex-row items-center justify-end text-secondaryWhite">
                   <button
                     onClick={() => {
@@ -68,7 +75,7 @@ function EditStudent({
                       )}
                       title="sdfs"
                     >
-                      <HiOutlineDocumentText size={20} />
+                      <AiOutlineFilePdf size={20} />
                     </button>
                     <button
                       className={classNames(
@@ -76,7 +83,7 @@ function EditStudent({
                       )}
                       title="sdfs"
                     >
-                      <HiOutlineDocumentText size={20} />
+                      <AiOutlineFilePdf size={20} />
                     </button>
                   </div>
 
@@ -141,23 +148,23 @@ function EditStudent({
                           *This is the activation switch for the Plan of Study
                         </span>
                       </label>
-                      <Switch
-                        checked={true}
-                        onChange={() => null}
-                        className={`${
-                          true ? 'bg-primaryYellow' : 'bg-primaryYellowHover'
-                        }
-          rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
-                      >
-                        <span className="sr-only">Use setting</span>
-                        <span
-                          aria-hidden="true"
-                          className={`${
-                            true ? 'translate-x-9' : 'translate-x-0'
-                          }
-            rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                        />
-                      </Switch>
+                      {/*            <Switch*/}
+                      {/*              checked={true}*/}
+                      {/*              onChange={() => null}*/}
+                      {/*              className={`${*/}
+                      {/*                true ? 'bg-primaryYellow' : 'bg-primaryYellowHover'*/}
+                      {/*              }*/}
+                      {/*rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}*/}
+                      {/*            >*/}
+                      {/*              <span className="sr-only">Use setting</span>*/}
+                      {/*              <span*/}
+                      {/*                aria-hidden="true"*/}
+                      {/*                className={`${*/}
+                      {/*                  true ? 'translate-x-9' : 'translate-x-0'*/}
+                      {/*                }*/}
+                      {/*  rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}*/}
+                      {/*              />*/}
+                      {/*            </Switch>*/}
                     </div>
 
                     <h3 className={'font-medium'}>Student Profile Details</h3>
@@ -175,7 +182,7 @@ function EditStudent({
                         />
                       </div>
                       <label className="flex w-full cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                        <HiOutlinePhoto
+                        <AiOutlineFileImage
                           size={30}
                           className="mr-5 text-secondaryWhite"
                         />
@@ -239,13 +246,44 @@ function EditStudent({
                       <label htmlFor="email" className="text-secondaryWhite">
                         Student Status
                       </label>
-                      <input
-                        className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                        )}
-                        type="text"
-                        placeholder="Student Status"
-                      />
+                      {/*<Listbox*/}
+                      {/*  value={'No Data'}*/}
+                      {/*  onChange={(data) => {*/}
+                      {/*    null;*/}
+                      {/*  }}*/}
+                      {/*>*/}
+                      {/*  {({ open }: { open: boolean }) => (*/}
+                      {/*    <div className="relative">*/}
+                      {/*      <Listbox.Button*/}
+                      {/*        className={classNames(*/}
+                      {/*          'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'*/}
+                      {/*        )}*/}
+                      {/*      >*/}
+                      {/*        gghjghjghj*/}
+                      {/*        <FiChevronDown*/}
+                      {/*          size={30}*/}
+                      {/*          className={classNames(*/}
+                      {/*            'text-secondaryWhite duration-300',*/}
+                      {/*            {*/}
+                      {/*              'rotate-180': open,*/}
+                      {/*            }*/}
+                      {/*          )}*/}
+                      {/*        />*/}
+                      {/*      </Listbox.Button>*/}
+                      {/*      <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">*/}
+                      {/*        {studentStatus.map((person, index) => (*/}
+                      {/*          <Listbox.Option*/}
+                      {/*            className="py-1"*/}
+                      {/*            key={index}*/}
+                      {/*            // value={person[1]}*/}
+                      {/*          >*/}
+                      {/*            {JSON.stringify(person)}*/}
+                      {/*          </Listbox.Option>*/}
+                      {/*        ))}*/}
+                      {/*      </Listbox.Options>*/}
+                      {/*    </div>*/}
+                      {/*  )}*/}
+                      {/*</Listbox>*/}
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
@@ -340,6 +378,14 @@ function EditStudent({
                         placeholder="Abbreviated Program Name"
                       />
                     </div>
+
+                    <input
+                      className={classNames(
+                        'w-full rounded-md bg-primaryYellow py-2 px-1'
+                      )}
+                      type="submit"
+                      value={'Update Student'}
+                    />
                   </form>
                 </div>
               </Dialog.Panel>

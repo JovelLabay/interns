@@ -14,8 +14,8 @@ import {
   AiOutlineUnorderedList,
   AiOutlineDelete,
   AiOutlineCloseCircle,
-  AiOutlineCloudUpload,
   AiOutlineEdit,
+  AiOutlineFileImage,
 } from 'react-icons/ai';
 
 import { Level_Of_User } from '@prisma/client';
@@ -64,7 +64,7 @@ import internsLogo from '@/assets/logo/interns_logo.png';
 import { splitUnderScore } from '@utils/commonFunction';
 import { MdPassword } from 'react-icons/md';
 import { DynamicContext } from 'lib/context/context';
-import { HiOutlinePhoto } from 'react-icons/all';
+import { AiOutlineCloudUpload, AiOutlineFileExcel } from 'react-icons/ai';
 
 const levelOfUser = Object.entries(Level_Of_User);
 
@@ -343,7 +343,10 @@ function AddUserComponentTab({
           </label>
 
           <label className="flex w-[300px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-            <HiOutlinePhoto size={30} className="mr-5 text-secondaryWhite" />
+            <AiOutlineFileImage
+              size={30}
+              className="mr-5 text-secondaryWhite"
+            />
             <span>Upload Image</span>
             <input
               className="imageUpload"
