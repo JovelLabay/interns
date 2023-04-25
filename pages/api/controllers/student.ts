@@ -49,6 +49,14 @@ class Student {
       student_status: true,
     };
 
+    const selection3rd = {
+      id: true,
+      school_semester_name: true,
+      school_semester_description: true,
+      school_semester_code: true,
+      is_active: true,
+    };
+
     this.addStudent = async () => {
       if (bulkImport === 'true') {
         Papa.parse(req.body, {
@@ -219,7 +227,12 @@ class Student {
           },
           select: {
             ...selection,
-            school_semester: true,
+            school_semester: {
+              select: {
+                ...selection3rd,
+                school_year: true,
+              },
+            },
             Student_User_Profile: {
               select: {
                 ...selection2nd,
@@ -238,6 +251,7 @@ class Student {
         });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
+        console.log(error);
       }
     };
   }

@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { GrDocumentCsv } from 'react-icons/all';
 
 function AdStudent({
   modal,
@@ -315,8 +316,8 @@ function AddStudentBulk({
                       semestre and college department.
                     </p>
                     <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                      <AiOutlineCloudUpload
-                        size={50}
+                      <GrDocumentCsv
+                        size={40}
                         className="text-secondaryWhite"
                       />
                       <span className="mt-10 w-[50%] truncate">

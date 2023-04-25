@@ -24,6 +24,7 @@ import SelectCollege from '@component/interface/modal/school/selectCollege';
 import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
 import { Student_Status } from '@prisma/client';
 import { BsToggleOff } from 'react-icons/bs';
+import EditStudent from '@component/interface/modal/school/editStudent';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -34,6 +35,7 @@ function StudentContainer() {
     addStudentBulk: false,
     addStudent: false,
     info: false,
+    editStudent: false,
   });
 
   const [active, setActive] = useState({
@@ -44,6 +46,7 @@ function StudentContainer() {
     objectDataSchoolSemestre: '',
     ObjectDataCollegeDepartment: '',
   });
+  const [objectEditStudent, setObjectEditStudent] = useState('');
   const [schoolYearSemestreList, setSchoolYearSemestreList] = useState<
     SelectSchoolYearSemestre[]
   >([]);
@@ -86,6 +89,8 @@ function StudentContainer() {
 
     getStudentList();
   }, [pagination.skip, active]);
+
+  console.log(JSON.parse(objectEditStudent || '{}'));
 
   return (
     <div className="mx-28 flex h-[80vh] flex-col gap-2 rounded bg-white p-3">
@@ -240,6 +245,8 @@ function StudentContainer() {
                   ObjectDataCollegeDepartment: '',
                 });
 
+                setObjectEditStudent('');
+
                 setSearchState({
                   isOpen: false,
                   searchInput: '',
@@ -326,7 +333,7 @@ function StudentContainer() {
                         item.is_active ? 'bg-green-200' : 'bg-red-200'
                       )}
                     >
-                      {item.is_active ? 'Active' : 'Inactive'}
+                      {item.is_active ? 'ACTIVE' : 'INACTIVE'}
                     </span>
                   </td>
                   <td>
@@ -379,14 +386,9 @@ function StudentContainer() {
                       <button
                         className="cursor-pointer rounded bg-orange-400 p-2"
                         title="Delete User"
+                        onClick={() => toggleEditStudent(JSON.stringify(item))}
                       >
                         <AiOutlineEdit size={25} className="text-mainBgWhite" />
-                      </button>
-                      <button
-                        className="cursor-pointer rounded bg-blue-400 p-2"
-                        title="Delete User"
-                      >
-                        <AiOutlineEye size={25} className="text-mainBgWhite" />
                       </button>
                     </div>
                   </td>
@@ -411,7 +413,7 @@ function StudentContainer() {
                 </>
               )}
             </p>
-          </div>{' '}
+          </div>
           <div className="flex items-center justify-center gap-3">
             <button
               className={classNames(
@@ -501,6 +503,12 @@ function StudentContainer() {
         toggleInfo={toggleInfo}
         levelOfUser={levelOfUser}
       />
+
+      <EditStudent
+        modal={modal.editStudent}
+        toggleEditStudent={toggleEditStudent}
+        objectEditStudent={objectEditStudent}
+      />
     </div>
   );
 
@@ -538,6 +546,19 @@ function StudentContainer() {
       ...prev,
       info: !prev.info,
     }));
+  }
+
+  function toggleEditStudent(itemStudentData?: string) {
+    setModal((prev) => ({
+      ...prev,
+      editStudent: !prev.editStudent,
+    }));
+
+    if (itemStudentData) {
+      setObjectEditStudent(itemStudentData);
+    } else {
+      setObjectEditStudent('');
+    }
   }
 
   function getSchoolYear() {

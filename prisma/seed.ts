@@ -1,17 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { hashPassword } from '../lib/utils/backendFunction';
+import { admin_user_list } from './adminUser';
 
 const prisma = new PrismaClient();
-
-export const admin_user_list = [
-  {
-    first_name: 'Admin',
-    middle_name: 'Admin',
-    last_name: 'Admin',
-    email_address: 'jovellabay@gmail.com',
-    isActive: true,
-  },
-];
 
 async function main() {
   await prisma.admin_User.deleteMany({});

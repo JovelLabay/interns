@@ -37,6 +37,7 @@ import {
 import axios from 'axios';
 
 import { CSVLink } from 'react-csv';
+import { HiOutlinePhoto } from 'react-icons/all';
 
 function ManageCollege({
   addRemoveModal,
@@ -280,10 +281,7 @@ function AddCollegeComponentTab({
             College Logo
           </label>
           <label className="flex w-[300px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-            <AiOutlineCloudUpload
-              size={30}
-              className="mr-5 text-secondaryWhite"
-            />
+            <HiOutlinePhoto size={30} className="mr-5 text-secondaryWhite" />
             <span>College Logo</span>
             <input
               className="imageUpload"
@@ -583,7 +581,7 @@ function ListsCollegeComponentTab({
                       {isEdit === data.id ? (
                         <>
                           <label className="flex w-[200px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                            <AiOutlineCloudUpload
+                            <HiOutlinePhoto
                               size={30}
                               className="mr-5 text-secondaryWhite"
                             />
