@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState, useMemo } from 'react';
 import {
+  AiOutlineCheckCircle,
   AiOutlineClear,
   AiOutlineDelete,
   AiOutlineEdit,
@@ -182,13 +183,29 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
+            title="Generate Eligible Student"
+          >
+            <AiOutlineCheckCircle size={20} />
+          </button>
+          <button
+            className={classNames('rounded bg-red-500 p-2 text-white', {
+              'cursor-not-allowed opacity-50':
+                active.schoolYear === '' ||
+                active.schoolSemestre === '' ||
+                active.collegeDepartment === '',
+            })}
+            disabled={
+              active.schoolYear === '' ||
+              active.schoolSemestre === '' ||
+              active.collegeDepartment === ''
+            }
             title={`Delete All Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
             onClick={() => deleteStudents()}
           >
             <AiOutlineDelete size={20} />
           </button>
           <button
-            className={classNames('rounded bg-blue-500 p-2 text-white', {
+            className={classNames('rounded bg-red-500 p-2 text-white', {
               'cursor-not-allowed opacity-50':
                 active.schoolYear === '' ||
                 active.schoolSemestre === '' ||
@@ -272,15 +289,6 @@ function StudentContainer() {
               <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
-                Full Name
-              </th>
-              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
-                Email Address
-              </th>
-              <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
-                Department
-              </th>
               <th scope="col" className="min-w-[130px] px-6 py-3">
                 Account Status
               </th>
@@ -289,6 +297,15 @@ function StudentContainer() {
               </th>
               <th scope="col" className="min-w-[130px] px-6 py-3">
                 Student Status
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Full Name
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Email Address
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
+                Department
               </th>
               <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
                 Date Creation
@@ -305,16 +322,6 @@ function StudentContainer() {
             {filterStudentList.map((item, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>
-                  {item.first_name} {item.middle_name} {item.last_name}
-                </td>
-                <td>{item.email}</td>
-                <td>
-                  {
-                    item.Student_User_Profile.College_Department
-                      .college_department_name
-                  }
-                </td>
                 <td>
                   <span
                     className={classNames(
@@ -365,6 +372,16 @@ function StudentContainer() {
                       .split('_')
                       .join(' ')}
                   </span>
+                </td>
+                <td>
+                  {item.first_name} {item.middle_name} {item.last_name}
+                </td>
+                <td>{item.email}</td>
+                <td>
+                  {
+                    item.Student_User_Profile.College_Department
+                      .college_department_name
+                  }
                 </td>
                 <td> {new Date(item.createdAt).toLocaleString()}</td>
                 <td className={classNames('sticky right-0 bg-white px-2 py-4')}>

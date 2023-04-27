@@ -387,22 +387,12 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                          {
-                            'border-red-500 bg-red-100 placeholder:text-white':
-                              errors.phoneNumber?.message,
-                          }
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Phone Number"
                         {...register('phoneNumber')}
                       />
-
-                      {errors.phoneNumber?.message && (
-                        <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-center text-xs text-red-500">
-                          {errors.phoneNumber?.message}
-                        </p>
-                      )}
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">

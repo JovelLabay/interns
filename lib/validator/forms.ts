@@ -92,10 +92,7 @@ const EditStudentForm = yup.object({
   birthDate: yup.string(),
   sex: yup.string(),
   studentStatus: yup.string(),
-  phoneNumber: yup
-    .string()
-    .max(11, 'Must be 11-digit')
-    .min(10, 'Must be a 11-digit number'),
+  phoneNumber: yup.string(),
 });
 
 const CreateCollegeDepartmentRequirementDocumentForm = yup.object({
