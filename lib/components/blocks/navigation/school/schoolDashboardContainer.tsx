@@ -1,5 +1,5 @@
 // REACT
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // UI
 import { Tab } from '@headlessui/react';
@@ -16,7 +16,7 @@ import Activitylogs from '@component/blocks/navigation/school/tabs/activitylogs'
 import SchoolYearSemestreContainer from '@component/blocks/navigation/school/tabs/schoolYearSemestreContainer';
 
 function SchoolDashboardContainer() {
-  const [tabSelected, setTabSelected] = useState(0);
+  const [tabSelected, setTabSelected] = React.useState(0);
   const [listOfColleges, setListOfColleges] = useState({});
 
   return (
