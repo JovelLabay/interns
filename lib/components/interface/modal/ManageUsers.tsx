@@ -64,7 +64,6 @@ import internsLogo from '@/assets/logo/interns_logo.png';
 import { splitUnderScore } from '@utils/commonFunction';
 import { MdPassword } from 'react-icons/md';
 import { DynamicContext } from 'lib/context/context';
-import { AiOutlineCloudUpload, AiOutlineFileExcel } from 'react-icons/ai';
 
 const levelOfUser = Object.entries(Level_Of_User);
 
@@ -589,10 +588,6 @@ function ListsUserComponentTab({
   const [listUserAdmin, setListUserAdmin] = useState<ReturnAdminUserPayload[]>(
     []
   );
-  const [filterState, setFilterState] = useState({
-    search: '',
-    isActive: true,
-  });
   const [exportModal, setExportModal] = useState({
     isOpen: false,
     exportedData: [] as ExportedFormSchoolUserAdmin[],

@@ -1,9 +1,6 @@
 // REACT
 import React from 'react';
 
-// STATIC DATA
-import { data } from 'Data';
-
 // NEXT
 import Image from 'next/image';
 

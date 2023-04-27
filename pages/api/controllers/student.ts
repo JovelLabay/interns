@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import Papa from 'papaparse';
-import { hashPassword } from '@utils/backendFunction';
 
 class Student {
   private prisma = new PrismaClient();
@@ -33,7 +32,6 @@ class Student {
     const {
       id,
       bulkImport,
-      schoolYear,
       schoolSemestre,
       collegeDepartment,
       skip,
@@ -41,8 +39,6 @@ class Student {
       deleteAll,
     } = req.query;
 
-    const parsedDataObjectSchoolYear =
-      schoolYear && JSON.parse(schoolYear as string);
     const parsedDataObjectSchoolSemestre =
       schoolSemestre && JSON.parse(schoolSemestre as string);
     const parsedDataObjectCollegeDepartment =

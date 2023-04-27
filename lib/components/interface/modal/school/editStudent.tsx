@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Transition, Dialog, Switch, Listbox } from '@headlessui/react';
-import classNames from 'classnames';
+
 import Image from 'next/image';
+
 import internsLogo from '@/assets/logo/interns_logo.png';
+import { EditStudentForm } from '@validator/forms';
+import { splitUnderScore } from '@utils/commonFunction';
+import { imageUploader } from '@utils/uploaderFunction';
+
+import axios from 'axios';
+import classNames from 'classnames';
+import { Transition, Dialog, Switch, Listbox } from '@headlessui/react';
 import { Student_Status } from '@prisma/client';
 import { AiOutlineFileImage, AiOutlineFilePdf } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { EditStudentForm } from '@validator/forms';
 import { FiChevronDown } from 'react-icons/fi';
-import { splitUnderScore } from '@utils/commonFunction';
-import { imageUploader } from '@utils/uploaderFunction';
 import {
   errorNotify,
   successfulNotify,
 } from '@component/interface/toast/toast';
-import axios from 'axios';
 
 const studentStatus = Object.entries(Student_Status);
 
@@ -34,17 +37,11 @@ function EditStudent({
     isUpdating: false,
     uploadingImage: false,
   });
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm<FormEditStudent>({
-    mode: 'onSubmit',
-    resolver: yupResolver(EditStudentForm),
-  });
+  const { handleSubmit, register, setValue, watch, reset } =
+    useForm<FormEditStudent>({
+      mode: 'onSubmit',
+      resolver: yupResolver(EditStudentForm),
+    });
 
   useEffect(() => {
     if (objectEditStudent) {
@@ -53,7 +50,6 @@ function EditStudent({
         first_name,
         last_name,
         middle_name,
-        id,
         is_active,
         is_eligible,
         Student_User_Profile,

@@ -6,26 +6,22 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-// STATIC DATA
-
-// COMPONENTS OR LAYOUTS
 import SecondayStaticFooter from 'lib/components/blocks/staticPage/SecondayStaticFooter';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { LogSignValidator } from '@validator/forms';
-import classNames from 'classnames';
 import resetPasswordIllustration from '../../public/images/resetPassword/resetPassword.jpg';
+import { LogSignValidator } from '@validator/forms';
 
+import classNames from 'classnames';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ToastContainer } from 'react-toastify';
+
 import {
   errorNotify,
   successfulNotify,
   warningNotify,
 } from '@component/interface/toast/toast';
-import { ToastContainer } from 'react-toastify';
-
-// ICONS
 
 function ResetAdminEmail() {
   const [isExpired, setIsExpired] = React.useState(false);
@@ -40,7 +36,6 @@ function ResetAdminEmail() {
     handleSubmit,
     formState: { errors },
     reset,
-    clearErrors,
     setValue,
   } = useForm<FormLogin>({
     mode: 'onSubmit',

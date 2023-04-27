@@ -1,16 +1,18 @@
+import React, { Fragment, useState } from 'react';
+
 import {
   errorNotify,
   successfulNotify,
 } from '@component/interface/toast/toast';
-import { Dialog, Transition } from '@headlessui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { csvUploader } from '@utils/uploaderFunction';
-import { CreateStudent } from '@validator/forms';
+
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { Fragment, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CreateStudent } from '@validator/forms';
 import { useForm } from 'react-hook-form';
-import { AiOutlineCloudUpload, AiOutlineFileExcel } from 'react-icons/ai';
+import { AiOutlineFileExcel } from 'react-icons/ai';
 
 function AdStudent({
   modal,
@@ -34,9 +36,6 @@ function AdStudent({
     handleSubmit,
     register,
     formState: { errors },
-    watch,
-    setValue,
-    clearErrors,
     reset,
   } = useForm<FormCreateStudent>({
     mode: 'onSubmit',

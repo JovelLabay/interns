@@ -1,3 +1,6 @@
+import React, { useEffect, useState, useMemo } from 'react';
+
+import { data } from 'Data';
 import {
   errorNotify,
   successfulNotify,
@@ -5,14 +8,12 @@ import {
 } from '@component//interface/toast/toast';
 import SchoolSemestreModal from '@component/interface/modal/school/schoolSemestreModal';
 import SchoolYearModal from '@component/interface/modal/school/schoolYearModal';
-import { Menu, Switch } from '@headlessui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateSchoolSemestre, CreateSchoolYear } from '@validator/forms';
-import { data } from 'Data';
+
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { useEffect, useState, useMemo } from 'react';
-import { Student_Status } from '@prisma/client';
+import { Menu, Switch } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
   FieldErrors,
@@ -35,8 +36,6 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { InfoLegendYearSemestre } from '@component/interface/modal/school/infoLegend';
 
 function SchoolYearSemestreContainer() {
-  const levelOfUser = Object.entries(Student_Status);
-
   const [modal, setModal] = useState({
     addSchoolyearModal: false,
     addSchoolSemestre: false,
@@ -67,9 +66,7 @@ function SchoolYearSemestreContainer() {
     formState: { errors },
     watch,
     setValue,
-    clearErrors,
     reset,
-    resetField,
   } = useForm<ReturnFormSchoolYear>({
     mode: 'onSubmit',
     resolver: yupResolver(CreateSchoolYear),
@@ -347,11 +344,7 @@ function SchoolYearSemestreContainer() {
         getSchoolYear={getSchoolYear}
       />
 
-      <InfoLegendYearSemestre
-        modal={modal.info}
-        toggleInfo={toggleInfo}
-        levelOfUser={levelOfUser}
-      />
+      <InfoLegendYearSemestre modal={modal.info} toggleInfo={toggleInfo} />
     </div>
   );
 
@@ -754,9 +747,7 @@ function SchoolSemestre({
     formState: { errors },
     watch,
     setValue,
-    clearErrors,
     reset,
-    resetField,
   } = useForm<FormSchoolSemestre>({
     mode: 'onSubmit',
     resolver: yupResolver(CreateSchoolSemestre),
@@ -764,7 +755,6 @@ function SchoolSemestre({
 
   useEffect(() => {
     const {
-      id,
       school_semester_name,
       school_semester_description,
       is_active,

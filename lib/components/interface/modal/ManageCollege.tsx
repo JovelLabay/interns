@@ -1,11 +1,26 @@
-import { ToastContainer } from 'react-toastify';
-
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+
+import Image from 'next/image';
+
+import { data } from 'Data';
+import { imageUploader } from '@utils/uploaderFunction';
+import internsLogo from '@/assets/logo/interns_logo.png';
+import { CreateCollegeValidator } from '@validator/forms';
+
 import { Dialog, Tab, Transition } from '@headlessui/react';
+
+import axios from 'axios';
 import classNames from 'classnames';
+import { CSVLink } from 'react-csv';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ToastContainer } from 'react-toastify';
+import {
+  errorNotify,
+  successfulNotify,
+  warningNotify,
+} from '@component//interface/toast/toast';
 import {
   AiOutlineCloseCircle,
-  AiOutlineCloudUpload,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlinePlusCircle,
@@ -13,9 +28,6 @@ import {
   AiOutlineUnorderedList,
   AiOutlineFileImage,
 } from 'react-icons/ai';
-import { data } from 'Data';
-import Image from 'next/image';
-import internsLogo from '@/assets/logo/interns_logo.png';
 import {
   FieldErrors,
   UseFormClearErrors,
@@ -26,19 +38,6 @@ import {
   UseFormWatch,
   useForm,
 } from 'react-hook-form';
-import { splitUnderScore } from '@utils/commonFunction';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateCollegeValidator } from '@validator/forms';
-import { imageUploader } from '@utils/uploaderFunction';
-import {
-  errorNotify,
-  successfulNotify,
-  warningNotify,
-} from '@component//interface/toast/toast';
-import axios from 'axios';
-
-import { CSVLink } from 'react-csv';
-import { HiOutlinePhoto } from 'react-icons/all';
 
 function ManageCollege({
   addRemoveModal,

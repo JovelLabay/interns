@@ -5,24 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/staticPage/AboutDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/staticPage/AboutDescription.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/staticPage/DescWithImage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/staticPage/DescWithImage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/StaticTypeSecond.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/StaticTypes.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/StaticTypes.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/WindowType.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/form.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/form.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/validator/forms.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validator/forms.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/collegeProgram.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/collegeProgram.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/controllers/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/data/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/data/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/user/school/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/school/dashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/reset/[resetAdminEmail_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/reset/[resetAdminEmail_id].tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +135,9 @@
       <workItem from="1682565096153" duration="2585000" />
       <workItem from="1682568295812" duration="1576000" />
       <workItem from="1682585320781" duration="3477000" />
+      <workItem from="1682607908187" duration="333000" />
+      <workItem from="1682608695466" duration="45000" />
+      <workItem from="1682609087608" duration="571000" />
     </task>
     <servers />
   </component>

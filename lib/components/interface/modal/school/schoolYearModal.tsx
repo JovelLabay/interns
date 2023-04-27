@@ -1,17 +1,18 @@
+import React, { Fragment } from 'react';
+
+import { splitUnderScore } from '@utils/commonFunction';
+import { CreateSchoolYear } from '@validator/forms';
 import {
   successfulNotify,
   errorNotify,
   warningNotify,
 } from '@component//interface/toast/toast';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { splitUnderScore } from '@utils/commonFunction';
-import { CreateSchoolYear } from '@validator/forms';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { Fragment, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 function SchoolYearModal({
   modal,
@@ -26,8 +27,6 @@ function SchoolYearModal({
     handleSubmit,
     register,
     formState: { errors },
-    watch,
-    setValue,
     clearErrors,
     reset,
   } = useForm<FormSchoolYear>({
@@ -35,7 +34,7 @@ function SchoolYearModal({
     resolver: yupResolver(CreateSchoolYear),
   });
 
-  const [state, setState] = useState({
+  const [state, setState] = React.useState({
     isSubmitted: false,
   });
   return (

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState, useMemo } from 'react';
+
 import {
   AiOutlineCheckCircle,
   AiOutlineClear,
@@ -9,9 +9,13 @@ import {
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
 } from 'react-icons/ai';
+import { MdPassword } from 'react-icons/md';
 import { BiCategoryAlt, BiRefresh } from 'react-icons/bi';
+
+import axios from 'axios';
 import classNames from 'classnames';
-import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
+import { Student_Status } from '@prisma/client';
+
 import {
   errorNotify,
   successfulNotify,
@@ -20,11 +24,10 @@ import {
   AdStudent,
   AddStudentBulk,
 } from '@component/interface/modal/school/addStudent';
-import SelectCollege from '@component/interface/modal/school/selectCollege';
 import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
-import { Student_Status } from '@prisma/client';
 import EditStudent from '@component/interface/modal/school/editStudent';
-import { MdPassword } from 'react-icons/md';
+import SelectCollege from '@component/interface/modal/school/selectCollege';
+import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -604,17 +607,16 @@ function StudentContainer() {
         setPagination((prev) => ({ ...prev, payloadLength: length }));
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 
   function deleteStudents() {
     axios
       .delete(
-        `/api/data/student?deleteAll=true&schoolSemestre=${active.objectDataSchoolSemestre}`,
-        {}
+        `/api/data/student?deleteAll=true&schoolSemestre=${active.objectDataSchoolSemestre}`
       )
-      .then((res) => {
+      .then(() => {
         getStudentList();
 
         successfulNotify('Deleted All students Under this semestre');

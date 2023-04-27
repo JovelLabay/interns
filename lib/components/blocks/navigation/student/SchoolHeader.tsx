@@ -1,5 +1,5 @@
 // REACT
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // NEXT
 import Image from 'next/image';
@@ -16,15 +16,8 @@ import { FiUsers } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 // COMPONENTS
-import ManageUsers from '@component/interface/modal/ManageUsers';
-import ManageCollege from '@component/interface/modal/ManageCollege';
 
 function StudentHeader() {
-  const [addRemoveModal, setAddRemoveModal] = useState({
-    manageUser: false,
-    manageCollege: false,
-  });
-
   return (
     <>
       <div className="flex h-[10vh] flex-row items-center justify-between bg-white px-2">

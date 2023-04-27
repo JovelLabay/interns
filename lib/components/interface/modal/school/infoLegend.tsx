@@ -1,6 +1,7 @@
-import { Dialog, Transition } from '@headlessui/react';
-import classNames from 'classnames';
 import React, { Fragment } from 'react';
+
+import classNames from 'classnames';
+import { Dialog, Transition } from '@headlessui/react';
 
 function InfoLegendStudent({
   modal,
@@ -119,14 +120,9 @@ function InfoLegendStudent({
 function InfoLegendYearSemestre({
   modal,
   toggleInfo,
-  levelOfUser,
 }: {
   modal: boolean;
   toggleInfo: () => void;
-  levelOfUser: [
-    string,
-    'INCOMPLETE' | 'COMPLETE' | 'APPLYING' | 'APPLIED' | 'FINISHED' | 'NOT_SET'
-  ][];
 }) {
   return (
     <Transition appear show={modal} as={React.Fragment}>

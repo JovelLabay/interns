@@ -1,5 +1,5 @@
 // REACT
-import React, { useState } from 'react';
+import React from 'react';
 
 // UI
 import { Tab } from '@headlessui/react';
@@ -16,12 +16,9 @@ import Activitylogs from '@component/blocks/navigation/school/tabs/activitylogs'
 import SchoolYearSemestreContainer from '@component/blocks/navigation/school/tabs/schoolYearSemestreContainer';
 
 function SchoolDashboardContainer() {
-  const [tabSelected, setTabSelected] = React.useState(0);
-  const [listOfColleges, setListOfColleges] = useState({});
-
   return (
     <div className="px-2">
-      <Tab.Group onChange={(index) => setTabSelected(index)}>
+      <Tab.Group>
         {/* TABS */}
         <Tab.List className="my-2 flex h-[7vh] items-center justify-between gap-10 rounded bg-white px-10">
           <div className="flex items-center gap-7">
