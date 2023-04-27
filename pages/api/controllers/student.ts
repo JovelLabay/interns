@@ -1,15 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import Papa from 'papaparse';
+import { hashPassword } from '@utils/backendFunction';
 
 class Student {
   private prisma = new PrismaClient();
 
   public addStudent: () => Promise<void>;
   public getStudents: () => Promise<void>;
+  public putStudents: () => Promise<void>;
+  public deleteStudents: () => Promise<void>;
 
   constructor(req: NextApiRequest, res: NextApiResponse) {
-    const { emailAddress, firstName, middleName, lastName } = req.body;
+    const {
+      emailAddress,
+      firstName,
+      middleName,
+      lastName,
+
+      accountStatus,
+      eligibility,
+
+      address,
+      birthDate,
+      profileImage,
+      phoneNumber,
+      selfIntroduction,
+      sex,
+      studentStatus,
+    } = req.body;
 
     const {
       id,
@@ -18,6 +37,8 @@ class Student {
       schoolSemestre,
       collegeDepartment,
       skip,
+      studentUserId,
+      deleteAll,
     } = req.query;
 
     const parsedDataObjectSchoolYear =
@@ -34,6 +55,7 @@ class Student {
       last_name: true,
       email: true,
       is_active: true,
+      is_eligible: true,
       createdAt: true,
     };
 
@@ -45,7 +67,6 @@ class Student {
       self_introduction: true,
       date_of_birth: true,
       sex: true,
-      student_verfication: true,
       student_status: true,
     };
 
@@ -99,6 +120,7 @@ class Student {
                     first_name: d.firstName,
                     last_name: d.lastName,
                     middle_name: d.middleName,
+                    deletedAt: null,
                   },
                 });
 
@@ -159,6 +181,7 @@ class Student {
               first_name: firstName,
               last_name: lastName,
               middle_name: middleName,
+              deletedAt: null,
             },
           });
 
@@ -251,7 +274,79 @@ class Student {
         });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
-        console.log(error);
+      }
+    };
+
+    this.putStudents = async () => {
+      try {
+        const studentUserPayload = await this.prisma.student_User.update({
+          where: {
+            id: Number(studentUserId),
+          },
+          data: {
+            is_active: accountStatus,
+            is_eligible: eligibility,
+          },
+        });
+
+        const studentProfilePayload =
+          await this.prisma.student_User_Profile.update({
+            where: {
+              student_user_id: studentUserPayload.id,
+            },
+            data: {
+              student_profile_image: profileImage,
+              address,
+              phone_number: phoneNumber.toString(),
+              self_introduction: selfIntroduction,
+              date_of_birth: birthDate,
+              sex,
+              student_status: studentStatus,
+            },
+          });
+
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Student profile Updated: ${studentProfilePayload.id}`,
+            activity_action: 'UPDATED',
+            student_user_profile_id: studentProfilePayload.id,
+          },
+        });
+
+        res.status(200).json({
+          message: 'Successful',
+        });
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
+      }
+    };
+
+    this.deleteStudents = async () => {
+      try {
+        if (deleteAll === 'true') {
+          const responsePayload = await this.prisma.student_User.updateMany({
+            where: {
+              school_semester_id: {
+                equals: parsedDataObjectSchoolSemestre.id,
+              },
+            },
+            data: {
+              deletedAt: new Date(),
+            },
+          });
+
+          console.log(responsePayload);
+
+          res.status(200).json({
+            message: 'Successful',
+          });
+        } else {
+          res.status(200).json({
+            message: 'Successful',
+          });
+        }
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
       }
     };
   }

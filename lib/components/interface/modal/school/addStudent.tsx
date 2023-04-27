@@ -50,6 +50,7 @@ function AdStudent({
         className="relative z-10 hidden lg:block"
         onClose={() => {
           toggleAddStudent();
+          reset();
         }}
       >
         <Transition.Child
@@ -80,6 +81,7 @@ function AdStudent({
                   <button
                     onClick={() => {
                       toggleAddStudent();
+                      reset();
                     }}
                     className="w-[100px] rounded border-2 border-primaryYellow py-1"
                   >

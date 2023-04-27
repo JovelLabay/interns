@@ -4,7 +4,6 @@ import {
   AiOutlineClear,
   AiOutlineDelete,
   AiOutlineEdit,
-  AiOutlineEye,
   AiOutlineInfoCircle,
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
@@ -23,8 +22,8 @@ import {
 import SelectCollege from '@component/interface/modal/school/selectCollege';
 import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
 import { Student_Status } from '@prisma/client';
-import { BsToggleOff } from 'react-icons/bs';
 import EditStudent from '@component/interface/modal/school/editStudent';
+import { MdPassword } from 'react-icons/md';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -184,6 +183,7 @@ function StudentContainer() {
               active.collegeDepartment === ''
             }
             title={`Delete All Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
+            onClick={() => deleteStudents()}
           >
             <AiOutlineDelete size={20} />
           </button>
@@ -199,9 +199,9 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
-            title="Inactivate All"
+            title="Send Password All"
           >
-            <BsToggleOff size={20} />
+            <MdPassword size={20} />
           </button>
 
           <div className={classNames('flex items-center justify-center gap-1')}>
@@ -264,198 +264,197 @@ function StudentContainer() {
           </div>
         </div>
       </div>
-      <>
-        <div className="h-[70vh] w-full overflow-auto">
-          <table className="w-full text-center text-sm">
-            <thead className="bg-gray-100 text-xs uppercase">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  No.
-                </th>
-                <th
-                  scope="col"
-                  className="min-w-[250px] max-w-[380px] px-6 py-3"
-                >
-                  Full Name
-                </th>
-                <th
-                  scope="col"
-                  className="min-w-[250px] max-w-[380px] px-6 py-3"
-                >
-                  Email Address
-                </th>
-                <th
-                  scope="col"
-                  className="min-w-[250px] max-w-[400px] px-6 py-3"
-                >
-                  Department
-                </th>
-                <th scope="col" className="min-w-[130px] px-6 py-3">
-                  Account Active
-                </th>
-                <th scope="col" className="min-w-[130px] px-6 py-3">
-                  Requirement Status
-                </th>
-                <th
-                  scope="col"
-                  className="min-w-[250px] max-w-[400px] px-6 py-3"
-                >
-                  Date Creation
-                </th>
-                <th
-                  scope="col"
-                  className="sticky right-0 min-w-[130px] bg-gray-100 px-6 py-3"
-                >
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filterStudentList.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {item.first_name} {item.middle_name} {item.last_name}
-                  </td>
-                  <td>{item.email}</td>
-                  <td>
-                    {
-                      item.Student_User_Profile.College_Department
-                        .college_department_name
-                    }
-                  </td>
-                  <td>
-                    <span
-                      className={classNames(
-                        'rounded-full py-2 px-3 text-secondaryWhite',
-                        item.is_active ? 'bg-green-200' : 'bg-red-200'
-                      )}
-                    >
-                      {item.is_active ? 'ACTIVE' : 'INACTIVE'}
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      className={classNames(
-                        'rounded-full py-2 px-3 text-white',
-                        item.Student_User_Profile.student_status ===
-                          'INCOMPLETE'
-                          ? 'bg-red-500'
-                          : item.Student_User_Profile.student_status ===
-                            'COMPLETE'
-                          ? 'bg-pink-500'
-                          : item.Student_User_Profile.student_status ===
-                            'APPLYING'
-                          ? 'bg-yellow-500'
-                          : item.Student_User_Profile.student_status ===
-                            'APPLIED'
-                          ? 'bg-blue-500'
-                          : item.Student_User_Profile.student_status ===
-                            'FINISHED'
-                          ? 'bg-green-500'
-                          : 'bg-gray-500'
-                      )}
-                    >
-                      {item.Student_User_Profile.student_status
-                        .split('_')
-                        .join(' ')
-                        .slice(0, 1)
-                        .toUpperCase()}
-                      {item.Student_User_Profile.student_status
-                        .slice(1)
-                        .split('_')
-                        .join(' ')}
-                    </span>
-                  </td>
-                  <td> {new Date(item.createdAt).toLocaleString()}</td>
-                  <td
-                    className={classNames('sticky right-0 bg-white px-2 py-4')}
-                  >
-                    <div className="flex items-center justify-center gap-3">
-                      <button
-                        className="cursor-pointer rounded bg-red-400 p-2"
-                        title="Delete User"
-                      >
-                        <AiOutlineDelete
-                          size={25}
-                          className="text-mainBgWhite"
-                        />
-                      </button>
-                      <button
-                        className="cursor-pointer rounded bg-orange-400 p-2"
-                        title="Delete User"
-                        onClick={() => toggleEditStudent(JSON.stringify(item))}
-                      >
-                        <AiOutlineEdit size={25} className="text-mainBgWhite" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
 
-        <div className="flex items-center justify-between">
-          <div>
-            <p
-              className={classNames(
-                'rounded-full bg-green-500 px-3 py-1 text-sm font-light text-white'
-              )}
-            >
-              {'/ '}
-              {active.schoolYear && (
-                <>
-                  {active.schoolYear} / {active.schoolSemestre} /{' '}
-                  {active.collegeDepartment}
-                </>
-              )}
-            </p>
-          </div>
-          <div className="flex items-center justify-center gap-3">
-            <button
-              className={classNames(
-                'w-[100px] rounded border-2 border-primaryYellow p-1',
-                {
-                  'cursor-not-allowed opacity-50': pagination.skip <= 0,
-                }
-              )}
-              disabled={pagination.skip <= 0}
-              onClick={() => {
-                setPagination((prev) => ({
-                  ...prev,
-                  skip: prev.skip - 20,
-                  take: prev.take - 20,
-                }));
-              }}
-            >
-              Prev
-            </button>
-            <p>
-              {pagination.skip === 0 ? 1 : pagination.skip} - {pagination.take}
-            </p>
-            <button
-              className={classNames(
-                'w-[100px] rounded border-2 border-primaryYellow p-1',
-                {
-                  'cursor-not-allowed opacity-50':
-                    pagination.payloadLength !== 20,
-                }
-              )}
-              disabled={pagination.payloadLength !== 20}
-              onClick={() => {
-                setPagination((prev) => ({
-                  ...prev,
-                  skip: prev.skip + 20,
-                  take: prev.take + 20,
-                }));
-              }}
-            >
-              Next
-            </button>
-          </div>
+      <div className="h-[70vh] w-full overflow-auto">
+        <table className="w-full text-center text-sm">
+          <thead className="bg-gray-100 text-xs uppercase">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                No.
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Full Name
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Email Address
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
+                Department
+              </th>
+              <th scope="col" className="min-w-[130px] px-6 py-3">
+                Account Status
+              </th>
+              <th scope="col" className="min-w-[130px] px-6 py-3">
+                Eligibility
+              </th>
+              <th scope="col" className="min-w-[130px] px-6 py-3">
+                Student Status
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
+                Date Creation
+              </th>
+              <th
+                scope="col"
+                className="sticky right-0 min-w-[130px] bg-gray-100 px-6 py-3"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterStudentList.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>
+                  {item.first_name} {item.middle_name} {item.last_name}
+                </td>
+                <td>{item.email}</td>
+                <td>
+                  {
+                    item.Student_User_Profile.College_Department
+                      .college_department_name
+                  }
+                </td>
+                <td>
+                  <span
+                    className={classNames(
+                      'rounded-full py-2 px-3 text-secondaryWhite',
+                      item.is_active ? 'bg-green-200' : 'bg-red-200'
+                    )}
+                  >
+                    {item.is_active ? 'ACTIVE' : 'INACTIVE'}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className={classNames(
+                      'rounded-full py-2 px-3 text-secondaryWhite',
+                      item.is_eligible ? 'bg-green-200' : 'bg-red-200'
+                    )}
+                  >
+                    {item.is_eligible ? 'ELIGIBLE' : 'NOT ELIGIBLE'}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className={classNames(
+                      'rounded-full py-2 px-3 text-white',
+                      item.Student_User_Profile.student_status === 'INCOMPLETE'
+                        ? 'bg-red-500'
+                        : item.Student_User_Profile.student_status ===
+                          'COMPLETE'
+                        ? 'bg-pink-500'
+                        : item.Student_User_Profile.student_status ===
+                          'APPLYING'
+                        ? 'bg-yellow-500'
+                        : item.Student_User_Profile.student_status === 'APPLIED'
+                        ? 'bg-blue-500'
+                        : item.Student_User_Profile.student_status ===
+                          'FINISHED'
+                        ? 'bg-green-500'
+                        : 'bg-gray-500'
+                    )}
+                  >
+                    {item.Student_User_Profile.student_status
+                      .split('_')
+                      .join(' ')
+                      .slice(0, 1)
+                      .toUpperCase()}
+                    {item.Student_User_Profile.student_status
+                      .slice(1)
+                      .split('_')
+                      .join(' ')}
+                  </span>
+                </td>
+                <td> {new Date(item.createdAt).toLocaleString()}</td>
+                <td className={classNames('sticky right-0 bg-white px-2 py-4')}>
+                  <div className="flex items-center justify-center gap-3">
+                    <button
+                      className="cursor-pointer rounded bg-red-400 p-2"
+                      title="Delete User"
+                    >
+                      <AiOutlineDelete size={25} className="text-mainBgWhite" />
+                    </button>
+                    <button
+                      className="cursor-pointer rounded bg-orange-400 p-2"
+                      title="Delete User"
+                      onClick={() => toggleEditStudent(JSON.stringify(item))}
+                    >
+                      <AiOutlineEdit size={25} className="text-mainBgWhite" />
+                    </button>
+                    <button
+                      className="cursor-pointer rounded bg-blue-400 p-2"
+                      title="Send Reset Password Link"
+                    >
+                      <MdPassword size={25} className="text-mainBgWhite" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div>
+          <p
+            className={classNames(
+              'rounded-full bg-green-500 px-3 py-1 text-sm font-light text-white'
+            )}
+          >
+            {'/ '}
+            {active.schoolYear && (
+              <>
+                {active.schoolYear} / {active.schoolSemestre} /{' '}
+                {active.collegeDepartment}
+              </>
+            )}
+          </p>
         </div>
-      </>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            className={classNames(
+              'w-[100px] rounded border-2 border-primaryYellow p-1',
+              {
+                'cursor-not-allowed opacity-50': pagination.skip <= 0,
+              }
+            )}
+            disabled={pagination.skip <= 0}
+            onClick={() => {
+              setPagination((prev) => ({
+                ...prev,
+                skip: prev.skip - 20,
+                take: prev.take - 20,
+              }));
+            }}
+          >
+            Prev
+          </button>
+          <p>
+            {pagination.skip === 0 ? 1 : pagination.skip} - {pagination.take}
+          </p>
+          <button
+            className={classNames(
+              'w-[100px] rounded border-2 border-primaryYellow p-1',
+              {
+                'cursor-not-allowed opacity-50':
+                  pagination.payloadLength !== 20,
+              }
+            )}
+            disabled={pagination.payloadLength !== 20}
+            onClick={() => {
+              setPagination((prev) => ({
+                ...prev,
+                skip: prev.skip + 20,
+                take: prev.take + 20,
+              }));
+            }}
+          >
+            Next
+          </button>
+        </div>
+      </div>
 
       {/* MODAL */}
       <SelectSchoolYearSemestreModal
@@ -506,6 +505,7 @@ function StudentContainer() {
         modal={modal.editStudent}
         toggleEditStudent={toggleEditStudent}
         objectEditStudent={objectEditStudent}
+        getStudentList={getStudentList}
       />
     </div>
   );
@@ -588,6 +588,23 @@ function StudentContainer() {
       })
       .catch((error) => {
         console.log(error);
+      });
+  }
+
+  function deleteStudents() {
+    axios
+      .delete(
+        `/api/data/student?deleteAll=true&schoolSemestre=${active.objectDataSchoolSemestre}`,
+        {}
+      )
+      .then((res) => {
+        getStudentList();
+
+        successfulNotify('Deleted All students Under this semestre');
+      })
+      .catch((err) => {
+        errorNotify("Something's wrong. Please try again later.");
+        console.error(err);
       });
   }
 }

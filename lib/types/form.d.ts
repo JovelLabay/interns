@@ -108,3 +108,20 @@ interface FormCreateStudent {
   lastName: string;
   emailAddress: string;
 }
+
+interface FormEditStudent extends FormCreateStudent {
+  accountStatus: boolean;
+  eligibility: boolean;
+  profileImage: string;
+  selfIntroduction: string;
+  address: string;
+  birthDate: string;
+  sex: string;
+  studentStatus: string;
+  phoneNumber: string;
+}
+
+interface FormCollegeDepartmentRequirementDocument {
+  nameOfDocument: string;
+  bucketUrlOfDocument: string;
+}

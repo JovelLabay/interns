@@ -1,26 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Student from '../controllers/student';
+import RequirementDocument from '../controllers/requirementDocument';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const requirementDocument = new RequirementDocument(req, res);
   const { method } = req;
-
-  const student = new Student(req, res);
 
   switch (method) {
     case 'GET':
-      student.getStudents();
+      requirementDocument.getRequirementDocuments();
       break;
     case 'POST':
-      student.addStudent();
+      requirementDocument.postRequirementDocuments();
       break;
     case 'PUT':
-      student.putStudents();
+      null;
       break;
     case 'DELETE':
-      student.deleteStudents();
+      requirementDocument.deleteRequirementDocuments();
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);

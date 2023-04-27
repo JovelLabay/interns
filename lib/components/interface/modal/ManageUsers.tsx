@@ -76,11 +76,11 @@ function ManageUsers({
   addModalToggle: () => void;
 }) {
   const context = useContext(DynamicContext);
-
   const [state, setState] = useState({
     isCreating: false,
     uploadingImage: false,
   });
+
   const {
     handleSubmit,
     register,

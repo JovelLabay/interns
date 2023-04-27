@@ -192,19 +192,19 @@ function ManageCollege({
           'Content-Type': 'application/json',
         },
       })
-      .then(() => {
-        toogleCreatingState(false);
-        successfulNotify('New College Created!');
-        addModalToggle();
-        clearState();
+      .then((res) => {
+        if (res.data.message === 'DUPLICATE_COLLEGE_NAME') {
+          warningNotify('Duplicate College Name!');
+        } else {
+          toogleCreatingState(false);
+          successfulNotify('New College Created!');
+          addModalToggle();
+          clearState();
+        }
       })
       .catch((err) => {
         toogleCreatingState(false);
-        errorNotify(
-          splitUnderScore(
-            err.response.data.error.meta.target ?? 'Something went wrong!'
-          )
-        );
+        errorNotify('Something went wrong!');
         console.error(err);
       });
   }

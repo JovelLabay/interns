@@ -23,28 +23,49 @@ class CollegeProgram {
 
     this.postCollegProgram = async () => {
       try {
-        const responsePayload = await this.prisma.college_Department.create({
-          data: {
-            college_department_image: collegeLogo || null,
-            college_department_name: departmentName,
-            college_department_description: departmentDescription || null,
-            college_coordinator: coordinator,
-            complete_program_name: programName,
-            abbreviated_program_name: abbreaviatedProgramName,
-          },
-        });
+        const checkCollegeName = await this.prisma.college_Department.findFirst(
+          {
+            where: {
+              college_department_name: {
+                equals: departmentName,
+              },
+              complete_program_name: {
+                equals: programName,
+              },
+              deletedAt: {
+                equals: null,
+              },
+            },
+          }
+        );
 
-        await this.prisma.activity_Logs.create({
-          data: {
-            activity_message: `New College created: ${responsePayload.college_department_name}`,
-            activity_action: 'CREATE',
-            college_department_id: responsePayload.id,
-          },
-        });
+        if (checkCollegeName) {
+          res.status(200).json({ message: 'DUPLICATE_COLLEGE_NAME' });
+        } else {
+          const responsePayload = await this.prisma.college_Department.create({
+            data: {
+              college_department_image: collegeLogo || null,
+              college_department_name: departmentName,
+              college_department_description: departmentDescription || null,
+              college_coordinator: coordinator,
+              complete_program_name: programName,
+              abbreviated_program_name: abbreaviatedProgramName,
+            },
+          });
 
-        res.status(200).json({ message: 'Successful', responsePayload });
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `New College created: ${responsePayload.college_department_name}`,
+              activity_action: 'CREATE',
+              college_department_id: responsePayload.id,
+            },
+          });
+
+          res.status(200).json({ message: 'Successful', responsePayload });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
+        console.log(error);
       }
     };
 

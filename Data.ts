@@ -125,7 +125,6 @@ export const data = {
       { id: 1, name: 'School Year | Semestre' },
       { id: 2, name: 'Students' },
       { id: 3, name: 'Documents' },
-      { id: 4, name: 'Generate Reports' },
       { id: 5, name: 'Companies' },
       { id: 6, name: 'Activity Logs' },
     ],

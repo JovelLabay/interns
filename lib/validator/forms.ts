@@ -76,6 +76,33 @@ const CreateStudent = yup.object({
     .required('Email is required'),
 });
 
+const EditStudentForm = yup.object({
+  firstName: yup.string().required('First Name is required'),
+  middleName: yup.string(),
+  lastName: yup.string().required('Last Name is required'),
+  emailAddress: yup
+    .string()
+    .email('Enter proper email address')
+    .required('Email is required'),
+  accountStatus: yup.boolean(),
+  eligibility: yup.boolean(),
+  profileImage: yup.string(),
+  selfIntroduction: yup.string(),
+  address: yup.string(),
+  birthDate: yup.string(),
+  sex: yup.string(),
+  studentStatus: yup.string(),
+  phoneNumber: yup
+    .string()
+    .max(11, 'Must be 11-digit')
+    .min(10, 'Must be a 11-digit number'),
+});
+
+const CreateCollegeDepartmentRequirementDocumentForm = yup.object({
+  nameOfDocument: yup.string().required('Name of the Document is required'),
+  bucketUrlOfDocument: yup.string(),
+});
+
 export {
   LogSignValidator,
 
@@ -85,4 +112,6 @@ export {
   CreateSchoolYear,
   CreateSchoolSemestre,
   CreateStudent,
+  EditStudentForm,
+  CreateCollegeDepartmentRequirementDocumentForm,
 };

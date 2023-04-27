@@ -1,10 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Transition, Dialog, Switch, Listbox } from '@headlessui/react';
 import classNames from 'classnames';
 import Image from 'next/image';
 import internsLogo from '@/assets/logo/interns_logo.png';
 import { Student_Status } from '@prisma/client';
 import { AiOutlineFileImage, AiOutlineFilePdf } from 'react-icons/ai';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { EditStudentForm } from '@validator/forms';
+import { FiChevronDown } from 'react-icons/fi';
+import { splitUnderScore } from '@utils/commonFunction';
+import { imageUploader } from '@utils/uploaderFunction';
+import {
+  errorNotify,
+  successfulNotify,
+} from '@component/interface/toast/toast';
+import axios from 'axios';
 
 const studentStatus = Object.entries(Student_Status);
 
@@ -12,14 +23,65 @@ function EditStudent({
   modal,
   toggleEditStudent,
   objectEditStudent,
+  getStudentList,
 }: {
   modal: boolean;
   toggleEditStudent(): void;
   objectEditStudent: string;
+  getStudentList(): void;
 }) {
+  const [state, setState] = useState({
+    isUpdating: false,
+    uploadingImage: false,
+  });
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<FormEditStudent>({
+    mode: 'onSubmit',
+    resolver: yupResolver(EditStudentForm),
+  });
+
   useEffect(() => {
     if (objectEditStudent) {
-      console.log(JSON.parse(objectEditStudent));
+      const {
+        email,
+        first_name,
+        last_name,
+        middle_name,
+        id,
+        is_active,
+        is_eligible,
+        Student_User_Profile,
+      } = JSON.parse(objectEditStudent);
+
+      setValue('firstName', first_name);
+      setValue('lastName', last_name);
+      setValue('middleName', middle_name);
+      setValue('emailAddress', email);
+      setValue('accountStatus', is_active);
+      setValue('eligibility', is_eligible);
+
+      setValue(
+        'profileImage',
+        Student_User_Profile.student_profile_image || ''
+      );
+      setValue(
+        'selfIntroduction',
+        Student_User_Profile.self_introduction || ''
+      );
+      setValue('address', Student_User_Profile.address || '');
+      setValue('birthDate', Student_User_Profile.date_of_birth || '');
+      setValue('sex', Student_User_Profile.sex || '');
+      setValue('studentStatus', Student_User_Profile.student_status || '');
+      setValue('phoneNumber', Student_User_Profile.phone_number || '');
+
+      //   GET DOCUMENTS
+      getStudentDocument(Student_User_Profile.id);
     }
   }, [objectEditStudent]);
 
@@ -67,8 +129,10 @@ function EditStudent({
                 </div>
 
                 <div className="h-[85vh] overflow-auto py-2 pr-2 text-secondaryWhite">
-                  <h3 className={'font-medium'}>Submitted Documents</h3>
-                  <div className="flex flex-row justify-start gap-2 overflow-auto pb-2">
+                  <h3 className={'text-center font-medium'}>
+                    Submitted Documents
+                  </h3>
+                  <div className="flex flex-row justify-center gap-2 overflow-auto pb-2">
                     <button
                       className={classNames(
                         'rounded bg-blue-500 p-2 text-white'
@@ -77,17 +141,18 @@ function EditStudent({
                     >
                       <AiOutlineFilePdf size={20} />
                     </button>
-                    <button
-                      className={classNames(
-                        'rounded bg-green-500 p-2 text-white'
-                      )}
-                      title="sdfs"
-                    >
-                      <AiOutlineFilePdf size={20} />
-                    </button>
                   </div>
 
-                  <form className="mt-2 flex flex-col gap-3">
+                  <form
+                    className="mt-2 flex flex-col gap-3"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+
+                      handleSubmit((data) =>
+                        updateStudentUserStudentProfile(data)
+                      )();
+                    }}
+                  >
                     <h3 className={'font-medium'}>Student Details</h3>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
@@ -96,10 +161,12 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
                         )}
                         type="text"
                         placeholder="First Name"
+                        disabled
+                        {...register('firstName')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -108,10 +175,12 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Middle Name"
+                        disabled
+                        {...register('middleName')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -121,10 +190,12 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Last Name"
+                        disabled
+                        {...register('lastName')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -134,10 +205,12 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Email Address"
+                        disabled
+                        {...register('emailAddress')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -145,26 +218,65 @@ function EditStudent({
                         Account Status
                         <br />
                         <span className={'text-xs italic text-red-500'}>
-                          *This is the activation switch for the Plan of Study
+                          *Toggle for if you want the student cannot login to
+                          the system for any reasons.
                         </span>
                       </label>
-                      {/*            <Switch*/}
-                      {/*              checked={true}*/}
-                      {/*              onChange={() => null}*/}
-                      {/*              className={`${*/}
-                      {/*                true ? 'bg-primaryYellow' : 'bg-primaryYellowHover'*/}
-                      {/*              }*/}
-                      {/*rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}*/}
-                      {/*            >*/}
-                      {/*              <span className="sr-only">Use setting</span>*/}
-                      {/*              <span*/}
-                      {/*                aria-hidden="true"*/}
-                      {/*                className={`${*/}
-                      {/*                  true ? 'translate-x-9' : 'translate-x-0'*/}
-                      {/*                }*/}
-                      {/*  rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}*/}
-                      {/*              />*/}
-                      {/*            </Switch>*/}
+                      <Switch
+                        checked={watch().accountStatus}
+                        onChange={() => {
+                          setValue('accountStatus', !watch().accountStatus);
+                        }}
+                        className={`${
+                          watch().accountStatus
+                            ? 'bg-primaryYellow'
+                            : 'bg-primaryYellowHover'
+                        }
+          rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                      >
+                        <span className="sr-only">Use setting</span>
+                        <span
+                          aria-hidden="true"
+                          className={`${
+                            watch().accountStatus
+                              ? 'translate-x-9'
+                              : 'translate-x-0'
+                          }
+            rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                        />
+                      </Switch>
+                    </div>
+                    <div className="flex flex-col items-start gap-2">
+                      <label htmlFor="email" className="text-secondaryWhite">
+                        Student Eligibility
+                      </label>
+                      <span className={'text-xs italic text-red-500'}>
+                        *Toggle for student if it is eligible to continue
+                        practicums.
+                      </span>
+                      <Switch
+                        checked={watch().eligibility}
+                        onChange={() => {
+                          setValue('eligibility', !watch().eligibility);
+                        }}
+                        className={`${
+                          watch().eligibility
+                            ? 'bg-primaryYellow'
+                            : 'bg-primaryYellowHover'
+                        }
+          rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                      >
+                        <span className="sr-only">Use setting</span>
+                        <span
+                          aria-hidden="true"
+                          className={`${
+                            watch().eligibility
+                              ? 'translate-x-9'
+                              : 'translate-x-0'
+                          }
+            rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                        />
+                      </Switch>
                     </div>
 
                     <h3 className={'font-medium'}>Student Profile Details</h3>
@@ -174,11 +286,15 @@ function EditStudent({
                       </label>
                       <div className="flex w-full justify-center">
                         <Image
-                          width={70}
-                          height={70}
+                          width={100}
+                          height={100}
                           alt="profileImage"
                           className="rounded-full"
-                          src={internsLogo}
+                          src={
+                            watch().profileImage === ''
+                              ? internsLogo
+                              : watch().profileImage
+                          }
                         />
                       </div>
                       <label className="flex w-full cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
@@ -193,8 +309,53 @@ function EditStudent({
                           accept="image/png, image/jpeg"
                           title="profileImage"
                           name="profileImage"
+                          onChange={async (e) => {
+                            if (!e.target.files || e.target.files.length === 0)
+                              return;
+
+                            setState((prev) => {
+                              return {
+                                ...prev,
+                                uploadingImage: true,
+                              };
+                            });
+                            const imageFile = e.target.files[0] as File;
+
+                            const uploadImagePayload = await imageUploader(
+                              imageFile
+                            );
+
+                            if (
+                              uploadImagePayload ===
+                              'The resource already exists'
+                            ) {
+                              errorNotify(uploadImagePayload);
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  uploadingImage: false,
+                                };
+                              });
+                              return;
+                            } else {
+                              setValue('profileImage', uploadImagePayload);
+                              successfulNotify('Image Uploaded!');
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  uploadingImage: false,
+                                };
+                              });
+                            }
+                          }}
                         />
                       </label>
+
+                      {state.uploadingImage && (
+                        <p className="w-full text-ellipsis rounded bg-green-100 p-2 text-center text-xs">
+                          Uploading Image...
+                        </p>
+                      )}
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
@@ -205,6 +366,7 @@ function EditStudent({
                           'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         placeholder="Self Introduction"
+                        {...register('selfIntroduction')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -216,7 +378,31 @@ function EditStudent({
                           'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         placeholder="Address"
+                        {...register('address')}
                       />
+                    </div>
+                    <div className="flex flex-col items-start gap-2">
+                      <label htmlFor="email" className="text-secondaryWhite">
+                        Phone Number
+                      </label>
+                      <input
+                        className={classNames(
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                          {
+                            'border-red-500 bg-red-100 placeholder:text-white':
+                              errors.phoneNumber?.message,
+                          }
+                        )}
+                        type="text"
+                        placeholder="Phone Number"
+                        {...register('phoneNumber')}
+                      />
+
+                      {errors.phoneNumber?.message && (
+                        <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-center text-xs text-red-500">
+                          {errors.phoneNumber?.message}
+                        </p>
+                      )}
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
@@ -228,6 +414,7 @@ function EditStudent({
                         )}
                         type="date"
                         placeholder="Date of Birth"
+                        {...register('birthDate')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
@@ -240,143 +427,59 @@ function EditStudent({
                         )}
                         type="text"
                         placeholder="Sex"
+                        {...register('sex')}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
                         Student Status
                       </label>
-                      {/*<Listbox*/}
-                      {/*  value={'No Data'}*/}
-                      {/*  onChange={(data) => {*/}
-                      {/*    null;*/}
-                      {/*  }}*/}
-                      {/*>*/}
-                      {/*  {({ open }: { open: boolean }) => (*/}
-                      {/*    <div className="relative">*/}
-                      {/*      <Listbox.Button*/}
-                      {/*        className={classNames(*/}
-                      {/*          'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'*/}
-                      {/*        )}*/}
-                      {/*      >*/}
-                      {/*        gghjghjghj*/}
-                      {/*        <FiChevronDown*/}
-                      {/*          size={30}*/}
-                      {/*          className={classNames(*/}
-                      {/*            'text-secondaryWhite duration-300',*/}
-                      {/*            {*/}
-                      {/*              'rotate-180': open,*/}
-                      {/*            }*/}
-                      {/*          )}*/}
-                      {/*        />*/}
-                      {/*      </Listbox.Button>*/}
-                      {/*      <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">*/}
-                      {/*        {studentStatus.map((person, index) => (*/}
-                      {/*          <Listbox.Option*/}
-                      {/*            className="py-1"*/}
-                      {/*            key={index}*/}
-                      {/*            // value={person[1]}*/}
-                      {/*          >*/}
-                      {/*            {JSON.stringify(person)}*/}
-                      {/*          </Listbox.Option>*/}
-                      {/*        ))}*/}
-                      {/*      </Listbox.Options>*/}
-                      {/*    </div>*/}
-                      {/*  )}*/}
-                      {/*</Listbox>*/}
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        Student Verification
-                      </label>
-                      <p
-                        className={classNames(
-                          'rounded-full bg-green-200 py-2 px-3 text-secondaryWhite'
-                          // item.is_active ? 'bg-green-200' : 'bg-red-200'
-                        )}
+                      <Listbox
+                        value={watch().studentStatus || 'No Data'}
+                        onChange={(data) => {
+                          setValue('studentStatus', data);
+                        }}
                       >
-                        Active
-                      </p>
-                    </div>
-
-                    <h3 className={'font-medium'}>College Details</h3>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        College Logo
-                      </label>
-                      <div className="flex w-full justify-center">
-                        <Image
-                          width={70}
-                          height={70}
-                          alt="profileImage"
-                          className="rounded-full"
-                          src={internsLogo}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        College Department Name
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-full cursor-not-allowed rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+                        {({ open }: { open: boolean }) => (
+                          <div className="relative">
+                            <Listbox.Button
+                              className={classNames(
+                                'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                              )}
+                            >
+                              {watch().studentStatus === 'NOT_SET'
+                                ? 'NOT SET'
+                                : watch().studentStatus}
+                              <FiChevronDown
+                                size={30}
+                                className={classNames(
+                                  'text-secondaryWhite duration-300',
+                                  {
+                                    'rotate-180': open,
+                                  }
+                                )}
+                              />
+                            </Listbox.Button>
+                            <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
+                              {studentStatus
+                                .filter(
+                                  (person) =>
+                                    person[1] !== 'APPLYING' &&
+                                    person[1] !== 'APPLIED'
+                                )
+                                .map((person, index) => (
+                                  <Listbox.Option
+                                    className="py-1"
+                                    key={index}
+                                    value={person[1]}
+                                  >
+                                    {splitUnderScore(person[1])}
+                                  </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
+                          </div>
                         )}
-                        type="text"
-                        disabled
-                        placeholder="College Department Name"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        Program Name
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-full cursor-not-allowed rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
-                        )}
-                        type="text"
-                        disabled
-                        placeholder="Program Name"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        College Coordinator
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-full cursor-not-allowed rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
-                        )}
-                        type="text"
-                        disabled
-                        placeholder="College Coordinator"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        College Description
-                      </label>
-                      <textarea
-                        className={classNames(
-                          'w-full cursor-not-allowed rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
-                        )}
-                        disabled
-                        placeholder="College Description"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        Abbreviated Program Name
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-full cursor-not-allowed rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
-                        )}
-                        type="text"
-                        disabled
-                        placeholder="Abbreviated Program Name"
-                      />
+                      </Listbox>
                     </div>
 
                     <input
@@ -384,7 +487,11 @@ function EditStudent({
                         'w-full rounded-md bg-primaryYellow py-2 px-1'
                       )}
                       type="submit"
-                      value={'Update Student'}
+                      value={
+                        state.isUpdating
+                          ? 'Updating Student...'
+                          : 'Update Student'
+                      }
                     />
                   </form>
                 </div>
@@ -395,6 +502,57 @@ function EditStudent({
       </Dialog>
     </Transition>
   );
+
+  function updateStudentUserStudentProfile(data: FormEditStudent) {
+    if (objectEditStudent) {
+      setState((prev) => ({ ...prev, isUpdating: true }));
+
+      const { id } = JSON.parse(objectEditStudent);
+
+      const config = {
+        method: 'put',
+        url: `/api/data/student?studentUserId=${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+      };
+
+      axios
+        .request(config)
+        .then(() => {
+          getStudentList();
+          successfulNotify('Updated Successfully');
+
+          toggleEditStudent();
+          reset();
+          setState((prev) => ({ ...prev, isUpdating: false }));
+        })
+        .catch((error) => {
+          errorNotify('Something Went Wrong');
+          console.log(error);
+
+          setState((prev) => ({ ...prev, isUpdating: false }));
+        });
+    }
+  }
+
+  function getStudentDocument(id: number) {
+    // const config = {
+    //   method: 'get',
+    //   url: `/api/data/studentDocument?id=${id}`,
+    // };
+    //
+    // axios
+    //   .request(config)
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    null;
+  }
 }
 
 export default EditStudent;

@@ -4,5 +4,8 @@
   },
   "student_bulk_imports": {
     "student_bulk": "student_list/bulk_import/"
+  },
+  "requirement_docuemnts": {
+    "admin_template": "admin_document_template/templates/"
   }
 }

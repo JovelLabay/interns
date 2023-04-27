@@ -1,5 +1,5 @@
 // REACT
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // UI
 import { Tab } from '@headlessui/react';
@@ -14,7 +14,6 @@ import DocumentsContainer from '@component/blocks/navigation/school/tabs/documen
 import CompaniesContainer from '@component/blocks/navigation/school/tabs/companiesContainer';
 import Activitylogs from '@component/blocks/navigation/school/tabs/activitylogs';
 import SchoolYearSemestreContainer from '@component/blocks/navigation/school/tabs/schoolYearSemestreContainer';
-import GenerateReports from './tabs/generateReports';
 
 function SchoolDashboardContainer() {
   const [tabSelected, setTabSelected] = useState(0);
@@ -56,9 +55,6 @@ function SchoolDashboardContainer() {
           </Tab.Panel>
           <Tab.Panel>
             <DocumentsContainer />
-          </Tab.Panel>
-          <Tab.Panel>
-            <GenerateReports />
           </Tab.Panel>
           <Tab.Panel>
             <CompaniesContainer />
