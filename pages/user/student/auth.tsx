@@ -9,19 +9,22 @@ import SecondayStaticFooter from 'lib/components/blocks/staticPage/SecondayStati
 
 // TOAST AND LOADER
 import { ToastContainer } from 'react-toastify';
-import { BeatLoader } from 'react-spinners';
 import SplashLoading from '@component//interface/loading/SplashLoading';
 import classNames from 'classnames';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogSignValidator } from '@validator/forms';
+import axios from 'axios';
+import { errorNotify, warningNotify } from '@component/interface/toast/toast';
 
 function Auth() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [submit, setSubmit] = useState({
     isSubmitting: false,
+    incorrect: false,
+    notFound: false,
   });
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const {
@@ -30,6 +33,8 @@ function Auth() {
     formState: { errors },
     reset,
     clearErrors,
+    setValue,
+    watch,
   } = useForm<FormLogin>({
     mode: 'onSubmit',
     resolver: yupResolver(LogSignValidator),
@@ -37,6 +42,39 @@ function Auth() {
 
   useEffect(() => {
     document.title = 'School | Log in';
+
+    const expirationTime = new Date();
+    expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
+
+    const cookie = document.cookie
+      .split(';')
+      .find((c) => c.trim().startsWith('authStudentCookie='));
+    const valueCookie = cookie?.split('=')[1];
+
+    if (valueCookie) {
+      axios
+        .get(`/api/data/authStudent?checkAuth=${valueCookie}`)
+        .then((res) => {
+          if (res.data.message === 'CORRECT_CREDENTIALS') {
+            const cookieString = `authStudentCookie=${
+              res.data.responsePayload
+            }; expires=${expirationTime.toUTCString()}; path=/`;
+            document.cookie = cookieString;
+
+            router.push('/user/student/dashboard');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          errorNotify('Something went wrong');
+          document.cookie =
+            'authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   if (isLoading) {
@@ -45,12 +83,7 @@ function Auth() {
 
   return (
     <div className="min-h-[80vh] bg-primaryYellow">
-      <div className="flex min-h-[80vh] items-center justify-center lg:hidden">
-        <h2 className="text-center text-white">
-          Please do not use Table/Phone devices
-        </h2>
-      </div>
-      <div className="dynamic-main-container hidden min-h-[80vh] flex-col items-center justify-center lg:flex">
+      <div className="dynamic-main-container flex min-h-[80vh] flex-col items-center justify-center">
         <div className="rounded-md bg-white p-5">
           {/* TITLE */}
           <h2 className="text-center text-[28px]">
@@ -74,7 +107,7 @@ function Auth() {
               e.preventDefault();
 
               handleSubmit((data) => {
-                console.log(data);
+                authentication(data);
               })();
             }}
           >
@@ -172,6 +205,63 @@ function Auth() {
     reset();
 
     clearErrors();
+  }
+
+  function authentication(data: FormLogin) {
+    setSubmit({ isSubmitting: true, incorrect: false, notFound: false });
+
+    axios
+      .post(
+        `/api/data/authStudent?authEmail=${data.email}&authPassword=${data.password}`
+      )
+      .then((res) => {
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
+
+        const responseCookie = res.data.responsePayload;
+        const responseMessage = res.data.message;
+
+        if (responseMessage === 'CORRECT_CREDENTIALS') {
+          const cookieString = `authStudentCookie=${responseCookie}; expires=${expirationTime.toUTCString()}; path=/`;
+          document.cookie = cookieString;
+
+          setSubmit({
+            isSubmitting: false,
+            incorrect: false,
+            notFound: false,
+          });
+
+          router.push('/user/student/dashboard');
+        } else if (responseMessage === 'INCORRECT_PASSWORD') {
+          warningNotify('Incorrect Credentials');
+          setValue('password', '');
+          setSubmit({
+            isSubmitting: false,
+            incorrect: true,
+            notFound: false,
+          });
+        } else if (responseMessage === 'ACCOUNT_IS_INACTIVE') {
+          warningNotify(`${watch('email')} is Inactive`);
+          setValue('password', '');
+          setSubmit({
+            isSubmitting: false,
+            notFound: true,
+            incorrect: false,
+          });
+        } else {
+          warningNotify(`${watch('email')} Does Not Exist`);
+          setValue('password', '');
+          setSubmit({
+            isSubmitting: false,
+            notFound: true,
+            incorrect: false,
+          });
+        }
+      })
+      .catch((err) => {
+        errorNotify('Something went wrong');
+        console.error(err);
+      });
   }
 }
 

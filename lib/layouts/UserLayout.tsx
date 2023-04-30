@@ -14,6 +14,8 @@ function UserLayout({ children }: { children: ReactNode }) {
     email: '',
   });
 
+  const [studentData, setStudentData] = useState('');
+
   useEffect(() => {
     window.addEventListener('online', (data) => {
       console.log(data);
@@ -33,6 +35,10 @@ function UserLayout({ children }: { children: ReactNode }) {
         setIsDarkMode,
         userData,
         setUserData,
+
+        // STUDENT
+        studentData,
+        setStudentData,
       }}
     >
       {children}

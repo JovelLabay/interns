@@ -309,97 +309,95 @@ function AddStudentBulk({
                 </div>
 
                 <div className="mt-2">
-                  <>
-                    <p className="mx-5 mb-2 text-sm italic text-secondaryWhite">
-                      * Importing the same CSV file will overwrite the exisiting
-                      student list with its corresponding school year, school
-                      semestre and college department.
-                    </p>
-                    <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                      <AiOutlineFileExcel
-                        size={40}
-                        className="text-secondaryWhite"
-                      />
-                      <span className="mt-10 w-[50%] truncate">
-                        {'Upload CSV'}
-                      </span>
-                      <input
-                        className="imageUpload"
-                        type="file"
-                        accept=".csv"
-                        title="csvUpload"
-                        name="csvUpload"
-                        onChange={async (e) => {
-                          if (!e.target.files || e.target.files.length === 0)
-                            return;
+                  <p className="mx-5 mb-2 text-sm italic text-secondaryWhite">
+                    * Importing the same CSV file will overwrite the exisiting
+                    student list with its corresponding school year, school
+                    semestre and college department.
+                  </p>
+                  <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
+                    <AiOutlineFileExcel
+                      size={40}
+                      className="text-secondaryWhite"
+                    />
+                    <span className="mt-10 w-[50%] truncate">
+                      {'Upload CSV'}
+                    </span>
+                    <input
+                      className="imageUpload"
+                      type="file"
+                      accept=".csv"
+                      title="csvUpload"
+                      name="csvUpload"
+                      onChange={async (e) => {
+                        if (!e.target.files || e.target.files.length === 0)
+                          return;
 
+                        setState((prev) => {
+                          return {
+                            ...prev,
+                            isUploading: true,
+                          };
+                        });
+                        const csvFile = e.target.files[0] as File;
+                        const uploadCsvPayload = await csvUploader(csvFile);
+
+                        if (
+                          uploadCsvPayload ===
+                          'The resource already exists. Pls rename the file'
+                        ) {
+                          errorNotify(uploadCsvPayload);
                           setState((prev) => {
                             return {
                               ...prev,
-                              isUploading: true,
+                              uploadingImage: false,
                             };
                           });
-                          const csvFile = e.target.files[0] as File;
-                          const uploadCsvPayload = await csvUploader(csvFile);
+                          return;
+                        } else {
+                          successfulNotify('CSV Uploaded!');
 
-                          if (
-                            uploadCsvPayload ===
-                            'The resource already exists. Pls rename the file'
-                          ) {
-                            errorNotify(uploadCsvPayload);
-                            setState((prev) => {
-                              return {
-                                ...prev,
-                                uploadingImage: false,
-                              };
-                            });
-                            return;
-                          } else {
-                            successfulNotify('CSV Uploaded!');
+                          const config = {
+                            method: 'post',
+                            maxBodyLength: Infinity,
+                            url: `/api/data/student?bulkImport=true&schoolYear=${object.objectDataSchoolYear}&schoolSemestre=${object.objectDataSchoolSemestre}&collegeDepartment=${object.ObjectDataCollegeDepartment}`,
+                            headers: {
+                              'Content-Type': 'text/csv',
+                            },
+                            data: csvFile,
+                          };
 
-                            const config = {
-                              method: 'post',
-                              maxBodyLength: Infinity,
-                              url: `/api/data/student?bulkImport=true&schoolYear=${object.objectDataSchoolYear}&schoolSemestre=${object.objectDataSchoolSemestre}&collegeDepartment=${object.ObjectDataCollegeDepartment}`,
-                              headers: {
-                                'Content-Type': 'text/csv',
-                              },
-                              data: csvFile,
-                            };
-
-                            axios
-                              .request(config)
-                              .then(() => {
-                                setState((prev) => {
-                                  return {
-                                    ...prev,
-                                    isUploading: false,
-                                  };
-                                });
-
-                                toggleAddStudentBulk();
-                                getStudentList();
-                              })
-                              .catch((error) => {
-                                console.log(error);
-
-                                setState((prev) => {
-                                  return {
-                                    ...prev,
-                                    isUploading: false,
-                                  };
-                                });
+                          axios
+                            .request(config)
+                            .then(() => {
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  isUploading: false,
+                                };
                               });
-                          }
-                        }}
-                      />
-                    </label>
-                    {state.isUploading && (
-                      <p className="mt-2 text-ellipsis rounded bg-green-100 p-2 text-xs">
-                        Uploading CSV...
-                      </p>
-                    )}
-                  </>
+
+                              toggleAddStudentBulk();
+                              getStudentList();
+                            })
+                            .catch((error) => {
+                              console.log(error);
+
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  isUploading: false,
+                                };
+                              });
+                            });
+                        }
+                      }}
+                    />
+                  </label>
+                  {state.isUploading && (
+                    <p className="mt-2 text-ellipsis rounded bg-green-100 p-2 text-xs">
+                      Uploading CSV...
+                    </p>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

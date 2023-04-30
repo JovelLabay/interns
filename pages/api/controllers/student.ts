@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import Papa from 'papaparse';
+import { hashPassword } from '@utils/backendFunction';
 
 class Student {
   private prisma = new PrismaClient();
@@ -91,12 +92,14 @@ class Student {
                 middleName: d[1],
                 lastName: d[2],
                 email: d[3],
+                password: d[4],
               };
             }) as {
               firstName: string;
               middleName: string;
               lastName: string;
               email: string;
+              password: string;
             }[];
 
             try {
@@ -111,6 +114,7 @@ class Student {
                     middle_name: d.middleName,
                     email: d.email,
                     school_semester_id: parsedDataObjectSchoolSemestre.id,
+                    password: await hashPassword(d.password),
                   },
                   update: {
                     first_name: d.firstName,
@@ -331,18 +335,26 @@ class Student {
             },
           });
 
-          console.log(responsePayload);
-
           res.status(200).json({
             message: 'Successful',
           });
         } else {
+          await this.prisma.student_User.update({
+            where: {
+              id: Number(id),
+            },
+            data: {
+              deletedAt: new Date(),
+            },
+          });
+
           res.status(200).json({
             message: 'Successful',
           });
         }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
+        console.log(error);
       }
     };
   }

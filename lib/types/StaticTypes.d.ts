@@ -19,4 +19,8 @@ interface Dynamic {
       email: string;
     }>
   >;
+
+  // STUDENT ONLY
+  studentData?: string;
+  setStudentData?: React.Dispatch<React.SetStateAction<string>>;
 }

@@ -6,22 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/schoolDashboardContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/staticPage/AboutDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/staticPage/AboutDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/staticPage/DescWithImage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/staticPage/DescWithImage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageCollege.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/addStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/reset/[resetAdminEmail_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/reset/[resetAdminEmail_id].tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +121,9 @@
       <workItem from="1682585320781" duration="3477000" />
       <workItem from="1682607908187" duration="333000" />
       <workItem from="1682608695466" duration="45000" />
-      <workItem from="1682609087608" duration="571000" />
+      <workItem from="1682609087608" duration="983000" />
+      <workItem from="1682642633609" duration="225000" />
+      <workItem from="1682642869035" duration="6593000" />
     </task>
     <servers />
   </component>

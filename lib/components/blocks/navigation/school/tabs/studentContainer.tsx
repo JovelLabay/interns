@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 import {
-  AiOutlineCheckCircle,
   AiOutlineClear,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineInfoCircle,
+  AiOutlineMail,
   AiOutlineUserAdd,
   AiOutlineUsergroupAdd,
 } from 'react-icons/ai';
-import { MdPassword } from 'react-icons/md';
 import { BiCategoryAlt, BiRefresh } from 'react-icons/bi';
 
 import axios from 'axios';
@@ -28,6 +27,9 @@ import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend'
 import EditStudent from '@component/interface/modal/school/editStudent';
 import SelectCollege from '@component/interface/modal/school/selectCollege';
 import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
+import { HiOutlineDocumentReport, HiOutlineDocumentText } from 'react-icons/hi';
+import SubmittedDocument from '@component/interface/modal/school/submittedDocument';
+import GenerateReport from '@component/interface/modal/school/generateReport';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -39,6 +41,8 @@ function StudentContainer() {
     addStudent: false,
     info: false,
     editStudent: false,
+    submittedDocument: false,
+    generateReport: false,
   });
 
   const [active, setActive] = useState({
@@ -186,9 +190,10 @@ function StudentContainer() {
               active.schoolSemestre === '' ||
               active.collegeDepartment === ''
             }
-            title="Generate Eligible Student"
+            title="Generate Report"
+            onClick={() => toggleGenerateReport()}
           >
-            <AiOutlineCheckCircle size={20} />
+            <HiOutlineDocumentReport size={20} />
           </button>
           <button
             className={classNames('rounded bg-red-500 p-2 text-white', {
@@ -203,25 +208,9 @@ function StudentContainer() {
               active.collegeDepartment === ''
             }
             title={`Delete All Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
-            onClick={() => deleteStudents()}
+            onClick={() => deleteStudents({ deletedAll: 'true' })}
           >
             <AiOutlineDelete size={20} />
-          </button>
-          <button
-            className={classNames('rounded bg-red-500 p-2 text-white', {
-              'cursor-not-allowed opacity-50':
-                active.schoolYear === '' ||
-                active.schoolSemestre === '' ||
-                active.collegeDepartment === '',
-            })}
-            disabled={
-              active.schoolYear === '' ||
-              active.schoolSemestre === '' ||
-              active.collegeDepartment === ''
-            }
-            title="Send Password All"
-          >
-            <MdPassword size={20} />
           </button>
 
           <div className={classNames('flex items-center justify-center gap-1')}>
@@ -392,6 +381,7 @@ function StudentContainer() {
                     <button
                       className="cursor-pointer rounded bg-red-400 p-2"
                       title="Delete User"
+                      onClick={() => deleteStudents({ id: item.id })}
                     >
                       <AiOutlineDelete size={25} className="text-mainBgWhite" />
                     </button>
@@ -403,10 +393,21 @@ function StudentContainer() {
                       <AiOutlineEdit size={25} className="text-mainBgWhite" />
                     </button>
                     <button
-                      className="cursor-pointer rounded bg-blue-400 p-2"
-                      title="Send Reset Password Link"
+                      className="cursor-pointer rounded bg-yellow-400 p-2"
+                      title="Document of User"
+                      onClick={() => toggleSubmittedDoc()}
                     >
-                      <MdPassword size={25} className="text-mainBgWhite" />
+                      <HiOutlineDocumentText
+                        size={25}
+                        className="text-mainBgWhite"
+                      />
+                    </button>
+                    <button
+                      className="cursor-pointer rounded bg-violet-400 p-2"
+                      title="Email User"
+                      onClick={() => toggleEditStudent(JSON.stringify(item))}
+                    >
+                      <AiOutlineMail size={25} className="text-mainBgWhite" />
                     </button>
                   </div>
                 </td>
@@ -527,6 +528,16 @@ function StudentContainer() {
         objectEditStudent={objectEditStudent}
         getStudentList={getStudentList}
       />
+
+      <SubmittedDocument
+        modal={modal.submittedDocument}
+        toggleSubmittedDoc={toggleSubmittedDoc}
+      />
+
+      <GenerateReport
+        modal={modal.generateReport}
+        toggleGenerateReport={toggleGenerateReport}
+      />
     </div>
   );
 
@@ -563,6 +574,20 @@ function StudentContainer() {
     setModal((prev) => ({
       ...prev,
       info: !prev.info,
+    }));
+  }
+
+  function toggleSubmittedDoc() {
+    setModal((prev) => ({
+      ...prev,
+      submittedDocument: !prev.submittedDocument,
+    }));
+  }
+
+  function toggleGenerateReport() {
+    setModal((prev) => ({
+      ...prev,
+      generateReport: !prev.generateReport,
     }));
   }
 
@@ -611,15 +636,21 @@ function StudentContainer() {
       });
   }
 
-  function deleteStudents() {
+  function deleteStudents({
+    id,
+    deletedAll,
+  }: {
+    id?: number;
+    deletedAll?: string;
+  }) {
     axios
       .delete(
-        `/api/data/student?deleteAll=true&schoolSemestre=${active.objectDataSchoolSemestre}`
+        `/api/data/student?deleteAll=${deletedAll}&schoolSemestre=${active.objectDataSchoolSemestre}&id=${id}`
       )
       .then(() => {
         getStudentList();
 
-        successfulNotify('Deleted All students Under this semestre');
+        successfulNotify('Deleted student/s Under this semestre');
       })
       .catch((err) => {
         errorNotify("Something's wrong. Please try again later.");

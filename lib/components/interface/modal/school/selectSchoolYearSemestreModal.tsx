@@ -154,6 +154,7 @@ function SelectSchoolYearSemestreModal({
                                           toggleSelectCollege();
                                         }}
                                       >
+                                        Semestre:{' '}
                                         {schoolSemestre.school_semester_name}{' '}
                                         {schoolSemestre.is_active
                                           ? ''

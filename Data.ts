@@ -128,6 +128,11 @@ export const data = {
       { id: 5, name: 'Companies' },
       { id: 6, name: 'Activity Logs' },
     ],
+    tabs2: [
+      { id: 1, name: 'Details' },
+      { id: 2, name: 'Documents' },
+      { id: 3, name: 'Account' },
+    ],
     schoolYearSemestre: {
       schoolYear: [
         { id: 1, name: 'Add Semestre' },

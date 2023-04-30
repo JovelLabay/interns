@@ -11,7 +11,7 @@ import axios from 'axios';
 import classNames from 'classnames';
 import { Transition, Dialog, Switch, Listbox } from '@headlessui/react';
 import { Student_Status } from '@prisma/client';
-import { AiOutlineFileImage, AiOutlineFilePdf } from 'react-icons/ai';
+import { AiOutlineFileImage } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FiChevronDown } from 'react-icons/fi';
@@ -125,20 +125,6 @@ function EditStudent({
                 </div>
 
                 <div className="h-[85vh] overflow-auto py-2 pr-2 text-secondaryWhite">
-                  <h3 className={'text-center font-medium'}>
-                    Submitted Documents
-                  </h3>
-                  <div className="flex flex-row justify-center gap-2 overflow-auto pb-2">
-                    <button
-                      className={classNames(
-                        'rounded bg-blue-500 p-2 text-white'
-                      )}
-                      title="sdfs"
-                    >
-                      <AiOutlineFilePdf size={20} />
-                    </button>
-                  </div>
-
                   <form
                     className="mt-2 flex flex-col gap-3"
                     onSubmit={(e) => {
@@ -353,6 +339,59 @@ function EditStudent({
                         </p>
                       )}
                     </div>
+
+                    <div className="flex flex-col items-start gap-2">
+                      <label htmlFor="email" className="text-secondaryWhite">
+                        Student Status
+                      </label>
+                      <Listbox
+                        value={watch().studentStatus || 'No Data'}
+                        onChange={(data) => {
+                          setValue('studentStatus', data);
+                        }}
+                      >
+                        {({ open }: { open: boolean }) => (
+                          <div className="relative">
+                            <Listbox.Button
+                              className={classNames(
+                                'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                              )}
+                            >
+                              {watch().studentStatus === 'NOT_SET'
+                                ? 'NOT SET'
+                                : watch().studentStatus}
+                              <FiChevronDown
+                                size={30}
+                                className={classNames(
+                                  'text-secondaryWhite duration-300',
+                                  {
+                                    'rotate-180': open,
+                                  }
+                                )}
+                              />
+                            </Listbox.Button>
+                            <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
+                              {studentStatus
+                                .filter(
+                                  (person) =>
+                                    person[1] !== 'NOT_SET' &&
+                                    person[1] !== 'APPLYING' &&
+                                    person[1] !== 'APPLIED'
+                                )
+                                .map((person, index) => (
+                                  <Listbox.Option
+                                    className="py-1"
+                                    key={index}
+                                    value={person[1]}
+                                  >
+                                    {splitUnderScore(person[1])}
+                                  </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
+                          </div>
+                        )}
+                      </Listbox>
+                    </div>
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
                         Self Introduction
@@ -415,57 +454,6 @@ function EditStudent({
                         placeholder="Sex"
                         {...register('sex')}
                       />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        Student Status
-                      </label>
-                      <Listbox
-                        value={watch().studentStatus || 'No Data'}
-                        onChange={(data) => {
-                          setValue('studentStatus', data);
-                        }}
-                      >
-                        {({ open }: { open: boolean }) => (
-                          <div className="relative">
-                            <Listbox.Button
-                              className={classNames(
-                                'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
-                              )}
-                            >
-                              {watch().studentStatus === 'NOT_SET'
-                                ? 'NOT SET'
-                                : watch().studentStatus}
-                              <FiChevronDown
-                                size={30}
-                                className={classNames(
-                                  'text-secondaryWhite duration-300',
-                                  {
-                                    'rotate-180': open,
-                                  }
-                                )}
-                              />
-                            </Listbox.Button>
-                            <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
-                              {studentStatus
-                                .filter(
-                                  (person) =>
-                                    person[1] !== 'APPLYING' &&
-                                    person[1] !== 'APPLIED'
-                                )
-                                .map((person, index) => (
-                                  <Listbox.Option
-                                    className="py-1"
-                                    key={index}
-                                    value={person[1]}
-                                  >
-                                    {splitUnderScore(person[1])}
-                                  </Listbox.Option>
-                                ))}
-                            </Listbox.Options>
-                          </div>
-                        )}
-                      </Listbox>
                     </div>
 
                     <input

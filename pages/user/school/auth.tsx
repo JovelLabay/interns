@@ -50,9 +50,8 @@ function Auth() {
 
     if (valueCookie) {
       axios
-        .post(`/api/data/adminUser?checkAuth=${valueCookie}`)
+        .get(`/api/data/adminUser?checkAuth=${valueCookie}`)
         .then((res) => {
-          console.log(res);
           if (res.data.message === 'CORRECT_CREDENTIALS') {
             const cookieString = `authCookie=${
               res.data.responsePayload
@@ -223,7 +222,8 @@ function Auth() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        errorNotify('Something went wrong');
+        console.error(err);
       });
   }
 }

@@ -11,58 +11,47 @@ import internsLogo from '../../../../../public/logo/interns_logo.png';
 import { ToastContainer } from 'react-toastify';
 
 // ICONS
-import { BiLogOut } from 'react-icons/bi';
-import { FiUsers } from 'react-icons/fi';
-import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { useRouter } from 'next/router';
+import { DynamicContext } from '@redux/context';
 
 // COMPONENTS
 
 function StudentHeader() {
+  const context = React.useContext(DynamicContext);
+
+  const router = useRouter();
   return (
     <>
       <div className="flex h-[10vh] flex-row items-center justify-between bg-white px-2">
-        <div>
-          <p className="text-[38px] font-bold">
-            <span className="text-primaryYellow">I</span>
-            nterns
+        <p className="text-[22px] font-bold sm:text-[26px] lg:text-[36px] xl:text-[44px]">
+          <span className="text-primaryYellow">I</span>
+          nterns
+        </p>
+
+        <div className="flex flex-row items-center justify-center gap-3">
+          <Image
+            src={context?.userData.image || internsLogo}
+            width={40}
+            height={40}
+            style={{ borderRadius: '100%' }}
+          />
+          <p className="hidden font-medium md:block">
+            {context?.userData.name || 'No Data'}
           </p>
         </div>
-
-        <div className="flex flex-row items-center justify-center gap-10">
-          <div className="flex flex-row items-center justify-center gap-3">
-            <Image
-              src={internsLogo}
-              width={40}
-              height={40}
-              style={{ borderRadius: '100%' }}
-            />
-            <p className="font-medium">{'No Data'}</p>
-          </div>
-          <div className="flex flex-row items-center justify-center gap-3">
-            {/* MANAGE USERS */}
-            <button className="buttonIcon" title="Manage Users">
-              <FiUsers />
-            </button>
-
-            {/* MANAGE COLLEGE */}
-            <button className="buttonIcon" title="Manage College">
-              <HiOutlineOfficeBuilding />
-            </button>
-
-            {/* LOGOUT */}
-            <button className="buttonIcon" title="Logout">
-              <BiLogOut />
-            </button>
-          </div>
-        </div>
-
-        {/* MODALS */}
       </div>
 
       {/* TOAST */}
       <ToastContainer />
     </>
   );
+
+  function studentLogoutHandler() {
+    document.cookie =
+      'authStudentCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    router.push('/user/student/auth');
+  }
 }
 
 export default StudentHeader;
