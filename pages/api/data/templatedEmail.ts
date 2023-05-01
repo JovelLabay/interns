@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import EmailTemplate from '../controllers/emailTemplate';
+import TemplatedEmail from '../controllers/templatedEmail';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const emailTemplate = new EmailTemplate(req, res);
+  const emailTemplate = new TemplatedEmail(req, res);
 
   const { method } = req;
 
@@ -15,6 +15,12 @@ export default async function handler(
       break;
     case 'POST':
       emailTemplate.postEmailTemplate();
+      break;
+    case 'PUT':
+      emailTemplate.putEmailTemplate();
+      break;
+    case 'DELETE':
+      emailTemplate.deleteEmailTemplate();
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);

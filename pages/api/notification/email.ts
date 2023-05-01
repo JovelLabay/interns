@@ -11,14 +11,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // PAYLOAD
-  const { subject, message, email, time, lastName } = req.body;
+  const { subject, message, email, time, lastName, type } = req.body;
 
   // EMAIL CONTENT
   const content = {
     personalizations: [{ to: [{ email: email }], subject: subject }],
     from: { email: process.env.NEXT_DEFAULT_INTERNS_EMAIL },
     content: [
-      selectionOfEmailType('RESET_EMAIL', {
+      selectionOfEmailType(type, {
         message,
         subject,
         time,
@@ -101,16 +101,24 @@ function selectionOfEmailType(
     return contentConfiguration;
   }
 
-  return {
-    type: 'text/html',
-    value: `
-    <h5>Hi there,</h5>
+  if (type === 'ELIGIBILITY_EMAIL') {
+    const contentConfiguration = {
+      type: 'text/html',
+      value: `
+    <h4>Dear ${objectContent.lastName},</h4>
 
     <p>${objectContent.message}</p>
 
+    <p>Any concerns about practicum, email your coordinatior.</p>
+
     <h5>Best,</h5>
     <h4>Interns</h4>
-    <p>Developed by Eluvent Platforms</p>
+    <h3>Developed by Eluvent Platforms</h3>
     `,
-  };
+    };
+
+    return contentConfiguration;
+  }
+
+  return null;
 }

@@ -133,3 +133,10 @@ interface FormEmailTemplate {
   email_template_subject: string;
   email_template_body: string;
 }
+
+interface FormEmailTemplateResponse {
+  email_template_name: string;
+  email_template_subject: string;
+  email_template_body: string;
+  id: number;
+}

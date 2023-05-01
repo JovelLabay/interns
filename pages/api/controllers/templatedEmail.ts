@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 class EmailTemplate {
   private prisma = new PrismaClient();
 
-  public getEmailTemplate: () => Promise<void>;
   public postEmailTemplate: () => Promise<void>;
+  public getEmailTemplate: () => Promise<void>;
   public putEmailTemplate: () => Promise<void>;
   public deleteEmailTemplate: () => Promise<void>;
 
@@ -13,17 +13,18 @@ class EmailTemplate {
     const { data } = req.body;
     const { id } = req.query;
 
-    const { email_template_name, email_template_subject, email_template_body } =
-      JSON.parse(data);
-
     this.postEmailTemplate = async () => {
+      const {
+        email_template_name,
+        email_template_subject,
+        email_template_body,
+      } = JSON.parse(data);
       try {
         const checkTemplate = await this.prisma.email_Template.findFirst({
           where: {
             email_template_name: email_template_name,
           },
         });
-
         if (checkTemplate) {
           res.status(200).json({ message: 'DUPLIDATE_EMAIL_TEMPLATE' });
         } else {
@@ -32,10 +33,8 @@ class EmailTemplate {
               email_template_name: email_template_name,
               email_template_subject: email_template_subject,
               email_template_body: email_template_body,
-              deletedAt: new Date(),
             },
           });
-
           res.status(200).json({ message: 'Successful', responsePayload });
         }
       } catch (error) {
@@ -43,6 +42,7 @@ class EmailTemplate {
         console.log(error);
       }
     };
+
     this.getEmailTemplate = async () => {
       try {
         const responsePayload = await this.prisma.email_Template.findMany({
@@ -56,14 +56,42 @@ class EmailTemplate {
         res.status(200).json({ message: 'Successful', responsePayload });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
-        console.log(error);
       }
     };
+
     this.putEmailTemplate = async () => {
-      null;
+      try {
+        const responsePayload = await this.prisma.email_Template.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            updatedAt: new Date(),
+            ...JSON.parse(data),
+          },
+        });
+
+        res.status(200).json({ message: 'Successful' });
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
+      }
     };
+
     this.deleteEmailTemplate = async () => {
-      null;
+      try {
+        const responsePayload = await this.prisma.email_Template.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            deletedAt: new Date(),
+          },
+        });
+
+        res.status(200).json({ message: 'Successful' });
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
+      }
     };
   }
 }

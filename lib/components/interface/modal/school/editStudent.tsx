@@ -19,6 +19,7 @@ import {
   errorNotify,
   successfulNotify,
 } from '@component/interface/toast/toast';
+import { BiRefresh } from 'react-icons/bi';
 
 const studentStatus = Object.entries(Student_Status);
 
@@ -36,6 +37,13 @@ function EditStudent({
   const [state, setState] = useState({
     isUpdating: false,
     uploadingImage: false,
+  });
+  const [emailTemplate, setEmailTemplate] = useState<
+    FormEmailTemplateResponse[]
+  >([]);
+  const [selectedEmailTemplate, setSelectedEmailTemplate] = useState({
+    name: '',
+    objectData: {} as FormEmailTemplateResponse,
   });
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<FormEditStudent>({
@@ -78,6 +86,10 @@ function EditStudent({
     }
   }, [objectEditStudent]);
 
+  useEffect(() => {
+    getEmailTemplate();
+  }, []);
+
   return (
     <Transition appear show={modal} as={React.Fragment}>
       <Dialog
@@ -85,6 +97,16 @@ function EditStudent({
         className="relative z-10 hidden xl:block"
         onClose={() => {
           toggleEditStudent();
+
+          setSelectedEmailTemplate({
+            name: '',
+            objectData: {
+              email_template_name: '',
+              email_template_subject: '',
+              email_template_body: '',
+              id: 0,
+            },
+          });
         }}
       >
         <Transition.Child
@@ -110,10 +132,31 @@ function EditStudent({
               leaveTo="opacity-0 translate-x-full"
             >
               <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
-                <div className="flex flex-row items-center justify-end text-secondaryWhite">
+                <div className="flex flex-row items-center justify-between text-secondaryWhite">
+                  <button
+                    className="buttonIcon"
+                    onClick={() => {
+                      successfulNotify('Refreshed Successfully');
+
+                      getEmailTemplate();
+                    }}
+                    title="Refresh Email Templates"
+                  >
+                    <BiRefresh />
+                  </button>
                   <button
                     onClick={() => {
                       toggleEditStudent();
+
+                      setSelectedEmailTemplate({
+                        name: '',
+                        objectData: {
+                          email_template_name: '',
+                          email_template_subject: '',
+                          email_template_body: '',
+                          id: 0,
+                        },
+                      });
                     }}
                     className="w-[100px] rounded border-2 border-primaryYellow py-1"
                   >
@@ -235,12 +278,16 @@ function EditStudent({
                         onChange={() => {
                           setValue('eligibility', !watch().eligibility);
                         }}
-                        className={`${
+                        className={classNames(
                           watch().eligibility
                             ? 'bg-primaryYellow'
-                            : 'bg-primaryYellowHover'
-                        }
-          rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                            : 'bg-primaryYellowHover',
+                          'rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
+                          selectedEmailTemplate.name === ''
+                            ? 'cursor-not-allowed opacity-50'
+                            : 'cursor-pointer'
+                        )}
+                        disabled={selectedEmailTemplate.name === ''}
                       >
                         <span className="sr-only">Use setting</span>
                         <span
@@ -253,6 +300,54 @@ function EditStudent({
             rounded-m pointer-events-none inline-block h-[34px] w-[34px] transform rounded-md bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
                         />
                       </Switch>
+
+                      <Listbox
+                        value={
+                          selectedEmailTemplate.name === ''
+                            ? 'Select Template'
+                            : selectedEmailTemplate.name
+                        }
+                        onChange={(data: any) => {
+                          setSelectedEmailTemplate({
+                            name: data.email_template_name,
+                            objectData: { ...data },
+                          });
+                        }}
+                      >
+                        {({ open }: { open: boolean }) => (
+                          <div className="relative">
+                            <Listbox.Button
+                              className={classNames(
+                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                              )}
+                            >
+                              {selectedEmailTemplate.name === ''
+                                ? 'Select Template'
+                                : selectedEmailTemplate.name}
+                              <FiChevronDown
+                                size={30}
+                                className={classNames(
+                                  'text-secondaryWhite duration-300',
+                                  {
+                                    'rotate-180': open,
+                                  }
+                                )}
+                              />
+                            </Listbox.Button>
+                            <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
+                              {emailTemplate.map((person, index) => (
+                                <Listbox.Option
+                                  className="py-1"
+                                  key={index}
+                                  value={person}
+                                >
+                                  {person.email_template_name}
+                                </Listbox.Option>
+                              ))}
+                            </Listbox.Options>
+                          </div>
+                        )}
+                      </Listbox>
                     </div>
 
                     <h3 className={'font-medium'}>Student Profile Details</h3>
@@ -498,6 +593,19 @@ function EditStudent({
                       }
                     />
                   </form>
+
+                  <div className="mt-2 w-full rounded bg-yellowBg p-1 text-center">
+                    <h2 className="text-2xl font-bold text-secondaryWhite opacity-30">
+                      {!watch().eligibility
+                        ? 'Will Not Send'
+                        : 'Will Send Email'}
+                    </h2>
+                    <span className="text-xs text-red-500">
+                      {
+                        '*An email will be send once a student is mark eligible.'
+                      }
+                    </span>
+                  </div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -506,6 +614,18 @@ function EditStudent({
       </Dialog>
     </Transition>
   );
+
+  function getEmailTemplate() {
+    axios
+      .get('/api/data/templatedEmail')
+      .then((res) => {
+        setEmailTemplate(res.data.responsePayload);
+      })
+      .catch((err) => {
+        errorNotify('Something went wrong!');
+        console.error(err);
+      });
+  }
 
   function updateStudentUserStudentProfile(data: FormEditStudent) {
     if (objectEditStudent) {
@@ -525,18 +645,92 @@ function EditStudent({
       axios
         .request(config)
         .then(() => {
-          getStudentList();
-          successfulNotify('Updated Successfully');
+          if (
+            watch().eligibility === true &&
+            selectedEmailTemplate.name !== ''
+          ) {
+            // SEND EMAIL
+            const currentTime = new Date().getTime();
 
-          toggleEditStudent();
-          reset();
-          setState((prev) => ({ ...prev, isUpdating: false }));
+            const emailPayload = JSON.stringify({
+              subject: selectedEmailTemplate.objectData.email_template_subject,
+              message: selectedEmailTemplate.objectData.email_template_body,
+              email: data.emailAddress,
+              time: currentTime,
+              lastName: data.lastName,
+              type: 'ELIGIBILITY_EMAIL',
+            });
+
+            const config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: '/api/notification/email',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              data: emailPayload,
+            };
+
+            axios
+              .request(config)
+              .then(() => {
+                successfulNotify('Reset Password Email Sent!');
+
+                getStudentList();
+                successfulNotify('Updated Successfully');
+
+                toggleEditStudent();
+                reset();
+                setState((prev) => ({
+                  ...prev,
+                  isUpdating: false,
+                }));
+                setSelectedEmailTemplate({
+                  name: '',
+                  objectData: {
+                    email_template_name: '',
+                    email_template_subject: '',
+                    email_template_body: '',
+                    id: 0,
+                  },
+                });
+              })
+              .catch((error) => {
+                console.error(error);
+                successfulNotify('Something went wrong!');
+              });
+          } else {
+            getStudentList();
+            successfulNotify('Updated Successfully');
+
+            toggleEditStudent();
+            reset();
+            setState((prev) => ({ ...prev, isUpdating: false }));
+            setSelectedEmailTemplate({
+              name: '',
+              objectData: {
+                email_template_name: '',
+                email_template_subject: '',
+                email_template_body: '',
+                id: 0,
+              },
+            });
+          }
         })
         .catch((error) => {
           errorNotify('Something Went Wrong');
           console.log(error);
 
           setState((prev) => ({ ...prev, isUpdating: false }));
+          setSelectedEmailTemplate({
+            name: '',
+            objectData: {
+              email_template_name: '',
+              email_template_subject: '',
+              email_template_body: '',
+              id: 0,
+            },
+          });
         });
     }
   }

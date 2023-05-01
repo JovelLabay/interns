@@ -1184,12 +1184,13 @@ function ListsUserComponentTab({
       email: email_address,
       time: currentTime,
       lastName: last_name,
+      type: 'RESET_EMAIL',
     });
 
     const config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: '/api/notification/email?fsdf=45645&fg=5645645',
+      url: '/api/notification/email',
       headers: {
         'Content-Type': 'application/json',
       },
