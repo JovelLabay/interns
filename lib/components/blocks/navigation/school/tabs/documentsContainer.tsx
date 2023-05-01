@@ -86,7 +86,7 @@ function DocumentsContainer() {
           {stateCollege.collegeIndex !== -1 && (
             <button
               className={classNames('rounded bg-primaryYellow p-2')}
-              title="Add"
+              title="Add Template"
               onClick={() => {
                 toggleRequirementDocument();
               }}
@@ -308,7 +308,7 @@ function DocumentsContainer() {
                         <>
                           <button
                             className="cursor-pointer rounded bg-primaryYellow p-2"
-                            title="Delete User"
+                            title="Save Template"
                             onClick={() => {
                               putRequirementDocument(document.id, {
                                 nameOfDocument: watch().nameOfDocument,
@@ -324,7 +324,7 @@ function DocumentsContainer() {
                           </button>
                           <button
                             className="cursor-pointer rounded border-2 border-primaryYellow p-2"
-                            title="Delete User"
+                            title="Cancel Edit"
                             onClick={() => {
                               setDocumentEdit((prev) => ({
                                 ...prev,
@@ -344,7 +344,7 @@ function DocumentsContainer() {
                         <>
                           <button
                             className="cursor-pointer rounded bg-red-400 p-2"
-                            title="Delete User"
+                            title="Edut Template"
                             onClick={() => {
                               setDocumentEdit((prev) => ({
                                 ...prev,
@@ -365,7 +365,7 @@ function DocumentsContainer() {
                           </button>
                           <button
                             className="cursor-pointer rounded bg-orange-400 p-2"
-                            title="Delete User"
+                            title="Delete Template"
                             onClick={() => {
                               deleteRequirementDocument(document.id);
                             }}

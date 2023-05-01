@@ -104,6 +104,12 @@ const CreateCollegeDepartmentRequirementDocumentForm = yup.object({
   bucketUrlOfDocument: yup.string(),
 });
 
+const EmailTemplateForm = yup.object({
+  email_template_name: yup.string().required('Name is required'),
+  email_template_subject: yup.string().required('Subject of email is required'),
+  email_template_body: yup.string().required('Body of email is required'),
+});
+
 export {
   CreateCollegeDepartmentRequirementDocumentForm,
   CreateCollegeValidator,
@@ -114,4 +120,5 @@ export {
   CreateStudent,
   EditStudentForm,
   LogSignValidator,
+  EmailTemplateForm,
 };

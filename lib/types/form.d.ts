@@ -126,3 +126,10 @@ interface FormCollegeDepartmentRequirementDocument {
   nameOfDocument: string;
   bucketUrlOfDocument: string;
 }
+
+// EMAIL TEMPLATE
+interface FormEmailTemplate {
+  email_template_name: string;
+  email_template_subject: string;
+  email_template_body: string;
+}

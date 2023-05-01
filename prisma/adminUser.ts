@@ -1,9 +1,9 @@
 export const admin_user_list = [
   {
-    first_name: 'Admin',
-    middle_name: 'Admin',
-    last_name: 'Admin',
-    email_address: 'jovellabay@gmail.com',
+    first_name: 'Jovel',
+    middle_name: 'Ate',
+    last_name: 'Labay',
+    email_address: '20190017344@my.xu.edu.ph',
     isActive: true,
   },
 ];

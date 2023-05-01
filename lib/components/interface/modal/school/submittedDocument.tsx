@@ -116,6 +116,7 @@ function submittedDocument({
           className="relative z-10 hidden xl:block"
           onClose={() => {
             setSubModal(false);
+            setDocUrl('');
           }}
         >
           <Transition.Child
@@ -134,17 +135,19 @@ function submittedDocument({
             <div className="flex min-h-full items-center justify-center p-4">
               <Transition.Child
                 as={React.Fragment}
-                enterFrom="opacity-0 translate-x-full"
-                enterTo="opacity-100 translate-x-0"
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-x-0"
-                leaveTo="opacity-0 translate-x-full"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-[55vw] rounded-md bg-white p-3">
                   <div className="flex flex-row items-center justify-end text-secondaryWhite">
                     <button
                       onClick={() => {
                         setSubModal(false);
+                        setDocUrl('');
                       }}
                       className="w-[100px] rounded border-2 border-primaryYellow py-1"
                     >

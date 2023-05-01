@@ -1,15 +1,22 @@
+import React, { useContext, useState } from 'react';
+
+import axios from 'axios';
+import classNames from 'classnames';
+import { Dialog, Transition } from '@headlessui/react';
+import { BiRefresh } from 'react-icons/bi';
+import {
+  AiOutlineFileExcel,
+  AiOutlineFileWord,
+  AiOutlineSave,
+} from 'react-icons/ai';
 import {
   errorNotify,
   successfulNotify,
   warningNotify,
 } from '@component/interface/toast/toast';
+
 import { DynamicContext } from '@redux/context';
-import { docUploader } from '@utils/uploaderFunction';
-import axios from 'axios';
-import classNames from 'classnames';
-import React, { useContext, useState } from 'react';
-import { AiOutlineFileExcel, AiOutlineSave } from 'react-icons/ai';
-import { BiRefresh } from 'react-icons/bi';
+import { docUploaderSubmittion } from '@utils/uploaderFunction';
 
 function Documents() {
   const context = useContext(DynamicContext);
@@ -27,6 +34,9 @@ function Documents() {
     submitted: [] as Submitted[],
     payloadSubmission: {},
   });
+  const [subModal, setSubModal] = useState(false);
+  const [docUrl, setDocUrl] = useState('');
+  const docxFile = docUrl;
 
   React.useEffect(() => {
     const studentData: {
@@ -52,7 +62,7 @@ function Documents() {
           *Note: Please upload all the documents in Docx format only.
         </p>
         <p className="text-sm font-light italic text-red-500">
-          *Upload all the documents to that are required to be uploaded for
+          *Upload all the documents that are required to be uploaded for
           verification and eligibility to proceed with the practicum.
         </p>
       </div>
@@ -62,7 +72,7 @@ function Documents() {
           <h2 className="font-semibold">Required Documents</h2>
           <button
             className={classNames('rounded bg-primaryYellow p-2 text-white')}
-            title="Legend"
+            title="Refresh"
             onClick={() => {
               getDocument(state.collegeId, state.userProfileId);
 
@@ -84,7 +94,7 @@ function Documents() {
                   className={classNames(
                     'rounded bg-primaryYellow p-2 text-white'
                   )}
-                  title="Legend"
+                  title="Save"
                   onClick={updateDocument}
                 >
                   <AiOutlineSave size={20} />
@@ -99,7 +109,7 @@ function Documents() {
                       rel="noreferrer"
                       className="text-blue-500 underline"
                     >
-                      View Template
+                      Download Template
                     </a>
                   ) : (
                     'No Template'
@@ -112,38 +122,32 @@ function Documents() {
                       item2.submitted_document_name === item.documentName &&
                       item2.submitted_document !== null
                   )?.submitted_document ? (
-                    <a
-                      href={
-                        documentList.submitted.find(
-                          (item2) =>
-                            item2.submitted_document_name ===
-                              item.documentName &&
-                            item2.submitted_document !== null
-                        )?.submitted_document
-                      }
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      onClick={() => {
+                        setSubModal(true);
+                        setDocUrl(item.bucketUrlOfDocument);
+                      }}
                       className="text-blue-500 underline"
                     >
                       View File
-                    </a>
+                    </button>
                   ) : (
-                    'No FIle'
+                    'No File'
                   )}
                 </div>
                 <div>
                   {uploadingImage && uploadingImage.index === item.id && (
-                    <p className="mb-2 text-ellipsis rounded bg-green-100 p-2 text-xs">
+                    <p className="mb-2 text-ellipsis rounded bg-green-100 p-2 text-center text-xs">
                       Uploading Docx...
                     </p>
                   )}
                   <label className="flex h-[50px] w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite focus:outline-none">
-                    <AiOutlineFileExcel
+                    <AiOutlineFileWord
                       size={25}
                       className="text-secondaryWhite"
                     />
                     <span className="w-[50%] truncate text-center text-sm">
-                      {'Upload CSV'}
+                      {'Upload Docx'}
                     </span>
                     <input
                       className="imageUpload"
@@ -161,7 +165,9 @@ function Documents() {
                         });
                         const imageFile = e.target.files[0] as File;
 
-                        const uploadImagePayload = await docUploader(imageFile);
+                        const uploadImagePayload = await docUploaderSubmittion(
+                          imageFile
+                        );
 
                         if (
                           uploadImagePayload === 'The resource already exists'
@@ -205,6 +211,68 @@ function Documents() {
           ))}
         </div>
       </div>
+
+      {/* SUB MODAL */}
+      <Transition appear show={subModal} as={React.Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10 block"
+          onClose={() => {
+            setSubModal(false);
+            setDocUrl('');
+          }}
+        >
+          <Transition.Child
+            as={React.Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <Transition.Child
+                as={React.Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-[100vw] rounded-md bg-white p-3  xl:w-[55vw]">
+                  <div className="flex flex-row items-center justify-end text-secondaryWhite">
+                    <button
+                      onClick={() => {
+                        setSubModal(false);
+                        setDocUrl('');
+                      }}
+                      className="w-[100px] rounded border-2 border-primaryYellow py-1"
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                  <div className="h-[85vh] overflow-auto py-2 pr-2 text-secondaryWhite">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                        docxFile
+                      )}`}
+                    />
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 

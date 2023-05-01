@@ -21,6 +21,9 @@ import ManageUsers from '@component/interface/modal/ManageUsers';
 import ManageCollege from '@component/interface/modal/ManageCollege';
 
 import { DynamicContext } from 'lib/context/context';
+import { AiOutlineMail } from 'react-icons/ai';
+import EmailTemplate from '@component/interface/modal/student/emailTemplate';
+import { useForm } from 'react-hook-form';
 
 function SchoolHeader() {
   const router = useRouter();
@@ -29,6 +32,7 @@ function SchoolHeader() {
   const [addRemoveModal, setAddRemoveModal] = useState({
     manageUser: false,
     manageCollege: false,
+    emailTemplate: false,
   });
 
   return (
@@ -52,6 +56,14 @@ function SchoolHeader() {
             <p className="font-medium">{context?.userData.name || 'No Data'}</p>
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
+            <button
+              className="buttonIcon"
+              onClick={editEmailTemplateToggle}
+              title="Email Templates"
+            >
+              <AiOutlineMail />
+            </button>
+
             {/* MANAGE USERS */}
             <button
               className="buttonIcon"
@@ -91,6 +103,11 @@ function SchoolHeader() {
           addRemoveModal={addRemoveModal.manageCollege}
           addModalToggle={addModalToggleManageCollege}
         />
+
+        <EmailTemplate
+          modal={addRemoveModal.emailTemplate}
+          editEmailTemplateToggle={editEmailTemplateToggle}
+        />
       </div>
 
       {/* TOAST */}
@@ -114,6 +131,12 @@ function SchoolHeader() {
   function addModalToggleManageCollege() {
     setAddRemoveModal((prev) => {
       return { ...prev, manageCollege: !prev.manageCollege };
+    });
+  }
+
+  function editEmailTemplateToggle() {
+    setAddRemoveModal((prev) => {
+      return { ...prev, emailTemplate: !prev.emailTemplate };
     });
   }
 }

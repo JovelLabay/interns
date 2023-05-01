@@ -114,7 +114,10 @@ class Student {
                     last_name: d.lastName,
                     middle_name: d.middleName,
                     email: d.email,
-                    school_semester_id: parsedDataObjectSchoolSemestre.id,
+                    school_semester_id:
+                      parsedDataObjectSchoolSemestre.School_Semester.filter(
+                        (d: any) => d.is_active === true
+                      )[0].id,
                     password: await hashPassword(d.password),
                   },
                   update: {
@@ -176,7 +179,10 @@ class Student {
               last_name: lastName,
               middle_name: middleName,
               email: emailAddress,
-              school_semester_id: parsedDataObjectSchoolSemestre.id,
+              school_semester_id:
+                parsedDataObjectSchoolSemestre.School_Semester.filter(
+                  (d: any) => d.is_active === true
+                )[0].id,
               password: await hashPassword(password),
             },
             update: {
@@ -221,7 +227,6 @@ class Student {
           res.status(200).json({ message: 'Successful' });
         } catch (error) {
           res.status(500).json({ message: 'Unsuccessful', error });
-          console.log(error);
         }
       }
     };

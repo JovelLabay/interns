@@ -72,4 +72,28 @@ const docUploader = async (imageFile: File) => {
   }
 };
 
-export { imageUploader, csvUploader, docUploader };
+const docUploaderSubmittion = async (imageFile: File) => {
+  const { data, error } = await supabase.storage
+    .from('interns')
+    .upload(
+      `${pathData.submitted_docuemnts.submitted_docx}${
+        imageFile.name
+      }-${uuidv4()}`,
+      imageFile,
+      {
+        cacheControl: '3600',
+        upsert: false,
+      }
+    );
+
+  const lala = data?.path as string;
+
+  if (error) {
+    return error.message;
+  } else {
+    const { data } = await supabase.storage.from('interns').getPublicUrl(lala);
+    return data.publicUrl;
+  }
+};
+
+export { imageUploader, csvUploader, docUploader, docUploaderSubmittion };

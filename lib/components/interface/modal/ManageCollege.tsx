@@ -403,7 +403,7 @@ function AddCollegeComponentTab({
               }
             )}
             type="text"
-            placeholder="Department Name"
+            placeholder="Program Name"
             {...register('programName')}
           />
           {errors.programName?.message && (

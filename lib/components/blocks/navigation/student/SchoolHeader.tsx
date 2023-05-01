@@ -31,6 +31,7 @@ function StudentHeader() {
   const mobileNavhandler = () => {
     setIsShowMobileNav(!isShowMobileNav);
   };
+
   return (
     <>
       <div className="flex h-[10vh] flex-row items-center justify-between bg-white px-2">
@@ -52,7 +53,7 @@ function StudentHeader() {
 
           <div className="hidden flex-row items-center justify-center gap-3 md:flex">
             {/* LOGOUT */}
-            <button className="buttonIcon" title="Logout">
+            <button className="buttonIcon" title="Toogle Dark/Light mode">
               <BsSun />
             </button>
             <button
@@ -66,7 +67,7 @@ function StudentHeader() {
 
           <button
             className="md:hidden"
-            title="openMenu"
+            title="Open Menu"
             onClick={mobileNavhandler}
           >
             <GiHamburgerMenu size={25} />
@@ -104,6 +105,9 @@ function StudentHeader() {
               style={{ borderRadius: '100%' }}
             />
             <p className="font-medium">{context?.userData.name || 'No Data'}</p>
+            <p className="font-medium">
+              {context?.userData.email || 'No Data'}
+            </p>
           </div>
           <div className="mt-10 mb-7 flex gap-5">
             <button

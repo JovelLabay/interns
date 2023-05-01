@@ -7,5 +7,8 @@
   },
   "requirement_docuemnts": {
     "admin_template": "admin_document_template/templates/"
+  },
+  "submitted_docuemnts": {
+    "submitted_docx": "student_submitted_document/documents/"
   }
 }

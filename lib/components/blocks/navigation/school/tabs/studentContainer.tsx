@@ -380,21 +380,21 @@ function StudentContainer() {
                   <div className="flex items-center justify-center gap-3">
                     <button
                       className="cursor-pointer rounded bg-red-400 p-2"
-                      title="Delete User"
+                      title="Delete Student"
                       onClick={() => deleteStudents({ id: item.id })}
                     >
                       <AiOutlineDelete size={25} className="text-mainBgWhite" />
                     </button>
                     <button
                       className="cursor-pointer rounded bg-orange-400 p-2"
-                      title="Delete User"
+                      title="Edit Students"
                       onClick={() => toggleEditStudent(JSON.stringify(item))}
                     >
                       <AiOutlineEdit size={25} className="text-mainBgWhite" />
                     </button>
                     <button
                       className="cursor-pointer rounded bg-yellow-400 p-2"
-                      title="Document of User"
+                      title="Documents of Students"
                       onClick={() => {
                         toggleSubmittedDoc(JSON.stringify(item));
                       }}
@@ -406,8 +406,7 @@ function StudentContainer() {
                     </button>
                     <button
                       className="cursor-pointer rounded bg-violet-400 p-2"
-                      title="Email User"
-                      onClick={() => toggleEditStudent(JSON.stringify(item))}
+                      title="Email Student"
                     >
                       <AiOutlineMail size={25} className="text-mainBgWhite" />
                     </button>

@@ -1,13 +1,13 @@
-import { Tab } from '@headlessui/react';
-import { data } from 'Data';
-import classNames from 'classnames';
 import React from 'react';
-import Documents from './tabs/documents';
+import { data } from 'Data';
+
+import { Tab } from '@headlessui/react';
+import classNames from 'classnames';
+
 import Account from './tabs/account';
+import Documents from './tabs/documents';
 
 function StudentDashboardContainer() {
-  const [modal, setModal] = React.useState();
-
   return (
     <div className="px-2">
       <Tab.Group>
@@ -34,7 +34,7 @@ function StudentDashboardContainer() {
 
         {/* MAIN COMPONENTS */}
         <Tab.Panels className="mx-auto h-[80vh] overflow-auto rounded bg-white p-2 sm:w-[90vw] lg:w-[70vw] xl:w-[50vw]">
-          <Tab.Panel>dfgdfg</Tab.Panel>
+          <Tab.Panel>Details</Tab.Panel>
           <Tab.Panel>
             <Documents />
           </Tab.Panel>
