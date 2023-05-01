@@ -41,7 +41,7 @@ function Auth() {
   });
 
   useEffect(() => {
-    document.title = 'School | Log in';
+    document.title = 'Student | Log in';
 
     const expirationTime = new Date();
     expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
@@ -88,7 +88,7 @@ function Auth() {
           {/* TITLE */}
           <h2 className="text-center text-[28px]">
             <span className="font-bold">
-              School |{' '}
+              Student |{' '}
               <span className="font-light">
                 {isForgotPassword ? 'Forgot Password' : 'Log in'}
               </span>
@@ -97,7 +97,7 @@ function Auth() {
           <p className="my-5 text-center font-medium text-secondaryWhite">
             {isForgotPassword
               ? 'Forgot your password'
-              : 'Authentication for the College'}
+              : 'Authentication for the Student'}
           </p>
 
           {/* FORM */}

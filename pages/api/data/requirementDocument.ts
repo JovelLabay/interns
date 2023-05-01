@@ -16,7 +16,7 @@ export default async function handler(
       requirementDocument.postRequirementDocuments();
       break;
     case 'PUT':
-      null;
+      requirementDocument.putRequirementDocuments();
       break;
     case 'DELETE':
       requirementDocument.deleteRequirementDocuments();

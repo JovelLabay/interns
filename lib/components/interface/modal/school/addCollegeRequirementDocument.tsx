@@ -150,7 +150,6 @@ function AddCollegeRequirementDocument({
                       <input
                         className="imageUpload"
                         type="file"
-                        // Submit only word or doc file
                         accept=".doc,.docx"
                         title="profileImage"
                         name="profileImage"

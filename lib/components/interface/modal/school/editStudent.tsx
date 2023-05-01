@@ -75,9 +75,6 @@ function EditStudent({
       setValue('sex', Student_User_Profile.sex || '');
       setValue('studentStatus', Student_User_Profile.student_status || '');
       setValue('phoneNumber', Student_User_Profile.phone_number || '');
-
-      //   GET DOCUMENTS
-      getStudentDocument(Student_User_Profile.id);
     }
   }, [objectEditStudent]);
 
@@ -143,11 +140,10 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         type="text"
                         placeholder="First Name"
-                        disabled
                         {...register('firstName')}
                       />
                     </div>
@@ -157,11 +153,10 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Middle Name"
-                        disabled
                         {...register('middleName')}
                       />
                     </div>
@@ -172,11 +167,10 @@ function EditStudent({
                       </label>
                       <input
                         className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 opacity-50 focus:outline-none'
+                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                         )}
                         type="text"
                         placeholder="Last Name"
-                        disabled
                         {...register('lastName')}
                       />
                     </div>
@@ -354,7 +348,7 @@ function EditStudent({
                           <div className="relative">
                             <Listbox.Button
                               className={classNames(
-                                'flex w-[400px] justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
                               )}
                             >
                               {watch().studentStatus === 'NOT_SET'
@@ -387,6 +381,55 @@ function EditStudent({
                                     {splitUnderScore(person[1])}
                                   </Listbox.Option>
                                 ))}
+                            </Listbox.Options>
+                          </div>
+                        )}
+                      </Listbox>
+                    </div>
+                    <div className="flex flex-col items-start gap-2">
+                      <label htmlFor="email" className="text-secondaryWhite">
+                        Sex
+                      </label>
+                      <Listbox
+                        value={watch().sex || 'NOT SET'}
+                        onChange={(data) => {
+                          setValue('sex', data);
+                        }}
+                      >
+                        {({ open }: { open: boolean }) => (
+                          <div className="relative">
+                            <Listbox.Button
+                              className={classNames(
+                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                              )}
+                            >
+                              {watch().sex === '' ? 'NOT SET' : watch().sex}
+                              <FiChevronDown
+                                size={30}
+                                className={classNames(
+                                  'text-secondaryWhite duration-300',
+                                  {
+                                    'rotate-180': open,
+                                  }
+                                )}
+                              />
+                            </Listbox.Button>
+                            <Listbox.Options
+                              className={classNames(
+                                'absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer'
+                              )}
+                            >
+                              {['Male', 'Female', 'Other'].map(
+                                (person, index) => (
+                                  <Listbox.Option
+                                    className={classNames('py-1')}
+                                    key={index}
+                                    value={person}
+                                  >
+                                    {person}
+                                  </Listbox.Option>
+                                )
+                              )}
                             </Listbox.Options>
                           </div>
                         )}
@@ -440,19 +483,6 @@ function EditStudent({
                         type="date"
                         placeholder="Date of Birth"
                         {...register('birthDate')}
-                      />
-                    </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <label htmlFor="email" className="text-secondaryWhite">
-                        Sex
-                      </label>
-                      <input
-                        className={classNames(
-                          'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                        )}
-                        type="text"
-                        placeholder="Sex"
-                        {...register('sex')}
                       />
                     </div>
 
@@ -509,23 +539,6 @@ function EditStudent({
           setState((prev) => ({ ...prev, isUpdating: false }));
         });
     }
-  }
-
-  function getStudentDocument(id: number) {
-    // const config = {
-    //   method: 'get',
-    //   url: `/api/data/studentDocument?id=${id}`,
-    // };
-    //
-    // axios
-    //   .request(config)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    null;
   }
 }
 

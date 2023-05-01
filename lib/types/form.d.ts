@@ -107,6 +107,7 @@ interface FormCreateStudent {
   middleName: string;
   lastName: string;
   emailAddress: string;
+  password: string;
 }
 
 interface FormEditStudent extends FormCreateStudent {

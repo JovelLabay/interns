@@ -70,6 +70,10 @@ const CreateStudent = yup.object({
   firstName: yup.string().required('First Name is required'),
   middleName: yup.string(),
   lastName: yup.string().required('Last Name is required'),
+  password: yup
+    .string()
+    .min(6, 'Password must be at least 6 chars')
+    .required('Password is required'),
   emailAddress: yup
     .string()
     .email('Enter proper email address')
@@ -101,14 +105,13 @@ const CreateCollegeDepartmentRequirementDocumentForm = yup.object({
 });
 
 export {
-  LogSignValidator,
-
+  CreateCollegeDepartmentRequirementDocumentForm,
+  CreateCollegeValidator,
   // SCHOOL DASHBOARD
   CreateSchoolAdminValidator,
-  CreateCollegeValidator,
-  CreateSchoolYear,
   CreateSchoolSemestre,
+  CreateSchoolYear,
   CreateStudent,
   EditStudentForm,
-  CreateCollegeDepartmentRequirementDocumentForm,
+  LogSignValidator,
 };

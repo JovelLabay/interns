@@ -24,3 +24,18 @@ interface Dynamic {
   studentData?: string;
   setStudentData?: React.Dispatch<React.SetStateAction<string>>;
 }
+
+interface RequiredDoc {
+  bucketUrlOfDocument: string;
+  college_department_id: number;
+  documentName: string;
+  id: number;
+  createdAt: string;
+}
+
+interface Submitted {
+  student_user_profile_id: number;
+  submitted_document_name: string;
+  submitted_document: string;
+  id: number;
+}

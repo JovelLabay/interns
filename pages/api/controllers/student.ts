@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
-import Papa from 'papaparse';
 import { hashPassword } from '@utils/backendFunction';
+import { NextApiRequest, NextApiResponse } from 'next';
+import Papa from 'papaparse';
 
 class Student {
   private prisma = new PrismaClient();
@@ -17,6 +17,7 @@ class Student {
       firstName,
       middleName,
       lastName,
+      password,
 
       accountStatus,
       eligibility,
@@ -176,6 +177,7 @@ class Student {
               middle_name: middleName,
               email: emailAddress,
               school_semester_id: parsedDataObjectSchoolSemestre.id,
+              password: await hashPassword(password),
             },
             update: {
               first_name: firstName,
@@ -286,6 +288,9 @@ class Student {
           data: {
             is_active: accountStatus,
             is_eligible: eligibility,
+            first_name: firstName,
+            middle_name: middleName,
+            last_name: lastName,
           },
         });
 
@@ -318,13 +323,14 @@ class Student {
         });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
+        console.log(error);
       }
     };
 
     this.deleteStudents = async () => {
       try {
         if (deleteAll === 'true') {
-          const responsePayload = await this.prisma.student_User.updateMany({
+          await this.prisma.student_User.updateMany({
             where: {
               school_semester_id: {
                 equals: parsedDataObjectSchoolSemestre.id,

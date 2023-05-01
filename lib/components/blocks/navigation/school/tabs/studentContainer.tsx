@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   AiOutlineClear,
@@ -11,25 +11,25 @@ import {
 } from 'react-icons/ai';
 import { BiCategoryAlt, BiRefresh } from 'react-icons/bi';
 
+import { Student_Status } from '@prisma/client';
 import axios from 'axios';
 import classNames from 'classnames';
-import { Student_Status } from '@prisma/client';
 
-import {
-  errorNotify,
-  successfulNotify,
-} from '@component/interface/toast/toast';
 import {
   AdStudent,
   AddStudentBulk,
 } from '@component/interface/modal/school/addStudent';
-import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
 import EditStudent from '@component/interface/modal/school/editStudent';
+import GenerateReport from '@component/interface/modal/school/generateReport';
+import { InfoLegendStudent } from '@component/interface/modal/school/infoLegend';
 import SelectCollege from '@component/interface/modal/school/selectCollege';
 import SelectSchoolYearSemestreModal from '@component/interface/modal/school/selectSchoolYearSemestreModal';
-import { HiOutlineDocumentReport, HiOutlineDocumentText } from 'react-icons/hi';
 import SubmittedDocument from '@component/interface/modal/school/submittedDocument';
-import GenerateReport from '@component/interface/modal/school/generateReport';
+import {
+  errorNotify,
+  successfulNotify,
+} from '@component/interface/toast/toast';
+import { HiOutlineDocumentReport, HiOutlineDocumentText } from 'react-icons/hi';
 
 function StudentContainer() {
   const levelOfUser = Object.entries(Student_Status);
@@ -395,7 +395,9 @@ function StudentContainer() {
                     <button
                       className="cursor-pointer rounded bg-yellow-400 p-2"
                       title="Document of User"
-                      onClick={() => toggleSubmittedDoc()}
+                      onClick={() => {
+                        toggleSubmittedDoc(JSON.stringify(item));
+                      }}
                     >
                       <HiOutlineDocumentText
                         size={25}
@@ -532,6 +534,7 @@ function StudentContainer() {
       <SubmittedDocument
         modal={modal.submittedDocument}
         toggleSubmittedDoc={toggleSubmittedDoc}
+        objectEditStudent={objectEditStudent}
       />
 
       <GenerateReport
@@ -577,11 +580,17 @@ function StudentContainer() {
     }));
   }
 
-  function toggleSubmittedDoc() {
+  function toggleSubmittedDoc(itemStudentData?: string) {
     setModal((prev) => ({
       ...prev,
       submittedDocument: !prev.submittedDocument,
     }));
+
+    if (itemStudentData) {
+      setObjectEditStudent(itemStudentData);
+    } else {
+      setObjectEditStudent('');
+    }
   }
 
   function toggleGenerateReport() {

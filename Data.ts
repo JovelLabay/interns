@@ -131,7 +131,8 @@ export const data = {
     tabs2: [
       { id: 1, name: 'Details' },
       { id: 2, name: 'Documents' },
-      { id: 3, name: 'Account' },
+      { id: 3, name: 'Companies' },
+      { id: 4, name: 'Account' },
     ],
     schoolYearSemestre: {
       schoolYear: [

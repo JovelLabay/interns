@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 class RequirementDocument {
   private prisma = new PrismaClient();
@@ -7,6 +7,8 @@ class RequirementDocument {
   public getRequirementDocuments: () => Promise<void>;
   public postRequirementDocuments: () => Promise<void>;
   public deleteRequirementDocuments: () => Promise<void>;
+  public putRequirementDocuments: () => Promise<void>;
+
   constructor(req: NextApiRequest, res: NextApiResponse) {
     const { id, collegeDepartmentId } = req.query;
 
@@ -32,24 +34,31 @@ class RequirementDocument {
 
     this.postRequirementDocuments = async () => {
       try {
-        const documentsPayload = await this.prisma.requirement_Document.upsert({
-          where: {
-            documentName: nameOfDocument,
-          },
-          create: {
-            documentName: nameOfDocument,
-            college_department_id: Number(collegeDepartmentId),
-            bucketUrlOfDocument: bucketUrlOfDocument,
-          },
-          update: {
-            documentName: nameOfDocument,
-            college_department_id: Number(collegeDepartmentId),
-            bucketUrlOfDocument: bucketUrlOfDocument,
-            deletedAt: null,
-          },
-        });
+        const checkIfDocumentExists =
+          await this.prisma.requirement_Document.findFirst({
+            where: {
+              college_department_id: Number(collegeDepartmentId),
+              documentName: nameOfDocument,
+              deletedAt: {
+                equals: null,
+              },
+            },
+          });
 
-        res.status(200).json({ message: 'Successful', documentsPayload });
+        if (checkIfDocumentExists) {
+          res.status(200).json({ message: 'DOCUMENT_ALREADY_EXIST' });
+        } else {
+          const documentsPayload =
+            await this.prisma.requirement_Document.create({
+              data: {
+                documentName: nameOfDocument,
+                college_department_id: Number(collegeDepartmentId),
+                bucketUrlOfDocument: bucketUrlOfDocument,
+              },
+            });
+
+          res.status(200).json({ message: 'Successful', documentsPayload });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
       }
@@ -69,7 +78,24 @@ class RequirementDocument {
         res.status(200).json({ message: 'Successful' });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
-        console.log(error);
+      }
+    };
+
+    this.putRequirementDocuments = async () => {
+      try {
+        const documentsPayload = await this.prisma.requirement_Document.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            documentName: nameOfDocument,
+            bucketUrlOfDocument: bucketUrlOfDocument,
+          },
+        });
+
+        res.status(200).json({ message: 'Successful', documentsPayload });
+      } catch (error) {
+        res.status(500).json({ message: 'Unsuccessful', error });
       }
     };
   }

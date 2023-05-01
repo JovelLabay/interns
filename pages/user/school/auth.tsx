@@ -94,7 +94,7 @@ function Auth() {
             </span>
           </h2>
           <p className="my-5 text-center font-medium text-secondaryWhite">
-            Authentication for the College
+            Authentication for the School
           </p>
 
           {/* FORM */}

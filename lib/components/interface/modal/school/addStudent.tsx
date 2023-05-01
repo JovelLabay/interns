@@ -6,11 +6,11 @@ import {
 } from '@component/interface/toast/toast';
 import { csvUploader } from '@utils/uploaderFunction';
 
-import axios from 'axios';
-import classNames from 'classnames';
 import { Dialog, Transition } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateStudent } from '@validator/forms';
+import axios from 'axios';
+import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 import { AiOutlineFileExcel } from 'react-icons/ai';
 
@@ -173,6 +173,28 @@ function AdStudent({
                     {errors.emailAddress?.message && (
                       <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
                         {errors.emailAddress?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <label htmlFor="email" className="text-secondaryWhite">
+                      Password <span className="text-xs text-red-500">*</span>
+                    </label>
+                    <input
+                      className={classNames(
+                        'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                        {
+                          'border-red-500 bg-red-100 placeholder:text-white':
+                            errors.password?.message,
+                        }
+                      )}
+                      type="password"
+                      placeholder="Password"
+                      {...register('password')}
+                    />
+                    {errors.password?.message && (
+                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                        {errors.password?.message}
                       </p>
                     )}
                   </div>

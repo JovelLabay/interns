@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import internsLogo from '@/assets/logo/interns_logo.png';
+import AddCollegeRequirementDocument from '@component/interface/modal/school/addCollegeRequirementDocument';
 import {
   errorNotify,
   successfulNotify,
+  warningNotify,
 } from '@component/interface/toast/toast';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { imageUploader } from '@utils/uploaderFunction';
+import { CreateCollegeDepartmentRequirementDocumentForm } from '@validator/forms';
+import axios from 'axios';
 import classNames from 'classnames';
 import Image from 'next/image';
-import internsLogo from '@/assets/logo/interns_logo.png';
-import { AiOutlineDelete, AiOutlinePlusCircle } from 'react-icons/ai';
-import { BiRefresh } from 'react-icons/bi';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CreateCollegeDepartmentRequirementDocumentForm } from '@validator/forms';
-import AddCollegeRequirementDocument from '@component/interface/modal/school/addCollegeRequirementDocument';
+import {
+  AiOutlineCloseCircle,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineFileImage,
+  AiOutlinePlusCircle,
+  AiOutlineSave,
+} from 'react-icons/ai';
+import { BiRefresh } from 'react-icons/bi';
 
 function DocumentsContainer() {
   const [listCollege, setListCollege] = React.useState<ReturnCollegeProgram[]>(
@@ -35,6 +44,13 @@ function DocumentsContainer() {
       collegeProgramName: '',
     },
   });
+  const [documentEdit, setDocumentEdit] = useState({
+    index: -1,
+  });
+  const [state, setState] = useState({
+    isCreating: false,
+    uploadingImage: false,
+  });
   const [modal, setModal] = useState({
     createRequirementDocument: false,
   });
@@ -50,6 +66,7 @@ function DocumentsContainer() {
     setValue,
     reset,
     formState: { errors },
+    watch,
   } = useForm<FormCollegeDepartmentRequirementDocument>({
     mode: 'onSubmit',
     resolver: yupResolver(CreateCollegeDepartmentRequirementDocumentForm),
@@ -152,13 +169,19 @@ function DocumentsContainer() {
                   <th scope="col" className="px-6 py-3">
                     No.
                   </th>
-                  <th scope="col" className="w-[250px] px-6 py-3">
+                  <th
+                    scope="col"
+                    className="min-w-[380px] max-w-[380px] px-6 py-3"
+                  >
                     Document Name
                   </th>
-                  <th scope="col" className="w-[250px] px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     File
                   </th>
-                  <th scope="col" className="w-[250px] px-6 py-3">
+                  <th
+                    scope="col"
+                    className="min-w-[200px] max-w-[380px] px-6 py-3"
+                  >
                     Date Creation
                   </th>
                   <th
@@ -173,36 +196,187 @@ function DocumentsContainer() {
                 {listDocuments.map((document, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{document.documentName}</td>
                     <td>
-                      {document.bucketUrlOfDocument === '' ||
-                      document.bucketUrlOfDocument === null ? (
-                        'No File'
+                      {documentEdit.index === document.id ? (
+                        <input
+                          className={classNames(
+                            'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                            {
+                              'border-red-500 bg-red-100 placeholder:text-white':
+                                errors.nameOfDocument?.message,
+                            }
+                          )}
+                          type="text"
+                          placeholder="Document Name"
+                          {...register('nameOfDocument')}
+                        />
                       ) : (
-                        <a
-                          href={document.bucketUrlOfDocument}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 underline"
-                        >
-                          View
-                        </a>
+                        document.documentName
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {documentEdit.index === document.id ? (
+                        <>
+                          <label className="flex w-[200px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
+                            <AiOutlineFileImage
+                              size={30}
+                              className="mr-5 text-secondaryWhite"
+                            />
+                            <span className="w-[50%] truncate">
+                              {watch().bucketUrlOfDocument || 'Document File'}
+                            </span>
+                            <input
+                              className="imageUpload"
+                              type="file"
+                              accept=".doc,.docx"
+                              title="profileImage"
+                              name="profileImage"
+                              onChange={async (e) => {
+                                if (
+                                  !e.target.files ||
+                                  e.target.files.length === 0
+                                )
+                                  return;
+
+                                setState((prev) => {
+                                  return {
+                                    ...prev,
+                                    uploadingImage: true,
+                                  };
+                                });
+                                const imageFile = e.target.files[0] as File;
+
+                                const uploadImagePayload = await imageUploader(
+                                  imageFile
+                                );
+
+                                if (
+                                  uploadImagePayload ===
+                                  'The resource already exists'
+                                ) {
+                                  errorNotify(uploadImagePayload);
+                                  setState((prev) => {
+                                    return {
+                                      ...prev,
+                                      uploadingImage: false,
+                                    };
+                                  });
+                                  return;
+                                } else {
+                                  setValue(
+                                    'bucketUrlOfDocument',
+                                    uploadImagePayload
+                                  );
+                                  successfulNotify('Image Uploaded!');
+                                  setState((prev) => {
+                                    return {
+                                      ...prev,
+                                      uploadingImage: false,
+                                    };
+                                  });
+                                }
+                              }}
+                            />
+                          </label>
+                          {state.uploadingImage && (
+                            <p className="mt-1 text-ellipsis rounded bg-green-100 p-2 text-xs">
+                              Uploading Image...
+                            </p>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {document.bucketUrlOfDocument === '' ||
+                          document.bucketUrlOfDocument === null ? (
+                            'No File'
+                          ) : (
+                            <a
+                              href={document.bucketUrlOfDocument}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline"
+                            >
+                              View
+                            </a>
+                          )}
+                        </>
                       )}
                     </td>
                     <td> {new Date(document.createdAt).toLocaleString()}</td>
-                    <td className="sticky right-0 bg-white px-2 py-4">
-                      <button
-                        className="cursor-pointer rounded bg-red-400 p-2"
-                        title="Delete User"
-                        onClick={() => {
-                          deleteRequirementDocument(document.id);
-                        }}
-                      >
-                        <AiOutlineDelete
-                          size={25}
-                          className="text-mainBgWhite"
-                        />
-                      </button>
+                    <td className="sticky right-0 flex items-center justify-center gap-3 bg-white px-2 py-4">
+                      {documentEdit.index === document.id ? (
+                        <>
+                          <button
+                            className="cursor-pointer rounded bg-primaryYellow p-2"
+                            title="Delete User"
+                            onClick={() => {
+                              putRequirementDocument(document.id, {
+                                nameOfDocument: watch().nameOfDocument,
+                                bucketUrlOfDocument:
+                                  watch().bucketUrlOfDocument,
+                              });
+                            }}
+                          >
+                            <AiOutlineSave
+                              size={25}
+                              className="text-mainBgWhite"
+                            />
+                          </button>
+                          <button
+                            className="cursor-pointer rounded border-2 border-primaryYellow p-2"
+                            title="Delete User"
+                            onClick={() => {
+                              setDocumentEdit((prev) => ({
+                                ...prev,
+                                index: -1,
+                              }));
+
+                              reset();
+                            }}
+                          >
+                            <AiOutlineCloseCircle
+                              size={25}
+                              className="text-secondaryWhite"
+                            />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="cursor-pointer rounded bg-red-400 p-2"
+                            title="Delete User"
+                            onClick={() => {
+                              setDocumentEdit((prev) => ({
+                                ...prev,
+                                index: document.id,
+                              }));
+
+                              setValue('nameOfDocument', document.documentName);
+                              setValue(
+                                'bucketUrlOfDocument',
+                                document.bucketUrlOfDocument
+                              );
+                            }}
+                          >
+                            <AiOutlineEdit
+                              size={25}
+                              className="text-mainBgWhite"
+                            />
+                          </button>
+                          <button
+                            className="cursor-pointer rounded bg-orange-400 p-2"
+                            title="Delete User"
+                            onClick={() => {
+                              deleteRequirementDocument(document.id);
+                            }}
+                          >
+                            <AiOutlineDelete
+                              size={25}
+                              className="text-mainBgWhite"
+                            />
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -320,12 +494,16 @@ function DocumentsContainer() {
           },
         }
       )
-      .then(() => {
-        successfulNotify('Successfully added a requirement document.');
+      .then((res) => {
+        if (res.data.message === 'DOCUMENT_ALREADY_EXIST') {
+          warningNotify('Document already exist.');
+        } else {
+          successfulNotify('Successfully added a requirement document.');
 
-        reset();
-        toggleRequirementDocument();
-        getRequirementDocument(stateCollege.collegeDepartmentObject.id);
+          reset();
+          toggleRequirementDocument();
+          getRequirementDocument(stateCollege.collegeDepartmentObject.id);
+        }
       })
       .catch((error) => {
         errorNotify("Something's wrong. Please try again later.");
@@ -355,6 +533,29 @@ function DocumentsContainer() {
       .catch((error) => {
         errorNotify("Something's wrong. Please try again later.");
         console.error(error);
+      });
+  }
+
+  function putRequirementDocument(id: number, data: any) {
+    axios
+      .put(
+        `/api/data/requirementDocument?collegeDepartmentId=${stateCollege.collegeDepartmentObject.id}&id=${id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        successfulNotify('Successfully added a requirement document.');
+
+        reset();
+        getRequirementDocument(stateCollege.collegeDepartmentObject.id);
+        setDocumentEdit((prev) => ({ ...prev, index: -1 }));
+      })
+      .catch((error) => {
+        errorNotify("Something's wrong. Please try again later.");
       });
   }
 }

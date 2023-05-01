@@ -46,7 +46,7 @@ function StudentDashboard() {
             const studentData = res.data.otherData;
 
             context?.setUserData({
-              name: studentData.firstName,
+              name: `${studentData.firstName} ${studentData.middleName} ${studentData.lastName}`,
               email: studentData.email,
               levelOfUser: '',
               image: studentData.student_profile_image,

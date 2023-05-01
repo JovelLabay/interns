@@ -93,6 +93,9 @@ model Student_Submitted_Document {
   student_user_profile_id Int
   submitted_document_name String?
   submitted_document      String?              @db.Text
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
 }
 
 model College_Department {
@@ -105,12 +108,12 @@ model College_Department {
   complete_program_name          String
   abbreviated_program_name       String
   Student_User_Profile           Student_User_Profile[]
+  Requirement_Document           Requirement_Document[]
   Activity_Logs                  Activity_Logs[]
 
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime?
-  deletedAt            DateTime?
-  Requirement_Document Requirement_Document[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
 }
 
 model Requirement_Document {
@@ -118,7 +121,7 @@ model Requirement_Document {
 
   College_Department    College_Department @relation(fields: [college_department_id], references: [id])
   college_department_id Int
-  documentName          String             @unique
+  documentName          String
   bucketUrlOfDocument   String?
 
   createdAt DateTime  @default(now())
