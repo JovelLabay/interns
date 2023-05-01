@@ -645,10 +645,7 @@ function EditStudent({
       axios
         .request(config)
         .then(() => {
-          if (
-            watch().eligibility === true &&
-            selectedEmailTemplate.name !== ''
-          ) {
+          if (selectedEmailTemplate.name !== '') {
             // SEND EMAIL
             const currentTime = new Date().getTime();
 
