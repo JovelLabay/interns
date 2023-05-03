@@ -11,19 +11,23 @@ import { CreateCollegeDepartmentRequirementDocumentForm } from '@validator/forms
 import axios from 'axios';
 import classNames from 'classnames';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   AiOutlineCloseCircle,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineFileImage,
+  AiOutlineFileWord,
   AiOutlinePlusCircle,
   AiOutlineSave,
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
+import ViewCollegeRequirementDocument from '@component/interface/modal/school/viewCollegeRequirementDocument';
+import { DynamicContext } from '@redux/context';
 
 function DocumentsContainer() {
+  const context = useContext(DynamicContext);
   const [listCollege, setListCollege] = React.useState<ReturnCollegeProgram[]>(
     []
   );
@@ -53,6 +57,8 @@ function DocumentsContainer() {
   });
   const [modal, setModal] = useState({
     createRequirementDocument: false,
+    viewRequirementDocument: false,
+    documentUrl: '',
   });
   const [pagination, setPagination] = useState({
     skip: 0,
@@ -218,7 +224,7 @@ function DocumentsContainer() {
                       {documentEdit.index === document.id ? (
                         <>
                           <label className="flex w-[200px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                            <AiOutlineFileImage
+                            <AiOutlineFileWord
                               size={30}
                               className="mr-5 text-secondaryWhite"
                             />
@@ -288,16 +294,18 @@ function DocumentsContainer() {
                         <>
                           {document.bucketUrlOfDocument === '' ||
                           document.bucketUrlOfDocument === null ? (
-                            'No File'
+                            'No Template'
                           ) : (
-                            <a
-                              href={document.bucketUrlOfDocument}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <button
                               className="text-blue-500 underline"
+                              onClick={() =>
+                                toggleViewRequirementDocument(
+                                  document.bucketUrlOfDocument
+                                )
+                              }
                             >
-                              View
-                            </a>
+                              View Template
+                            </button>
                           )}
                         </>
                       )}
@@ -343,7 +351,16 @@ function DocumentsContainer() {
                       ) : (
                         <>
                           <button
-                            className="cursor-pointer rounded bg-red-400 p-2"
+                            className={classNames(
+                              'rounded bg-orange-400 p-2',
+                              context?.userData.levelOfUser === 'STAFF' &&
+                                'cursor-not-allowed opacity-50'
+                            )}
+                            disabled={
+                              context?.userData.levelOfUser === 'STAFF'
+                                ? true
+                                : false
+                            }
                             title="Edut Template"
                             onClick={() => {
                               setDocumentEdit((prev) => ({
@@ -364,11 +381,26 @@ function DocumentsContainer() {
                             />
                           </button>
                           <button
-                            className="cursor-pointer rounded bg-orange-400 p-2"
+                            className={classNames(
+                              'rounded bg-red-400 p-2',
+                              context?.userData.levelOfUser === 'STAFF' &&
+                                'cursor-not-allowed opacity-50',
+                              context?.userData.levelOfUser ===
+                                'ADMINISTRATOR' &&
+                                'cursor-not-allowed opacity-50'
+                            )}
                             title="Delete Template"
                             onClick={() => {
                               deleteRequirementDocument(document.id);
                             }}
+                            disabled={
+                              context?.userData.levelOfUser === 'STAFF'
+                                ? true
+                                : context?.userData.levelOfUser ===
+                                  'ADMINISTRATOR'
+                                ? true
+                                : false
+                            }
                           >
                             <AiOutlineDelete
                               size={25}
@@ -455,6 +487,12 @@ function DocumentsContainer() {
         }}
         postRequirementDocument={postRequirementDocument}
       />
+
+      <ViewCollegeRequirementDocument
+        subModal={modal.viewRequirementDocument}
+        toggleViewRequirementDocument={toggleViewRequirementDocument}
+        docxFile={modal.documentUrl}
+      />
     </div>
   );
 
@@ -463,6 +501,16 @@ function DocumentsContainer() {
       ...prev,
       createRequirementDocument: !prev.createRequirementDocument,
     }));
+  }
+
+  function toggleViewRequirementDocument(url?: string) {
+    setModal((prev: any) => {
+      return {
+        ...prev,
+        documentUrl: url,
+        viewRequirementDocument: !prev.viewRequirementDocument,
+      };
+    });
   }
 
   function getCollegeList() {

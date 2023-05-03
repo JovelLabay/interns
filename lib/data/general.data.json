@@ -2,24 +2,24 @@
   "cookieBanner": {
     "title": "We just want to know if what type of user are you?",
     "description": "By clicking student button below means you agree to the terms and conditions imposed in this software.",
-    "options": ["Student", "No, Thank you"]
+    "options": ["Student", "Not Interested"]
   },
   "home": {
     "featureDescriptions": [
       {
-        "description": "Easy to rate compaines",
+        "description": "Easy Manage of Students",
         "iconName": "VscGraph"
       },
       {
-        "description": "Fast and suited jobs for you",
+        "description": "Fast and Suited Process of Students",
         "iconName": "FiPlayCircle"
       },
       {
-        "description": "Bring home the real experience",
+        "description": "Home for the Real Experience of Practicums",
         "iconName": "BiShoppingBag"
       },
       {
-        "description": "Be confident and now to learn",
+        "description": "Tasks can be Done so Easily",
         "iconName": "MdOutlinePerson"
       }
     ]

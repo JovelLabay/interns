@@ -1,21 +1,22 @@
-import { Dialog, Transition } from '@headlessui/react';
 import React from 'react';
-import { data } from '../../../../../Data';
+import { Dialog, Transition } from '@headlessui/react';
 
-function GenerateReport({
-  modal,
-  toggleGenerateReport,
+function ViewCollegeRequirementDocument({
+  subModal,
+  toggleViewRequirementDocument,
+  docxFile,
 }: {
-  modal: boolean;
-  toggleGenerateReport: () => void;
+  subModal: boolean;
+  toggleViewRequirementDocument(url?: string): void;
+  docxFile: string;
 }) {
   return (
-    <Transition appear show={modal} as={React.Fragment}>
+    <Transition appear show={subModal} as={React.Fragment}>
       <Dialog
         as="div"
-        className="relative z-10 hidden lg:block"
+        className="relative z-10 block"
         onClose={() => {
-          toggleGenerateReport();
+          toggleViewRequirementDocument('');
         }}
       >
         <Transition.Child
@@ -31,7 +32,7 @@ function GenerateReport({
         </Transition.Child>
 
         <div className="fixed inset-0">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={React.Fragment}
               enter="ease-out duration-300"
@@ -41,11 +42,11 @@ function GenerateReport({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-[50vw] rounded-md bg-white p-3">
-                <div className="flex flex-row items-center justify-start">
+              <Dialog.Panel className="w-[100vw] rounded-md bg-white p-3  xl:w-[55vw]">
+                <div className="flex flex-row items-center justify-end text-secondaryWhite">
                   <button
                     onClick={() => {
-                      toggleGenerateReport();
+                      toggleViewRequirementDocument('');
                     }}
                     className="w-[100px] rounded border-2 border-primaryYellow py-1"
                   >
@@ -53,17 +54,14 @@ function GenerateReport({
                   </button>
                 </div>
 
-                <div className={'mt-2 grid grid-cols-3 gap-3'}>
-                  {data.admin.reports.map((report) => (
-                    <button
-                      key={report.id}
-                      className={
-                        'flex h-[100px] items-center justify-center rounded bg-primaryYellowHover text-sm font-semibold text-secondaryWhite duration-300 hover:bg-primaryYellow'
-                      }
-                    >
-                      {report.name}
-                    </button>
-                  ))}
+                <div className="h-[85vh] overflow-auto py-2 pr-2 text-secondaryWhite">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                      docxFile
+                    )}`}
+                  />
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -74,4 +72,4 @@ function GenerateReport({
   );
 }
 
-export default GenerateReport;
+export default ViewCollegeRequirementDocument;

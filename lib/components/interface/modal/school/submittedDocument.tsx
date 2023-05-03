@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineFilePdf } from 'react-icons/ai';
+import { AiOutlineFilePdf, AiOutlineFileWord } from 'react-icons/ai';
 
 function submittedDocument({
   modal,
@@ -32,6 +32,8 @@ function submittedDocument({
           className="relative z-10 hidden xl:block"
           onClose={() => {
             toggleSubmittedDoc();
+
+            setDocumentList([]);
           }}
         >
           <Transition.Child
@@ -61,6 +63,8 @@ function submittedDocument({
                     <button
                       onClick={() => {
                         toggleSubmittedDoc();
+
+                        setDocumentList([]);
                       }}
                       className="w-[100px] rounded border-2 border-primaryYellow py-1"
                     >
@@ -94,7 +98,7 @@ function submittedDocument({
                               : doc.submitted_document_name
                           }
                         >
-                          <AiOutlineFilePdf size={30} />
+                          <AiOutlineFileWord size={30} />
                           <span className="w-full text-ellipsis">
                             {doc.submitted_document_name}
                           </span>

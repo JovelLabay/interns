@@ -124,6 +124,10 @@ class Student {
                     first_name: d.firstName,
                     last_name: d.lastName,
                     middle_name: d.middleName,
+                    school_semester_id:
+                      parsedDataObjectSchoolSemestre.School_Semester.filter(
+                        (d: any) => d.is_active === true
+                      )[0].id,
                     deletedAt: null,
                   },
                 });
@@ -189,6 +193,10 @@ class Student {
               first_name: firstName,
               last_name: lastName,
               middle_name: middleName,
+              school_semester_id:
+                parsedDataObjectSchoolSemestre.School_Semester.filter(
+                  (d: any) => d.is_active === true
+                )[0].id,
               deletedAt: null,
             },
           });

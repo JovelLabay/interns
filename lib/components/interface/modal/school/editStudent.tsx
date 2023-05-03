@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import Image from 'next/image';
 
@@ -20,6 +20,7 @@ import {
   successfulNotify,
 } from '@component/interface/toast/toast';
 import { BiRefresh } from 'react-icons/bi';
+import { DynamicContext } from '@redux/context';
 
 const studentStatus = Object.entries(Student_Status);
 
@@ -34,6 +35,7 @@ function EditStudent({
   objectEditStudent: string;
   getStudentList(): void;
 }) {
+  const context = useContext(DynamicContext);
   const [state, setState] = useState({
     isUpdating: false,
     uploadingImage: false,
@@ -164,7 +166,7 @@ function EditStudent({
                   </button>
                 </div>
 
-                <div className="h-[85vh] overflow-auto py-2 pr-2 text-secondaryWhite">
+                <div className="my-2 h-[85vh] overflow-auto pr-2 text-secondaryWhite">
                   <form
                     className="mt-2 flex flex-col gap-3"
                     onSubmit={(e) => {
@@ -282,12 +284,8 @@ function EditStudent({
                           watch().eligibility
                             ? 'bg-primaryYellow'
                             : 'bg-primaryYellowHover',
-                          'rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75',
-                          selectedEmailTemplate.name === ''
-                            ? 'cursor-not-allowed opacity-50'
-                            : 'cursor-pointer'
+                          'rounded-m relative inline-flex h-[38px] w-[74px] shrink-0 rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
                         )}
-                        disabled={selectedEmailTemplate.name === ''}
                       >
                         <span className="sr-only">Use setting</span>
                         <span
@@ -302,6 +300,7 @@ function EditStudent({
                       </Switch>
 
                       <Listbox
+                        disabled={emailTemplate.length === 0}
                         value={
                           selectedEmailTemplate.name === ''
                             ? 'Select Template'
@@ -318,7 +317,9 @@ function EditStudent({
                           <div className="relative">
                             <Listbox.Button
                               className={classNames(
-                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
+                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none',
+                                emailTemplate.length === 0 &&
+                                  'cursor-not-allowed opacity-50'
                               )}
                             >
                               {selectedEmailTemplate.name === ''
@@ -446,8 +447,8 @@ function EditStudent({
                                 'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none'
                               )}
                             >
-                              {watch().studentStatus === 'NOT_SET'
-                                ? 'NOT SET'
+                              {watch().studentStatus === 'NOT_STARTED'
+                                ? 'NOT STARTED'
                                 : watch().studentStatus}
                               <FiChevronDown
                                 size={30}
@@ -463,7 +464,7 @@ function EditStudent({
                               {studentStatus
                                 .filter(
                                   (person) =>
-                                    person[1] !== 'NOT_SET' &&
+                                    person[1] !== 'NOT_STARTED' &&
                                     person[1] !== 'APPLYING' &&
                                     person[1] !== 'APPLIED'
                                 )
@@ -514,17 +515,15 @@ function EditStudent({
                                 'absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer'
                               )}
                             >
-                              {['Male', 'Female', 'Other'].map(
-                                (person, index) => (
-                                  <Listbox.Option
-                                    className={classNames('py-1')}
-                                    key={index}
-                                    value={person}
-                                  >
-                                    {person}
-                                  </Listbox.Option>
-                                )
-                              )}
+                              {['Male', 'Female'].map((person, index) => (
+                                <Listbox.Option
+                                  className={classNames('py-1')}
+                                  key={index}
+                                  value={person}
+                                >
+                                  {person}
+                                </Listbox.Option>
+                              ))}
                             </Listbox.Options>
                           </div>
                         )}
@@ -583,9 +582,13 @@ function EditStudent({
 
                     <input
                       className={classNames(
-                        'w-full rounded-md bg-primaryYellow py-2 px-1'
+                        'w-full rounded-md bg-primaryYellow py-2 px-1',
+                        context?.userData.levelOfUser === 'STAFF'
+                          ? 'cursor-not-allowed opacity-50'
+                          : 'cursor-pointer'
                       )}
                       type="submit"
+                      disabled={context?.userData.levelOfUser === 'STAFF'}
                       value={
                         state.isUpdating
                           ? 'Updating Student...'
@@ -645,6 +648,22 @@ function EditStudent({
       axios
         .request(config)
         .then(() => {
+          getStudentList();
+          successfulNotify('Updated Successfully');
+
+          toggleEditStudent();
+          reset();
+          setState((prev) => ({ ...prev, isUpdating: false }));
+          setSelectedEmailTemplate({
+            name: '',
+            objectData: {
+              email_template_name: '',
+              email_template_subject: '',
+              email_template_body: '',
+              id: 0,
+            },
+          });
+
           if (selectedEmailTemplate.name !== '') {
             // SEND EMAIL
             const currentTime = new Date().getTime();
@@ -671,52 +690,16 @@ function EditStudent({
             axios
               .request(config)
               .then(() => {
-                successfulNotify('Reset Password Email Sent!');
-
-                getStudentList();
-                successfulNotify('Updated Successfully');
-
-                toggleEditStudent();
-                reset();
-                setState((prev) => ({
-                  ...prev,
-                  isUpdating: false,
-                }));
-                setSelectedEmailTemplate({
-                  name: '',
-                  objectData: {
-                    email_template_name: '',
-                    email_template_subject: '',
-                    email_template_body: '',
-                    id: 0,
-                  },
-                });
+                successfulNotify('Email has been sent');
               })
               .catch((error) => {
                 console.error(error);
-                successfulNotify('Something went wrong!');
+                errorNotify('Something went wrong!');
               });
-          } else {
-            getStudentList();
-            successfulNotify('Updated Successfully');
-
-            toggleEditStudent();
-            reset();
-            setState((prev) => ({ ...prev, isUpdating: false }));
-            setSelectedEmailTemplate({
-              name: '',
-              objectData: {
-                email_template_name: '',
-                email_template_subject: '',
-                email_template_body: '',
-                id: 0,
-              },
-            });
           }
         })
         .catch((error) => {
           errorNotify('Something Went Wrong');
-          console.log(error);
 
           setState((prev) => ({ ...prev, isUpdating: false }));
           setSelectedEmailTemplate({

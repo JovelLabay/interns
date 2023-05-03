@@ -151,11 +151,11 @@ function Account() {
             <div className="relative">
               <Listbox.Button
                 className={classNames(
-                  'flex w-[30vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none sm:w-[50vw] lg:w-[35vw] xl:w-[25vw]'
+                  'flex w-[50vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none sm:w-[50vw] lg:w-[35vw] xl:w-[25vw]'
                 )}
               >
-                {watch().studentStatus === 'NOT_SET'
-                  ? 'NOT SET'
+                {watch().studentStatus === 'NOT_STARTED'
+                  ? 'NOT STARTED'
                   : watch().studentStatus}
                 <FiChevronDown
                   size={30}
@@ -174,18 +174,25 @@ function Account() {
                     (person) =>
                       person[1] !== 'INCOMPLETE' &&
                       person[1] !== 'COMPLETE' &&
-                      person[1] !== 'NOT_SET' &&
+                      person[1] !== 'NOT_STARTED' &&
                       person[1] !== 'FINISHED'
                   )
                   .map((person, index) => (
                     <Listbox.Option
                       className={classNames(
                         'py-1',
-                        watch().studentStatus !== 'COMPLETE' && 'opacity-50'
+                        watch().studentStatus !== 'COMPLETE' &&
+                          watch().studentStatus !== 'APPLYING' &&
+                          watch().studentStatus !== 'APPLIED' &&
+                          'opacity-50'
                       )}
                       key={index}
                       value={person[1]}
-                      disabled={watch().studentStatus !== 'COMPLETE'}
+                      disabled={
+                        watch().studentStatus !== 'COMPLETE' &&
+                        watch().studentStatus !== 'APPLYING' &&
+                        watch().studentStatus !== 'APPLIED'
+                      }
                     >
                       {splitUnderScore(person[1])}
                     </Listbox.Option>
@@ -211,7 +218,7 @@ function Account() {
             <div className="relative">
               <Listbox.Button
                 className={classNames(
-                  'flex w-[30vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none sm:w-[50vw] lg:w-[35vw] xl:w-[25vw]'
+                  'flex w-[50vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none sm:w-[50vw] lg:w-[35vw] xl:w-[25vw]'
                 )}
               >
                 {watch().sex === '' ? 'NOT SET' : watch().sex}

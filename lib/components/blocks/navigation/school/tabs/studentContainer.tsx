@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   AiOutlineClear,
@@ -30,8 +30,10 @@ import {
   successfulNotify,
 } from '@component/interface/toast/toast';
 import { HiOutlineDocumentReport, HiOutlineDocumentText } from 'react-icons/hi';
+import { DynamicContext } from '@redux/context';
 
 function StudentContainer() {
+  const context = useContext(DynamicContext);
   const levelOfUser = Object.entries(Student_Status);
 
   const [modal, setModal] = React.useState({
@@ -112,6 +114,18 @@ function StudentContainer() {
             <AiOutlineInfoCircle size={20} />
           </button>
           <button
+            className={classNames(
+              'rounded bg-blue-500 p-2 text-white',
+              context?.userData.levelOfUser === 'STAFF' &&
+                'cursor-not-allowed opacity-50'
+            )}
+            disabled={context?.userData.levelOfUser === 'STAFF'}
+            title="Generate Report"
+            onClick={() => toggleGenerateReport()}
+          >
+            <HiOutlineDocumentReport size={20} />
+          </button>
+          <button
             className={classNames('rounded bg-primaryYellow p-2')}
             title="Select School Year/Semestre | College/Department"
             onClick={() => toggleSelectSchoolYearSemestre()}
@@ -178,34 +192,24 @@ function StudentContainer() {
           >
             <AiOutlineUsergroupAdd size={20} />
           </button>
+
           <button
-            className={classNames('rounded bg-blue-500 p-2 text-white', {
-              'cursor-not-allowed opacity-50':
-                active.schoolYear === '' ||
-                active.schoolSemestre === '' ||
-                active.collegeDepartment === '',
-            })}
+            className={classNames(
+              'rounded bg-red-500 p-2 text-white',
+              {
+                'cursor-not-allowed opacity-50':
+                  active.schoolYear === '' ||
+                  active.schoolSemestre === '' ||
+                  active.collegeDepartment === '',
+              },
+              context?.userData.levelOfUser === 'STAFF' &&
+                'cursor-not-allowed opacity-50'
+            )}
             disabled={
               active.schoolYear === '' ||
               active.schoolSemestre === '' ||
-              active.collegeDepartment === ''
-            }
-            title="Generate Report"
-            onClick={() => toggleGenerateReport()}
-          >
-            <HiOutlineDocumentReport size={20} />
-          </button>
-          <button
-            className={classNames('rounded bg-red-500 p-2 text-white', {
-              'cursor-not-allowed opacity-50':
-                active.schoolYear === '' ||
-                active.schoolSemestre === '' ||
-                active.collegeDepartment === '',
-            })}
-            disabled={
-              active.schoolYear === '' ||
-              active.schoolSemestre === '' ||
-              active.collegeDepartment === ''
+              active.collegeDepartment === '' ||
+              context?.userData.levelOfUser === 'STAFF'
             }
             title={`Delete All Students in ${active.schoolYear} - ${active.schoolSemestre} | ${active.collegeDepartment}`}
             onClick={() => deleteStudents({ deletedAll: 'true' })}
@@ -379,7 +383,21 @@ function StudentContainer() {
                 <td className={classNames('sticky right-0 bg-white px-2 py-4')}>
                   <div className="flex items-center justify-center gap-3">
                     <button
-                      className="cursor-pointer rounded bg-red-400 p-2"
+                      className={classNames(
+                        'rounded bg-red-400 p-2',
+                        context?.userData.levelOfUser === 'STAFF'
+                          ? 'cursor-not-allowed opacity-50'
+                          : context?.userData.levelOfUser === 'ADMINISTRATOR'
+                          ? 'cursor-not-allowed opacity-50'
+                          : 'cursor-pointer'
+                      )}
+                      disabled={
+                        context?.userData.levelOfUser === 'STAFF'
+                          ? true
+                          : context?.userData.levelOfUser === 'ADMINISTRATOR'
+                          ? true
+                          : false
+                      }
                       title="Delete Student"
                       onClick={() => deleteStudents({ id: item.id })}
                     >
@@ -405,7 +423,15 @@ function StudentContainer() {
                       />
                     </button>
                     <button
-                      className="cursor-pointer rounded bg-violet-400 p-2"
+                      className={classNames(
+                        'rounded bg-violet-400 p-2',
+                        context?.userData.levelOfUser === 'STAFF'
+                          ? 'cursor-not-allowed opacity-50'
+                          : 'cursor-pointer'
+                      )}
+                      disabled={
+                        context?.userData.levelOfUser === 'STAFF' ? true : false
+                      }
                       title="Email Student"
                     >
                       <AiOutlineMail size={25} className="text-mainBgWhite" />

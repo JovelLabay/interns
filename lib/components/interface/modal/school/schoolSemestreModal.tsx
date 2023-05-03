@@ -98,7 +98,7 @@ function SchoolYearModal({
                   >
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Semestre Code{' '}
+                        School Semestre{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -110,7 +110,7 @@ function SchoolYearModal({
                           }
                         )}
                         type="text"
-                        placeholder="School Semestre Code"
+                        placeholder="School Semestre"
                         {...register('school_semester_name')}
                       />
                       {errors.school_semester_name?.message && (

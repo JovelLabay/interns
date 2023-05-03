@@ -22,8 +22,9 @@ import ManageCollege from '@component/interface/modal/ManageCollege';
 
 import { DynamicContext } from 'lib/context/context';
 import { AiOutlineMail } from 'react-icons/ai';
-import EmailTemplate from '@component/interface/modal/student/emailTemplate';
+import EmailTemplate from '@component/interface/modal/emailTemplate';
 import { useForm } from 'react-hook-form';
+import classNames from 'classnames';
 
 function SchoolHeader() {
   const router = useRouter();
@@ -57,27 +58,50 @@ function SchoolHeader() {
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
             <button
-              className="buttonIcon"
+              className={classNames(
+                'buttonIcon',
+                context?.userData.levelOfUser === 'STAFF' &&
+                  'cursor-not-allowed opacity-50'
+              )}
               onClick={editEmailTemplateToggle}
               title="Email Templates"
+              disabled={context?.userData.levelOfUser === 'STAFF'}
             >
               <AiOutlineMail />
             </button>
 
             {/* MANAGE USERS */}
             <button
-              className="buttonIcon"
+              className={classNames(
+                'buttonIcon',
+                context?.userData.levelOfUser === 'STAFF' &&
+                  'cursor-not-allowed opacity-50',
+                context?.userData.levelOfUser === 'ADMINISTRATOR' &&
+                  'cursor-not-allowed opacity-50'
+              )}
               onClick={addModalToggleManageUser}
               title="Manage Users"
+              disabled={
+                context?.userData.levelOfUser === 'STAFF'
+                  ? true
+                  : context?.userData.levelOfUser === 'ADMINISTRATOR'
+                  ? true
+                  : false
+              }
             >
               <FiUsers />
             </button>
 
             {/* MANAGE COLLEGE */}
             <button
-              className="buttonIcon"
+              className={classNames(
+                'buttonIcon',
+                context?.userData.levelOfUser === 'STAFF' &&
+                  'cursor-not-allowed opacity-50'
+              )}
               onClick={addModalToggleManageCollege}
               title="Manage College"
+              disabled={context?.userData.levelOfUser === 'STAFF'}
             >
               <HiOutlineOfficeBuilding />
             </button>

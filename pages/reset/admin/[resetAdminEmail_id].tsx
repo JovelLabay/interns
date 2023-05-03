@@ -6,8 +6,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import SecondayStaticFooter from 'lib/components/blocks/staticPage/SecondayStaticFooter';
-import resetPasswordIllustration from '../../public/images/resetPassword/resetPassword.jpg';
+import SecondayStaticFooter from '@component/blocks/staticPage/SecondayStaticFooter';
+import resetPasswordIllustration from '@/assets/images/resetPassword/resetPassword.jpg';
 import { LogSignValidator } from '@validator/forms';
 
 import classNames from 'classnames';

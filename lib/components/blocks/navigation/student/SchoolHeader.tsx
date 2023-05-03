@@ -109,9 +109,12 @@ function StudentHeader() {
               {context?.userData.email || 'No Data'}
             </p>
           </div>
-          <div className="mt-10 mb-7 flex gap-5">
+          <div className="mt-10 mb-7 flex items-center justify-center gap-3">
+            <button className="buttonIcon" title="Toogle Dark/Light mode">
+              <BsSun />
+            </button>
             <button
-              className="flex w-[120px] items-center justify-center rounded-full bg-primaryYellow py-2 font-semibold duration-300 hover:scale-105"
+              className="flex w-[120px] items-center justify-center rounded bg-primaryYellow py-2 font-semibold duration-300 hover:scale-105"
               onClick={studentLogoutHandler}
             >
               Logout

@@ -32,6 +32,7 @@ function EmailTemplate({
     resolver: yupResolver(EmailTemplateForm),
   });
 
+  const [isClose, setIsClose] = useState(false);
   const [state, setState] = useState({
     isCreating: false,
     uploadingImage: false,
@@ -55,6 +56,7 @@ function EmailTemplate({
           editEmailTemplateToggle();
 
           setEmailTemplateId(-1);
+          setIsClose(false);
           reset();
         }}
       >
@@ -101,6 +103,7 @@ function EmailTemplate({
                       editEmailTemplateToggle();
 
                       setEmailTemplateId(-1);
+                      setIsClose(false);
                       reset();
                     }}
                     className="w-[100px] rounded border-2 border-primaryYellow py-1"
@@ -114,6 +117,7 @@ function EmailTemplate({
                     {({ open }) => (
                       <div className="my-2">
                         <Disclosure.Button
+                          onClick={() => setIsClose(!isClose)}
                           className={classNames(
                             'flex w-full justify-between bg-yellowBg px-4 py-4 text-left',
                             open ? 'rounded-t-md' : 'rounded-md',
@@ -132,104 +136,112 @@ function EmailTemplate({
                             } h-5 w-5 text-primaryYellow duration-300`}
                           />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="flex flex-col items-start gap-2 rounded-b-md bg-mainBgWhite px-4 py-2 text-gray-500">
-                          <form
-                            className="flex w-full flex-col items-start gap-2"
-                            onSubmit={(e) => {
-                              e.preventDefault();
+                        {isClose && (
+                          <div className="flex flex-col items-start gap-2 rounded-b-md bg-mainBgWhite px-4 py-2 text-gray-500">
+                            <form
+                              className="flex w-full flex-col items-start gap-2"
+                              onSubmit={(e) => {
+                                e.preventDefault();
 
-                              handleSubmit((data) => postEmail(data))();
-                            }}
-                          >
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Template Name{' '}
-                                <span className="text-xs text-red-500">*</span>
-                              </label>
-                              <input
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                                  {
-                                    'border-red-500 bg-red-100 placeholder:text-white':
-                                      errors.email_template_name?.message,
-                                  }
+                                handleSubmit((data) => postEmail(data))();
+                              }}
+                            >
+                              <div className="flex w-full flex-col items-start gap-2">
+                                <label
+                                  htmlFor="email"
+                                  className="text-secondaryWhite"
+                                >
+                                  Template Name{' '}
+                                  <span className="text-xs text-red-500">
+                                    *
+                                  </span>
+                                </label>
+                                <input
+                                  className={classNames(
+                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                                    {
+                                      'border-red-500 bg-red-100 placeholder:text-white':
+                                        errors.email_template_name?.message,
+                                    }
+                                  )}
+                                  type="text"
+                                  placeholder="Template Name"
+                                  {...register('email_template_name')}
+                                />
+                                {errors.email_template_name?.message && (
+                                  <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                                    {errors.email_template_name?.message}
+                                  </p>
                                 )}
-                                type="text"
-                                placeholder="Template Name"
-                                {...register('email_template_name')}
-                              />
-                              {errors.email_template_name?.message && (
-                                <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                                  {errors.email_template_name?.message}
-                                </p>
-                              )}
-                            </div>
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Subject{' '}
-                                <span className="text-xs text-red-500">*</span>
-                              </label>
-                              <input
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                                  {
-                                    'border-red-500 bg-red-100 placeholder:text-white':
-                                      errors.email_template_subject?.message,
-                                  }
+                              </div>
+                              <div className="flex w-full flex-col items-start gap-2">
+                                <label
+                                  htmlFor="email"
+                                  className="text-secondaryWhite"
+                                >
+                                  Subject{' '}
+                                  <span className="text-xs text-red-500">
+                                    *
+                                  </span>
+                                </label>
+                                <input
+                                  className={classNames(
+                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                                    {
+                                      'border-red-500 bg-red-100 placeholder:text-white':
+                                        errors.email_template_subject?.message,
+                                    }
+                                  )}
+                                  type="text"
+                                  placeholder="Email Subject"
+                                  {...register('email_template_subject')}
+                                />
+                                {errors.email_template_subject?.message && (
+                                  <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                                    {errors.email_template_subject?.message}
+                                  </p>
                                 )}
-                                type="text"
-                                placeholder="Email Subject"
-                                {...register('email_template_subject')}
-                              />
-                              {errors.email_template_subject?.message && (
-                                <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                                  {errors.email_template_subject?.message}
-                                </p>
-                              )}
-                            </div>
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Body{' '}
-                                <span className="text-xs text-red-500">*</span>
-                              </label>
-                              <textarea
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
-                                  {
-                                    'border-red-500 bg-red-100 placeholder:text-white':
-                                      errors.email_template_body?.message,
-                                  }
+                              </div>
+                              <div className="flex w-full flex-col items-start gap-2">
+                                <label
+                                  htmlFor="email"
+                                  className="text-secondaryWhite"
+                                >
+                                  Body{' '}
+                                  <span className="text-xs text-red-500">
+                                    *
+                                  </span>
+                                </label>
+                                <textarea
+                                  className={classNames(
+                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                                    {
+                                      'border-red-500 bg-red-100 placeholder:text-white':
+                                        errors.email_template_body?.message,
+                                    }
+                                  )}
+                                  placeholder="Email Body"
+                                  {...register('email_template_body')}
+                                />
+                                {errors.email_template_body?.message && (
+                                  <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+                                    {errors.email_template_body?.message}
+                                  </p>
                                 )}
-                                placeholder="Email Body"
-                                {...register('email_template_body')}
-                              />
-                              {errors.email_template_body?.message && (
-                                <p className="w-full text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                                  {errors.email_template_body?.message}
-                                </p>
-                              )}
-                            </div>
+                              </div>
 
-                            <input
-                              className="w-full cursor-pointer rounded bg-primaryYellow py-2 px-10"
-                              value={
-                                state.isCreating
-                                  ? 'Creating New College...'
-                                  : 'Create Template'
-                              }
-                              type="submit"
-                            />
-                          </form>
-                        </Disclosure.Panel>
+                              <input
+                                className="w-full cursor-pointer rounded bg-primaryYellow py-2 px-10"
+                                value={
+                                  state.isCreating
+                                    ? 'Creating New College...'
+                                    : 'Create Template'
+                                }
+                                type="submit"
+                              />
+                            </form>
+                          </div>
+                        )}
                       </div>
                     )}
                   </Disclosure>
@@ -241,6 +253,8 @@ function EmailTemplate({
                       <button
                         onClick={() => {
                           setEmailTemplateId(-1);
+                          setIsClose(false);
+                          reset();
                         }}
                         className="w-[100px] rounded border-2 border-primaryYellow py-1 text-sm"
                       >
@@ -259,6 +273,7 @@ function EmailTemplate({
                             className="cursor-pointer"
                             onClick={() => {
                               setEmailTemplateId(item.id);
+                              setIsClose(false);
 
                               setValue(
                                 'email_template_name',
@@ -433,13 +448,13 @@ function EmailTemplate({
 
           getEmailTemplate();
           setState((prev) => ({ ...prev, isCreating: false }));
+          setIsClose(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         errorNotify('Something went wrong!');
 
         setState((prev) => ({ ...prev, isCreating: false }));
-        console.error(err);
       });
   }
 

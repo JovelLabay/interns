@@ -55,9 +55,9 @@ const Home: NextPage = () => {
           {/* SECOND */}
           <div className="my-5 mx-0 md:my-10 md:mx-5 lg:my-14 lg:mx-10">
             <p className="w-full text-secondaryWhite sm:text-[18px] md:w-9/12 md:text-[20px] lg:w-6/12 lg:text-[24px]">
-              Our team of interns can assist you in identifying the most
-              suitable internship opportunities, tailored to your specific field
-              and expertise.
+              Practicum Coordinators can manage students to easily. Send Emails,
+              Toggle switch to notify students about their internship statues.
+              Efficient submissions and viewing of required documents
             </p>
             <Link href="/user/getstarted">
               <button className="my-6 rounded-full bg-primaryYellow px-8 py-2 font-medium duration-300 hover:scale-105 md:my-10 lg:my-12 ">

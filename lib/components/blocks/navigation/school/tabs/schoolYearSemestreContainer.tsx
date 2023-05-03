@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 
 import { data } from 'Data';
 import {
@@ -34,8 +34,10 @@ import {
 import { BiRefresh } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { InfoLegendYearSemestre } from '@component/interface/modal/school/infoLegend';
+import { DynamicContext } from '@redux/context';
 
 function SchoolYearSemestreContainer() {
+  const context = useContext(DynamicContext);
   const [modal, setModal] = useState({
     addSchoolyearModal: false,
     addSchoolSemestre: false,
@@ -121,7 +123,20 @@ function SchoolYearSemestreContainer() {
             <BiRefresh size={20} />
           </button>
           <button
-            className="rounded bg-primaryYellow p-2"
+            className={classNames(
+              'rounded bg-primaryYellow p-2',
+              context?.userData.levelOfUser === 'STAFF' &&
+                'cursor-not-allowed opacity-50',
+              context?.userData.levelOfUser === 'ADMINISTRATOR' &&
+                'cursor-not-allowed opacity-50'
+            )}
+            disabled={
+              context?.userData.levelOfUser === 'STAFF'
+                ? true
+                : context?.userData.levelOfUser === 'ADMINISTRATOR'
+                ? true
+                : false
+            }
             title="Add School Year"
             onClick={toggleSchoolYearModal}
           >
@@ -176,13 +191,13 @@ function SchoolYearSemestreContainer() {
                   }
                 )}
               >
-                <p
+                <button
                   className="flex w-[90%] flex-col"
                   onClick={() => getSchoolYear(item.id)}
                 >
                   <span
                     className={classNames(
-                      'h-2 w-2 rounded-full',
+                      'absolute bottom-1 right-1 h-2 w-2 rounded-full',
                       item.is_active ? 'bg-green-500' : 'bg-red-500'
                     )}
                   />
@@ -190,11 +205,25 @@ function SchoolYearSemestreContainer() {
                   <span className="mt-2 text-xs font-light italic">
                     {new Date(item.createdAt).toLocaleString()}
                   </span>
-                </p>
+                  <span className="mt-2 text-xs font-bold">
+                    {item.is_active ? 'ACTIVE' : 'INACTIVE'}
+                  </span>
+                </button>
                 <Menu>
                   {selectionState.schoolYear === item.id &&
                     selectionState.schoolYearInformation === true && (
-                      <Menu.Button>
+                      <Menu.Button
+                        className={classNames(
+                          '',
+                          context?.userData.levelOfUser === 'STAFF' &&
+                            'cursor-not-allowed opacity-50'
+                        )}
+                        disabled={
+                          context?.userData.levelOfUser === 'STAFF'
+                            ? true
+                            : false
+                        }
+                      >
                         <BsThreeDotsVertical size={18} />
                       </Menu.Button>
                     )}
@@ -277,7 +306,7 @@ function SchoolYearSemestreContainer() {
                 >
                   <span
                     className={classNames(
-                      'h-2 w-2 rounded-full',
+                      'absolute bottom-1 right-1 h-2 w-2 rounded-full',
                       item.is_active ? 'bg-green-500' : 'bg-red-500'
                     )}
                   />
@@ -285,15 +314,26 @@ function SchoolYearSemestreContainer() {
                   <span className="mt-2 text-xs font-light italic">
                     {new Date(item.createdAt).toLocaleString()}
                   </span>
+                  <span className="mt-2 text-xs font-bold">
+                    {item.is_active ? 'ACTIVE' : 'INACTIVE'}
+                  </span>
                 </p>
 
                 <button
                   className={classNames(
                     '',
-                    item.is_active && 'cursor-not-allowed opacity-50'
+                    item.is_active && 'cursor-not-allowed opacity-50',
+                    context?.userData.levelOfUser === 'STAFF' &&
+                      'cursor-not-allowed opacity-50'
                   )}
                   title="Delete Semestre"
-                  disabled={item.is_active}
+                  disabled={
+                    context?.userData.levelOfUser === 'STAFF'
+                      ? true
+                      : item.is_active
+                      ? true
+                      : false
+                  }
                   onClick={() =>
                     deleteSchoolSemestre(item.school_year_id, item.id)
                   }
@@ -507,6 +547,7 @@ function SchoolYear({
   listSchoolSemestre: ReturnFormSchoolSemestre[];
   getSchoolYear(schoolYearId?: number): void;
 }) {
+  const context = useContext(DynamicContext);
   const [isUpdating, setIsUpdating] = useState(false);
 
   return (
@@ -586,7 +627,7 @@ function SchoolYear({
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Year Code
+            School Year
           </label>
           <input
             className={classNames(
@@ -598,7 +639,7 @@ function SchoolYear({
             )}
             type="text"
             disabled
-            placeholder="School Year Code"
+            placeholder="School Year"
             {...register('school_year_name')}
           />
         </div>
@@ -668,9 +709,15 @@ function SchoolYear({
         </div>
 
         <input
-          className="cursor-pointer rounded bg-primaryYellow py-2"
+          className={classNames(
+            'rounded bg-primaryYellow py-2',
+            context?.userData.levelOfUser === 'STAFF'
+              ? 'cursor-not-allowed opacity-50'
+              : 'cursor-pointer'
+          )}
           value={isUpdating ? 'Updating...' : 'Update School Year Status'}
           type="submit"
+          disabled={context?.userData.levelOfUser === 'STAFF' ? true : false}
         />
       </form>
     </div>
@@ -739,6 +786,7 @@ function SchoolSemestre({
   viewSchoolSemestreInfo: string;
   getSchoolYear(schoolYearId?: number): void;
 }) {
+  const context = useContext(DynamicContext);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const {
@@ -832,7 +880,7 @@ function SchoolSemestre({
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Semestre Code <span className="text-xs text-red-500">*</span>
+            School Semestre <span className="text-xs text-red-500">*</span>
           </label>
           <input
             className={classNames(
@@ -843,7 +891,7 @@ function SchoolSemestre({
               }
             )}
             type="password"
-            placeholder="School Semestre Code"
+            placeholder="School Semestre"
             {...register('school_semester_code')}
           />
         </div>
@@ -882,9 +930,15 @@ function SchoolSemestre({
         </div>
 
         <input
-          className="cursor-pointer rounded bg-primaryYellow py-2"
-          value={isUpdating ? 'Updating...' : 'Upate School Semestre Status'}
+          className={classNames(
+            'rounded bg-primaryYellow py-2',
+            context?.userData.levelOfUser === 'STAFF'
+              ? 'cursor-not-allowed opacity-50'
+              : 'cursor-pointer'
+          )}
+          value={isUpdating ? 'Updating...' : 'Update School Semestre Status'}
           type="submit"
+          disabled={context?.userData.levelOfUser === 'STAFF' ? true : false}
         />
       </form>
     </div>

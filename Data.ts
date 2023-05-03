@@ -134,6 +134,14 @@ export const data = {
       { id: 3, name: 'Companies' },
       { id: 4, name: 'Account' },
     ],
+    reports: [
+      { id: 1, name: 'Eligible Students' },
+      { id: 2, name: 'Incomplete Students' },
+      { id: 3, name: 'Complete Students' },
+      { id: 4, name: 'Applying Students' },
+      { id: 5, name: 'Applied Students' },
+      { id: 6, name: 'Finished Students' },
+    ],
     schoolYearSemestre: {
       schoolYear: [
         { id: 1, name: 'Add Semestre' },

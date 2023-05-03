@@ -12,7 +12,14 @@ function InfoLegendStudent({
   toggleInfo: () => void;
   levelOfUser: [
     string,
-    'INCOMPLETE' | 'COMPLETE' | 'APPLYING' | 'APPLIED' | 'FINISHED' | 'NOT_SET'
+    (
+      | 'INCOMPLETE'
+      | 'COMPLETE'
+      | 'APPLYING'
+      | 'APPLIED'
+      | 'FINISHED'
+      | 'NOT_STARTED'
+    )
   ][];
 }) {
   return (
@@ -62,7 +69,7 @@ function InfoLegendStudent({
 
                 <ol className="mx-5 mt-2 text-left">
                   {levelOfUser
-                    .filter((level) => level[1] !== 'NOT_SET')
+                    .filter((level) => level[1] !== 'NOT_STARTED')
                     .map((level, index) => {
                       const statusName = level[0]
                         .split('_')

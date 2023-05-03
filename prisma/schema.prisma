@@ -74,7 +74,7 @@ model Student_User_Profile {
   self_introduction          String?                      @db.Text
   date_of_birth              String?
   sex                        String?
-  student_status             Student_Status               @default(NOT_SET)
+  student_status             Student_Status               @default(NOT_STARTED)
   Student_User               Student_User                 @relation(fields: [student_user_id], references: [id])
   student_user_id            Int                          @unique
   College_Department         College_Department           @relation(fields: [college_Department_Id], references: [id])
@@ -141,7 +141,7 @@ model Admin_User {
   email_address    String          @unique
   password         String
   isActive         Boolean         @default(false)
-  level_of_user    Level_Of_User   @default(NOT_SET)
+  level_of_user    Level_Of_User   @default(STAFF)
   Activity_Logs    Activity_Logs[]
 
   createdAt DateTime  @default(now())
@@ -234,7 +234,6 @@ enum Level_Of_User {
   SUPER_ADMINISTRATOR
   ADMINISTRATOR
   STAFF
-  NOT_SET
 }
 
 enum Student_Status {
@@ -243,5 +242,5 @@ enum Student_Status {
   APPLYING
   APPLIED
   FINISHED
-  NOT_SET
+  NOT_STARTED
 }

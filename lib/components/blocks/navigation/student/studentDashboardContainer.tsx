@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 import Account from './tabs/account';
 import Documents from './tabs/documents';
+import Details from './tabs/details';
 
 function StudentDashboardContainer() {
   return (
@@ -34,7 +35,9 @@ function StudentDashboardContainer() {
 
         {/* MAIN COMPONENTS */}
         <Tab.Panels className="mx-auto h-[80vh] overflow-auto rounded bg-white p-2 sm:w-[90vw] lg:w-[70vw] xl:w-[50vw]">
-          <Tab.Panel>Details</Tab.Panel>
+          <Tab.Panel>
+            <Details />
+          </Tab.Panel>
           <Tab.Panel>
             <Documents />
           </Tab.Panel>

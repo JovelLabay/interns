@@ -23,6 +23,9 @@ class EmailTemplate {
         const checkTemplate = await this.prisma.email_Template.findFirst({
           where: {
             email_template_name: email_template_name,
+            deletedAt: {
+              equals: null,
+            },
           },
         });
         if (checkTemplate) {

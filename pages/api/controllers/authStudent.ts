@@ -78,7 +78,8 @@ class AuthStudent {
 
         if (
           responsePayload?.email === decoded.email &&
-          responsePayload?.password === decoded.password
+          responsePayload?.password === decoded.password &&
+          responsePayload.is_active
         ) {
           res.status(200).json({
             message: 'CORRECT_CREDENTIALS',

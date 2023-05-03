@@ -103,14 +103,15 @@ function Documents() {
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <div className="flex items-center justify-center">
                   {item.bucketUrlOfDocument ? (
-                    <a
-                      href={item.bucketUrlOfDocument}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      onClick={() => {
+                        setSubModal(true);
+                        setDocUrl(item.bucketUrlOfDocument);
+                      }}
                       className="text-blue-500 underline"
                     >
-                      Download Template
-                    </a>
+                      View Template
+                    </button>
                   ) : (
                     'No Template'
                   )}
@@ -129,10 +130,10 @@ function Documents() {
                       }}
                       className="text-blue-500 underline"
                     >
-                      View File
+                      View my Document
                     </button>
                   ) : (
-                    'No File'
+                    'No Document'
                   )}
                 </div>
                 <div>
