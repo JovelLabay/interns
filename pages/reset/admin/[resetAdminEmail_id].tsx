@@ -122,9 +122,9 @@ function ResetAdminEmail() {
               >
                 {(function () {
                   if (submit.isSubmitting) {
-                    return 'Sending...';
+                    return 'Resetting...';
                   } else {
-                    return 'Forgot Password';
+                    return 'Resetting Password';
                   }
                 })()}
               </button>

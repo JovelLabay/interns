@@ -47,7 +47,7 @@ class StudentDocument {
       try {
         const parseData = JSON.parse(data);
 
-        parseData.map(async (item: any) => {
+        parseData.map(async (item: { id: string; documentName: string }) => {
           const submittedDocumentId = item.id + studentUserProfileId;
 
           await this.prisma.student_Submitted_Document.upsert({

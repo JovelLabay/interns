@@ -117,7 +117,7 @@ class Student {
                     email: d.email,
                     school_semester_id:
                       parsedDataObjectSchoolSemestre.School_Semester.filter(
-                        (d: any) => d.is_active === true
+                        (d: { is_active: boolean }) => d.is_active === true
                       )[0].id,
                     password: await hashPassword(d.password),
                   },
@@ -127,7 +127,7 @@ class Student {
                     middle_name: d.middleName,
                     school_semester_id:
                       parsedDataObjectSchoolSemestre.School_Semester.filter(
-                        (d: any) => d.is_active === true
+                        (d: { is_active: boolean }) => d.is_active === true
                       )[0].id,
                     deletedAt: null,
                   },
@@ -186,7 +186,7 @@ class Student {
               email: emailAddress,
               school_semester_id:
                 parsedDataObjectSchoolSemestre.School_Semester.filter(
-                  (d: any) => d.is_active === true
+                  (d: { is_active: boolean }) => d.is_active === true
                 )[0].id,
               password: await hashPassword(password),
             },
@@ -196,7 +196,7 @@ class Student {
               middle_name: middleName,
               school_semester_id:
                 parsedDataObjectSchoolSemestre.School_Semester.filter(
-                  (d: any) => d.is_active === true
+                  (d: { is_active: boolean }) => d.is_active === true
                 )[0].id,
               deletedAt: null,
             },
