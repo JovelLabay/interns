@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": false,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -16,7 +17,13 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"]
+      "@/assets/*": ["public/*"],
+      "@utils/*": ["lib/utils/*"],
+      "@data/*": ["lib/data/*"],
+      "@validator/*": ["lib/validator/*"],
+      "@supabase/*": ["lib/supabase/*"],
+      "@component/*": ["lib/components/*"],
+      "@redux/*": ["lib/context/*"]
     }
   },
 

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/controllers/reports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/reports.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+        <option value="tsconfig.json" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="ProjectId" id="2NZanLNH65ElB7PV43BS2WzMluZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.13.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.13.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/interns/lib/components/blocks/navigation/student&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Documents\\interns\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.tslint&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Documents\\interns\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\interns\lib\components\blocks\navigation\student" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\interns\pages\reset\admin" />
+      <recent name="D:\Documents\interns\lib\components\interface\modal\student" />
+      <recent name="D:\Documents\interns\lib\components\interface\modal" />
+      <recent name="D:\Documents\interns\lib\components\interface\toast" />
+      <recent name="D:\Documents\interns\lib\components\blocks\staticPage" />
+    </key>
+  </component>
+  <component name="SpaceReviewFiltersPersistance">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;NeedsReview&quot;,
+    &quot;reviewer&quot;: {
+      &quot;id&quot;: &quot;3UvEeN359iBw&quot;,
+      &quot;fullName&quot;: &quot;Jovel Labay&quot;
+    }
+  }
+}</component>
+  <component name="SpaceReviewProjectSettings">
+    <option name="selectedReviewProjectId" value="2Tl09b3KaZ2i" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="" />
+      <created>1679874229659</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679874229659</updated>
+      <workItem from="1679874233039" duration="2391000" />
+      <workItem from="1679889300815" duration="1379000" />
+      <workItem from="1680254049730" duration="1851000" />
+      <workItem from="1680324844786" duration="1700000" />
+      <workItem from="1681083887083" duration="3537000" />
+      <workItem from="1681367923318" duration="646000" />
+      <workItem from="1681397820227" duration="72000" />
+      <workItem from="1681397938656" duration="148000" />
+      <workItem from="1681437157784" duration="1378000" />
+      <workItem from="1681439430736" duration="2721000" />
+      <workItem from="1681527071014" duration="605000" />
+      <workItem from="1681704250898" duration="6655000" />
+      <workItem from="1681867884152" duration="216000" />
+      <workItem from="1681868433892" duration="6177000" />
+      <workItem from="1681889421588" duration="1698000" />
+      <workItem from="1681967003564" duration="3930000" />
+      <workItem from="1682123487810" duration="5086000" />
+      <workItem from="1682297738629" duration="33828000" />
+      <workItem from="1682401783882" duration="6242000" />
+      <workItem from="1682431391059" duration="115000" />
+      <workItem from="1682467176010" duration="541000" />
+      <workItem from="1682467735147" duration="12990000" />
+      <workItem from="1682498712564" duration="90000" />
+      <workItem from="1682500754228" duration="669000" />
+      <workItem from="1682508860249" duration="6000" />
+      <workItem from="1682511666656" duration="23957000" />
+      <workItem from="1682560891175" duration="2381000" />
+      <workItem from="1682564067940" duration="933000" />
+      <workItem from="1682565096153" duration="2585000" />
+      <workItem from="1682568295812" duration="1576000" />
+      <workItem from="1682585320781" duration="3477000" />
+      <workItem from="1682607908187" duration="333000" />
+      <workItem from="1682608695466" duration="45000" />
+      <workItem from="1682609087608" duration="983000" />
+      <workItem from="1682642633609" duration="225000" />
+      <workItem from="1682642869035" duration="6593000" />
+      <workItem from="1682994851308" duration="23071000" />
+      <workItem from="1683105512982" duration="11000" />
+      <workItem from="1683120097680" duration="1621000" />
+      <workItem from="1683122493521" duration="609000" />
+      <workItem from="1683124808562" duration="10183000" />
+      <workItem from="1683165236501" duration="240000" />
+      <workItem from="1683212545021" duration="619000" />
+      <workItem from="1683213520263" duration="3978000" />
+      <workItem from="1683352459991" duration="590000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

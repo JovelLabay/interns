@@ -1,1 +1,0 @@
-export const lala = 'sdf';

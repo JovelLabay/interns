@@ -1,0 +1,243 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// MODELS
+model School_Year {
+  id Int @id @default(autoincrement())
+
+  start_date              String
+  end_date                String
+  school_year_name        String
+  school_year_description String?
+  school_year_code        String            @unique
+  is_active               Boolean           @default(false)
+  School_Semester         School_Semester[]
+  Activity_Logs           Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model School_Semester {
+  id Int @id @default(autoincrement())
+
+  school_semester_name        String
+  school_semester_description String?
+  school_semester_code        String          @unique
+  is_active                   Boolean         @default(false)
+  school_year                 School_Year     @relation(fields: [school_year_id], references: [id])
+  school_year_id              Int
+  Student_User                Student_User[]
+  Activity_Logs               Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Student_User {
+  id Int @id @default(autoincrement())
+
+  first_name           String
+  middle_name          String?
+  last_name            String
+  email                String                @unique
+  password             String?
+  is_active            Boolean               @default(false)
+  is_eligible          Boolean               @default(false)
+  school_semester      School_Semester       @relation(fields: [school_semester_id], references: [id])
+  school_semester_id   Int
+  Student_User_Profile Student_User_Profile?
+  Activity_Logs        Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Student_User_Profile {
+  id Int @id @default(autoincrement())
+
+  student_profile_image      String?                      @db.Text
+  address                    String?                      @db.Text
+  phone_number               String?
+  self_introduction          String?                      @db.Text
+  date_of_birth              String?
+  sex                        String?
+  student_status             Student_Status               @default(NOT_STARTED)
+  Student_User               Student_User                 @relation(fields: [student_user_id], references: [id])
+  student_user_id            Int                          @unique
+  College_Department         College_Department           @relation(fields: [college_Department_Id], references: [id])
+  college_Department_Id      Int
+  Student_Submitted_Document Student_Submitted_Document[]
+  Activity_Logs              Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
+
+model Student_Submitted_Document {
+  id Int @id @default(autoincrement())
+
+  Student_User_Profile    Student_User_Profile @relation(fields: [student_user_profile_id], references: [id])
+  student_user_profile_id Int
+  submitted_document_name String?
+  submitted_document      String?              @db.Text
+  Activity_Logs           Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
+
+model College_Department {
+  id Int @id @default(autoincrement())
+
+  college_department_image       String?                @db.Text
+  college_department_name        String
+  college_department_description String?                @db.Text
+  college_coordinator            String
+  complete_program_name          String
+  abbreviated_program_name       String
+  Student_User_Profile           Student_User_Profile[]
+  Requirement_Document           Requirement_Document[]
+  Activity_Logs                  Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Requirement_Document {
+  id Int @id @default(autoincrement())
+
+  College_Department    College_Department @relation(fields: [college_department_id], references: [id])
+  college_department_id Int
+  documentName          String
+  bucketUrlOfDocument   String?
+  Activity_Logs         Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Admin_User {
+  id Int @id @default(autoincrement())
+
+  admin_user_image String?         @db.Text
+  first_name       String
+  middle_name      String?
+  last_name        String
+  email_address    String          @unique
+  password         String
+  isActive         Boolean         @default(false)
+  level_of_user    Level_Of_User   @default(STAFF)
+  Activity_Logs    Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Company_List {
+  id Int @id @default(autoincrement())
+
+  company_name           String
+  company_description    String?            @db.Text
+  company_image          String?            @db.Text
+  company_address        String?            @db.Text
+  company_website        String?
+  company_email          String?
+  comapny_contact_person String
+  Company_Job_List       Company_Job_List[]
+  Activity_Logs          Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Company_Job_List {
+  id Int @id @default(autoincrement())
+
+  job_title        String
+  job_description  String?         @db.Text
+  job_requirements String          @db.Text
+  Company_List     Company_List    @relation(fields: [company_list_id], references: [id])
+  company_list_id  Int
+  Activity_Logs    Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Email_Template {
+  id Int @id @default(autoincrement())
+
+  email_template_name    String
+  email_template_subject String
+  email_template_body    String          @db.Text
+  Activity_Logs          Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Activity_Logs {
+  id Int @id @default(autoincrement())
+
+  activity_message String @db.Text
+  activity_action  String
+
+  School_Year                  School_Year?                @relation(fields: [school_year_id], references: [id])
+  school_year_id               Int?
+  School_Semester              School_Semester?            @relation(fields: [school_semester_id], references: [id])
+  school_semester_id           Int?
+  College_Department           College_Department?         @relation(fields: [college_department_id], references: [id])
+  college_department_id        Int?
+  Student_User                 Student_User?               @relation(fields: [student_user_id], references: [id])
+  student_user_id              Int?
+  Student_User_Profile         Student_User_Profile?       @relation(fields: [student_user_profile_id], references: [id])
+  student_user_profile_id      Int?
+  Admin_User                   Admin_User?                 @relation(fields: [admin_user_id], references: [id])
+  admin_user_id                Int?
+  company_list                 Company_List?               @relation(fields: [company_list_id], references: [id])
+  company_list_id              Int?
+  Company_Job_List             Company_Job_List?           @relation(fields: [company_Job_ListId], references: [id])
+  company_Job_ListId           Int?
+  Requirement_Document         Requirement_Document?       @relation(fields: [requirement_DocumentId], references: [id])
+  requirement_DocumentId       Int?
+  Student_Submitted_Document   Student_Submitted_Document? @relation(fields: [student_Submitted_DocumentId], references: [id])
+  student_Submitted_DocumentId Int?
+  Email_Template               Email_Template?             @relation(fields: [email_TemplateId], references: [id])
+  email_TemplateId             Int?
+
+  createdAt DateTime @default(now())
+}
+
+enum Level_Of_User {
+  SUPER_ADMINISTRATOR
+  ADMINISTRATOR
+  STAFF
+}
+
+enum Student_Status {
+  INCOMPLETE
+  COMPLETE
+  APPLYING
+  APPLIED
+  FINISHED
+  NOT_STARTED
+}

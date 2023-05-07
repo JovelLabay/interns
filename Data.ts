@@ -31,11 +31,11 @@ export const data = {
       },
       {
         name: 'Services',
-        link: '/views/welcome/service',
+        link: '/welcome/service',
       },
       {
         name: 'Learn More',
-        link: '/views/welcome/about',
+        link: '/welcome/about',
       },
     ],
   },
@@ -103,6 +103,11 @@ export const data = {
   others: {
     developers: 'Developed by Eluvent Corporation',
   },
+  labels: {
+    deletePromptMessage:
+      'You are about to delete. Are you sure you want to continue?',
+    viewDocument: 'What you want to do with your document?',
+  },
 
   // COMPANY DASHBOARD
   company: {
@@ -113,14 +118,40 @@ export const data = {
       { id: 3, name: 'True or False' },
     ],
   },
+
+  // SCHOOL DASHBOARD
   admin: {
     tabs: [
-      { id: 1, name: 'Student' },
-      { id: 2, name: 'Companies' },
-      { id: 3, name: 'Template Forms' },
-      { id: 4, name: 'Professionals' },
-      { id: 5, name: 'Activity Logs' },
+      { id: 1, name: 'School Year | Semestre' },
+      { id: 2, name: 'Students' },
+      { id: 3, name: 'Documents' },
+      { id: 5, name: 'Companies' },
+      { id: 6, name: 'Activity Logs' },
     ],
+    tabs2: [
+      { id: 1, name: 'Details' },
+      { id: 2, name: 'Documents' },
+      { id: 3, name: 'Companies' },
+      { id: 4, name: 'Account' },
+    ],
+    reports: [
+      { id: 1, name: 'Eligible' },
+      { id: 2, name: 'Incomplete' },
+      { id: 3, name: 'Complete' },
+      { id: 4, name: 'Applying' },
+      { id: 5, name: 'Applied' },
+      { id: 6, name: 'Finished' },
+    ],
+    schoolYearSemestre: {
+      schoolYear: [
+        { id: 1, name: 'Add Semestre' },
+        { id: 2, name: 'Delete Semestre' },
+      ],
+      schoolSemestre: [
+        { id: 1, name: 'Delete' },
+        { id: 2, name: 'Information' },
+      ],
+    },
     companyApplicationStatus: [
       { id: 1, name: 'Approved' },
       { id: 2, name: 'Pending' },
@@ -142,13 +173,13 @@ export const data = {
       { id: 2, name: 'School' },
     ],
   },
+
+  // STUDENT DASHBOARD
   networkProvider: [
-    { id: 1, name: 'Globe' },
-    { id: 2, name: 'Smart' },
-    { id: 3, name: 'Sun' },
-    { id: 4, name: 'TNT' },
-    { id: 5, name: 'TM' },
-    { id: 6, name: 'Dito' },
+    { id: 101, name: 'Select' },
+    { id: 1, name: 'Super Administrator' },
+    { id: 2, name: 'Administrator' },
+    { id: 3, name: 'Staff' },
   ],
   companyDashboardMenu: [
     { id: 1, name: 'Home' },
@@ -159,6 +190,14 @@ export const data = {
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },
     { id: 2, name: 'View Users' },
+  ],
+  schoolDashBoardHeaderManageCollege: [
+    { id: 1, name: 'Add College' },
+    { id: 2, name: 'View Colleges' },
+  ],
+  schoolDashBoardStudentSelectSchoolYearSemestre: [
+    { id: 1, name: 'Select Year/Semestre' },
+    { id: 2, name: 'Select College' },
   ],
   formTemplates: [
     { id: 1, name: 'Waiver', completeName: 'Waiver Form' },
