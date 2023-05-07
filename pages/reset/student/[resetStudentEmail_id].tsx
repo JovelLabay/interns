@@ -75,7 +75,7 @@ function ResetAdminEmail() {
             </span>
           </h2>
 
-          {isExpired ? (
+          {!isExpired ? (
             <div className="flex flex-col items-center justify-center ">
               <Image src={resetPasswordIllustration} objectFit="fill" />
               <h3 className="text-center font-medium text-secondaryWhite">
