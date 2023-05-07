@@ -29,11 +29,10 @@ function Account() {
     isUpdating: false,
     uploadingImage: false,
   });
-  const { handleSubmit, register, setValue, watch, reset, formState } =
-    useForm<FormEditStudent>({
-      mode: 'onSubmit',
-      resolver: yupResolver(EditStudentForm),
-    });
+  const { handleSubmit, register, setValue, watch } = useForm<FormEditStudent>({
+    mode: 'onSubmit',
+    resolver: yupResolver(EditStudentForm),
+  });
 
   useEffect(() => {
     if (context?.studentData) {

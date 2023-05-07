@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineFilePdf, AiOutlineFileWord } from 'react-icons/ai';
+import { AiOutlineFileWord } from 'react-icons/ai';
 
 function submittedDocument({
   modal,

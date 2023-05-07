@@ -4,11 +4,7 @@ import axios from 'axios';
 import classNames from 'classnames';
 import { Dialog, Transition } from '@headlessui/react';
 import { BiRefresh } from 'react-icons/bi';
-import {
-  AiOutlineFileExcel,
-  AiOutlineFileWord,
-  AiOutlineSave,
-} from 'react-icons/ai';
+import { AiOutlineFileWord, AiOutlineSave } from 'react-icons/ai';
 import {
   errorNotify,
   successfulNotify,

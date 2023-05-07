@@ -17,7 +17,6 @@ import {
   AiOutlineCloseCircle,
   AiOutlineDelete,
   AiOutlineEdit,
-  AiOutlineFileImage,
   AiOutlineFileWord,
   AiOutlinePlusCircle,
   AiOutlineSave,
@@ -595,14 +594,14 @@ function DocumentsContainer() {
           },
         }
       )
-      .then((res) => {
+      .then(() => {
         successfulNotify('Successfully added a requirement document.');
 
         reset();
         getRequirementDocument(stateCollege.collegeDepartmentObject.id);
         setDocumentEdit((prev) => ({ ...prev, index: -1 }));
       })
-      .catch((error) => {
+      .catch(() => {
         errorNotify("Something's wrong. Please try again later.");
       });
   }

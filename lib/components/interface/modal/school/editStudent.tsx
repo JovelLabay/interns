@@ -698,7 +698,7 @@ function EditStudent({
               });
           }
         })
-        .catch((error) => {
+        .catch(() => {
           errorNotify('Something Went Wrong');
 
           setState((prev) => ({ ...prev, isUpdating: false }));

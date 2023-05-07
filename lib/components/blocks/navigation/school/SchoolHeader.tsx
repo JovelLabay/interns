@@ -23,7 +23,6 @@ import ManageCollege from '@component/interface/modal/ManageCollege';
 import { DynamicContext } from 'lib/context/context';
 import { AiOutlineMail } from 'react-icons/ai';
 import EmailTemplate from '@component/interface/modal/emailTemplate';
-import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
 function SchoolHeader() {

@@ -64,7 +64,7 @@ class EmailTemplate {
 
     this.putEmailTemplate = async () => {
       try {
-        const responsePayload = await this.prisma.email_Template.update({
+        await this.prisma.email_Template.update({
           where: {
             id: Number(id),
           },

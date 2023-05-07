@@ -15,7 +15,6 @@ import { DynamicContext } from '@redux/context';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { BiLogOut } from 'react-icons/bi';
-import { BsSun } from 'react-icons/bs';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { GrClose } from 'react-icons/gr';
 
