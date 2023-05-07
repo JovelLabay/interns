@@ -8,6 +8,7 @@ import Account from './tabs/account';
 import Documents from './tabs/documents';
 import Details from './tabs/details';
 import { DynamicContext } from '@redux/context';
+import CompanyList from './tabs/companyList';
 
 function StudentDashboardContainer() {
   const context = useContext(DynamicContext);
@@ -59,7 +60,9 @@ function StudentDashboardContainer() {
           <Tab.Panel>
             <Documents />
           </Tab.Panel>
-          <Tab.Panel>Companies</Tab.Panel>
+          <Tab.Panel>
+            <CompanyList />
+          </Tab.Panel>
           <Tab.Panel>
             <Account />
           </Tab.Panel>

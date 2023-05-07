@@ -42,7 +42,7 @@ function ResetAdminEmail() {
     resolver: yupResolver(LogSignValidator),
   });
 
-  const decoded = jwt.decode(router.query.resetAdminEmail_id as string) as {
+  const decoded = jwt.decode(router.query.resetStudentEmail_id as string) as {
     email: string;
     time: string;
     iat: number;
@@ -60,23 +60,23 @@ function ResetAdminEmail() {
   return (
     <div>
       <Head>
-        <title>School | Reset Password</title>
+        <title>Student | Reset Password</title>
         <meta name="description" content="dfgdfgdfgdfg" />
         <meta name="theme-color" content="#FFE500" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex min-h-[80vh] flex-col items-center justify-center gap-10 bg-primaryYellow py-10 md:gap-14 md:py-0">
-        <div className="max-w-[400px] rounded-md bg-white p-5">
+        <div className="mx-2 max-w-[400px] rounded-md bg-white p-5 md:mx-0">
           {/* TITLE */}
           <h2 className="mb-5 text-center text-[16px] md:text-[20px] lg:text-[28px]">
             <span className="font-bold">
-              School | <span className="font-light">Forgot Password</span>
+              Student | <span className="font-light">Forgot Password</span>
             </span>
           </h2>
 
-          {!isExpired ? (
-            <div className="flex flex-col items-center justify-center">
+          {isExpired ? (
+            <div className="flex flex-col items-center justify-center ">
               <Image src={resetPasswordIllustration} objectFit="fill" />
               <h3 className="text-center font-medium text-secondaryWhite">
                 This password reset Link has expired
@@ -161,11 +161,11 @@ function ResetAdminEmail() {
     const config = {
       method: 'put',
       maxBodyLength: Infinity,
-      url: '/api/data/adminUser?resetPassword=true',
+      url: '/api/data/student?resetPassword=true',
       headers: {
         'Content-Type': 'application/json',
       },
-      data: JSON.stringify(data),
+      data: JSON.stringify({ ...data, emailAddress: decoded.email }),
     };
 
     axios
@@ -192,7 +192,7 @@ function ResetAdminEmail() {
           successfulNotify('Password reset successful. You can now login');
 
           setTimeout(() => {
-            router.push('/user/school/auth');
+            router.push('/user/student/auth');
           }, 3000);
         }
       })

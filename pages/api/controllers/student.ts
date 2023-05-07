@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { hashPassword } from '@utils/backendFunction';
+import { comparePassword, hashPassword } from '@utils/backendFunction';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Papa from 'papaparse';
 
@@ -39,6 +39,7 @@ class Student {
       skip,
       studentUserId,
       deleteAll,
+      resetPassword,
     } = req.query;
 
     const parsedDataObjectSchoolSemestre =
@@ -294,46 +295,87 @@ class Student {
 
     this.putStudents = async () => {
       try {
-        const studentUserPayload = await this.prisma.student_User.update({
-          where: {
-            id: Number(studentUserId),
-          },
-          data: {
-            is_active: accountStatus,
-            is_eligible: eligibility,
-            first_name: firstName,
-            middle_name: middleName,
-            last_name: lastName,
-          },
-        });
-
-        const studentProfilePayload =
-          await this.prisma.student_User_Profile.update({
+        if (resetPassword === 'true') {
+          const checkFirstPassword = await this.prisma.student_User.findFirst({
             where: {
-              student_user_id: studentUserPayload.id,
-            },
-            data: {
-              student_profile_image: profileImage,
-              address,
-              phone_number: phoneNumber.toString(),
-              self_introduction: selfIntroduction,
-              date_of_birth: birthDate,
-              sex,
-              student_status: studentStatus,
+              email: emailAddress,
             },
           });
 
-        await this.prisma.activity_Logs.create({
-          data: {
-            activity_message: `Student profile Updated: ${studentProfilePayload.id}`,
-            activity_action: 'UPDATED',
-            student_user_profile_id: studentProfilePayload.id,
-          },
-        });
+          if (
+            (await comparePassword(
+              password,
+              checkFirstPassword?.password as string
+            )) === true
+          ) {
+            res.status(200).json({
+              message: 'THE_SAME_PASSWORD',
+            });
+          } else {
+            const hashedPassword = await hashPassword(password);
 
-        res.status(200).json({
-          message: 'Successful',
-        });
+            const data = await this.prisma.student_User.update({
+              where: {
+                email: emailAddress,
+              },
+              data: {
+                password: hashedPassword,
+                updatedAt: new Date(),
+              },
+            });
+
+            await this.prisma.activity_Logs.create({
+              data: {
+                activity_message: `Student password reset: ${id}`,
+                activity_action: 'RESET PASSWORD',
+                student_user_id: data.id,
+              },
+            });
+
+            res.status(200).json({ message: 'Successful' });
+          }
+        } else {
+          const studentUserPayload = await this.prisma.student_User.update({
+            where: {
+              id: Number(studentUserId),
+            },
+            data: {
+              is_active: accountStatus,
+              is_eligible: eligibility,
+              first_name: firstName,
+              middle_name: middleName,
+              last_name: lastName,
+            },
+          });
+
+          const studentProfilePayload =
+            await this.prisma.student_User_Profile.update({
+              where: {
+                student_user_id: studentUserPayload.id,
+              },
+              data: {
+                student_profile_image: profileImage,
+                address,
+                phone_number: phoneNumber.toString(),
+                self_introduction: selfIntroduction,
+                date_of_birth: birthDate,
+                sex,
+                student_status: studentStatus,
+              },
+            });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Student profile Updated: ${studentProfilePayload.id}`,
+              activity_action: 'UPDATED',
+              student_user_profile_id: studentProfilePayload.id,
+            },
+          });
+
+          res.status(200).json({
+            message: 'Successful',
+          });
+        }
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
         console.log(error);

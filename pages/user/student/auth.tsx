@@ -16,7 +16,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogSignValidator } from '@validator/forms';
 import axios from 'axios';
-import { errorNotify, warningNotify } from '@component/interface/toast/toast';
+import {
+  errorNotify,
+  successfulNotify,
+  warningNotify,
+} from '@component/interface/toast/toast';
 
 function Auth() {
   const router = useRouter();
@@ -106,9 +110,17 @@ function Auth() {
             onSubmit={(e) => {
               e.preventDefault();
 
-              handleSubmit((data) => {
-                authentication(data);
-              })();
+              if (isForgotPassword) {
+                setValue('password', 'JUST_FORGOT_PASSWORD');
+
+                handleSubmit((data) => {
+                  sendResetEmail('Student User', data.email);
+                })();
+              } else {
+                handleSubmit((data) => {
+                  authentication(data);
+                })();
+              }
             }}
           >
             <div className="flex flex-col gap-1">
@@ -205,6 +217,55 @@ function Auth() {
     reset();
 
     clearErrors();
+  }
+
+  function sendResetEmail(last_name: string, email_address: string) {
+    setSubmit({ isSubmitting: true, incorrect: false, notFound: false });
+    const currentTime = new Date().getTime();
+
+    const data = JSON.stringify({
+      subject: 'Reset Your Password',
+      message: '',
+      email: email_address,
+      time: currentTime,
+      lastName: last_name,
+      type: 'RESET_STUDENT_EMAIL',
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/api/notification/email',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then(() => {
+        successfulNotify('Reset Password Email Sent!');
+        reset();
+
+        setSubmit({
+          isSubmitting: false,
+          incorrect: false,
+          notFound: false,
+        });
+        reset();
+      })
+      .catch((error) => {
+        console.error(error);
+        errorNotify('Something went wrong!');
+
+        setSubmit({
+          isSubmitting: false,
+          incorrect: false,
+          notFound: false,
+        });
+        reset();
+      });
   }
 
   function authentication(data: FormLogin) {
