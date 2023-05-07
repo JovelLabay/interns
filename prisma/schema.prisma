@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -228,16 +228,16 @@ model Activity_Logs {
 }
 
 enum Level_Of_User {
+  STAFF
   SUPER_ADMINISTRATOR
   ADMINISTRATOR
-  STAFF
 }
 
 enum Student_Status {
+  NOT_STARTED
   INCOMPLETE
   COMPLETE
   APPLYING
   APPLIED
   FINISHED
-  NOT_STARTED
 }
