@@ -599,13 +599,13 @@ function EditStudent({
 
                   <div className="mt-2 w-full rounded bg-yellowBg p-1 text-center">
                     <h2 className="text-2xl font-bold text-secondaryWhite opacity-30">
-                      {!watch().eligibility
+                      {selectedEmailTemplate.name === ''
                         ? 'Will Not Send'
                         : 'Will Send Email'}
                     </h2>
                     <span className="text-xs text-red-500">
                       {
-                        '*An email will be send once a student is mark eligible.'
+                        '*A selected email template will be sent to the student.'
                       }
                     </span>
                   </div>

@@ -126,7 +126,15 @@ function Documents() {
                     <button
                       onClick={() => {
                         setSubModal(true);
-                        setDocUrl(item.bucketUrlOfDocument);
+
+                        const lala: any = documentList.submitted.find(
+                          (item2) =>
+                            item2.submitted_document_name ===
+                              item.documentName &&
+                            item2.submitted_document !== null
+                        );
+
+                        setDocUrl(lala.submitted_document);
                       }}
                       className="text-blue-500 underline"
                     >

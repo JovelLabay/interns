@@ -135,12 +135,12 @@ export const data = {
       { id: 4, name: 'Account' },
     ],
     reports: [
-      { id: 1, name: 'Eligible Students' },
-      { id: 2, name: 'Incomplete Students' },
-      { id: 3, name: 'Complete Students' },
-      { id: 4, name: 'Applying Students' },
-      { id: 5, name: 'Applied Students' },
-      { id: 6, name: 'Finished Students' },
+      { id: 1, name: 'Eligible' },
+      { id: 2, name: 'Incomplete' },
+      { id: 3, name: 'Complete' },
+      { id: 4, name: 'Applying' },
+      { id: 5, name: 'Applied' },
+      { id: 6, name: 'Finished' },
     ],
     schoolYearSemestre: {
       schoolYear: [

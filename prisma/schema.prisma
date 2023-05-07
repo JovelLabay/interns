@@ -170,15 +170,12 @@ model Company_List {
 model Company_Job_List {
   id Int @id @default(autoincrement())
 
-  job_title           String
-  job_description     String?         @db.Text
-  job_requirements    String          @db.Text
-  job_description_url String?
-  is_allowed          Boolean         @default(false)
-  is_active           Boolean         @default(false)
-  Company_List        Company_List    @relation(fields: [company_list_id], references: [id])
-  company_list_id     Int
-  Activity_Logs       Activity_Logs[]
+  job_title        String
+  job_description  String?         @db.Text
+  job_requirements String          @db.Text
+  Company_List     Company_List    @relation(fields: [company_list_id], references: [id])
+  company_list_id  Int
+  Activity_Logs    Activity_Logs[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime?

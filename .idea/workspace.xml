@@ -7,30 +7,14 @@
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/SchoolHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/schoolYearSemestreContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/studentContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/editStudent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/infoLegend.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolSemestreModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/schoolYearModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/submittedDocument.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/submittedDocument.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/student/emailTemplate.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/general.data.json" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/general.data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/authStudent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/authStudent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/templatedEmail.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/templatedEmail.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/notification/email.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/notification/email.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/reset/[resetAdminEmail_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/reset/admin/[resetAdminEmail_id].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/controllers/reports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/reports.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +137,11 @@
       <workItem from="1683105512982" duration="11000" />
       <workItem from="1683120097680" duration="1621000" />
       <workItem from="1683122493521" duration="609000" />
-      <workItem from="1683124808562" duration="5161000" />
+      <workItem from="1683124808562" duration="10183000" />
+      <workItem from="1683165236501" duration="240000" />
+      <workItem from="1683212545021" duration="619000" />
+      <workItem from="1683213520263" duration="3978000" />
+      <workItem from="1683352459991" duration="590000" />
     </task>
     <servers />
   </component>

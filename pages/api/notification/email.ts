@@ -101,35 +101,15 @@ function selectionOfEmailType(
     return contentConfiguration;
   }
 
-  if (type === 'RESET_EMAIL_STUDENT') {
-    const jsonWebToken = jwt.sign(
-      {
-        email: objectContent.email,
-        time: objectContent.time,
-      },
-      process.env.NEXT_PUBLIC_JWT_SECRET as string
-    );
-
+  if (type === 'ELIGIBILITY_EMAIL') {
     const contentConfiguration = {
       type: 'text/html',
       value: `
     <h4>Dear ${objectContent.lastName},</h4>
 
-    <p>We received a request to reset your password. If you did not make this request, please ignore this email and your account will remain secure.</p>
-    <p>If you did request a password reset, please follow the instructions below to create a new password:</p>
+    <p>${objectContent.message}</p>
 
-    <ol>
-      <li>
-        <a href="${appDomain}/reset/${jsonWebToken}">Click here.</a>
-      </li>
-      <li>You will be redirected to a page where you can enter your new password. Please choose a strong password that is at least 8 characters long and contains a combination of uppercase and lowercase letters, numbers, and symbols.
-      </li>
-      <li>Once you have entered your new password, click the "Submit" button.
-      </li>
-    </ol>
-
-
-    <p>Thank you for your prompt attention to this matter.</p>
+    <p>Any concerns about practicum, email your coordinatior.</p>
 
     <h5>Best,</h5>
     <h4>Interns</h4>
@@ -140,15 +120,13 @@ function selectionOfEmailType(
     return contentConfiguration;
   }
 
-  if (type === 'ELIGIBILITY_EMAIL') {
+  if (type === 'OTHERS') {
     const contentConfiguration = {
       type: 'text/html',
       value: `
     <h4>Dear ${objectContent.lastName},</h4>
 
     <p>${objectContent.message}</p>
-
-    <p>Any concerns about practicum, email your coordinatior.</p>
 
     <h5>Best,</h5>
     <h4>Interns</h4>

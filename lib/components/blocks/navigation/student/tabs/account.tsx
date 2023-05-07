@@ -234,7 +234,7 @@ function Account() {
                   'absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer'
                 )}
               >
-                {['Male', 'Female', 'Other'].map((person, index) => (
+                {['Male', 'Female'].map((person, index) => (
                   <Listbox.Option
                     className={classNames('py-1')}
                     key={index}

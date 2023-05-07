@@ -31,6 +31,7 @@ import {
 } from '@component/interface/toast/toast';
 import { HiOutlineDocumentReport, HiOutlineDocumentText } from 'react-icons/hi';
 import { DynamicContext } from '@redux/context';
+import SendEmailStudents from '@component/interface/modal/school/sendEmailStudents';
 
 function StudentContainer() {
   const context = useContext(DynamicContext);
@@ -45,6 +46,7 @@ function StudentContainer() {
     editStudent: false,
     submittedDocument: false,
     generateReport: false,
+    sendEmailStudents: false,
   });
 
   const [active, setActive] = useState({
@@ -68,6 +70,10 @@ function StudentContainer() {
   const [searchState, setSearchState] = useState({
     isOpen: false,
     searchInput: '',
+  });
+  const [sendEmail, setSendEmail] = useState({
+    lastName: '',
+    emailAddress: '',
   });
 
   const filterStudentList = useMemo(() => {
@@ -432,6 +438,14 @@ function StudentContainer() {
                       disabled={
                         context?.userData.levelOfUser === 'STAFF' ? true : false
                       }
+                      onClick={() => {
+                        toggleSendEmail();
+
+                        setSendEmail({
+                          emailAddress: item.email,
+                          lastName: item.last_name,
+                        });
+                      }}
                       title="Email Student"
                     >
                       <AiOutlineMail size={25} className="text-mainBgWhite" />
@@ -566,6 +580,16 @@ function StudentContainer() {
         modal={modal.generateReport}
         toggleGenerateReport={toggleGenerateReport}
       />
+
+      <SendEmailStudents
+        modal={modal.sendEmailStudents}
+        toggleSendEmail={toggleSendEmail}
+        data={{
+          emailAddress: sendEmail.emailAddress,
+          lastName: sendEmail.lastName,
+        }}
+        setSendEmail={setSendEmail}
+      />
     </div>
   );
 
@@ -595,6 +619,13 @@ function StudentContainer() {
     setModal((prev) => ({
       ...prev,
       addStudent: !prev.addStudent,
+    }));
+  }
+
+  function toggleSendEmail() {
+    setModal((prev) => ({
+      ...prev,
+      sendEmailStudents: !prev.sendEmailStudents,
     }));
   }
 

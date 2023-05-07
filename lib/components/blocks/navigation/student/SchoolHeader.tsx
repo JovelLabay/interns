@@ -52,10 +52,6 @@ function StudentHeader() {
           </div>
 
           <div className="hidden flex-row items-center justify-center gap-3 md:flex">
-            {/* LOGOUT */}
-            <button className="buttonIcon" title="Toogle Dark/Light mode">
-              <BsSun />
-            </button>
             <button
               className="buttonIcon"
               title="Logout"
@@ -110,9 +106,6 @@ function StudentHeader() {
             </p>
           </div>
           <div className="mt-10 mb-7 flex items-center justify-center gap-3">
-            <button className="buttonIcon" title="Toogle Dark/Light mode">
-              <BsSun />
-            </button>
             <button
               className="flex w-[120px] items-center justify-center rounded bg-primaryYellow py-2 font-semibold duration-300 hover:scale-105"
               onClick={studentLogoutHandler}

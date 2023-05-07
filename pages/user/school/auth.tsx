@@ -50,7 +50,7 @@ function Auth() {
 
     if (valueCookie) {
       axios
-        .get(`/api/data/adminUser?checkAuth=${valueCookie}`)
+        .post(`/api/data/adminUser?checkAuth=${valueCookie}`)
         .then((res) => {
           if (res.data.message === 'CORRECT_CREDENTIALS') {
             const cookieString = `authCookie=${

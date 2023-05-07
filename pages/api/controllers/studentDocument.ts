@@ -14,8 +14,6 @@ class StudentDocument {
     const { data } = req.body;
 
     this.getDocuments = async () => {
-      console.log(collegeId, studentUserProfileId);
-
       try {
         const requirementPayload =
           await this.prisma.requirement_Document.findMany({
