@@ -1,0 +1,14 @@
+{
+  "admin_users": {
+    "profile_image": "admin_user/profile_image/"
+  },
+  "student_bulk_imports": {
+    "student_bulk": "student_list/bulk_import/"
+  },
+  "requirement_docuemnts": {
+    "admin_template": "admin_document_template/templates/"
+  },
+  "submitted_docuemnts": {
+    "submitted_docx": "student_submitted_document/documents/"
+  }
+}

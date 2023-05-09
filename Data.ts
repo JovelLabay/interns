@@ -31,11 +31,11 @@ export const data = {
       },
       {
         name: 'Services',
-        link: '/views/welcome/service',
+        link: '/welcome/service',
       },
       {
         name: 'Learn More',
-        link: '/views/welcome/about',
+        link: '/welcome/about',
       },
     ],
   },
@@ -73,19 +73,20 @@ export const data = {
     {
       id: 3,
       description:
-        'We would be proud that students and interns have able to complete the required hours to be deployed in the real world situation.',
+        'We would be proud that students and interns have been able to complete the required hours to be deployed in a real-world situation.',
     },
   ],
   aboutDescriptions: [
     {
       id: 1,
       title: 'Trust',
-      description: 'Live your trust with for you to help find internships.',
+      description:
+        'Live your trust with us,  for us to help you find your most suited internship.',
     },
     {
       id: 2,
       title: 'Easy',
-      description: 'Easy to customize and filter internhips just for you.',
+      description: 'Easy to customize and filter internships just for you.',
     },
     {
       id: 3,
@@ -93,28 +94,23 @@ export const data = {
       description: 'Your accounts will be safe with us.',
     },
   ],
-  // COOKIE BANNER
   cookieBanner: {
     title: 'We just want to know if what type of user are you?',
     description:
-      'Clicking either the options below means you aggreed to the terms and condition impost in this software.',
+      'Clicking either of the options below means you agree to the terms and conditions imposed in this software.',
     options: ['Company', 'Student'],
   },
-  // DASHBOARD (COMPANY, STUDENT , ADMIN)
+  others: {
+    developers: 'Developed by Eluvent Corporation',
+  },
+  labels: {
+    deletePromptMessage:
+      'You are about to delete. Are you sure you want to continue?',
+    viewDocument: 'What you want to do with your document?',
+  },
+
+  // COMPANY DASHBOARD
   company: {
-    jobCategory: [
-      { id: 101, name: 'Select Job Category' },
-      { id: 1, name: 'Web Development' },
-      { id: 2, name: 'Mobile Development' },
-      { id: 3, name: 'Data Science' },
-      { id: 4, name: 'Artificial Intelligence' },
-      { id: 5, name: 'Machine Learning' },
-      { id: 6, name: 'Cloud Computing' },
-      { id: 7, name: 'Cyber Security' },
-      { id: 8, name: 'Software Engineering' },
-      { id: 9, name: 'Computer Engineering' },
-      { id: 10, name: 'Computer Science' },
-    ],
     questionnaireType: [
       { id: 101, name: 'Select' },
       { id: 1, name: 'Essay' },
@@ -122,22 +118,40 @@ export const data = {
       { id: 3, name: 'True or False' },
     ],
   },
+
+  // SCHOOL DASHBOARD
   admin: {
     tabs: [
-      { id: 1, name: 'Student' },
-      { id: 2, name: 'Companies' },
-      { id: 3, name: 'Type of Company' },
-      { id: 4, name: 'Professionals' },
+      { id: 1, name: 'School Year | Semestre' },
+      { id: 2, name: 'Students' },
+      { id: 3, name: 'Documents' },
+      { id: 5, name: 'Companies' },
+      { id: 6, name: 'Activity Logs' },
     ],
-    colleges: [
-      { id: 1, name: 'Agriculture', category: 'College' },
-      { id: 2, name: 'Arts_and_Sciences', category: 'College' },
-      { id: 3, name: 'Computer_Studes', category: 'College' },
-      { id: 4, name: 'Engineering', category: 'College' },
-      { id: 5, name: 'Nursing', category: 'College' },
-      { id: 6, name: 'Business_and_Management', category: 'School' },
-      { id: 7, name: 'Education', category: 'School' },
+    tabs2: [
+      { id: 1, name: 'Details' },
+      { id: 2, name: 'Documents' },
+      { id: 3, name: 'Companies' },
+      { id: 4, name: 'Account' },
     ],
+    reports: [
+      { id: 1, name: 'Not Started' },
+      { id: 2, name: 'Incomplete' },
+      { id: 3, name: 'Complete' },
+      { id: 4, name: 'Applying' },
+      { id: 5, name: 'Applied' },
+      { id: 6, name: 'Finished' },
+    ],
+    schoolYearSemestre: {
+      schoolYear: [
+        { id: 1, name: 'Add Semestre' },
+        { id: 2, name: 'Delete Semestre' },
+      ],
+      schoolSemestre: [
+        { id: 1, name: 'Delete' },
+        { id: 2, name: 'Information' },
+      ],
+    },
     companyApplicationStatus: [
       { id: 1, name: 'Approved' },
       { id: 2, name: 'Pending' },
@@ -146,12 +160,12 @@ export const data = {
     ],
     collegeDeanProfession: [
       { id: 101, name: 'Select' },
-      { id: 1, name: 'PhD' },
-      { id: 2, name: 'Engr.' },
-      { id: 3, name: 'CPA' },
-      { id: 4, name: 'Atty.' },
-      { id: 5, name: 'Dr.' },
-      { id: 6, name: 'Prof.' },
+      { id: 1, name: 'Artist' },
+      { id: 2, name: 'Accountant' },
+      { id: 3, name: 'Lawyer' },
+      { id: 4, name: 'Engineer' },
+      { id: 5, name: 'Physician' },
+      { id: 6, name: 'Teacher' },
     ],
     collegeType: [
       { id: 101, name: 'Select' },
@@ -159,24 +173,54 @@ export const data = {
       { id: 2, name: 'School' },
     ],
   },
+
+  // STUDENT DASHBOARD
   networkProvider: [
-    { id: 1, name: 'Globe' },
-    { id: 2, name: 'Smart' },
-    { id: 3, name: 'Sun' },
-    { id: 4, name: 'TNT' },
-    { id: 5, name: 'TM' },
-    { id: 6, name: 'Dito' },
+    { id: 101, name: 'Select' },
+    { id: 1, name: 'Super Administrator' },
+    { id: 2, name: 'Administrator' },
+    { id: 3, name: 'Staff' },
   ],
   companyDashboardMenu: [
     { id: 1, name: 'Home' },
     { id: 2, name: 'Interns' },
-    { id: 3, name: 'Applicants' },
-    { id: 4, name: 'Internship Programs' },
-    { id: 5, name: 'Students' },
+    { id: 3, name: 'Internship Programs' },
+    { id: 4, name: 'Applicants' },
   ],
   schoolDashBoardHeaderManageUsers: [
     { id: 1, name: 'Add User' },
     { id: 2, name: 'View Users' },
+  ],
+  schoolDashBoardHeaderManageCollege: [
+    { id: 1, name: 'Add College' },
+    { id: 2, name: 'View Colleges' },
+  ],
+  schoolDashBoardStudentSelectSchoolYearSemestre: [
+    { id: 1, name: 'Select Year/Semestre' },
+    { id: 2, name: 'Select College' },
+  ],
+  formTemplates: [
+    { id: 1, name: 'Waiver', completeName: 'Waiver Form' },
+    { id: 2, name: 'LOI', completeName: 'Letter of Intent' },
+    { id: 3, name: 'MOA', completeName: 'Memorandum of Agreement' },
+  ],
+  gender: [
+    { id: 1, name: 'Male' },
+    { id: 2, name: 'Female' },
+    { id: 3, name: 'Other' },
+    { id: 4, name: 'Prefer not to say' },
+  ],
+  colors: [
+    { id: 1, name: 'red' },
+    { id: 2, name: 'blue' },
+    { id: 3, name: 'green' },
+    { id: 4, name: 'yellow' },
+    { id: 5, name: 'orange' },
+    { id: 6, name: 'purple' },
+    { id: 7, name: 'pink' },
+    { id: 8, name: 'brown' },
+    { id: 9, name: 'grey' },
+    { id: 10, name: 'black' },
   ],
   months: [
     { id: 101, name: 'MM' },
@@ -227,9 +271,10 @@ export const data = {
     { id: 30, name: '30' },
     { id: 31, name: '31' },
   ],
-  // create an array of years from 1900 to current year
   years: [
     { id: 101, name: 'YYYY' },
+    { id: 25, name: '2023' },
+    { id: 23, name: '2022' },
     { id: 1, name: '2021' },
     { id: 2, name: '2020' },
     { id: 3, name: '2019' },
@@ -252,18 +297,60 @@ export const data = {
     { id: 20, name: '2002' },
     { id: 21, name: '2001' },
     { id: 22, name: '2000' },
-    { id: 23, name: '1999' },
   ],
-  typeOfCompany: [
-    { id: 101, name: 'Select' },
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'Business' },
-    { id: 3, name: 'Engineering' },
-    { id: 4, name: 'Education' },
-    { id: 5, name: 'Agriculture' },
+
+  // STUDENT DASHBOARD
+  navigationLinks: [
+    {
+      id: 1,
+      name: 'Saved Companies',
+      path: 'savedCompanies',
+      slug: '/views/user/student/savedCompanies',
+    },
+    {
+      id: 2,
+      name: 'Account Preferences',
+      path: 'accountPreferences',
+      slug: '/views/user/student/accountPreferences',
+    },
+    {
+      id: 3,
+      name: 'Coversations',
+      path: 'coversations',
+      slug: '/views/user/student/others/savedCompanies',
+    },
+    {
+      id: 4,
+      name: 'Theme',
+      path: 'theme',
+      slug: '/views/user/student/others/savedCompanies',
+    },
+    {
+      id: 5,
+      name: 'Exit Interns',
+      path: 'exitInterns',
+      slug: '/views/user/student/others/savedCompanies',
+    },
   ],
-  locationOfCompany: [
-    { id: 101, name: 'Select' },
-    { id: 1, name: 'Cagayan de Oro City' },
+  dashboardMenu: [
+    { id: 1, name: 'Find Internships' },
+    { id: 2, name: 'View Companies' },
+  ],
+  listFilter: [
+    { id: 1, filterName: 'All' },
+    { id: 2, filterName: 'Urgent' },
+    { id: 3, filterName: 'Environemnt | On-site' },
+    { id: 4, filterName: 'With Allowance' },
+  ],
+
+  backRoute: '/views/user/student/dashboard',
+  internshipsRoute: '/views/user/student/internships/',
+  companiesRoute: '/views/user/student/dashboard',
+
+  // ACCOUNT PREFERENCES TABS
+  accountPreferencesTabs: [
+    { id: 1, name: 'Details' },
+    { id: 2, name: 'Forms' },
+    { id: 3, name: 'Documents' },
   ],
 };

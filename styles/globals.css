@@ -6,6 +6,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-base;
+  }
+  h5 {
+    @apply text-sm;
+  }
+  h6 {
+    @apply text-xs;
+  }
+}
+
 
 /* DEDAULT CSS CONFIGURATION */
 html,
@@ -22,6 +43,51 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* CUSTOM FOR TEXT EDITOR */
+.ql-align-center {
+  @apply text-center
+}
+
+.ql-align-right {
+  @apply text-right
+}
+
+.ql-align-justify {
+  @apply text-justify
+}
+
+.ql-indent-1 {
+  @apply indent-1
+}
+
+.ql-indent-2 {
+  @apply indent-2
+}
+
+.ql-indent-3 {
+  @apply indent-3
+}
+
+.ql-indent-4 {
+  @apply indent-4
+}
+
+.ql-indent-5 {
+  @apply indent-5
+}
+
+.ql-indent-6 {
+  @apply indent-6
+}
+
+.ql-indent-7 {
+  @apply indent-7
+}
+
+.ql-indent-4 {
+  @apply indent-8
 }
 
 /* GIVEN CSS CLASSES */
@@ -75,7 +141,29 @@ services-parent,
   @apply bg-red-500 rounded-md h-[40px] w-[40px] flex flex-row items-center justify-center
 }
 
+.buttonIcon-edit{
+  @apply bg-orange-500 rounded-md h-[40px] w-[40px] flex flex-row items-center justify-center
+}
+
 /* BUTTONS FOR HEADERS */
-.school-header-buttons{
+.school-header-buttons {
   @apply flex gap-3 justify-center items-center bg-primaryYellowHover rounded py-2 text-secondaryWhite
+}
+
+/* ANOTHER BUTTON FOR THE ACCOUNT PREFERENCE */
+.theButtons {
+  @apply font-semibold absolute top-2 left-2 flex items-center justify-center gap-3 rounded px-2 py-1 duration-300 bg-customBorder md:top-3 md:left-3 md:px-5 md:py-2 lg:top-5 lg:left-7
+}
+
+.thebuttons2 {
+  @apply absolute bottom-2 right-2 flex items-center justify-center gap-2 rounded bg-primaryYellowHover px-2 py-1 font-light md:bottom-3 md:right-3 md:px-5 md:py-2 lg:bottom-5 lg:right-7
+}
+
+/* SWITCHES */
+.theSwitch {
+  @apply relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75
+}
+
+.theSwitch2 {
+  @apply pointer-events-none inline-block h-[34px] w-[34px] transform rounded bg-white shadow-lg ring-0 transition duration-200 ease-in-out
 }

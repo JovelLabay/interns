@@ -8,3 +8,40 @@
 .imageUpload {
     display: none;
 }
+
+/* BLACK */
+.details-black::-webkit-scrollbar {
+    width: 10px;
+}
+
+.details-black::-webkit-scrollbar-track {
+    background: #EBEBEB;
+}
+
+.details-black::-webkit-scrollbar-thumb {
+    background: #C0C0C0;
+}
+
+/* WHITE */
+.details-white::-webkit-scrollbar {
+    width: 10px;
+}
+
+.details-white::-webkit-scrollbar-track {
+    background: #C0C0C0;
+}
+
+.details-white::-webkit-scrollbar-thumb {
+    background: #EBEBEB;
+}
+
+/* BOX-SHADOW */
+.box-shadow {
+    box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.75);
+    transition: ease 0.3s;
+}
+
+.box-shadow:hover {
+    box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+}
