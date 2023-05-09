@@ -69,7 +69,7 @@ class SchoolSemestreController {
 
         await this.prisma.activity_Logs.create({
           data: {
-            activity_message: `School semestre deleted: ${responsePayload.school_semester_name}`,
+            activity_message: `School semester deleted: ${responsePayload.school_semester_name}`,
             activity_action: 'DELETE',
             school_semester_id: responsePayload.id,
           },
@@ -144,7 +144,7 @@ class SchoolSemestreController {
 
               await this.prisma.activity_Logs.create({
                 data: {
-                  activity_message: `School semestre updated: ${responsePayload.school_semester_name}`,
+                  activity_message: `School semester updated: ${responsePayload.school_semester_name}`,
                   activity_action: 'UPDATED',
                   school_semester_id: responsePayload.id,
                 },

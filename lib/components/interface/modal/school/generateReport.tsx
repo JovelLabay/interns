@@ -199,7 +199,7 @@ function GenerateReport({
 
                   <div className="flex flex-col items-start justify-end gap-1">
                     <label className={'text-left text-sm'}>
-                      School Semestre
+                      School Semester
                     </label>
                     <Listbox
                       disabled={toggle.schoolYear.id !== -1 ? false : true}

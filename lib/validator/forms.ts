@@ -58,11 +58,11 @@ const CreateSchoolYear = yup.object({
 });
 
 const CreateSchoolSemestre = yup.object({
-  school_semester_name: yup.string().required('Semestre code is required'),
+  school_semester_name: yup.string().required('Semester code is required'),
   school_semester_description: yup.string(),
   school_semester_code: yup
     .string()
-    .required('Semestre password is required')
+    .required('Semester password is required')
     .min(6, 'Must be 6 characters long'),
 });
 
