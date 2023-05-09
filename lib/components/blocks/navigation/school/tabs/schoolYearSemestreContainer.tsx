@@ -936,7 +936,7 @@ function SchoolSemestre({
               ? 'cursor-not-allowed opacity-50'
               : 'cursor-pointer'
           )}
-          value={isUpdating ? 'Updating...' : 'Update School Semestre Status'}
+          value={isUpdating ? 'Updating...' : 'Update School Semester Status'}
           type="submit"
           disabled={context?.userData.levelOfUser === 'STAFF' ? true : false}
         />
