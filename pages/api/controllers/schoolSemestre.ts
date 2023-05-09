@@ -100,6 +100,7 @@ class SchoolSemestreController {
               id: {
                 not: Number(id),
               },
+              school_year_id: Number(schoolYearId),
               deletedAt: null,
             },
           });
