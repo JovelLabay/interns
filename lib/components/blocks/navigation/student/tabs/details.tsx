@@ -58,11 +58,16 @@ function Details() {
         <h1
           className={classNames(
             'font-bold',
-            status.eligibiligyStatus ? 'text-green-200' : 'text-red-500'
+            status.eligibiligyStatus ? 'text-green-500' : 'text-red-500'
           )}
         >
           {status.eligibiligyStatus ? 'ELIGIBLE' : 'NOT ELIGIBLE'}
         </h1>
+        <p className="text-center text-xs italic">
+          {status.eligibiligyStatus
+            ? 'You can now proceed with the self service enrollment and look for possible companies.'
+            : 'You are not eligible to proceed with the self service enrollment. Please contact your school for more information.'}
+        </p>
       </div>
     </div>
   );

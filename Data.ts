@@ -135,7 +135,7 @@ export const data = {
       { id: 4, name: 'Account' },
     ],
     reports: [
-      { id: 1, name: 'Eligible' },
+      { id: 1, name: 'Not Started' },
       { id: 2, name: 'Incomplete' },
       { id: 3, name: 'Complete' },
       { id: 4, name: 'Applying' },

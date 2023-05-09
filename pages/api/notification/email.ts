@@ -148,7 +148,7 @@ function selectionOfEmailType(
 
     <p>${objectContent.message}</p>
 
-    <p>Any concerns about practicum, email your coordinatior.</p>
+    <p>Any concerns about practicum, email your coordinator.</p>
 
     <h5>Best,</h5>
     <h4>Interns</h4>

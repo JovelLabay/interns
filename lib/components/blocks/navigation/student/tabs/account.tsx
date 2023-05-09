@@ -71,8 +71,8 @@ function Account() {
         </label>
         <div className="flex w-full justify-center">
           <Image
-            width={80}
-            height={80}
+            width={130}
+            height={130}
             alt="profileImage"
             className="rounded-full"
             src={
