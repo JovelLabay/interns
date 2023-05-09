@@ -7,14 +7,12 @@
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/SchoolHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/studentDashboardContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/documents.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/form.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/form.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/controllers/reports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/reports.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/studentDocument.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +34,9 @@
   <component name="JsBowerSettings">
     <bower-package value="" />
     <bower.json value="" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2NZanLNH65ElB7PV43BS2WzMluZ" />
   <component name="ProjectViewState">
@@ -142,6 +143,8 @@
       <workItem from="1683212545021" duration="619000" />
       <workItem from="1683213520263" duration="3978000" />
       <workItem from="1683352459991" duration="590000" />
+      <workItem from="1683505126924" duration="1275000" />
+      <workItem from="1683593892782" duration="12598000" />
     </task>
     <servers />
   </component>
