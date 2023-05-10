@@ -92,7 +92,7 @@ function SchoolYearSemestreContainer() {
     <div className="mx-28 flex h-[80vh] flex-col gap-2 rounded bg-white p-3">
       <div className="flex items-center justify-between rounded-md bg-yellowBg p-2">
         <p className="font-bold text-secondaryWhite">
-          Manage School Year | Semestre
+          Manage School Year | Semester
         </p>
         <div className="flex items-center justify-center gap-3">
           <button
@@ -326,7 +326,7 @@ function SchoolYearSemestreContainer() {
                     context?.userData.levelOfUser === 'STAFF' &&
                       'cursor-not-allowed opacity-50'
                   )}
-                  title="Delete Semestre"
+                  title="Delete Semester"
                   disabled={
                     context?.userData.levelOfUser === 'STAFF'
                       ? true
@@ -498,7 +498,7 @@ function SchoolYearSemestreContainer() {
     axios
       .delete(`/api/data/schoolSemestre?id=${schoolSemestreId}`)
       .then(() => {
-        successfulNotify('Successfully deleted school Semestre');
+        successfulNotify('Successfully deleted school Semester');
         setSelectionState({
           year: -1,
           schoolYear: -1,
@@ -574,7 +574,7 @@ function SchoolYear({
       </div>
 
       <p className="text-sm font-light italic">
-        Semestre availability :{' '}
+        Semester availability :{' '}
         <span className="font-bold">{`${listSchoolSemestre.length} of 3`}</span>
       </p>
 
@@ -747,12 +747,12 @@ function SchoolYear({
             break;
           case 'THERE_ARE_ACTIVE_SCHOOL_SEMESTRE':
             warningNotify(
-              'Cannot Inactive School Year. There are Semestre that are Active'
+              'Cannot deactivate School Year. There are Semesters that are still active'
             );
             break;
           case 'THERE_ARE_ACTIVE_SCHOOL_YEAR':
             warningNotify(
-              'Cannot Inactive School Year. There are School Year that are Active'
+              'Cannot deactivate School Year. There are School Years that are still active'
             );
             break;
           default:
@@ -819,7 +819,7 @@ function SchoolSemestre({
     <div className="h-full rounded-md bg-contastWhite p-3">
       <div className=" flex items-center justify-between">
         <h2 className="my-3 w-[80%] overflow-hidden text-clip text-left font-semibold">
-          {watch().school_semester_name || 'Enter Semestre Name'}
+          {watch().school_semester_name || 'Enter Semester Name'}
         </h2>
         <button
           className="rounded bg-primaryYellow p-2"
@@ -848,7 +848,7 @@ function SchoolSemestre({
       >
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Semestre Name
+            School Semester Name
           </label>
           <input
             className={classNames(
@@ -860,27 +860,27 @@ function SchoolSemestre({
             )}
             type="text"
             disabled
-            placeholder="School Semestre Name"
+            placeholder="School Semester Name"
             {...register('school_semester_name')}
           />
         </div>
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Semestre Description
+            School Semester Description
           </label>
           <textarea
             className={classNames(
               'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
             )}
-            placeholder="School Semestre Description"
+            placeholder="School Semester Description"
             {...register('school_semester_description')}
           />
         </div>
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Semestre <span className="text-xs text-red-500">*</span>
+            School Semester <span className="text-xs text-red-500">*</span>
           </label>
           <input
             className={classNames(
@@ -891,14 +891,14 @@ function SchoolSemestre({
               }
             )}
             type="password"
-            placeholder="School Semestre"
+            placeholder="School Semester"
             {...register('school_semester_code')}
           />
         </div>
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
-            School Semestre Status{' '}
+            School Semester Status{' '}
             <span
               className={classNames(
                 'ml-2 rounded-full py-1 px-3 text-white',
@@ -936,7 +936,7 @@ function SchoolSemestre({
               ? 'cursor-not-allowed opacity-50'
               : 'cursor-pointer'
           )}
-          value={isUpdating ? 'Updating...' : 'Update School Semestre Status'}
+          value={isUpdating ? 'Updating...' : 'Update School Semester Status'}
           type="submit"
           disabled={context?.userData.levelOfUser === 'STAFF' ? true : false}
         />
@@ -962,19 +962,19 @@ function SchoolSemestre({
       .then((res) => {
         switch (res.data.message) {
           case 'CORRECT_PASSCODE':
-            successfulNotify('School Semestre Updated Successfully');
+            successfulNotify('School Semester Updated Successfully');
             break;
           case 'INCORRECT_PASSCODE':
-            warningNotify('Incorrect School Semestre Passcode');
+            warningNotify('Incorrect School Semester Passcode');
             break;
           case 'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_SCHOOL_YEAR_IS_NOT_ACTIVE':
             warningNotify(
-              'Cannot Activate School Semestre. School School Year is not Active'
+              'Cannot actovate School Semester. School Year is not active'
             );
             break;
           case 'CANNOT_ACTIVATE_SEMESTRE_BECAUSE_OTHER_SCHOOL_SEMESTRE_IS_ACTIVE':
             warningNotify(
-              'Cannot Activate School Semestre. Other School Semestre is Active'
+              'Cannot actovate School Semester. Other School Semesters are still active'
             );
             break;
           default:

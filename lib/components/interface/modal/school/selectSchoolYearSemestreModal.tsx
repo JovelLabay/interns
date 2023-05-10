@@ -88,7 +88,7 @@ function SelectSchoolYearSemestreModal({
                 <div className="mt-2 h-[50vh] overflow-auto">
                   {schoolYearSemestreList.length === 0 ? (
                     <h3 className="my-10 font-medium text-secondaryWhite">
-                      Create First a School Year/Semestre
+                      There must be an existing School Year/Semester
                     </h3>
                   ) : (
                     <>
@@ -116,7 +116,7 @@ function SelectSchoolYearSemestreModal({
                                       ? '(Inactive)'
                                       : schoolYearData.School_Semester
                                           .length === 0
-                                      ? '(No Semestre)'
+                                      ? '(No Semester)'
                                       : ''}
                                   </span>
                                   <FiChevronDown
@@ -154,7 +154,7 @@ function SelectSchoolYearSemestreModal({
                                           toggleSelectCollege();
                                         }}
                                       >
-                                        Semestre:{' '}
+                                        Semester:{' '}
                                         {schoolSemestre.school_semester_name}{' '}
                                         {schoolSemestre.is_active
                                           ? ''

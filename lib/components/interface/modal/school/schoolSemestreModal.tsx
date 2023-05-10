@@ -98,7 +98,7 @@ function SchoolYearModal({
                   >
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Semestre{' '}
+                        School Semester{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -110,7 +110,7 @@ function SchoolYearModal({
                           }
                         )}
                         type="text"
-                        placeholder="School Semestre"
+                        placeholder="School Semester"
                         {...register('school_semester_name')}
                       />
                       {errors.school_semester_name?.message && (
@@ -122,7 +122,7 @@ function SchoolYearModal({
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Semestre Description
+                        School Semester Description
                       </label>
                       <textarea
                         className={classNames(
@@ -135,7 +135,7 @@ function SchoolYearModal({
 
                     <div className="flex flex-col items-start gap-2">
                       <label htmlFor="email" className="text-secondaryWhite">
-                        School Semestre Passcode{' '}
+                        School Semester Passcode{' '}
                         <span className="text-xs text-red-500">*</span>
                       </label>
                       <input
@@ -168,7 +168,7 @@ function SchoolYearModal({
                       value={
                         state.isSubmitted
                           ? 'Creating...'
-                          : 'Create School Semestre'
+                          : 'Create School Semester'
                       }
                       type="submit"
                     />
@@ -194,7 +194,7 @@ function SchoolYearModal({
         },
       })
       .then(() => {
-        successfulNotify('New Semestre Created!');
+        successfulNotify('New Semester Created!');
         setState((prev) => ({ ...prev, isSubmitted: false }));
         toggleSchoolYearModal();
         clearErrors();
