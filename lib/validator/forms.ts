@@ -21,10 +21,6 @@ const CreateSchoolAdminValidator = yup.object({
     .string()
     .required('Password is required')
     .min(6, 'Password must be at least 6 chars'),
-  // .matches(
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.])[A-Za-z\d@$!%*?&#.]{6,}$/,
-  //   'Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special char'
-  // ),
   firstName: yup.string().required('First Name is required'),
   middleName: yup.string(),
   lastName: yup.string().required('Last Name is required'),
@@ -58,11 +54,11 @@ const CreateSchoolYear = yup.object({
 });
 
 const CreateSchoolSemestre = yup.object({
-  school_semester_name: yup.string().required('Semestre code is required'),
+  school_semester_name: yup.string().required('Semester code is required'),
   school_semester_description: yup.string(),
   school_semester_code: yup
     .string()
-    .required('Semestre password is required')
+    .required('Semester password is required')
     .min(6, 'Must be 6 characters long'),
 });
 
@@ -110,9 +106,20 @@ const EmailTemplateForm = yup.object({
   email_template_body: yup.string().required('Body of email is required'),
 });
 
+const CompanyForm = yup.object({
+  company_name: yup.string().required('Company name is required'),
+  company_description: yup.string(),
+  company_image: yup.string(),
+  company_address: yup.string(),
+  company_website: yup.string(),
+  company_email: yup.string(),
+  comapny_contact_person: yup.string().required('Contact person is required'),
+});
+
 export {
   CreateCollegeDepartmentRequirementDocumentForm,
   CreateCollegeValidator,
+
   // SCHOOL DASHBOARD
   CreateSchoolAdminValidator,
   CreateSchoolSemestre,
@@ -121,4 +128,5 @@ export {
   EditStudentForm,
   LogSignValidator,
   EmailTemplateForm,
+  CompanyForm,
 };

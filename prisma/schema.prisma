@@ -173,8 +173,8 @@ model Company_Job_List {
   job_title        String
   job_description  String?         @db.Text
   job_requirements String          @db.Text
-  Company_List     Company_List    @relation(fields: [company_list_id], references: [id])
-  company_list_id  Int
+  Company_List     Company_List?   @relation(fields: [company_list_id], references: [id])
+  company_list_id  Int?
   Activity_Logs    Activity_Logs[]
 
   createdAt DateTime  @default(now())

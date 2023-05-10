@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b905c699-bc27-4cde-995a-81c48cb44b34" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/account.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/student/tabs/details.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/companiesContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/companiesContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/blocks/navigation/school/tabs/documentsContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/ManageUsers.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/interface/modal/school/generateReport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/types/form.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/form.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/controllers/reports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/controllers/reports.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/StaticTypes.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/StaticTypes.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/validator/forms.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validator/forms.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/user/school/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/school/auth.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/user/student/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/user/student/auth.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +145,7 @@
       <workItem from="1683352459991" duration="590000" />
       <workItem from="1683505126924" duration="1275000" />
       <workItem from="1683593892782" duration="12598000" />
+      <workItem from="1683694419940" duration="615000" />
     </task>
     <servers />
   </component>

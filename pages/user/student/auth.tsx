@@ -21,6 +21,8 @@ import {
   successfulNotify,
   warningNotify,
 } from '@component/interface/toast/toast';
+import { Head } from 'next/document';
+import { data } from 'Data';
 
 function Auth() {
   const router = useRouter();
@@ -86,69 +88,51 @@ function Auth() {
   }
 
   return (
-    <div className="min-h-[80vh] bg-primaryYellow">
-      <div className="dynamic-main-container flex min-h-[80vh] flex-col items-center justify-center">
-        <div className="rounded-md bg-white p-5">
-          {/* TITLE */}
-          <h2 className="text-center text-[28px]">
-            <span className="font-bold">
-              Student |{' '}
-              <span className="font-light">
-                {isForgotPassword ? 'Forgot Password' : 'Log in'}
+    <div>
+      <Head>
+        <meta name="theme-color" content="#FFE500" />
+      </Head>
+
+      <div className="min-h-[80vh] bg-primaryYellow">
+        <div className="dynamic-main-container flex min-h-[80vh] flex-col items-center justify-center">
+          <div className="rounded-md bg-white p-5">
+            {/* TITLE */}
+            <h2 className="text-center text-[28px]">
+              <span className="font-bold">
+                Student |{' '}
+                <span className="font-light">
+                  {isForgotPassword ? 'Forgot Password' : 'Log in'}
+                </span>
               </span>
-            </span>
-          </h2>
-          <p className="my-5 text-center font-medium text-secondaryWhite">
-            {isForgotPassword
-              ? 'Forgot your password'
-              : 'Authentication for the Student'}
-          </p>
+            </h2>
+            <p className="my-5 text-center font-medium text-secondaryWhite">
+              {isForgotPassword
+                ? 'Forgot your password'
+                : 'Authentication for the Student'}
+            </p>
 
-          {/* FORM */}
-          <form
-            className="mx-auto grid w-[300px] grid-cols-1 gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
+            {/* FORM */}
+            <form
+              className="mx-auto grid w-[300px] grid-cols-1 gap-4"
+              onSubmit={(e) => {
+                e.preventDefault();
 
-              if (isForgotPassword) {
-                setValue('password', 'JUST_FORGOT_PASSWORD');
+                if (isForgotPassword) {
+                  setValue('password', 'JUST_FORGOT_PASSWORD');
 
-                handleSubmit((data) => {
-                  sendResetEmail('Student User', data.email);
-                })();
-              } else {
-                handleSubmit((data) => {
-                  authentication(data);
-                })();
-              }
-            }}
-          >
-            <div className="flex flex-col gap-1">
-              <label htmlFor="email" className="text-secondaryWhite">
-                Email Address
-              </label>
-              <input
-                className={classNames(
-                  'rounded border-2 border-primaryYellow py-3 px-2 outline-none',
-                  {
-                    'border-red-500 bg-red-100 placeholder:text-white':
-                      errors.password,
-                  }
-                )}
-                type="email"
-                placeholder="Email Address"
-                {...register('email')}
-              />
-              {errors.email?.message && (
-                <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
-                  {errors.email?.message}
-                </p>
-              )}
-            </div>
-            {!isForgotPassword && (
+                  handleSubmit((data) => {
+                    sendResetEmail('Student User', data.email);
+                  })();
+                } else {
+                  handleSubmit((data) => {
+                    authentication(data);
+                  })();
+                }
+              }}
+            >
               <div className="flex flex-col gap-1">
-                <label htmlFor="password" className="text-secondaryWhite">
-                  Password
+                <label htmlFor="email" className="text-secondaryWhite">
+                  Email Address
                 </label>
                 <input
                   className={classNames(
@@ -158,58 +142,82 @@ function Auth() {
                         errors.password,
                     }
                   )}
-                  type="password"
-                  placeholder="Password"
-                  {...register('password')}
+                  type="email"
+                  placeholder="Email Address"
+                  {...register('email')}
                 />
-                {errors.password?.message && (
+                {errors.email?.message && (
                   <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
-                    {errors.password?.message}
+                    {errors.email?.message}
                   </p>
                 )}
               </div>
-            )}
+              {!isForgotPassword && (
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="password" className="text-secondaryWhite">
+                    Password
+                  </label>
+                  <input
+                    className={classNames(
+                      'rounded border-2 border-primaryYellow py-3 px-2 outline-none',
+                      {
+                        'border-red-500 bg-red-100 placeholder:text-white':
+                          errors.password,
+                      }
+                    )}
+                    type="password"
+                    placeholder="Password"
+                    {...register('password')}
+                  />
+                  {errors.password?.message && (
+                    <p className="rounded bg-red-100 p-2 text-center text-xs text-red-500">
+                      {errors.password?.message}
+                    </p>
+                  )}
+                </div>
+              )}
 
-            <div className="flex justify-end">
+              <div className="flex justify-end">
+                <button
+                  className="my-3 text-primaryYellow underline"
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    setIsForgotPassword(!isForgotPassword);
+                    clearPassEmail();
+                  }}
+                >
+                  {isForgotPassword ? 'Back' : 'Forgot your password?'}
+                </button>
+              </div>
+
               <button
-                className="my-3 text-primaryYellow underline"
-                onClick={(e) => {
-                  e.preventDefault();
-
-                  setIsForgotPassword(!isForgotPassword);
-                  clearPassEmail();
-                }}
+                className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:cursor-pointer hover:bg-primaryYellowHover"
+                type="submit"
               >
-                {isForgotPassword ? 'Back' : 'Forgot your password?'}
-              </button>
-            </div>
-
-            <button
-              className="flex w-full flex-row items-center justify-center gap-3 rounded-md bg-primaryYellow py-2 font-semibold text-secondaryWhite duration-150 hover:cursor-pointer hover:bg-primaryYellowHover"
-              type="submit"
-            >
-              {(function () {
-                if (isForgotPassword) {
-                  if (submit.isSubmitting) {
-                    return 'Sending...';
-                  } else {
-                    return 'Forgot Password';
+                {(function () {
+                  if (isForgotPassword) {
+                    if (submit.isSubmitting) {
+                      return 'Sending...';
+                    } else {
+                      return 'Forgot Password';
+                    }
                   }
-                }
 
-                if (submit.isSubmitting) {
-                  return 'Logging...';
-                } else {
-                  return 'Login';
-                }
-              })()}
-            </button>
-          </form>
+                  if (submit.isSubmitting) {
+                    return 'Logging...';
+                  } else {
+                    return 'Login';
+                  }
+                })()}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
 
-      {/* TOAST */}
-      <ToastContainer />
+        {/* TOAST */}
+        <ToastContainer />
+      </div>
     </div>
   );
 

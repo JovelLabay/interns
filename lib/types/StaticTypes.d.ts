@@ -25,6 +25,7 @@ interface Dynamic {
   setStudentData?: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// DOCUMENTS
 interface RequiredDoc {
   bucketUrlOfDocument: string;
   college_department_id: number;
@@ -38,4 +39,26 @@ interface Submitted {
   submitted_document_name: string;
   submitted_document: string;
   id: number;
+}
+
+// COMPANIES
+
+interface Company {
+  id: number;
+  company_name: string;
+  company_description: string;
+  company_image: string;
+  company_address: string;
+  company_website: string;
+  company_email: string;
+  comapny_contact_person: string;
+  createdAt: Date;
+}
+
+interface CompanyJob {
+  id: number;
+  job_title: string;
+  job_description: string;
+  job_requirements: string;
+  createdAt: Date;
 }

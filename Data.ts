@@ -122,7 +122,7 @@ export const data = {
   // SCHOOL DASHBOARD
   admin: {
     tabs: [
-      { id: 1, name: 'School Year | Semestre' },
+      { id: 1, name: 'School Year | Semester' },
       { id: 2, name: 'Students' },
       { id: 3, name: 'Documents' },
       { id: 5, name: 'Companies' },
@@ -144,8 +144,8 @@ export const data = {
     ],
     schoolYearSemestre: {
       schoolYear: [
-        { id: 1, name: 'Add Semestre' },
-        { id: 2, name: 'Delete Semestre' },
+        { id: 1, name: 'Add Semester' },
+        { id: 2, name: 'Delete Semester' },
       ],
       schoolSemestre: [
         { id: 1, name: 'Delete' },
@@ -196,7 +196,7 @@ export const data = {
     { id: 2, name: 'View Colleges' },
   ],
   schoolDashBoardStudentSelectSchoolYearSemestre: [
-    { id: 1, name: 'Select Year/Semestre' },
+    { id: 1, name: 'Select Year/Semester' },
     { id: 2, name: 'Select College' },
   ],
   formTemplates: [
