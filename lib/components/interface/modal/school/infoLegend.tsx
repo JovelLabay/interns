@@ -64,7 +64,7 @@ function InfoLegendStudent({
                   >
                     Close
                   </button>
-                  <p className="font-medium">Student Statuses</p>
+                  <p className="font-medium">Student Status</p>
                 </div>
 
                 <ol className="mx-5 mt-2 text-left">
@@ -173,7 +173,7 @@ function InfoLegendYearSemestre({
                   >
                     Close
                   </button>
-                  <p className="font-medium">School Year & Semestre Statuses</p>
+                  <p className="font-medium">School Years & Semesters Status</p>
                 </div>
 
                 <div>
@@ -195,7 +195,7 @@ function InfoLegendYearSemestre({
                     />
                     <span className="font-bold">{'Active'}</span>
                     {' - '}
-                    {'Manipulation of the School Year & Semestre.'}
+                    {'Manipulation of School Years & Semesters.'}
                   </p>
                 </div>
               </Dialog.Panel>
