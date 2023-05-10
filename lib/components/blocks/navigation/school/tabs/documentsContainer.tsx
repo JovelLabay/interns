@@ -90,7 +90,12 @@ function DocumentsContainer() {
         <div className="flex items-center justify-center gap-3">
           {stateCollege.collegeIndex !== -1 && (
             <button
-              className={classNames('rounded bg-primaryYellow p-2')}
+              className={classNames(
+                'rounded bg-primaryYellow p-2',
+                context?.userData.levelOfUser === 'STAFF' &&
+                  'cursor-not-allowed opacity-50'
+              )}
+              disabled={context?.userData.levelOfUser === 'STAFF'}
               title="Add Template"
               onClick={() => {
                 toggleRequirementDocument();

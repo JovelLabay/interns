@@ -38,6 +38,9 @@ function GenerateReport({
     },
   });
 
+  const [generateState, setGenerateState] = useState({
+    generate: false,
+  });
   const [reportList, setReportList] = useState([]);
   const [listCollege, setListCollege] = useState<ReturnCollegeProgram[]>([]);
   const [listSchoolYear, setListSchoolYear] = useState<ReturnFormSchoolYear[]>(
@@ -581,7 +584,9 @@ function GenerateReport({
                     )}
                     onClick={() => generateReport()}
                   >
-                    Create Report
+                    {generateState.generate
+                      ? 'Generating Report...'
+                      : 'Create Report'}
                   </button>
                 </div>
 
@@ -646,6 +651,7 @@ function GenerateReport({
   );
 
   function generateReport() {
+    setGenerateState((prev) => ({ ...prev, generate: true }));
     const stringed = JSON.stringify(toggle);
     warningNotify('Report generating...');
 
@@ -655,10 +661,11 @@ function GenerateReport({
         successfulNotify('Report generated successfully.');
 
         setReportList(res.data.studentListPayload);
+        setGenerateState((prev) => ({ ...prev, generate: false }));
       })
-      .catch((err) => {
+      .catch(() => {
         errorNotify("Something's wrong. Please try again later.");
-        console.log(err);
+        setGenerateState((prev) => ({ ...prev, generate: false }));
       });
   }
 

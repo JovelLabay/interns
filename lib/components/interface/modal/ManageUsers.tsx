@@ -154,7 +154,8 @@ function ManageUsers({
                   </button>
 
                   <p className="rounded-full bg-green-500 px-3 py-2 text-xs text-white">
-                    {context?.userData.email}
+                    {context?.userData.email} |{' '}
+                    {splitUnderScore(context?.userData.levelOfUser as string)}
                   </p>
                 </div>
                 <Tab.Group>
