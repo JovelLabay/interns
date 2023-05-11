@@ -37,3 +37,4 @@ yarn-error.log*
 
 # OTHER FILES
 package-lock.json
+prisma/schema.prisma
