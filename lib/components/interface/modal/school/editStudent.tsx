@@ -299,56 +299,77 @@ function EditStudent({
                         />
                       </Switch>
 
-                      <Listbox
-                        disabled={emailTemplate.length === 0}
-                        value={
-                          selectedEmailTemplate.name === ''
-                            ? 'Select Template'
-                            : selectedEmailTemplate.name
-                        }
-                        onChange={(data: any) => {
-                          setSelectedEmailTemplate({
-                            name: data.email_template_name,
-                            objectData: { ...data },
-                          });
-                        }}
-                      >
-                        {({ open }: { open: boolean }) => (
-                          <div className="relative">
-                            <Listbox.Button
-                              className={classNames(
-                                'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none',
-                                emailTemplate.length === 0 &&
-                                  'cursor-not-allowed opacity-50'
-                              )}
-                            >
-                              {selectedEmailTemplate.name === ''
-                                ? 'Select Template'
-                                : selectedEmailTemplate.name}
-                              <FiChevronDown
-                                size={30}
+                      <div className="flex w-full items-center justify-between gap-3">
+                        <Listbox
+                          disabled={emailTemplate.length === 0}
+                          value={
+                            selectedEmailTemplate.name === ''
+                              ? 'Select Template'
+                              : selectedEmailTemplate.name
+                          }
+                          onChange={(data: any) => {
+                            setSelectedEmailTemplate({
+                              name: data.email_template_name,
+                              objectData: { ...data },
+                            });
+                          }}
+                        >
+                          {({ open }: { open: boolean }) => (
+                            <div className="relative">
+                              <Listbox.Button
                                 className={classNames(
-                                  'text-secondaryWhite duration-300',
-                                  {
-                                    'rotate-180': open,
-                                  }
+                                  'flex w-[17vw] items-center justify-between rounded-md border-2 border-primaryYellow bg-mainBgWhite px-2 py-2 outline-none',
+                                  emailTemplate.length === 0 &&
+                                    'cursor-not-allowed opacity-50'
                                 )}
-                              />
-                            </Listbox.Button>
-                            <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
-                              {emailTemplate.map((person, index) => (
-                                <Listbox.Option
-                                  className="py-1"
-                                  key={index}
-                                  value={person}
-                                >
-                                  {person.email_template_name}
-                                </Listbox.Option>
-                              ))}
-                            </Listbox.Options>
-                          </div>
-                        )}
-                      </Listbox>
+                              >
+                                {selectedEmailTemplate.name === ''
+                                  ? 'Select Template'
+                                  : selectedEmailTemplate.name}
+                                <FiChevronDown
+                                  size={30}
+                                  className={classNames(
+                                    'text-secondaryWhite duration-300',
+                                    {
+                                      'rotate-180': open,
+                                    }
+                                  )}
+                                />
+                              </Listbox.Button>
+                              <Listbox.Options className="absolute z-30 max-h-[100px] w-full overflow-auto rounded-md bg-white p-2 text-left shadow-md hover:cursor-pointer">
+                                {emailTemplate.map((person, index) => (
+                                  <Listbox.Option
+                                    className="py-1"
+                                    key={index}
+                                    value={person}
+                                  >
+                                    {person.email_template_name}
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </div>
+                          )}
+                        </Listbox>
+
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+
+                            setSelectedEmailTemplate({
+                              name: '',
+                              objectData: {
+                                email_template_name: '',
+                                email_template_subject: '',
+                                email_template_body: '',
+                                id: 0,
+                              },
+                            });
+                          }}
+                          className="rounded bg-red-400 p-3 text-white"
+                        >
+                          Clear Selected Template
+                        </button>
+                      </div>
                     </div>
 
                     <h3 className={'font-medium'}>Student Profile Details</h3>
