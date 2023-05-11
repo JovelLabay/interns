@@ -121,11 +121,19 @@ function GenerateReport({
                       <AiOutlineClear size={20} />
                     </button>
                     <button
-                      disabled={reportList.length === 0 ? true : false}
+                      disabled={
+                        toggle.schoolYear.id === -1 ||
+                        toggle.schoolSemestre.id === -1 ||
+                        toggle.college.id === -1
+                          ? true
+                          : false
+                      }
                       title="Export Report"
                       className={classNames(
                         'rounded bg-primaryYellow p-2 text-white',
-                        reportList.length === 0
+                        toggle.schoolYear.id === -1 ||
+                          toggle.schoolSemestre.id === -1 ||
+                          toggle.college.id === -1
                           ? 'cursor-not-allowed opacity-50'
                           : ''
                       )}

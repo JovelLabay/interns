@@ -100,6 +100,11 @@ function CompaniesContainer() {
           <button
             className={classNames('rounded bg-primaryYellow p-2')}
             title="Refresh"
+            onClick={() => {
+              getCompanyLists();
+
+              successfulNotify('Refreshed');
+            }}
           >
             <BiRefresh size={20} />
           </button>
@@ -652,6 +657,7 @@ function CompaniesContainer() {
         reset={reset}
         errors={errors}
         watch={watch}
+        getCompanyLists={getCompanyLists}
       />
     </div>
   );

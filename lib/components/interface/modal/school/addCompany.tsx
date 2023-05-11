@@ -29,6 +29,7 @@ function AddCompany({
   reset,
   errors,
   watch,
+  getCompanyLists,
 }: {
   modal: boolean;
   toggleAddCompany: () => void;
@@ -38,6 +39,7 @@ function AddCompany({
   reset: UseFormReset<Company>;
   errors: FieldErrors<Company>;
   watch: UseFormWatch<Company>;
+  getCompanyLists: () => void;
 }) {
   const [state, setState] = useState({
     isCreating: false,
@@ -303,6 +305,7 @@ function AddCompany({
 
           toggleAddCompany();
           reset();
+          getCompanyLists();
         }
       })
       .catch((err) => {
