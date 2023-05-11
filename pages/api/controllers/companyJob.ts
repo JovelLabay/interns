@@ -54,11 +54,43 @@ class CompanyJob {
     };
 
     this.updateCompanyList = async () => {
-      null;
+      try {
+        const { job_title, job_description, job_requirements } = JSON.parse(
+          body.body
+        );
+
+        const responsePayload = await this.prisma.company_Job_List.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            job_title,
+            job_requirements,
+            job_description,
+          },
+        });
+
+        res.status(200).json({ message: 'Successful', responsePayload });
+      } catch (error) {
+        res.status(400).json({ message: 'Unsuccessful' });
+      }
     };
 
     this.deleteCompanyList = async () => {
-      null;
+      try {
+        const responsePayload = await this.prisma.company_Job_List.update({
+          where: {
+            id: Number(id),
+          },
+          data: {
+            deletedAt: new Date(),
+          },
+        });
+
+        res.status(200).json({ message: 'Successful', responsePayload });
+      } catch (error) {
+        res.status(400).json({ message: 'Unsuccessful' });
+      }
     };
   }
 }

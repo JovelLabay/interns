@@ -14,6 +14,7 @@ import {
 } from '@validator/forms';
 import axios from 'axios';
 import classNames from 'classnames';
+import Image from 'next/image';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -24,6 +25,7 @@ import {
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
 import { FiChevronDown } from 'react-icons/fi';
+import internsLogo from '@/assets/logo/interns_logo.png';
 
 function CompaniesContainer() {
   const context = useContext(DynamicContext);
@@ -64,7 +66,11 @@ function CompaniesContainer() {
   });
 
   const companyFilter = useMemo(() => {
-    return companyList.filter((company) => company);
+    return companyList.filter((companyDetail) => {
+      const regex = new RegExp(company.companyName.toLocaleLowerCase(), 'gi');
+
+      return companyDetail.company_name.match(regex);
+    });
   }, [company.companyName, companyList]);
 
   useEffect(() => {
@@ -84,6 +90,10 @@ function CompaniesContainer() {
             )}
             type="text"
             placeholder="Search Company Name..."
+            value={company.companyName}
+            onChange={(e) =>
+              setCompany((prev) => ({ ...prev, companyName: e.target.value }))
+            }
           />
           <button
             className={classNames(
@@ -104,6 +114,9 @@ function CompaniesContainer() {
               getCompanyLists();
 
               successfulNotify('Refreshed');
+              reset();
+              setCompany({ companyName: '', companyId: -1, companyObject: {} });
+              setIsClose(false);
             }}
           >
             <BiRefresh size={20} />
@@ -144,6 +157,7 @@ function CompaniesContainer() {
                     'comapny_contact_person',
                     companyData.comapny_contact_person
                   );
+                  setValue('company_image', companyData.company_image);
 
                   getCompanyJob(companyData.id);
                 }}
@@ -176,7 +190,7 @@ function CompaniesContainer() {
           {company.companyId !== -1 && (
             <>
               <div className="h-full overflow-auto pr-1">
-                <h3 className="m-1 rounded-sm bg-yellowBg p-2 font-semibold">
+                <h3 className="rounded-sm bg-yellowBg p-2 font-semibold">
                   Company Details
                 </h3>
 
@@ -190,6 +204,13 @@ function CompaniesContainer() {
                     })();
                   }}
                 >
+                  <Image
+                    width={70}
+                    height={70}
+                    src={watch().company_image || internsLogo}
+                    className="rounded-full"
+                  />
+
                   <div className="flex flex-col items-start gap-2">
                     <label htmlFor="email" className="text-secondaryWhite">
                       Company Name{' '}
@@ -534,16 +555,20 @@ function CompaniesContainer() {
                               onSubmit={(e) => {
                                 e.preventDefault();
 
-                                if (companyJobForm.job_title === '') {
+                                if (companyJob[index].job_title === '') {
                                   warningNotify('Job Title is required!');
                                 } else if (
-                                  companyJobForm.job_requirements === ''
+                                  companyJob[index].job_requirements === ''
                                 ) {
                                   warningNotify(
                                     'Job Requirements is required!'
                                   );
                                 } else {
-                                  console.log(job.id, companyJob[index]);
+                                  updateCompanyJob(
+                                    company.companyId,
+                                    job.id,
+                                    companyJob[index]
+                                  );
                                 }
                               }}
                             >
@@ -625,15 +650,31 @@ function CompaniesContainer() {
                                 />
                               </div>
 
-                              <input
-                                className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
-                                value={
-                                  state.companyJobForm
-                                    ? 'Updating New Company Job Listing...'
-                                    : 'Update New Company Job Listing'
-                                }
-                                type="submit"
-                              />
+                              <div className="flex w-full items-center justify-center gap-2">
+                                <input
+                                  className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
+                                  value={
+                                    state.companyJobForm
+                                      ? 'Updating New Company Job Listing...'
+                                      : 'Update New Company Job Listing'
+                                  }
+                                  type="submit"
+                                />
+
+                                <button
+                                  className="w-[50%] cursor-pointer rounded bg-red-400 py-2 text-xs text-white"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+
+                                    deleteCompanyJob(
+                                      company.companyId,
+                                      companyJob[index].id
+                                    );
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
                             </form>
                           </div>
                         )}
@@ -664,8 +705,16 @@ function CompaniesContainer() {
 
   function toggleAddCompany() {
     setModal((prev) => ({ ...prev, addCompany: !prev.addCompany }));
-
     reset();
+  }
+
+  function handlerForm(
+    name: string,
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    setCompanyJobForm((prev) => ({ ...prev, [name]: e.target.value }));
   }
 
   // COMPANY
@@ -732,8 +781,14 @@ function CompaniesContainer() {
       .then(() => {
         getCompanyJob(companyId);
         setState((prev) => ({ ...prev, companyJobForm: false }));
+        setIsClose(false);
 
         successfulNotify('Successfully added new company job listing!');
+        setCompanyJobForm({
+          job_title: '',
+          job_description: '',
+          job_requirements: '',
+        });
       })
       .catch(() => {
         errorNotify('Failed to add new company job listing!');
@@ -753,13 +808,42 @@ function CompaniesContainer() {
       });
   }
 
-  function handlerForm(
-    name: string,
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) {
-    setCompanyJobForm((prev) => ({ ...prev, [name]: e.target.value }));
+  function deleteCompanyJob(companyId: number, id: number) {
+    warningNotify('Deleting company job listing...');
+
+    axios
+      .delete(`/api/data/companyJob?id=${id}`)
+      .then(() => {
+        successfulNotify('Deleted company job listing!');
+        getCompanyJob(companyId);
+      })
+      .catch((err) => {
+        errorNotify("Sorry, we can't delete the company job listing!");
+        console.error(err);
+      });
+  }
+
+  function updateCompanyJob(companyId: number, id: number, data: CompanyJob) {
+    setState((prev) => ({ ...prev, companyJobForm: true }));
+
+    axios
+      .put(`/api/data/companyJob?id=${id}`, {
+        Headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(() => {
+        setState((prev) => ({ ...prev, companyJobForm: false }));
+
+        successfulNotify('Updated company job listing!');
+        getCompanyJob(companyId);
+      })
+      .catch((error) => {
+        setState((prev) => ({ ...prev, companyJobForm: false }));
+        errorNotify("Sorry, we can't update the company job listing!");
+        console.error(error);
+      });
   }
 }
 

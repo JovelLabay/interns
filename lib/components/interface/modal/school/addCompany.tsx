@@ -90,6 +90,13 @@ function AddCompany({
                   </button>
                 </div>
 
+                <Image
+                  width={60}
+                  height={60}
+                  src={watch().company_image || internsLogo}
+                  className="rounded-full"
+                />
+
                 <form
                   className="flex h-[70vh] flex-col items-center justify-start gap-5 overflow-auto pt-5"
                   onSubmit={(e) => {
