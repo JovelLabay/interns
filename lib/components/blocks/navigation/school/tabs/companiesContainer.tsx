@@ -8,17 +8,13 @@ import { Disclosure } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DynamicContext } from '@redux/context';
 import { imageUploader } from '@utils/uploaderFunction';
-import {
-  CompanyForm,
-  CreateCollegeDepartmentRequirementDocumentForm,
-} from '@validator/forms';
+import { CompanyForm } from '@validator/forms';
 import axios from 'axios';
 import classNames from 'classnames';
 import Image from 'next/image';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  AiOutlineConsoleSql,
   AiOutlineDelete,
   AiOutlineFileImage,
   AiOutlinePlusCircle,
@@ -157,7 +153,7 @@ function CompaniesContainer() {
                     'comapny_contact_person',
                     companyData.comapny_contact_person
                   );
-                  setValue('company_image', companyData.company_image);
+                  setValue('company_image', companyData.company_image || '');
 
                   getCompanyJob(companyData.id);
                 }}
@@ -761,6 +757,13 @@ function CompaniesContainer() {
       .then(() => {
         getCompanyLists();
         successfulNotify('Successfully deleted company!');
+
+        reset();
+        setCompany({
+          companyName: '',
+          companyId: -1,
+          companyObject: {},
+        });
       })
       .catch(() => {
         errorNotify('Failed to delete company!');
