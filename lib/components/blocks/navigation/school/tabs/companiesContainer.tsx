@@ -159,8 +159,8 @@ function CompaniesContainer() {
                 }}
               >
                 <h3 className="font-bold">{companyData.company_name}</h3>
-                <p className="w-full text-ellipsis text-left text-sm italic">
-                  {companyData.company_description}
+                <p className="text-left text-sm italic">
+                  {companyData.comapny_contact_person}
                 </p>
                 <p className="text-xs font-light italic">
                   {new Date(companyData.createdAt).toLocaleString()}
