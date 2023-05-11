@@ -29,6 +29,10 @@ function Account() {
     isUpdating: false,
     uploadingImage: false,
   });
+  const [status, setStatus] = useState({
+    eligibiligyStatus: false,
+  });
+
   const { handleSubmit, register, setValue, watch } = useForm<FormEditStudent>({
     mode: 'onSubmit',
     resolver: yupResolver(EditStudentForm),
@@ -50,6 +54,10 @@ function Account() {
       setValue('sex', studentData.sex || '');
       setValue('studentStatus', studentData.student_status || '');
       setValue('phoneNumber', studentData.phone_number || '');
+
+      setStatus({
+        eligibiligyStatus: studentData?.isEligible,
+      });
     }
   }, []);
 
@@ -71,8 +79,8 @@ function Account() {
         </label>
         <div className="flex w-full justify-center">
           <Image
-            width={130}
-            height={130}
+            width={100}
+            height={100}
             alt="profileImage"
             className="rounded-full"
             src={
@@ -180,17 +188,18 @@ function Account() {
                     <Listbox.Option
                       className={classNames(
                         'py-1',
-                        watch().studentStatus !== 'COMPLETE' &&
+                        (watch().studentStatus !== 'COMPLETE' &&
                           watch().studentStatus !== 'APPLYING' &&
-                          watch().studentStatus !== 'APPLIED' &&
-                          'opacity-50'
+                          watch().studentStatus !== 'APPLIED') ||
+                          (status.eligibiligyStatus === false && 'opacity-50')
                       )}
                       key={index}
                       value={person[1]}
                       disabled={
-                        watch().studentStatus !== 'COMPLETE' &&
-                        watch().studentStatus !== 'APPLYING' &&
-                        watch().studentStatus !== 'APPLIED'
+                        (watch().studentStatus !== 'COMPLETE' &&
+                          watch().studentStatus !== 'APPLYING' &&
+                          watch().studentStatus !== 'APPLIED') ||
+                        status.eligibiligyStatus === false
                       }
                     >
                       {splitUnderScore(person[1])}
