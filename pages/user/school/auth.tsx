@@ -39,8 +39,6 @@ function Auth() {
   });
 
   useEffect(() => {
-    document.title = 'School | Log in';
-
     const expirationTime = new Date();
     expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
 
@@ -62,8 +60,7 @@ function Auth() {
             router.push('/user/school/dashboard');
           }
         })
-        .catch((err) => {
-          console.error(err);
+        .catch(() => {
           errorNotify('Something went wrong');
           document.cookie =
             'authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -82,6 +79,7 @@ function Auth() {
   return (
     <div>
       <Head>
+        <title>School | Log in</title>
         <meta name="theme-color" content="#FFE500" />
       </Head>
 

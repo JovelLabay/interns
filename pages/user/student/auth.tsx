@@ -21,8 +21,7 @@ import {
   successfulNotify,
   warningNotify,
 } from '@component/interface/toast/toast';
-import { Head } from 'next/document';
-import { data } from 'Data';
+import Head from 'next/head';
 
 function Auth() {
   const router = useRouter();
@@ -47,8 +46,6 @@ function Auth() {
   });
 
   useEffect(() => {
-    document.title = 'Student | Log in';
-
     const expirationTime = new Date();
     expirationTime.setTime(expirationTime.getTime() + 8 * 60 * 60 * 1000);
 
@@ -70,8 +67,7 @@ function Auth() {
             router.push('/user/student/dashboard');
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           errorNotify('Something went wrong');
           document.cookie =
             'authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -90,6 +86,7 @@ function Auth() {
   return (
     <div>
       <Head>
+        <title>Student | Log in</title>
         <meta name="theme-color" content="#FFE500" />
       </Head>
 
