@@ -57,6 +57,14 @@ class RequirementDocument {
               },
             });
 
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Document added: ${documentsPayload.documentName} `,
+              activity_action: 'ADDED',
+              company_Job_List_Id: documentsPayload.id,
+            },
+          });
+
           res.status(200).json({ message: 'Successful', documentsPayload });
         }
       } catch (error) {
@@ -66,12 +74,20 @@ class RequirementDocument {
 
     this.deleteRequirementDocuments = async () => {
       try {
-        await this.prisma.requirement_Document.update({
+        const documentsPayload = await this.prisma.requirement_Document.update({
           where: {
             id: Number(id),
           },
           data: {
             deletedAt: new Date(),
+          },
+        });
+
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Document deleted: ${documentsPayload.documentName} `,
+            activity_action: 'DELETED',
+            company_Job_List_Id: documentsPayload.id,
           },
         });
 
@@ -90,6 +106,14 @@ class RequirementDocument {
           data: {
             documentName: nameOfDocument,
             bucketUrlOfDocument: bucketUrlOfDocument,
+          },
+        });
+
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Document updated: ${documentsPayload.documentName} `,
+            activity_action: 'UPDATED',
+            company_Job_List_Id: documentsPayload.id,
           },
         });
 

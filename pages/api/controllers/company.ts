@@ -67,6 +67,14 @@ class Company {
               comapny_contact_person,
             },
           });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Company added: ${responsePayload.company_name} `,
+              activity_action: 'ADDED',
+              company_list_id: responsePayload.id,
+            },
+          });
         }
 
         res.status(200).json({ message: 'Successful' });
@@ -102,6 +110,14 @@ class Company {
           },
         });
 
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Company updated: ${responsePayload.company_name} `,
+            activity_action: 'UPDATED',
+            company_list_id: responsePayload.id,
+          },
+        });
+
         res.status(200).json({ message: 'Successful' });
       } catch (error) {
         res.status(400).json({ message: 'Unsuccessful' });
@@ -116,6 +132,14 @@ class Company {
           },
           data: {
             deletedAt: new Date(),
+          },
+        });
+
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Company deleted: ${responsePayload.company_name} `,
+            activity_action: 'DELETED',
+            company_list_id: responsePayload.id,
           },
         });
 

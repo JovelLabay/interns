@@ -47,6 +47,14 @@ class CompanyJob {
           },
         });
 
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Job added: ${responsePayload.job_title} `,
+            activity_action: 'ADDED',
+            company_Job_List_Id: responsePayload.id,
+          },
+        });
+
         res.status(200).json({ message: 'Successful', responsePayload });
       } catch (error) {
         res.status(400).json({ message: 'Unsuccessful' });
@@ -70,6 +78,14 @@ class CompanyJob {
           },
         });
 
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Job updated: ${responsePayload.job_title} `,
+            activity_action: 'UPDATED',
+            company_Job_List_Id: responsePayload.id,
+          },
+        });
+
         res.status(200).json({ message: 'Successful', responsePayload });
       } catch (error) {
         res.status(400).json({ message: 'Unsuccessful' });
@@ -84,6 +100,14 @@ class CompanyJob {
           },
           data: {
             deletedAt: new Date(),
+          },
+        });
+
+        await this.prisma.activity_Logs.create({
+          data: {
+            activity_message: `Job deleted: ${responsePayload.job_title} `,
+            activity_action: 'DELETED',
+            company_Job_List_Id: responsePayload.id,
           },
         });
 

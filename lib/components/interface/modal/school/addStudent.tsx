@@ -376,8 +376,6 @@ function AddStudentBulk({
                           });
                           return;
                         } else {
-                          successfulNotify('CSV Uploaded!');
-
                           const config = {
                             method: 'post',
                             maxBodyLength: Infinity,
@@ -400,6 +398,8 @@ function AddStudentBulk({
 
                               toggleAddStudentBulk();
                               getStudentList();
+
+                              successfulNotify('CSV Uploaded!');
                             })
                             .catch((error) => {
                               console.log(error);
