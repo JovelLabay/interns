@@ -61,7 +61,7 @@ const Home: NextPage = () => {
             </p>
             <Link href="/user/getstarted">
               <button className="my-6 rounded-full bg-primaryYellow px-8 py-2 font-medium duration-300 hover:scale-105 md:my-10 lg:my-12 ">
-                Get Stated
+                Get Started
               </button>
             </Link>
           </div>

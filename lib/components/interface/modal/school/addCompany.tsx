@@ -264,7 +264,7 @@ function AddCompany({
                         }
                       )}
                       type="text"
-                      placeholder="Document Name"
+                      placeholder="Contact Person Name"
                       {...register('comapny_contact_person')}
                     />
                     {errors.comapny_contact_person?.message && (

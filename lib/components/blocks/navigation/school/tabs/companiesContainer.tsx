@@ -98,7 +98,7 @@ function CompaniesContainer() {
                 'cursor-not-allowed opacity-50'
             )}
             disabled={context?.userData.levelOfUser === 'STAFF'}
-            title="Add Template"
+            title="Add Company"
             onClick={() => toggleAddCompany()}
           >
             <AiOutlinePlusCircle size={20} />
@@ -173,7 +173,7 @@ function CompaniesContainer() {
                   context?.userData.levelOfUser === 'STAFF' &&
                     'cursor-not-allowed opacity-50'
                 )}
-                title="Delete User"
+                title="Delete Company"
                 disabled={context?.userData.levelOfUser === 'STAFF'}
                 onClick={() => deleteCompany(companyData.id)}
               >
@@ -364,7 +364,7 @@ function CompaniesContainer() {
                         }
                       )}
                       type="text"
-                      placeholder="Document Name"
+                      placeholder="Contact Person Name"
                       {...register('comapny_contact_person')}
                     />
                     {errors.comapny_contact_person?.message && (
@@ -413,7 +413,7 @@ function CompaniesContainer() {
                         )}
                       >
                         <span className="font-semibold text-secondaryWhite">
-                          Company Job Listing Form
+                          Company Internship Listing Form
                         </span>
                         <FiChevronDown
                           className={`${
@@ -444,7 +444,7 @@ function CompaniesContainer() {
                                 htmlFor="email"
                                 className="text-secondaryWhite"
                               >
-                                Job Title{' '}
+                                Position{' '}
                                 <span className="text-xs text-red-500">*</span>
                               </label>
                               <input
@@ -452,7 +452,7 @@ function CompaniesContainer() {
                                   'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                 )}
                                 type="text"
-                                placeholder="Job Title"
+                                placeholder="Position"
                                 value={companyJobForm.job_title}
                                 name="job_title"
                                 onChange={(e) => handlerForm('job_title', e)}
@@ -463,13 +463,13 @@ function CompaniesContainer() {
                                 htmlFor="email"
                                 className="text-secondaryWhite"
                               >
-                                Job Description
+                                Position Description
                               </label>
                               <textarea
                                 className={classNames(
                                   'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                 )}
-                                placeholder="Job Description"
+                                placeholder="Position Description"
                                 name="job_description"
                                 value={companyJobForm.job_description}
                                 onChange={(e) =>
@@ -482,7 +482,7 @@ function CompaniesContainer() {
                                 htmlFor="email"
                                 className="text-secondaryWhite"
                               >
-                                Job Requirements
+                                Position Requirements
                                 <span className="text-xs text-red-500">*</span>
                               </label>
                               <span className="text-xs font-light italic text-red-500">
@@ -494,7 +494,7 @@ function CompaniesContainer() {
                                 className={classNames(
                                   'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                 )}
-                                placeholder="Job Requirements"
+                                placeholder="Position Requirements"
                                 name="job_requirements"
                                 value={companyJobForm.job_requirements}
                                 onChange={(e) =>
@@ -507,8 +507,8 @@ function CompaniesContainer() {
                               className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
                               value={
                                 state.companyJobForm
-                                  ? 'Creating New Company Job Listing...'
-                                  : 'Create New Company Job Listing'
+                                  ? 'Creating New Company Position Listing...'
+                                  : 'Create New Company Position Listing'
                               }
                               type="submit"
                             />
@@ -573,7 +573,7 @@ function CompaniesContainer() {
                                   htmlFor="Job Title"
                                   className="text-secondaryWhite"
                                 >
-                                  Job Title{' '}
+                                  Position{' '}
                                   <span className="text-xs text-red-500">
                                     *
                                   </span>
@@ -583,7 +583,7 @@ function CompaniesContainer() {
                                     'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                   )}
                                   type="text"
-                                  placeholder="Job Title"
+                                  placeholder="Position"
                                   value={companyJob[index].job_title}
                                   onChange={(e) => {
                                     const newJob = [...companyJob];
@@ -598,13 +598,13 @@ function CompaniesContainer() {
                                   htmlFor="email"
                                   className="text-secondaryWhite"
                                 >
-                                  Job Description
+                                  Position Description
                                 </label>
                                 <textarea
                                   className={classNames(
                                     'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                   )}
-                                  placeholder="Job Description"
+                                  placeholder="Position Description"
                                   name="job_description"
                                   value={companyJob[index].job_description}
                                   onChange={(e) => {
@@ -620,7 +620,7 @@ function CompaniesContainer() {
                                   htmlFor="email"
                                   className="text-secondaryWhite"
                                 >
-                                  Job Requirements
+                                  Position Requirements
                                   <span className="text-xs text-red-500">
                                     *
                                   </span>
@@ -634,7 +634,7 @@ function CompaniesContainer() {
                                   className={classNames(
                                     'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                                   )}
-                                  placeholder="Job Requirements"
+                                  placeholder="Position Requirements"
                                   name="job_requirements"
                                   value={companyJob[index].job_requirements}
                                   onChange={(e) => {
@@ -651,8 +651,8 @@ function CompaniesContainer() {
                                   className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
                                   value={
                                     state.companyJobForm
-                                      ? 'Updating New Company Job Listing...'
-                                      : 'Update New Company Job Listing'
+                                      ? 'Updating Company Position Listing...'
+                                      : 'Update Company Position Listing'
                                   }
                                   type="submit"
                                 />
@@ -786,7 +786,7 @@ function CompaniesContainer() {
         setState((prev) => ({ ...prev, companyJobForm: false }));
         setIsClose(false);
 
-        successfulNotify('Successfully added new company job listing!');
+        successfulNotify('Successfully added new company position listing!');
         setCompanyJobForm({
           job_title: '',
           job_description: '',
@@ -794,7 +794,7 @@ function CompaniesContainer() {
         });
       })
       .catch(() => {
-        errorNotify('Failed to add new company job listing!');
+        errorNotify('Failed to add new company position listing!');
       });
   }
 
@@ -805,23 +805,23 @@ function CompaniesContainer() {
         setCompanyJob(res.data.responsePayload);
       })
       .catch((err) => {
-        errorNotify("Sorry, we can't get the company job listing!");
+        errorNotify("Sorry, we can't get the company position listing!");
 
         console.error(err);
       });
   }
 
   function deleteCompanyJob(companyId: number, id: number) {
-    warningNotify('Deleting company job listing...');
+    warningNotify('Deleting company position listing...');
 
     axios
       .delete(`/api/data/companyJob?id=${id}`)
       .then(() => {
-        successfulNotify('Deleted company job listing!');
+        successfulNotify('Deleted company position listing!');
         getCompanyJob(companyId);
       })
       .catch((err) => {
-        errorNotify("Sorry, we can't delete the company job listing!");
+        errorNotify("Sorry, we can't delete the company position listing!");
         console.error(err);
       });
   }
@@ -839,12 +839,12 @@ function CompaniesContainer() {
       .then(() => {
         setState((prev) => ({ ...prev, companyJobForm: false }));
 
-        successfulNotify('Updated company job listing!');
+        successfulNotify('Updated company position listing!');
         getCompanyJob(companyId);
       })
       .catch((error) => {
         setState((prev) => ({ ...prev, companyJobForm: false }));
-        errorNotify("Sorry, we can't update the company job listing!");
+        errorNotify("Sorry, we can't update the company position listing!");
         console.error(error);
       });
   }
