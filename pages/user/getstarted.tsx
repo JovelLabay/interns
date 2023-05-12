@@ -28,7 +28,7 @@ function Getstarted() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center justify-center gap-10 py-10 md:gap-14 md:py-0">
+      <main className="flex min-h-[80vh] flex-col items-center justify-center gap-10 py-10 md:gap-14 md:py-0">
         <div className="flex flex-col gap-5 text-center">
           <h3 className="text-[24px] font-semibold md:text-[34px]">
             Get Started
@@ -56,7 +56,9 @@ function Getstarted() {
                     <BsPerson className="text-[40px] text-primaryYellow" />
                   )}
                 </div>
-                <p className="text-[24px] font-semibold">{option.name}</p>
+                <p className="text-center text-[24px] font-semibold">
+                  {option.name}
+                </p>
               </div>
             );
           })}

@@ -427,7 +427,7 @@ function AddCollegeComponentTab({
               }
             )}
             type="text"
-            placeholder="Department Name"
+            placeholder="Program Name"
             {...register('abbreaviatedProgramName')}
           />
           {errors.abbreaviatedProgramName?.message && (
