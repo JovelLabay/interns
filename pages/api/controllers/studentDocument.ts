@@ -50,18 +50,27 @@ class StudentDocument {
         parseData.map(async (item: { id: string; documentName: string }) => {
           const submittedDocumentId = item.id + studentUserProfileId;
 
-          await this.prisma.student_Submitted_Document.upsert({
-            where: {
-              id: Number(submittedDocumentId),
-            },
-            create: {
-              id: Number(submittedDocumentId),
-              student_user_profile_id: Number(studentUserProfileId),
-              submitted_document_name: item.documentName,
-            },
-            update: {
-              student_user_profile_id: Number(studentUserProfileId),
-              submitted_document_name: item.documentName,
+          const responsePayload =
+            await this.prisma.student_Submitted_Document.upsert({
+              where: {
+                id: Number(submittedDocumentId),
+              },
+              create: {
+                id: Number(submittedDocumentId),
+                student_user_profile_id: Number(studentUserProfileId),
+                submitted_document_name: item.documentName,
+              },
+              update: {
+                student_user_profile_id: Number(studentUserProfileId),
+                submitted_document_name: item.documentName,
+              },
+            });
+
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Student submitted: ${responsePayload.submitted_document_name} `,
+              activity_action: 'SUBMITTED',
+              student_Submitted_Document_Id: responsePayload.id,
             },
           });
         });

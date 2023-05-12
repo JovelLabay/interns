@@ -201,28 +201,28 @@ model Activity_Logs {
   activity_message String @db.Text
   activity_action  String
 
-  School_Year                  School_Year?                @relation(fields: [school_year_id], references: [id])
-  school_year_id               Int?
-  School_Semester              School_Semester?            @relation(fields: [school_semester_id], references: [id])
-  school_semester_id           Int?
-  College_Department           College_Department?         @relation(fields: [college_department_id], references: [id])
-  college_department_id        Int?
-  Student_User                 Student_User?               @relation(fields: [student_user_id], references: [id])
-  student_user_id              Int?
-  Student_User_Profile         Student_User_Profile?       @relation(fields: [student_user_profile_id], references: [id])
-  student_user_profile_id      Int?
-  Admin_User                   Admin_User?                 @relation(fields: [admin_user_id], references: [id])
-  admin_user_id                Int?
-  company_list                 Company_List?               @relation(fields: [company_list_id], references: [id])
-  company_list_id              Int?
-  Company_Job_List             Company_Job_List?           @relation(fields: [company_Job_ListId], references: [id])
-  company_Job_ListId           Int?
-  Requirement_Document         Requirement_Document?       @relation(fields: [requirement_DocumentId], references: [id])
-  requirement_DocumentId       Int?
-  Student_Submitted_Document   Student_Submitted_Document? @relation(fields: [student_Submitted_DocumentId], references: [id])
-  student_Submitted_DocumentId Int?
-  Email_Template               Email_Template?             @relation(fields: [email_TemplateId], references: [id])
-  email_TemplateId             Int?
+  School_Year                   School_Year?                @relation(fields: [school_year_id], references: [id])
+  school_year_id                Int?
+  School_Semester               School_Semester?            @relation(fields: [school_semester_id], references: [id])
+  school_semester_id            Int?
+  College_Department            College_Department?         @relation(fields: [college_department_id], references: [id])
+  college_department_id         Int?
+  Student_User                  Student_User?               @relation(fields: [student_user_id], references: [id])
+  student_user_id               Int?
+  Student_User_Profile          Student_User_Profile?       @relation(fields: [student_user_profile_id], references: [id])
+  student_user_profile_id       Int?
+  Admin_User                    Admin_User?                 @relation(fields: [admin_user_id], references: [id])
+  admin_user_id                 Int?
+  company_list                  Company_List?               @relation(fields: [company_list_id], references: [id])
+  company_list_id               Int?
+  Company_Job_List              Company_Job_List?           @relation(fields: [company_Job_List_Id], references: [id])
+  company_Job_List_Id           Int?
+  Requirement_Document          Requirement_Document?       @relation(fields: [requirement_Document_Id], references: [id])
+  requirement_Document_Id       Int?
+  Student_Submitted_Document    Student_Submitted_Document? @relation(fields: [student_Submitted_Document_Id], references: [id])
+  student_Submitted_Document_Id Int?
+  Email_Template                Email_Template?             @relation(fields: [email_Template_Id], references: [id])
+  email_Template_Id             Int?
 
   createdAt DateTime @default(now())
 }

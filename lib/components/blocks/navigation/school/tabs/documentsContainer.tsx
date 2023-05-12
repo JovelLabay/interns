@@ -490,6 +490,7 @@ function DocumentsContainer() {
           programName: stateCollege.collegeDepartmentObject.collegeProgramName,
         }}
         postRequirementDocument={postRequirementDocument}
+        isCreating={state.isCreating}
       />
 
       <ViewCollegeRequirementDocument
@@ -536,6 +537,8 @@ function DocumentsContainer() {
   function postRequirementDocument(
     data: FormCollegeDepartmentRequirementDocument
   ) {
+    setState((prev) => ({ ...prev, isCreating: true }));
+
     axios
       .post(
         `/api/data/requirementDocument?collegeDepartmentId=${stateCollege.collegeDepartmentObject.id}`,
@@ -549,12 +552,15 @@ function DocumentsContainer() {
       .then((res) => {
         if (res.data.message === 'DOCUMENT_ALREADY_EXIST') {
           warningNotify('Document already exist.');
+
+          setState((prev) => ({ ...prev, isCreating: false }));
         } else {
           successfulNotify('Successfully added a requirement document.');
 
           reset();
           toggleRequirementDocument();
           getRequirementDocument(stateCollege.collegeDepartmentObject.id);
+          setState((prev) => ({ ...prev, isCreating: false }));
         }
       })
       .catch((error) => {
