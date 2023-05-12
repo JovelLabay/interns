@@ -109,7 +109,7 @@ function LayoutStatic({ children }: { children: React.ReactNode }) {
     if (index === 0) {
       localStorage.setItem('cookieInterns', 'student');
     } else {
-      localStorage.setItem('cookieInterns', 'noStudent');
+      localStorage.setItem('cookieInterns', 'schoolAdmin');
     }
 
     setIsShowCookie(false);
