@@ -60,7 +60,7 @@
     ]
   },
   "getStartedButtons": [
-    { "url": "/views/user/school/dashboard", "name": "School Admin" },
+    { "url": "/views/user/school/dashboard", "name": "School Faculty" },
     { "url": "/views/user/student/dashboard", "name": "Student" }
   ]
 }

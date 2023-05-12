@@ -50,7 +50,7 @@ function Getstarted() {
                 }
               >
                 <div className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-yellowBg">
-                  {option.name === 'School Admin' ? (
+                  {option.name === 'School Faculty' ? (
                     <HiOutlineOfficeBuilding className="text-[40px] text-primaryYellow" />
                   ) : (
                     <BsPerson className="text-[40px] text-primaryYellow" />
@@ -64,7 +64,7 @@ function Getstarted() {
 
         <Link
           href={
-            selectedOption === 'School Admin'
+            selectedOption === 'School Faculty'
               ? '/user/school/dashboard'
               : '/user/student/dashboard'
           }
@@ -92,7 +92,7 @@ function Getstarted() {
   }
 
   function cookieHandler() {
-    if (selectedOption === 'School Admin') {
+    if (selectedOption === 'School Faculty') {
       localStorage.setItem('cookieInterns', 'schoolAdmin');
     }
     if (selectedOption === 'Student') {
