@@ -26,6 +26,7 @@ function AddCollegeRequirementDocument({
   setValue,
   collegeObject,
   postRequirementDocument,
+  isCreating,
 }: {
   modal: boolean;
   toggleRequirementDocument: () => void;
@@ -41,9 +42,9 @@ function AddCollegeRequirementDocument({
     programName: string;
   };
   postRequirementDocument(data: FormCollegeDepartmentRequirementDocument): void;
+  isCreating: boolean;
 }) {
   const [state, setState] = React.useState({
-    isCreating: false,
     uploadingImage: false,
   });
 
@@ -203,7 +204,9 @@ function AddCollegeRequirementDocument({
 
                   <input
                     className="cursor-pointer rounded bg-primaryYellow py-2 px-10"
-                    value={'Create Document'}
+                    value={
+                      isCreating ? 'Creating new Document' : 'Create Document'
+                    }
                     type="submit"
                   />
                 </form>

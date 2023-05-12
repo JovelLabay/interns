@@ -76,6 +76,16 @@ class Reports {
           },
         });
 
+        studentListPayload.forEach(async (student) => {
+          await this.prisma.activity_Logs.create({
+            data: {
+              activity_message: `Student report generated`,
+              activity_action: 'GENERATED',
+              student_user_id: student.id,
+            },
+          });
+        });
+
         res.status(200).json({ message: 'Successful', studentListPayload });
       } catch (error) {
         res.status(400).json({ message: 'Unsuccessful' });
