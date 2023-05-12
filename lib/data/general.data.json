@@ -1,8 +1,8 @@
 {
   "cookieBanner": {
     "title": "We just want to know if what type of user are you?",
-    "description": "By clicking student button below means you agree to the terms and conditions imposed in this software.",
-    "options": ["Student", "Not Interested"]
+    "description": "By clicking the options below means you agree to the terms and conditions imposed in this software.",
+    "options": ["Student", "School Faculty"]
   },
   "home": {
     "featureDescriptions": [
