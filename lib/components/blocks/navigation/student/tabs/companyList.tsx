@@ -4,8 +4,8 @@ import Image from 'next/image';
 
 import internsLogo from '@/assets/logo/interns_logo.png';
 import Link from 'next/link';
-import { AiOutlineMail, AiTwotoneMail } from 'react-icons/ai';
-import { BsBrowserChrome, BsPerson, BsPersonFill } from 'react-icons/bs';
+import { AiTwotoneMail } from 'react-icons/ai';
+import { BsBrowserChrome, BsPersonFill } from 'react-icons/bs';
 import CompanyDetail from '@component/interface/modal/student/companyDetail';
 import { MdDescription } from 'react-icons/md';
 
@@ -20,7 +20,7 @@ function SompanyList() {
 
   return (
     <div>
-      <div className="mb-3 flex gap-1 rounded bg-yellowBg p-2 text-sm">
+      <div className="mb-3 flex gap-1 rounded bg-yellowBg p-2">
         <p>Company List</p>
       </div>
       <div className="flex flex-col gap-2 text-secondaryWhite">
@@ -83,6 +83,7 @@ function SompanyList() {
                 <BsPersonFill className="text-green-500" size={25} />
                 Contact Person:
               </p>
+              <p className="text-xs">{companyDetail.comapny_contact_person}</p>
 
               {companyDetail.company_description !== '' && (
                 <>
