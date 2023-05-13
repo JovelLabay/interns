@@ -1,10 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 
 import axios from 'axios';
 import classNames from 'classnames';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import { BiRefresh } from 'react-icons/bi';
-import { AiOutlineFileWord, AiOutlineSave } from 'react-icons/ai';
+import {
+  AiOutlineFileWord,
+  AiOutlineInfoCircle,
+  AiOutlineSave,
+} from 'react-icons/ai';
 import {
   errorNotify,
   successfulNotify,
@@ -28,7 +32,6 @@ function Documents() {
   const [documentList, setDocumentList] = useState({
     required: [] as RequiredDoc[],
     submitted: [] as Submitted[],
-    payloadSubmission: {},
   });
   const [subModal, setSubModal] = useState(false);
   const [docUrl, setDocUrl] = useState('');
@@ -53,33 +56,62 @@ function Documents() {
 
   return (
     <div className="lg:mx-30 flex flex-col gap-5 md:mx-20">
-      <div className="text-center md:px-10">
-        <p className="text-sm font-light italic text-red-500">
-          *Note: Please upload all the documents in Docx format only.
-        </p>
-        <p className="text-sm font-light italic text-red-500">
-          *Upload all the documents that are required to be uploaded for
-          verification and eligibility to proceed with the practicum.
-        </p>
-      </div>
-
       <div className="text-secondaryWhite">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="font-semibold">Required Documents</h2>
-          <button
-            className={classNames('rounded bg-primaryYellow p-2 text-white')}
-            title="Refresh"
-            onClick={() => {
-              getDocument(state.collegeId, state.userProfileId);
+          <h3 className="font-semibold">Required Documents</h3>
+          <div className="flex items-center justify-center gap-2">
+            <Popover className="relative">
+              {() => (
+                <>
+                  <Popover.Button
+                    className={classNames(
+                      'rounded bg-green-500 p-2 text-white'
+                    )}
+                  >
+                    <AiOutlineInfoCircle size={20} />
+                  </Popover.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-200"
+                    enterFrom="opacity-0 translate-y-1"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-150"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-1"
+                  >
+                    <Popover.Panel className="absolute right-0 w-[300px] rounded-md bg-white p-2 shadow-md">
+                      <div className="text-center md:px-5">
+                        <p className="text-sm font-light italic text-red-500">
+                          *Note: Please upload all the documents in Docx format
+                          only.
+                        </p>
+                        <br />
+                        <p className="text-sm font-light italic text-red-500">
+                          *Upload all the documents that are required to be
+                          uploaded for verification and eligibility to proceed
+                          with the practicum.
+                        </p>
+                      </div>
+                    </Popover.Panel>
+                  </Transition>
+                </>
+              )}
+            </Popover>
+            <button
+              className={classNames('rounded bg-primaryYellow p-2 text-white')}
+              title="Refresh"
+              onClick={() => {
+                getDocument(state.collegeId, state.userProfileId);
 
-              successfulNotify('Refreshed');
-            }}
-          >
-            <BiRefresh size={20} />
-          </button>
+                successfulNotify('Refreshed');
+              }}
+            >
+              <BiRefresh size={20} />
+            </button>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
-          {documentList.required.map((item) => (
+          {documentList.required.map((item, index) => (
             <section
               key={item.id}
               className="min-h-[70px] rounded bg-customBorder p-2"
@@ -91,7 +123,7 @@ function Documents() {
                     'rounded bg-primaryYellow p-2 text-white'
                   )}
                   title="Save"
-                  onClick={updateDocument}
+                  onClick={() => updateDocument(documentList.submitted[index])}
                 >
                   <AiOutlineSave size={20} />
                 </button>
@@ -185,21 +217,17 @@ function Documents() {
 
                           return;
                         } else {
-                          setDocumentList((prev) => ({
-                            ...prev,
-                            payloadSubmission: {
-                              ['id']: documentList.submitted.find(
-                                (item2) =>
-                                  item2.student_user_profile_id ===
-                                    state.userProfileId &&
-                                  item2.submitted_document_name ===
-                                    item.documentName
-                              )?.id,
-                              ['student_user_profile_id']: state.userProfileId,
-                              ['submitted_document_name']: item.documentName,
-                              ['submitted_document']: uploadImagePayload,
-                            },
-                          }));
+                          const submittedCopy = [...documentList.submitted];
+
+                          submittedCopy[index] = {
+                            ...submittedCopy[index],
+                            submitted_document: uploadImagePayload,
+                          };
+
+                          setDocumentList({
+                            required: documentList.required,
+                            submitted: submittedCopy,
+                          });
 
                           successfulNotify('Document File Uploaded!');
                           setUploadingImage({
@@ -290,13 +318,13 @@ function Documents() {
         setDocumentList((prev) => ({
           ...prev,
           required: res.data.responsePayload || [],
-          submitted: res.data.submittedDocuments || [],
         }));
 
         postUpdateDocument(res.data.responsePayload, id);
       })
       .catch((err) => {
-        console.log(err);
+        errorNotify('Error getting documents');
+        console.error(err);
       });
   }
 
@@ -311,16 +339,22 @@ function Documents() {
           },
         }
       )
-      .then(() => null)
+      .then((res) => {
+        setDocumentList((prev) => ({
+          ...prev,
+          submitted: res.data.responsePayload || [],
+        }));
+      })
       .catch((err) => {
-        console.log(err);
+        errorNotify('Error getting documents');
+        console.error(err);
       });
   }
 
-  function updateDocument() {
+  function updateDocument(submitted: Submitted) {
     axios
       .put(`/api/data/studentDocument`, {
-        data: JSON.stringify(documentList.payloadSubmission),
+        data: JSON.stringify(submitted),
         Headers: {
           'Content-Type': 'application/json',
         },
@@ -328,14 +362,10 @@ function Documents() {
       .then(() => {
         successfulNotify('Document File Updated!');
 
-        setDocumentList((prev) => ({ ...prev, payloadSubmission: {} }));
         getDocument(state.collegeId, state.userProfileId);
       })
       .catch(() => {
         warningNotify('Document File Update Failed!');
-        setTimeout(() => {
-          warningNotify('Please upload first the file');
-        }, 2000);
       });
   }
 }

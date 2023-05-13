@@ -73,6 +73,9 @@ class AuthStudent {
             where: {
               student_user_id: responsePayload?.id,
             },
+            include: {
+              College_Department: true,
+            },
           }
         );
 
