@@ -28,8 +28,6 @@ function Details() {
   const {
     handleSubmit,
     register,
-    setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm<RecommendationLetter>({

@@ -1,4 +1,4 @@
-import { PrismaClient, Student_Submitted_Document } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 class StudentDocument {
@@ -92,16 +92,15 @@ class StudentDocument {
       try {
         const parseData = JSON.parse(data);
 
-        const responsePayload =
-          await this.prisma.student_Submitted_Document.update({
-            where: {
-              id: parseData.id,
-            },
-            data: {
-              submitted_document: parseData.submitted_document,
-              updatedAt: new Date(),
-            },
-          });
+        await this.prisma.student_Submitted_Document.update({
+          where: {
+            id: parseData.id,
+          },
+          data: {
+            submitted_document: parseData.submitted_document,
+            updatedAt: new Date(),
+          },
+        });
 
         res.status(200).json({ message: 'Unsuccessful' });
       } catch (error) {
