@@ -63,7 +63,7 @@ function Account() {
 
   return (
     <form
-      className="lg:mx-30 flex flex-col gap-5 md:mx-20"
+      className="lg:mx-30 relative flex flex-col gap-5 md:mx-20"
       onSubmit={(e) => {
         e.preventDefault();
 
@@ -354,7 +354,7 @@ function Account() {
         />
       </div>
 
-      <div className="flex flex-col items-start gap-2">
+      <div className="mb-12 flex flex-col items-start gap-2">
         <label htmlFor="email" className="font-medium text-secondaryWhite">
           Date of Birth
         </label>
@@ -369,7 +369,9 @@ function Account() {
       </div>
 
       <input
-        className={classNames('w-full rounded-md bg-primaryYellow py-2 px-1')}
+        className={classNames(
+          'fixed bottom-3 left-1/2 w-[90%] -translate-x-1/2 transform rounded-md bg-primaryYellow py-2 shadow-2xl'
+        )}
         type="submit"
         value={state.isUpdating ? 'Updating Student...' : 'Update Student'}
       />
