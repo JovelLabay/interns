@@ -80,7 +80,7 @@ function Auth() {
     <div>
       <Head>
         <title>School | Log in</title>
-        <meta name="theme-color" content="#FFE500" />
+        <meta name="theme-color" content="#DDC91D" />
       </Head>
 
       <div className="min-h-[80vh] bg-primaryYellow">

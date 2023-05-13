@@ -24,7 +24,7 @@ function Service() {
           name="description"
           content={data.meta.landingContentDescription}
         />
-        <meta name="theme-color" content="#FFE500" />
+        <meta name="theme-color" content="#DDC91D" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
