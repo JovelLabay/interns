@@ -221,7 +221,7 @@ function AdStudent({
     setState((prev) => {
       return {
         ...prev,
-        isUploading: true,
+        isCreating: true,
       };
     });
 
@@ -246,7 +246,7 @@ function AdStudent({
         setState((prev) => {
           return {
             ...prev,
-            isUploading: false,
+            isCreating: false,
           };
         });
       })
@@ -258,7 +258,7 @@ function AdStudent({
         setState((prev) => {
           return {
             ...prev,
-            isUploading: false,
+            isCreating: false,
           };
         });
       });
