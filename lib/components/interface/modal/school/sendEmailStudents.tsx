@@ -182,7 +182,7 @@ function SendEmailStudents({
       email: data.emailAddress,
       time: currentTime,
       lastName: data.lastName,
-      type: 'ELIGIBILITY_EMAIL',
+      type: 'OTHERS',
     });
 
     const config = {

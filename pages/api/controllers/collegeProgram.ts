@@ -17,6 +17,7 @@ class CollegeProgram {
       coordinator,
       programName,
       abbreaviatedProgramName,
+      practicum_coordinator_email,
     } = req.body;
 
     const { id, skip, isDeleted } = req.query;
@@ -50,6 +51,7 @@ class CollegeProgram {
               college_coordinator: coordinator,
               complete_program_name: programName,
               abbreviated_program_name: abbreaviatedProgramName,
+              practicum_coordinator_email: practicum_coordinator_email,
             },
           });
 
@@ -82,6 +84,7 @@ class CollegeProgram {
             college_coordinator: coordinator,
             complete_program_name: programName,
             abbreviated_program_name: abbreaviatedProgramName,
+            practicum_coordinator_email: practicum_coordinator_email,
             updatedAt: new Date(),
           },
         });

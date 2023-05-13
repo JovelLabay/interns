@@ -108,6 +108,7 @@ model College_Department {
   college_coordinator            String
   complete_program_name          String
   abbreviated_program_name       String
+  practicum_coordinator_email    String
   Student_User_Profile           Student_User_Profile[]
   Requirement_Document           Requirement_Document[]
   Activity_Logs                  Activity_Logs[]

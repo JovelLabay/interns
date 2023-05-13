@@ -68,14 +68,21 @@ class StudentDocument {
 
           await this.prisma.activity_Logs.create({
             data: {
-              activity_message: `Student submitted: ${responsePayload.submitted_document_name} `,
-              activity_action: 'SUBMITTED',
+              activity_message: `Student upserted document: ${responsePayload.submitted_document_name} `,
+              activity_action: 'UPSERTED',
               student_Submitted_Document_Id: responsePayload.id,
             },
           });
         });
 
-        res.status(200).json({ message: 'Unsuccessful' });
+        const responsePayload =
+          await this.prisma.student_Submitted_Document.findMany({
+            where: {
+              student_user_profile_id: Number(studentUserProfileId),
+            },
+          });
+
+        res.status(200).json({ message: 'Successful', responsePayload });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });
       }
@@ -91,8 +98,10 @@ class StudentDocument {
           },
           data: {
             submitted_document: parseData.submitted_document,
+            updatedAt: new Date(),
           },
         });
+
         res.status(200).json({ message: 'Unsuccessful' });
       } catch (error) {
         res.status(500).json({ message: 'Unsuccessful', error });

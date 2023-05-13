@@ -61,7 +61,7 @@ class RequirementDocument {
             data: {
               activity_message: `Document added: ${documentsPayload.documentName} `,
               activity_action: 'ADDED',
-              company_Job_List_Id: documentsPayload.id,
+              requirement_Document_Id: documentsPayload.id,
             },
           });
 
@@ -87,7 +87,7 @@ class RequirementDocument {
           data: {
             activity_message: `Document deleted: ${documentsPayload.documentName} `,
             activity_action: 'DELETED',
-            company_Job_List_Id: documentsPayload.id,
+            requirement_Document_Id: documentsPayload.id,
           },
         });
 
@@ -113,7 +113,7 @@ class RequirementDocument {
           data: {
             activity_message: `Document updated: ${documentsPayload.documentName} `,
             activity_action: 'UPDATED',
-            company_Job_List_Id: documentsPayload.id,
+            requirement_Document_Id: documentsPayload.id,
           },
         });
 
