@@ -360,6 +360,29 @@ function AddCollegeComponentTab({
 
         <div className="flex flex-col items-start gap-2">
           <label htmlFor="email" className="text-secondaryWhite">
+            Practicum Email<span className="text-xs text-red-500">*</span>
+          </label>
+          <input
+            className={classNames(
+              'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+              {
+                'border-red-500 bg-red-100 placeholder:text-white':
+                  errors.practicum_coordinator_email?.message,
+              }
+            )}
+            type="email"
+            placeholder="Practicum Email"
+            {...register('practicum_coordinator_email')}
+          />
+          {errors.practicum_coordinator_email?.message && (
+            <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
+              {errors.practicum_coordinator_email?.message}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <label htmlFor="email" className="text-secondaryWhite">
             Department Description
           </label>
           <textarea
@@ -540,6 +563,9 @@ function ListsCollegeComponentTab({
                 Department Name
               </th>
               <th scope="col" className="min-w-[380px] max-w-[380px] px-6 py-3">
+                Practicum Email
+              </th>
+              <th scope="col" className="min-w-[380px] max-w-[380px] px-6 py-3">
                 Department Description
               </th>
               <th scope="col" className="min-w-[380px] max-w-[380px] px-6 py-3">
@@ -679,6 +705,24 @@ function ListsCollegeComponentTab({
                       {isEdit === data.id ? (
                         <input
                           className={classNames(
+                            'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
+                            {
+                              'border-red-500 bg-red-100 placeholder:text-white':
+                                errors.practicum_coordinator_email?.message,
+                            }
+                          )}
+                          type="email"
+                          placeholder="Practicum Email"
+                          {...register('practicum_coordinator_email')}
+                        />
+                      ) : (
+                        data.practicum_coordinator_email
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 font-normal">
+                      {isEdit === data.id ? (
+                        <input
+                          className={classNames(
                             'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
                           )}
                           type="text"
@@ -807,6 +851,10 @@ function ListsCollegeComponentTab({
                               setValue(
                                 'collegeLogo',
                                 data.college_department_image || ''
+                              );
+                              setValue(
+                                'practicum_coordinator_email',
+                                data.practicum_coordinator_email || ''
                               );
                             }}
                           >

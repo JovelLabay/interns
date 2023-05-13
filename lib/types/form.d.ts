@@ -43,6 +43,7 @@ interface FormCollegeProgram {
   coordinator: string;
   programName: string;
   abbreaviatedProgramName: string;
+  practicum_coordinator_email: string;
 }
 
 interface ExportedFormCollegeProgram extends FormCollegeProgram {
@@ -60,6 +61,7 @@ interface ReturnCollegeProgram {
   college_coordinator: string;
   complete_program_name: string;
   abbreviated_program_name: string;
+  practicum_coordinator_email: string;
   createdAt: Date;
 }
 
@@ -139,4 +141,11 @@ interface FormEmailTemplateResponse {
   email_template_subject: string;
   email_template_body: string;
   id: number;
+}
+
+// RECOMMENDATION LETTER
+interface RecommendationLetter {
+  companyName: string;
+  directSupervisor: string;
+  companyAddress: string;
 }

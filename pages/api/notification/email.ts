@@ -11,7 +11,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // PAYLOAD
-  const { subject, message, email, time, lastName, type } = req.body;
+  const {
+    subject,
+    message,
+    email,
+    time,
+    lastName,
+    type,
+    companyName,
+    directSupervisor,
+    companyAddress,
+    studentName,
+    studentEmail,
+  } = req.body;
 
   // EMAIL CONTENT
   const content = {
@@ -24,6 +36,11 @@ export default async function handler(
         time,
         lastName,
         email,
+        companyName,
+        directSupervisor,
+        companyAddress,
+        studentName,
+        studentEmail,
       }),
     ],
   };
@@ -60,6 +77,11 @@ function selectionOfEmailType(
     time: string;
     lastName: string;
     email: string;
+    companyName: string;
+    directSupervisor: string;
+    companyAddress: string;
+    studentName: string;
+    studentEmail: string;
   }
 ) {
   if (type === 'RESET_EMAIL') {
@@ -149,6 +171,34 @@ function selectionOfEmailType(
     <p>${objectContent.message}</p>
 
     <p>Any concerns about practicum, email your coordinator.</p>
+
+    <h5>Best,</h5>
+    <h4>Interns</h4>
+    <h3>Developed by Eluvent Platforms</h3>
+    `,
+    };
+
+    return contentConfiguration;
+  }
+
+  if (type === 'RECOMMENDATION_EMAIL') {
+    const contentConfiguration = {
+      type: 'text/html',
+      value: `
+    <h4>Dear Practium Coordinator ${objectContent.lastName},</h4>
+
+    <p>Mr. ${objectContent.studentName} Would like to ask for a Recommendation Letter to be submitted to the company.</p>
+    <p>Details:</p>
+
+    <p>Company Name: ${objectContent.companyName}</p>
+    <p>Company Direct Supervisor: ${objectContent.directSupervisor}</p>
+    <p>Company Address: ${objectContent.companyAddress}</p>
+    <div>Student Email Address: 
+      <a href="mailto:${objectContent.studentEmail}"
+         target="_blank"
+         rel="noopener noreferrer"
+      >${objectContent.studentEmail}</a>
+    </div>
 
     <h5>Best,</h5>
     <h4>Interns</h4>

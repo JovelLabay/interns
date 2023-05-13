@@ -38,6 +38,7 @@ const CreateCollegeValidator = yup.object({
   abbreaviatedProgramName: yup
     .string()
     .required('Abbreaviated Program Name is required'),
+  practicum_coordinator_email: yup.string().email('Email is required'),
 });
 
 const CreateSchoolYear = yup.object({
@@ -116,6 +117,12 @@ const CompanyForm = yup.object({
   comapny_contact_person: yup.string().required('Contact person is required'),
 });
 
+const RecommendationLetterForm = yup.object({
+  companyName: yup.string().required('Company name is required'),
+  companyAddress: yup.string().required('Company address is required'),
+  directSupervisor: yup.string().required('Direct supervisor is required'),
+});
+
 export {
   CreateCollegeDepartmentRequirementDocumentForm,
   CreateCollegeValidator,
@@ -129,4 +136,7 @@ export {
   LogSignValidator,
   EmailTemplateForm,
   CompanyForm,
+
+  // STUDENT DASHBOARD
+  RecommendationLetterForm,
 };
