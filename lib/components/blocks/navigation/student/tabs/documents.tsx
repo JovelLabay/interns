@@ -17,6 +17,8 @@ import {
 
 import { DynamicContext } from '@redux/context';
 import { docUploaderSubmittion } from '@utils/uploaderFunction';
+import { toast } from 'react-toastify';
+import { FadeLoader, SyncLoader } from 'react-spinners';
 
 function Documents() {
   const context = useContext(DynamicContext);
@@ -34,6 +36,7 @@ function Documents() {
     submitted: [] as Submitted[],
   });
   const [subModal, setSubModal] = useState(false);
+  const [getSubmittedDocuments, setGetSubmittedDocuments] = useState(true);
   const [docUrl, setDocUrl] = useState('');
   const docxFile = docUrl;
 
@@ -98,12 +101,12 @@ function Documents() {
               )}
             </Popover>
             <button
-              className={classNames('rounded bg-primaryYellow p-2 text-white')}
+              className={classNames('rounded bg-primaryYellow p-2')}
               title="Refresh"
               onClick={() => {
                 getDocument(state.collegeId, state.userProfileId);
 
-                successfulNotify('Refreshed');
+                setGetSubmittedDocuments(true);
               }}
             >
               <BiRefresh size={20} />
@@ -111,6 +114,11 @@ function Documents() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
+          {getSubmittedDocuments && (
+            <div className="fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black opacity-50">
+              <FadeLoader color="#E9D636" className="z-10 " />
+            </div>
+          )}
           {documentList.required.map((item, index) => (
             <section
               key={item.id}
@@ -119,9 +127,7 @@ function Documents() {
               <div className="mb-2 flex items-center justify-between">
                 <h4 className="">{item.documentName}</h4>
                 <button
-                  className={classNames(
-                    'rounded bg-primaryYellow p-2 text-white'
-                  )}
+                  className={classNames('rounded bg-primaryYellow p-2')}
                   title="Save"
                   onClick={() => updateDocument(documentList.submitted[index])}
                 >
@@ -322,9 +328,8 @@ function Documents() {
 
         postUpdateDocument(res.data.responsePayload, id);
       })
-      .catch((err) => {
-        errorNotify('Error getting documents');
-        console.error(err);
+      .catch(() => {
+        errorNotify('Error getting required documents');
       });
   }
 
@@ -344,14 +349,19 @@ function Documents() {
           ...prev,
           submitted: res.data.responsePayload || [],
         }));
+
+        setGetSubmittedDocuments(false);
       })
-      .catch((err) => {
-        errorNotify('Error getting documents');
-        console.error(err);
+      .catch(() => {
+        errorNotify('Error getting your submitted documents');
+
+        setGetSubmittedDocuments(false);
       });
   }
 
   function updateDocument(submitted: Submitted) {
+    warningNotify('Document File Updating...');
+
     axios
       .put(`/api/data/studentDocument`, {
         data: JSON.stringify(submitted),

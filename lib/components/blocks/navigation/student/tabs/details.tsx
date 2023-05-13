@@ -9,10 +9,12 @@ import { RecommendationLetterForm } from '@validator/forms';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import internsLogo from '@/assets/logo/interns_logo.png';
 import {
   errorNotify,
   successfulNotify,
 } from '@component/interface/toast/toast';
+import Image from 'next/image';
 
 function Details() {
   const context = useContext(DynamicContext);
@@ -23,6 +25,10 @@ function Details() {
   const [status, setStatus] = useState({
     studentStatus: '',
     eligibiligyStatus: false,
+    collegeName: '',
+    collegeLogo: '',
+    collegeProgram: '',
+    collegeCoordinator: '',
   });
 
   const {
@@ -37,10 +43,15 @@ function Details() {
 
   useEffect(() => {
     const parsedStudentData = JSON.parse(context?.studentData || '{}');
+    const college = parsedStudentData.College_Department;
 
     setStatus({
       studentStatus: parsedStudentData?.student_status,
       eligibiligyStatus: parsedStudentData?.isEligible,
+      collegeName: college.college_department_name,
+      collegeLogo: college.college_department_image || internsLogo,
+      collegeProgram: college.complete_program_name,
+      collegeCoordinator: college.college_coordinator,
     });
   }, []);
 
@@ -219,6 +230,32 @@ function Details() {
             </>
           )}
         </Popover>
+      </div>
+
+      <div className="min-h-[200px] rounded-md bg-primaryYellowHover p-3 text-secondaryWhite">
+        <div className="mb-3 flex flex-col items-center justify-center">
+          <Image
+            src={status.collegeLogo}
+            width={60}
+            height={60}
+            alt="Logo"
+            className="rounded-full"
+          />
+          <h3 className="text-ellipsis font-bold">{status.collegeName}</h3>
+        </div>
+
+        <div className="flex flex-col items-start justify-center gap-3 text-sm">
+          <p className="font-bold">
+            College Program:
+            <br />
+            <span className="font-light">{status.collegeProgram}</span>
+          </p>
+          <p className="font-bold">
+            Department Coordinator:
+            <br />
+            <span className="font-light">{status.collegeCoordinator}</span>
+          </p>
+        </div>
       </div>
     </div>
   );

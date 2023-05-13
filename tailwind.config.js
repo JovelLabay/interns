@@ -45,7 +45,7 @@ module.exports = {
       rose: colors.rose,
 
       // PRIMARY YELLOWS
-      primaryYellow: '#FFE500',
+      primaryYellow: '#DDC91D',
       primaryYellowHover: '#FFF171',
       yellowBg: '#FFFCE3',
 
