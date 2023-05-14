@@ -885,10 +885,10 @@ function ListsUserComponentTab({
                       <button
                         className={classNames(
                           ' rounded bg-red-400 p-2',
-                          !isActive && 'cursor-not-allowed opacity-50'
+                          isActive && 'cursor-not-allowed opacity-50'
                         )}
                         title="Delete User"
-                        disabled={!isActive}
+                        disabled={isActive}
                         onClick={() => deleteAdminUserData(id)}
                       >
                         <AiOutlineDelete
