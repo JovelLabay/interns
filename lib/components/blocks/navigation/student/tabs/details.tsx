@@ -133,7 +133,7 @@ function Details() {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute left-0 w-[300px] rounded-md bg-white p-3 shadow-md md:w-[400px]">
+                <Popover.Panel className="absolute left-0 z-20 w-[300px] rounded-md bg-white p-3 shadow-md md:w-[400px]">
                   <p className="mb-2 text-sm font-light italic text-red-500">
                     *Request for Recommendation Letter
                   </p>
