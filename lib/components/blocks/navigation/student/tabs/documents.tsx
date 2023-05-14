@@ -55,6 +55,10 @@ function Documents() {
     }));
 
     getDocument(studentData.college_Department_Id, studentData.id);
+
+    if (getSubmittedDocuments) {
+      document.body.style.overflow = 'hidden';
+    }
   }, []);
 
   return (
@@ -115,8 +119,8 @@ function Documents() {
         </div>
         <div className="flex flex-col gap-2">
           {getSubmittedDocuments && (
-            <div className="fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black opacity-50">
-              <FadeLoader color="#E9D636" className="z-10 " />
+            <div className="fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50  backdrop-opacity-50 backdrop-filter">
+              <FadeLoader color="#E9D636" />
             </div>
           )}
           {documentList.required.map((item, index) => (
