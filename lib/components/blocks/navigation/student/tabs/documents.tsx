@@ -17,8 +17,7 @@ import {
 
 import { DynamicContext } from '@redux/context';
 import { docUploaderSubmittion } from '@utils/uploaderFunction';
-import { toast } from 'react-toastify';
-import { FadeLoader, SyncLoader } from 'react-spinners';
+import { FadeLoader } from 'react-spinners';
 
 function Documents() {
   const context = useContext(DynamicContext);
