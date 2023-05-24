@@ -1,10 +1,12 @@
-import AddCompany from '@component/interface/modal/school/addCompany';
+import {
+  AddCompany,
+  BulkAddCompanies,
+} from '@component/interface/modal/school/addCompany';
 import {
   errorNotify,
   successfulNotify,
   warningNotify,
 } from '@component/interface/toast/toast';
-import { Disclosure } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DynamicContext } from '@redux/context';
 import { imageUploader } from '@utils/uploaderFunction';
@@ -18,18 +20,26 @@ import {
   AiOutlineDelete,
   AiOutlineFileImage,
   AiOutlinePlusCircle,
+  AiOutlineCloseCircle,
+  AiOutlineSave,
+  AiOutlineEdit,
+  AiOutlineEye,
+  AiOutlineAppstoreAdd,
 } from 'react-icons/ai';
 import { BiRefresh } from 'react-icons/bi';
-import { FiChevronDown } from 'react-icons/fi';
 import internsLogo from '@/assets/logo/interns_logo.png';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import ViewCompanyPosition from '@component/interface/modal/school/viewCompanyPosition';
 
 function CompaniesContainer() {
   const context = useContext(DynamicContext);
+  const router = useRouter();
 
   const [isClose, setIsClose] = useState(false);
+  const [isBulkCompany, setIsBulkCompany] = useState(false);
   const [companyList, setCompanyList] = useState<Company[]>([]);
   const [companyJob, setCompanyJob] = useState<CompanyJob[]>([]);
-  const [companyJobIndex, setCompanyJobIndex] = useState(-1);
   const [companyJobForm, setCompanyJobForm] = useState({
     job_title: '',
     job_description: '',
@@ -39,6 +49,7 @@ function CompaniesContainer() {
     companyObject: {},
     companyName: '',
     companyId: -1,
+    companyJobIndex: -1,
   });
   const [modal, setModal] = useState({
     addCompany: false,
@@ -47,6 +58,7 @@ function CompaniesContainer() {
     isCreating: false,
     uploadingImage: false,
     companyJobForm: false,
+    isEdit: -1,
   });
 
   const {
@@ -104,6 +116,18 @@ function CompaniesContainer() {
             <AiOutlinePlusCircle size={20} />
           </button>
           <button
+            className={classNames(
+              'rounded bg-primaryYellow p-2',
+              context?.userData.levelOfUser === 'STAFF' &&
+                'cursor-not-allowed opacity-50'
+            )}
+            disabled={context?.userData.levelOfUser === 'STAFF'}
+            title="Add Company Bulk"
+            onClick={() => setIsBulkCompany(!isBulkCompany)}
+          >
+            <AiOutlineAppstoreAdd size={20} />
+          </button>
+          <button
             className={classNames('rounded bg-primaryYellow p-2')}
             title="Refresh"
             onClick={() => {
@@ -111,7 +135,12 @@ function CompaniesContainer() {
 
               successfulNotify('Refreshed');
               reset();
-              setCompany({ companyName: '', companyId: -1, companyObject: {} });
+              setCompany({
+                companyName: '',
+                companyId: -1,
+                companyObject: {},
+                companyJobIndex: -1,
+              });
               setIsClose(false);
             }}
           >
@@ -120,98 +149,125 @@ function CompaniesContainer() {
         </div>
       </div>
 
-      <div className="grid h-[70vh] w-full grid-cols-3 overflow-auto text-secondaryWhite">
-        <div className="flex h-full flex-col items-center justify-start gap-2 overflow-auto p-2">
-          {companyFilter.map((companyData: Company) => (
-            <section
-              key={companyData.id}
-              className={classNames(
-                'flex w-full items-start justify-between gap-1 rounded-md p-2',
-                companyData.id === company.companyId
-                  ? 'bg-customBorder'
-                  : 'bg-mainBgWhite'
-              )}
-            >
-              <button
-                className="flex w-full flex-col items-start justify-start gap-1"
-                onClick={() => {
-                  setCompany((prev) => ({
-                    ...prev,
-                    companyId: companyData.id,
-                  }));
-                  setCompanyJobIndex(-1);
-
-                  setValue('company_name', companyData.company_name);
-                  setValue(
-                    'company_description',
-                    companyData.company_description
-                  );
-                  setValue('company_address', companyData.company_address);
-                  setValue('company_website', companyData.company_website);
-                  setValue('company_email', companyData.company_email);
-                  setValue(
-                    'comapny_contact_person',
-                    companyData.comapny_contact_person
-                  );
-                  setValue('company_image', companyData.company_image || '');
-
-                  getCompanyJob(companyData.id);
-                }}
+      <div className="h-[70vh] w-full overflow-auto">
+        <table className="w-full text-center text-sm">
+          <thead className="bg-gray-100 text-xs uppercase">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                No.
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Company Logo
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company Name
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company Description
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company address
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company website
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company Email
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
+                Company Contact Person
+              </th>
+              <th scope="col" className="min-w-[250px] max-w-[400px] px-6 py-3">
+                Date Creation
+              </th>
+              <th
+                scope="col"
+                className="sticky right-0 min-w-[130px] bg-gray-100 px-6 py-3"
               >
-                <h3 className="font-bold">{companyData.company_name}</h3>
-                <p className="text-left text-sm italic">
-                  {companyData.comapny_contact_person}
-                </p>
-                <p className="text-xs font-light italic">
-                  {new Date(companyData.createdAt).toLocaleString()}
-                </p>
-              </button>
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {companyFilter.map((companyData: Company, index: number) => (
+              <tr key={index}>
+                <td className="whitespace-nowrap font-normal">{index + 1}</td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    <Image
+                      width={50}
+                      height={50}
+                      src={companyData.company_image || internsLogo}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-start justify-center gap-2">
+                      <label className="flex w-[300px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
+                        <AiOutlineFileImage
+                          size={30}
+                          className="mr-5 text-secondaryWhite"
+                        />
+                        <span>Upload Image</span>
+                        <input
+                          className="imageUpload"
+                          type="file"
+                          accept="image/png, image/jpeg"
+                          title="profileImage"
+                          name="profileImage"
+                          onChange={async (e) => {
+                            if (!e.target.files || e.target.files.length === 0)
+                              return;
 
-              <button
-                className={classNames(
-                  ' rounded bg-red-400 p-2',
-                  context?.userData.levelOfUser === 'STAFF' &&
-                    'cursor-not-allowed opacity-50'
-                )}
-                title="Delete Company"
-                disabled={context?.userData.levelOfUser === 'STAFF'}
-                onClick={() => deleteCompany(companyData.id)}
-              >
-                <AiOutlineDelete size={22} className="text-mainBgWhite" />
-              </button>
-            </section>
-          ))}
-        </div>
-        <div className="col-span-2 grid h-full grid-cols-2 gap-2 overflow-hidden p-2">
-          {company.companyId !== -1 && (
-            <>
-              <div className="h-full overflow-auto pr-1">
-                <h3 className="rounded-sm bg-yellowBg p-2 font-semibold">
-                  Company Details
-                </h3>
+                            setState((prev) => {
+                              return {
+                                ...prev,
+                                uploadingImage: true,
+                              };
+                            });
+                            const imageFile = e.target.files[0] as File;
 
-                <form
-                  className="flex flex-col items-center justify-start gap-5 pt-5"
-                  onSubmit={(e) => {
-                    e.preventDefault();
+                            const uploadImagePayload = await imageUploader(
+                              imageFile
+                            );
 
-                    handleSubmit((data) => {
-                      updateCompany(company.companyId, data);
-                    })();
-                  }}
-                >
-                  <Image
-                    width={70}
-                    height={70}
-                    src={watch().company_image || internsLogo}
-                    className="rounded-full"
-                  />
+                            if (
+                              uploadImagePayload ===
+                              'The resource already exists'
+                            ) {
+                              errorNotify(uploadImagePayload);
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  uploadingImage: false,
+                                };
+                              });
+                              return;
+                            } else {
+                              setValue('company_image', uploadImagePayload);
+                              successfulNotify('Image Uploaded!');
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  uploadingImage: false,
+                                };
+                              });
+                            }
+                          }}
+                        />
+                      </label>
 
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Name{' '}
-                      <span className="text-xs text-red-500">*</span>
-                    </label>
+                      {state.uploadingImage && (
+                        <p className="w-[300px] text-ellipsis rounded bg-green-100 p-2 text-xs">
+                          Uploading Image...
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    companyData.company_name
+                  ) : (
                     <input
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
@@ -224,17 +280,12 @@ function CompaniesContainer() {
                       placeholder="Company Name"
                       {...register('company_name')}
                     />
-                    {errors.company_name?.message && (
-                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                        {errors.company_name?.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Description
-                    </label>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    companyData.company_description
+                  ) : (
                     <textarea
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
@@ -242,77 +293,21 @@ function CompaniesContainer() {
                       placeholder="Company Description"
                       {...register('company_description')}
                     />
-                  </div>
-
-                  <div className="flex flex-col items-start justify-center gap-2">
-                    <label htmlFor="email" className=" text-secondaryWhite">
-                      Company Image
-                    </label>
-
-                    <label className="flex w-[300px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
-                      <AiOutlineFileImage
-                        size={30}
-                        className="mr-5 text-secondaryWhite"
-                      />
-                      <span>Upload Image</span>
-                      <input
-                        className="imageUpload"
-                        type="file"
-                        accept="image/png, image/jpeg"
-                        title="profileImage"
-                        name="profileImage"
-                        onChange={async (e) => {
-                          if (!e.target.files || e.target.files.length === 0)
-                            return;
-
-                          setState((prev) => {
-                            return {
-                              ...prev,
-                              uploadingImage: true,
-                            };
-                          });
-                          const imageFile = e.target.files[0] as File;
-
-                          const uploadImagePayload = await imageUploader(
-                            imageFile
-                          );
-
-                          if (
-                            uploadImagePayload === 'The resource already exists'
-                          ) {
-                            errorNotify(uploadImagePayload);
-                            setState((prev) => {
-                              return {
-                                ...prev,
-                                uploadingImage: false,
-                              };
-                            });
-                            return;
-                          } else {
-                            setValue('company_image', uploadImagePayload);
-                            successfulNotify('Image Uploaded!');
-                            setState((prev) => {
-                              return {
-                                ...prev,
-                                uploadingImage: false,
-                              };
-                            });
-                          }
-                        }}
-                      />
-                    </label>
-
-                    {state.uploadingImage && (
-                      <p className="w-[300px] text-ellipsis rounded bg-green-100 p-2 text-xs">
-                        Uploading Image...
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Address
-                    </label>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    <Link href={router.asPath} passHref>
+                      <a
+                        className="text-sm text-blue-500 underline"
+                        onClick={(e) =>
+                          handleLinkClick(e, companyData.company_address)
+                        }
+                      >
+                        {companyData.company_address}
+                      </a>
+                    </Link>
+                  ) : (
                     <textarea
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
@@ -320,12 +315,20 @@ function CompaniesContainer() {
                       placeholder="Company Address"
                       {...register('company_address')}
                     />
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Website
-                    </label>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    <Link href={companyData.company_website} passHref>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500"
+                      >
+                        Visit Company Website
+                      </a>
+                    </Link>
+                  ) : (
                     <input
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
@@ -334,12 +337,20 @@ function CompaniesContainer() {
                       placeholder="Company Website"
                       {...register('company_website')}
                     />
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Email
-                    </label>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    <Link href={`mailto:${companyData.company_email}`} passHref>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500"
+                      >
+                        Email Company
+                      </a>
+                    </Link>
+                  ) : (
                     <input
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
@@ -348,13 +359,12 @@ function CompaniesContainer() {
                       placeholder="Company Email"
                       {...register('company_email')}
                     />
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2">
-                    <label htmlFor="email" className="text-secondaryWhite">
-                      Company Contact Person{' '}
-                      <span className="text-xs text-red-500">*</span>
-                    </label>
+                  )}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-normal">
+                  {state.isEdit !== companyData.id ? (
+                    companyData.comapny_contact_person
+                  ) : (
                     <input
                       className={classNames(
                         'w-[300px] rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none',
@@ -367,321 +377,126 @@ function CompaniesContainer() {
                       placeholder="Contact Person Name"
                       {...register('comapny_contact_person')}
                     />
-                    {errors.comapny_contact_person?.message && (
-                      <p className="w-[300px] text-ellipsis rounded bg-red-100 p-2 text-xs text-red-500">
-                        {errors.comapny_contact_person?.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <input
-                    disabled={
-                      context?.userData.levelOfUser === 'STAFF'
-                        ? true
-                        : context?.userData.levelOfUser === 'ADMINISTRATOR'
-                        ? true
-                        : false
-                    }
-                    className={classNames(
-                      'cursor-pointer rounded bg-primaryYellow py-2 px-10',
-                      context?.userData.levelOfUser === 'STAFF' &&
-                        'cursor-not-allowed opacity-50',
-                      context?.userData.levelOfUser === 'ADMINISTRATOR' &&
-                        'cursor-not-allowed opacity-50'
-                    )}
-                    value={
-                      state.isCreating
-                        ? 'Updating Company...'
-                        : 'Update Company'
-                    }
-                    type="submit"
-                  />
-                </form>
-              </div>
-              <div className="h-full overflow-auto pr-1">
-                <Disclosure>
-                  {({ open }) => (
-                    <div className="my-2">
-                      <Disclosure.Button
+                  )}
+                </td>
+                <td> {new Date(companyData.createdAt).toLocaleString()}</td>
+                <td className={classNames('sticky right-0 bg-white px-2 py-4')}>
+                  {state.isEdit === companyData.id ? (
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        className="cursor-pointer rounded bg-primaryYellow p-2"
+                        title="Save"
                         onClick={() => {
-                          setIsClose(!isClose);
-                          setCompanyJobIndex(-1);
+                          handleSubmit((data) => {
+                            updateCompany(companyData.id, data);
+                          })();
                         }}
-                        className={classNames(
-                          'flex w-full justify-between bg-yellowBg px-4 py-4 text-left',
-                          open ? 'rounded-t-md' : 'rounded-md'
-                        )}
                       >
-                        <span className="font-semibold text-secondaryWhite">
-                          Company Internship Listing Form
-                        </span>
-                        <FiChevronDown
-                          className={`${
-                            open ? 'rotate-180 transform' : ''
-                          } h-5 w-5 text-primaryYellow duration-300`}
+                        <AiOutlineSave
+                          size={25}
+                          className="text-secondaryBgBlack"
                         />
-                      </Disclosure.Button>
-                      {isClose && (
-                        <div className="flex flex-col items-start gap-2 rounded-b-md bg-mainBgWhite px-4 py-2 text-gray-500">
-                          <form
-                            className="flex w-full flex-col items-start gap-2"
-                            onSubmit={(e) => {
-                              e.preventDefault();
+                      </button>
+                      <button
+                        className="cursor-pointer rounded border-2 border-primaryYellow p-2"
+                        title="Cancel"
+                        onClick={() => {
+                          setState((prev) => ({
+                            ...prev,
+                            isEdit: -1,
+                          }));
+                        }}
+                      >
+                        <AiOutlineCloseCircle
+                          size={25}
+                          className="text-secondaryBgBlack"
+                        />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        className="cursor-pointer rounded bg-blue-400 p-2"
+                        title="View"
+                        onClick={() => {
+                          setCompany((prev) => ({
+                            ...prev,
+                            companyId: companyData.id,
+                            companyObject: companyData,
+                          }));
 
-                              if (companyJobForm.job_title === '') {
-                                warningNotify('Job Title is required!');
-                              } else if (
-                                companyJobForm.job_requirements === ''
-                              ) {
-                                warningNotify('Job Requirements is required!');
-                              } else {
-                                postCompanyJob(company.companyId);
-                              }
-                            }}
-                          >
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Position{' '}
-                                <span className="text-xs text-red-500">*</span>
-                              </label>
-                              <input
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                )}
-                                type="text"
-                                placeholder="Position"
-                                value={companyJobForm.job_title}
-                                name="job_title"
-                                onChange={(e) => handlerForm('job_title', e)}
-                              />
-                            </div>
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Position Description
-                              </label>
-                              <textarea
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                )}
-                                placeholder="Position Description"
-                                name="job_description"
-                                value={companyJobForm.job_description}
-                                onChange={(e) =>
-                                  handlerForm('job_description', e)
-                                }
-                              />
-                            </div>
-                            <div className="flex w-full flex-col items-start gap-2">
-                              <label
-                                htmlFor="email"
-                                className="text-secondaryWhite"
-                              >
-                                Position Requirements
-                                <span className="text-xs text-red-500">*</span>
-                              </label>
-                              <span className="text-xs font-light italic text-red-500">
-                                {
-                                  ' Please use this | as the divider of the requirements.'
-                                }
-                              </span>
-                              <textarea
-                                className={classNames(
-                                  'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                )}
-                                placeholder="Position Requirements"
-                                name="job_requirements"
-                                value={companyJobForm.job_requirements}
-                                onChange={(e) =>
-                                  handlerForm('job_requirements', e)
-                                }
-                              />
-                            </div>
+                          getCompanyJob(companyData.id);
+                        }}
+                      >
+                        <AiOutlineEye size={25} className="text-white" />
+                      </button>
+                      <button
+                        className={classNames(
+                          'cursor-pointer rounded bg-orange-400 p-2',
+                          context?.userData.levelOfUser === 'STAFF' &&
+                            'cursor-not-allowed opacity-50',
+                          context?.userData.levelOfUser === 'ADMINISTRATOR' &&
+                            'cursor-not-allowed opacity-50'
+                        )}
+                        disabled={
+                          context?.userData.levelOfUser === 'STAFF'
+                            ? true
+                            : context?.userData.levelOfUser === 'ADMINISTRATOR'
+                            ? true
+                            : false
+                        }
+                        title="Edit"
+                        onClick={() => {
+                          setState((prev) => ({
+                            ...prev,
+                            isEdit: companyData.id,
+                          }));
 
-                            <input
-                              className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
-                              value={
-                                state.companyJobForm
-                                  ? 'Creating New Company Position Listing...'
-                                  : 'Create New Company Position Listing'
-                              }
-                              type="submit"
-                            />
-                          </form>
-                        </div>
-                      )}
+                          setValue('company_name', companyData.company_name);
+                          setValue(
+                            'company_description',
+                            companyData.company_description
+                          );
+                          setValue(
+                            'company_address',
+                            companyData.company_address
+                          );
+                          setValue(
+                            'company_website',
+                            companyData.company_website
+                          );
+                          setValue('company_email', companyData.company_email);
+                          setValue(
+                            'comapny_contact_person',
+                            companyData.comapny_contact_person
+                          );
+                          setValue(
+                            'company_image',
+                            companyData.company_image || ''
+                          );
+                        }}
+                      >
+                        <AiOutlineEdit size={25} className="text-white" />
+                      </button>
+                      <button
+                        className={classNames(
+                          ' rounded bg-red-400 p-2',
+                          context?.userData.levelOfUser === 'STAFF' &&
+                            'cursor-not-allowed opacity-50'
+                        )}
+                        title="Delete Company"
+                        disabled={context?.userData.levelOfUser === 'STAFF'}
+                        onClick={() => deleteCompany(companyData.id)}
+                      >
+                        <AiOutlineDelete size={25} className="text-white" />
+                      </button>
                     </div>
                   )}
-                </Disclosure>
-
-                {companyJob.map((job, index) => (
-                  <Disclosure key={job.id}>
-                    {() => (
-                      <div className="my-2">
-                        <Disclosure.Button
-                          onClick={() => setCompanyJobIndex(index)}
-                          className={classNames(
-                            'flex w-full justify-between bg-primaryYellowHover px-4 py-4 text-left',
-                            companyJobIndex === index
-                              ? 'rounded-t-md'
-                              : 'rounded-md'
-                          )}
-                        >
-                          <span className="font-semibold text-secondaryWhite">
-                            {`(${index + 1}) `}
-                            {job.job_title}
-                          </span>
-                          <FiChevronDown
-                            className={`${
-                              companyJobIndex === index
-                                ? 'rotate-180 transform'
-                                : ''
-                            } h-5 w-5 text-primaryYellow duration-300`}
-                          />
-                        </Disclosure.Button>
-                        {companyJobIndex === index && (
-                          <div className="flex flex-col items-start gap-2 rounded-b-md bg-mainBgWhite px-4 py-2 text-gray-500">
-                            <form
-                              className="flex w-full flex-col items-start gap-2"
-                              onSubmit={(e) => {
-                                e.preventDefault();
-
-                                if (companyJob[index].job_title === '') {
-                                  warningNotify('Job Title is required!');
-                                } else if (
-                                  companyJob[index].job_requirements === ''
-                                ) {
-                                  warningNotify(
-                                    'Job Requirements is required!'
-                                  );
-                                } else {
-                                  updateCompanyJob(
-                                    company.companyId,
-                                    job.id,
-                                    companyJob[index]
-                                  );
-                                }
-                              }}
-                            >
-                              <div className="flex w-full flex-col items-start gap-2">
-                                <label
-                                  htmlFor="Job Title"
-                                  className="text-secondaryWhite"
-                                >
-                                  Position{' '}
-                                  <span className="text-xs text-red-500">
-                                    *
-                                  </span>
-                                </label>
-                                <input
-                                  className={classNames(
-                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                  )}
-                                  type="text"
-                                  placeholder="Position"
-                                  value={companyJob[index].job_title}
-                                  onChange={(e) => {
-                                    const newJob = [...companyJob];
-                                    newJob[index].job_title = e.target.value;
-                                    setCompanyJob(newJob);
-                                  }}
-                                  name="job_title"
-                                />
-                              </div>
-                              <div className="flex w-full flex-col items-start gap-2">
-                                <label
-                                  htmlFor="email"
-                                  className="text-secondaryWhite"
-                                >
-                                  Position Description
-                                </label>
-                                <textarea
-                                  className={classNames(
-                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                  )}
-                                  placeholder="Position Description"
-                                  name="job_description"
-                                  value={companyJob[index].job_description}
-                                  onChange={(e) => {
-                                    const newJob = [...companyJob];
-                                    newJob[index].job_description =
-                                      e.target.value;
-                                    setCompanyJob(newJob);
-                                  }}
-                                />
-                              </div>
-                              <div className="flex w-full flex-col items-start gap-2">
-                                <label
-                                  htmlFor="email"
-                                  className="text-secondaryWhite"
-                                >
-                                  Position Requirements
-                                  <span className="text-xs text-red-500">
-                                    *
-                                  </span>
-                                </label>
-                                <span className="text-xs font-light italic text-red-500">
-                                  {
-                                    ' Please use this | as the divider of the requirements.'
-                                  }
-                                </span>
-                                <textarea
-                                  className={classNames(
-                                    'w-full rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none'
-                                  )}
-                                  placeholder="Position Requirements"
-                                  name="job_requirements"
-                                  value={companyJob[index].job_requirements}
-                                  onChange={(e) => {
-                                    const newJob = [...companyJob];
-                                    newJob[index].job_requirements =
-                                      e.target.value;
-                                    setCompanyJob(newJob);
-                                  }}
-                                />
-                              </div>
-
-                              <div className="flex w-full items-center justify-center gap-2">
-                                <input
-                                  className="w-full cursor-pointer rounded bg-primaryYellow py-2 text-xs"
-                                  value={
-                                    state.companyJobForm
-                                      ? 'Updating Company Position Listing...'
-                                      : 'Update Company Position Listing'
-                                  }
-                                  type="submit"
-                                />
-
-                                <button
-                                  className="w-[50%] cursor-pointer rounded bg-red-400 py-2 text-xs text-white"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-
-                                    deleteCompanyJob(
-                                      company.companyId,
-                                      companyJob[index].id
-                                    );
-                                  }}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </Disclosure>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* MODAL */}
@@ -696,8 +511,48 @@ function CompaniesContainer() {
         watch={watch}
         getCompanyLists={getCompanyLists}
       />
+
+      <BulkAddCompanies
+        modal={isBulkCompany}
+        toggleAddCompanyBulk={() => setIsBulkCompany(!isBulkCompany)}
+        getCompanyLists={getCompanyLists}
+      />
+
+      <ViewCompanyPosition
+        modal={company.companyId === -1 ? false : true}
+        handler={() =>
+          setCompany({
+            companyName: '',
+            companyId: -1,
+            companyObject: {},
+            companyJobIndex: -1,
+          })
+        }
+        company={company}
+        setCompany={setCompany}
+        isClose={isClose}
+        setIsClose={setIsClose}
+        companyJob={companyJob}
+        setCompanyJob={setCompanyJob}
+        companyJobForm={companyJobForm}
+        postCompanyJob={postCompanyJob}
+        handlerForm={handlerForm}
+        state={state}
+        updateCompanyJob={updateCompanyJob}
+        deleteCompanyJob={deleteCompanyJob}
+      />
     </div>
   );
+
+  function handleLinkClick(
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    address: string
+  ) {
+    const searchQuery = address;
+    const encodedQuery = encodeURIComponent(searchQuery);
+    const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
+    window.open(googleUrl, '_blank');
+  }
 
   function toggleAddCompany() {
     setModal((prev) => ({ ...prev, addCompany: !prev.addCompany }));
@@ -741,6 +596,7 @@ function CompaniesContainer() {
 
         getCompanyLists();
         successfulNotify('Successfully updated company!');
+        setState((prev) => ({ ...prev, isEdit: -1 }));
       })
       .catch(() => {
         setState((prev) => ({ ...prev, isCreating: false }));
@@ -763,6 +619,7 @@ function CompaniesContainer() {
           companyName: '',
           companyId: -1,
           companyObject: {},
+          companyJobIndex: -1,
         });
       })
       .catch(() => {

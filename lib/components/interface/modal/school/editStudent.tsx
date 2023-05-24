@@ -21,6 +21,8 @@ import {
 } from '@component/interface/toast/toast';
 import { BiRefresh } from 'react-icons/bi';
 import { DynamicContext } from '@redux/context';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const studentStatus = Object.entries(Student_Status);
 
@@ -36,12 +38,18 @@ function EditStudent({
   getStudentList(): void;
 }) {
   const context = useContext(DynamicContext);
+  const router = useRouter();
+
   const [state, setState] = useState({
     isUpdating: false,
     uploadingImage: false,
   });
   const [emailTemplate, setEmailTemplate] = useState<
     FormEmailTemplateResponse[]
+  >([]);
+  const [listRecommendationLetter, setListRecommendationLetter] = useState([]);
+  const [studentAppliedCompanyList, setStudentAppliedCompanyList] = useState<
+    FormStudentAppliedCompaniesResponse[]
   >([]);
   const [selectedEmailTemplate, setSelectedEmailTemplate] = useState({
     name: '',
@@ -63,6 +71,8 @@ function EditStudent({
         is_active,
         is_eligible,
         Student_User_Profile,
+        Student_Recommendation,
+        Student_Applying_Companies,
       } = JSON.parse(objectEditStudent);
 
       setValue('firstName', first_name);
@@ -85,6 +95,9 @@ function EditStudent({
       setValue('sex', Student_User_Profile.sex || '');
       setValue('studentStatus', Student_User_Profile.student_status || '');
       setValue('phoneNumber', Student_User_Profile.phone_number || '');
+
+      setListRecommendationLetter(Student_Recommendation);
+      setStudentAppliedCompanyList(Student_Applying_Companies);
     }
   }, [objectEditStudent]);
 
@@ -136,17 +149,6 @@ function EditStudent({
               <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
                 <div className="flex flex-row items-center justify-between text-secondaryWhite">
                   <button
-                    className="buttonIcon"
-                    onClick={() => {
-                      successfulNotify('Refreshed Successfully');
-
-                      getEmailTemplate();
-                    }}
-                    title="Refresh Email Templates"
-                  >
-                    <BiRefresh />
-                  </button>
-                  <button
                     onClick={() => {
                       toggleEditStudent();
 
@@ -167,6 +169,73 @@ function EditStudent({
                 </div>
 
                 <div className="my-2 h-[85vh] overflow-auto pr-2 text-secondaryWhite">
+                  <h3 className={'font-medium'}>History of Applied Company</h3>
+                  <div className="my-2 mr-2 flex max-h-[300px] flex-col gap-2 overflow-auto">
+                    {studentAppliedCompanyList.map((item, index) => (
+                      <section
+                        key={index}
+                        className=" rounded bg-contastWhite p-3"
+                      >
+                        <h3 className="font-medium">{item.company_name}</h3>
+                        <h5>Person: {item.direct_supervisor}</h5>
+                        <h5>Contact Number: {item.contact_number}</h5>
+                        <h5>
+                          Company Address:{' '}
+                          <Link href={router.asPath} passHref>
+                            <a
+                              className="text-sm text-blue-500 underline"
+                              onClick={(e) =>
+                                handleLinkClick(e, item.company_address)
+                              }
+                            >
+                              {item.company_address}
+                            </a>
+                          </Link>
+                        </h5>
+                      </section>
+                    ))}
+                  </div>
+
+                  <h3 className={'font-medium'}>
+                    History of Request for Recommendation Letter
+                  </h3>
+                  <div className="mt-2 mr-2 flex max-h-[300px] flex-col gap-2 overflow-auto">
+                    {listRecommendationLetter.map(
+                      (
+                        letter: {
+                          company_address: string;
+                          company_name: string;
+                          supervisor_name: string;
+                        },
+                        index
+                      ) => {
+                        const address = letter.company_address
+                          .split(' ')
+                          .join('+');
+
+                        return (
+                          <section
+                            key={index}
+                            className="flex flex-col gap-1 rounded bg-yellowBg p-2 text-xs"
+                          >
+                            <h4 className="font-bold">
+                              Company Name: {letter.company_name}
+                            </h4>
+                            <p>Direct Supervisor: {letter.supervisor_name}</p>
+                            <Link href={router.asPath} passHref>
+                              <a
+                                className="text-blue-500 underline"
+                                onClick={(e) => handleLinkClick(e, address)}
+                              >
+                                Company Address: {letter.company_address}
+                              </a>
+                            </Link>
+                          </section>
+                        );
+                      }
+                    )}
+                  </div>
+
                   <form
                     className="mt-2 flex flex-col gap-3"
                     onSubmit={(e) => {
@@ -365,9 +434,22 @@ function EditStudent({
                               },
                             });
                           }}
-                          className="rounded bg-red-400 p-3 text-white"
+                          className="rounded bg-red-400 py-[10px] px-2 text-sm text-white"
                         >
                           Clear Selected Template
+                        </button>
+                        <button
+                          className="buttonIcon"
+                          onClick={(e) => {
+                            e.preventDefault();
+
+                            successfulNotify('Refreshed Successfully');
+
+                            getEmailTemplate();
+                          }}
+                          title="Refresh Email Templates"
+                        >
+                          <BiRefresh />
                         </button>
                       </div>
                     </div>
@@ -638,6 +720,16 @@ function EditStudent({
       </Dialog>
     </Transition>
   );
+
+  function handleLinkClick(
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    address: string
+  ) {
+    const searchQuery = address;
+    const encodedQuery = encodeURIComponent(searchQuery);
+    const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
+    window.open(googleUrl, '_blank');
+  }
 
   function getEmailTemplate() {
     axios

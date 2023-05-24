@@ -293,10 +293,29 @@ function Details() {
     axios
       .request(config)
       .then(() => {
-        setState((prev) => ({ ...prev, isUpdating: false }));
-        reset();
+        const studentData = JSON.parse(context?.studentData || '{}');
 
-        successfulNotify('Email has been sent');
+        axios
+          .post(
+            `/api/data/recommendation?studentId=${studentData.student_user_id}`,
+            JSON.stringify(data),
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+          .then(() => {
+            setState((prev) => ({ ...prev, isUpdating: false }));
+            reset();
+
+            successfulNotify('Email has been sent');
+          })
+          .catch(() => {
+            setState((prev) => ({ ...prev, isUpdating: false }));
+
+            errorNotify('Something went wrong!');
+          });
       })
       .catch(() => {
         setState((prev) => ({ ...prev, isUpdating: false }));

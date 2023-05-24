@@ -192,8 +192,8 @@ export const data = {
     { id: 2, name: 'View Users' },
   ],
   schoolDashBoardHeaderManageCollege: [
-    { id: 1, name: 'Add College' },
-    { id: 2, name: 'View Colleges' },
+    { id: 1, name: 'Add Department' },
+    { id: 2, name: 'View Departments' },
   ],
   schoolDashBoardStudentSelectSchoolYearSemestre: [
     { id: 1, name: 'Select Year/Semester' },
@@ -335,6 +335,10 @@ export const data = {
   dashboardMenu: [
     { id: 1, name: 'Find Internships' },
     { id: 2, name: 'View Companies' },
+  ],
+  studentCompanies: [
+    { id: 1, title: 'Applied Companies' },
+    { id: 2, title: 'Browse Companies' },
   ],
   listFilter: [
     { id: 1, filterName: 'All' },

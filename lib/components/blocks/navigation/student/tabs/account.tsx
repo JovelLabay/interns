@@ -188,8 +188,7 @@ function Account() {
                     <Listbox.Option
                       className={classNames(
                         'py-1',
-                        (watch().studentStatus !== 'COMPLETE' &&
-                          watch().studentStatus !== 'APPLYING' &&
+                        (watch().studentStatus !== 'APPLYING' &&
                           watch().studentStatus !== 'APPLIED') ||
                           (status.eligibiligyStatus === false && 'opacity-50')
                       )}
@@ -370,7 +369,7 @@ function Account() {
 
       <input
         className={classNames(
-          'fixed bottom-3 left-1/2 w-[90%] -translate-x-1/2 transform rounded-md bg-primaryYellow py-2 shadow-2xl sm:w-[35%]'
+          'fixed bottom-4 left-1/2 w-[90%] -translate-x-1/2 transform rounded-md bg-primaryYellow py-2 shadow-2xl sm:w-[35%]'
         )}
         type="submit"
         value={state.isUpdating ? 'Updating Student...' : 'Update Student'}

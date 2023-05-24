@@ -123,6 +123,16 @@ const RecommendationLetterForm = yup.object({
   directSupervisor: yup.string().required('Direct supervisor is required'),
 });
 
+const StudentAppliedCompanies = yup.object({
+  company_name: yup.string().required('Company Name is required'),
+  date_applied: yup.string().required('Date you applied is required'),
+  direct_supervisor: yup
+    .string()
+    .required('Your direct supervisor is required'),
+  contact_number: yup.string().required('contact number is required'),
+  company_address: yup.string(),
+});
+
 export {
   CreateCollegeDepartmentRequirementDocumentForm,
   CreateCollegeValidator,
@@ -139,4 +149,5 @@ export {
 
   // STUDENT DASHBOARD
   RecommendationLetterForm,
+  StudentAppliedCompanies,
 };

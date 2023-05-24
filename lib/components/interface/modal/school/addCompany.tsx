@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { imageUploader } from '@utils/uploaderFunction';
+import { csvUploader, imageUploader } from '@utils/uploaderFunction';
 import classNames from 'classnames';
 import React, { Fragment, useState } from 'react';
 import Image from 'next/image';
@@ -12,7 +12,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import internsLogo from '@/assets/logo/interns_logo.png';
-import { AiOutlineFileImage } from 'react-icons/ai';
+import { AiOutlineFileImage, AiOutlineFileExcel } from 'react-icons/ai';
 import {
   errorNotify,
   successfulNotify,
@@ -323,4 +323,158 @@ function AddCompany({
   }
 }
 
-export default AddCompany;
+function BulkAddCompanies({
+  modal,
+  toggleAddCompanyBulk,
+  getCompanyLists,
+}: {
+  modal: boolean;
+  toggleAddCompanyBulk: () => void;
+  getCompanyLists(): void;
+}) {
+  const [state, setState] = useState({
+    isUploading: false,
+  });
+
+  return (
+    <Transition appear show={modal} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10 hidden lg:block"
+        onClose={() => {
+          toggleAddCompanyBulk();
+        }}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-[35vw] rounded-md bg-white p-3">
+                <div className="flex flex-row items-center justify-start">
+                  <button
+                    onClick={() => {
+                      toggleAddCompanyBulk();
+                    }}
+                    className="w-[100px] rounded border-2 border-primaryYellow py-1"
+                  >
+                    Close
+                  </button>
+                </div>
+
+                <div className="mt-2">
+                  <p className="mx-5 mb-2 text-sm italic text-secondaryWhite">
+                    * Importing the same CSV file will create a company list.
+                  </p>
+                  <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
+                    <AiOutlineFileExcel
+                      size={40}
+                      className="text-secondaryWhite"
+                    />
+                    <span className="mt-10 w-[50%] truncate">
+                      {'Upload CSV'}
+                    </span>
+                    <input
+                      className="imageUpload"
+                      type="file"
+                      accept=".csv"
+                      title="csvUpload"
+                      name="csvUpload"
+                      onChange={async (e) => {
+                        if (!e.target.files || e.target.files.length === 0)
+                          return;
+
+                        setState((prev) => {
+                          return {
+                            ...prev,
+                            isUploading: true,
+                          };
+                        });
+                        const csvFile = e.target.files[0] as File;
+                        const uploadCsvPayload = await csvUploader(csvFile);
+
+                        if (
+                          uploadCsvPayload ===
+                          'The resource already exists. Pls rename the file'
+                        ) {
+                          errorNotify(uploadCsvPayload);
+                          setState((prev) => {
+                            return {
+                              ...prev,
+                              uploadingImage: false,
+                            };
+                          });
+                          return;
+                        } else {
+                          const config = {
+                            method: 'post',
+                            maxBodyLength: Infinity,
+                            url: `/api/data/company?bulkImport=true`,
+                            headers: {
+                              'Content-Type': 'text/csv',
+                            },
+                            data: csvFile,
+                          };
+
+                          axios(config)
+                            .then(() => {
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  isUploading: false,
+                                };
+                              });
+
+                              toggleAddCompanyBulk();
+                              getCompanyLists();
+
+                              successfulNotify('CSV Uploaded!');
+                            })
+                            .catch((error) => {
+                              console.log(error);
+
+                              setState((prev) => {
+                                return {
+                                  ...prev,
+                                  isUploading: false,
+                                };
+                              });
+                            });
+                        }
+                      }}
+                    />
+                  </label>
+                  {state.isUploading && (
+                    <p className="mt-2 text-ellipsis rounded bg-green-100 p-2 text-xs">
+                      Uploading CSV...
+                    </p>
+                  )}
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+}
+
+export { AddCompany, BulkAddCompanies };
