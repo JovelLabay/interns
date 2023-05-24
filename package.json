@@ -43,8 +43,7 @@
     "react-spinners": "^0.13.4",
     "react-toastify": "^9.0.8",
     "uuid": "^9.0.0",
-    "yup": "^0.32.11",
-    "@vonage/verify": "@vonage/verify2@^1.3.0"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
