@@ -278,14 +278,14 @@ function AddCollegeComponentTab({
 
         <div className="flex flex-col items-start justify-center gap-2">
           <label htmlFor="email" className=" text-secondaryWhite">
-            College Logo
+            Department Logo
           </label>
           <label className="flex w-[300px] cursor-pointer items-center justify-center rounded-md border-2 border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
             <AiOutlineFileImage
               size={30}
               className="mr-5 text-secondaryWhite"
             />
-            <span>College Logo</span>
+            <span>Department Logo</span>
             <input
               className="imageUpload"
               type="file"
@@ -463,7 +463,9 @@ function AddCollegeComponentTab({
         <input
           className="cursor-pointer rounded bg-primaryYellow py-2 px-10"
           value={
-            state.isCreating ? 'Creating New College...' : 'Create College'
+            state.isCreating
+              ? 'Creating New Department...'
+              : 'Create Department'
           }
           type="submit"
         />

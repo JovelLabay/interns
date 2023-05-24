@@ -300,6 +300,9 @@ function StudentContainer() {
               <th scope="col" className="min-w-[130px] px-6 py-3">
                 Student Status
               </th>
+              <th scope="col" className="min-w-[130px] px-6 py-3">
+                Times of Request for Recommendation
+              </th>
               <th scope="col" className="min-w-[250px] max-w-[380px] px-6 py-3">
                 Full Name
               </th>
@@ -374,6 +377,11 @@ function StudentContainer() {
                       .split('_')
                       .join(' ')}
                   </span>
+                </td>
+                <td>
+                  {item.Student_Recommendation.length <= 0
+                    ? 'No Request Yet'
+                    : `${item.Student_Recommendation.length} Time/s`}
                 </td>
                 <td>
                   {item.first_name} {item.middle_name} {item.last_name}

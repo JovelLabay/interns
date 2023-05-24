@@ -48,17 +48,19 @@ model School_Semester {
 model Student_User {
   id Int @id @default(autoincrement())
 
-  first_name           String
-  middle_name          String?
-  last_name            String
-  email                String                @unique
-  password             String?
-  is_active            Boolean               @default(false)
-  is_eligible          Boolean               @default(false)
-  school_semester      School_Semester       @relation(fields: [school_semester_id], references: [id])
-  school_semester_id   Int
-  Student_User_Profile Student_User_Profile?
-  Activity_Logs        Activity_Logs[]
+  first_name                 String
+  middle_name                String?
+  last_name                  String
+  email                      String                       @unique
+  password                   String?
+  is_active                  Boolean                      @default(false)
+  is_eligible                Boolean                      @default(false)
+  school_semester            School_Semester              @relation(fields: [school_semester_id], references: [id])
+  school_semester_id         Int
+  Student_User_Profile       Student_User_Profile?
+  Student_Applying_Companies Student_Applying_Companies[]
+  Student_Recommendation     Student_Recommendation[]
+  Activity_Logs              Activity_Logs[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime?
@@ -94,6 +96,37 @@ model Student_Submitted_Document {
   submitted_document_name String?
   submitted_document      String?              @db.Text
   Activity_Logs           Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
+
+model Student_Applying_Companies {
+  id Int @id @default(autoincrement())
+
+  company_name      String
+  date_applied      String
+  direct_supervisor String
+  contact_number    String
+  company_address   String?
+  Student_User      Student_User?   @relation(fields: [student_User_Id], references: [id])
+  student_User_Id   Int?
+  Activity_Logs     Activity_Logs[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+}
+
+model Student_Recommendation {
+  id Int @id @default(autoincrement())
+
+  Student_User    Student_User?   @relation(fields: [student_User_Id], references: [id])
+  student_User_Id Int?
+  company_name    String
+  supervisor_name String
+  company_address String
+  Activity_Logs   Activity_Logs[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime?
@@ -224,8 +257,12 @@ model Activity_Logs {
   student_Submitted_Document_Id Int?
   Email_Template                Email_Template?             @relation(fields: [email_Template_Id], references: [id])
   email_Template_Id             Int?
+  Student_Applying_Companies    Student_Applying_Companies? @relation(fields: [student_Applying_Companies_Id], references: [id])
+  student_Applying_Companies_Id Int?
 
-  createdAt DateTime @default(now())
+  createdAt                 DateTime                @default(now())
+  Student_Recommendation    Student_Recommendation? @relation(fields: [student_Recommendation_Id], references: [id])
+  student_Recommendation_Id Int?
 }
 
 enum Level_Of_User {

@@ -278,6 +278,8 @@ class Student {
                 College_Department: true,
               },
             },
+            Student_Recommendation: true,
+            Student_Applying_Companies: true,
           },
           skip: skip ? Number(skip) : 0,
           take: 20,

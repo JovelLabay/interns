@@ -149,3 +149,19 @@ interface RecommendationLetter {
   directSupervisor: string;
   companyAddress: string;
 }
+
+// STUDENT APPLIED COMPANIES
+interface FormStudentAppliedCompanies {
+  company_name: string;
+  date_applied: string;
+  direct_supervisor: string;
+  contact_number: string;
+  company_address: string;
+}
+
+interface FormStudentAppliedCompaniesResponse
+  extends FormStudentAppliedCompanies {
+  id: number;
+  createdAt: Date;
+  student_User_Id: number;
+}

@@ -12,7 +12,11 @@ export default async function handler(
   switch (method) {
     case 'GET':
       (async function () {
-        const responsePayload = await prisma.activity_Logs.findMany();
+        const responsePayload = await prisma.activity_Logs.findMany({
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
         res.status(200).json({ message: 'Successful', responsePayload });
       })();
       break;
