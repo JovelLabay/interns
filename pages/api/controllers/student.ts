@@ -395,6 +395,7 @@ class Student {
             },
             data: {
               deletedAt: new Date(),
+              is_active: false,
             },
           });
 
@@ -408,6 +409,7 @@ class Student {
             },
             data: {
               deletedAt: new Date(),
+              is_active: false,
             },
           });
 
