@@ -332,9 +332,10 @@ function AddStudentBulk({
 
                 <div className="mt-2">
                   <p className="mx-5 mb-2 text-sm italic text-secondaryWhite">
-                    * Importing the same CSV file will overwrite the exisiting
+                    *Importing the same CSV file will display the existing
                     student list with its corresponding school year, school
-                    semestre and college department.
+                    semester and college department. This will undo the deleted
+                    list of students
                   </p>
                   <label className="flex h-[200px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-primaryYellow bg-mainBgWhite py-2 px-1 focus:outline-none">
                     <AiOutlineFileExcel
